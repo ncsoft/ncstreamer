@@ -1,0 +1,6 @@
+# vs2015
+vs2015/*.VC.db
+vs2015/*.VC.opendb
+vs2015/*.vcxproj.user
+vs2015/.vs/
+vs2015/build/
