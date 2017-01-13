@@ -4,10 +4,68 @@
     <Filter Include="src">
       <UniqueIdentifier>{35fae69d-3f1b-4da9-9f0c-919386ce919c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\client">
+      <UniqueIdentifier>{654952c6-6701-4e16-97bb-677d2743e931}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\app.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\browser_process_handler.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\client_display_handler.cc">
+      <Filter>src\client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\client_life_span_handler.cc">
+      <Filter>src\client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\client_load_handler.cc">
+      <Filter>src\client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\client_request_handler.cc">
+      <Filter>src\client</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\main.cc">
       <Filter>src</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\app.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\browser_process_handler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\manifest.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\client_display_handler.h">
+      <Filter>src\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\client_life_span_handler.h">
+      <Filter>src\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\client_load_handler.h">
+      <Filter>src\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\client_request_handler.h">
+      <Filter>src\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\resource.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\src\ncstreamer.rc">
+      <Filter>src</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
