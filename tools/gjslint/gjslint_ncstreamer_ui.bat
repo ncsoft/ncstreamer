@@ -1,5 +1,5 @@
 @echo off
 
-set SrcRoot=../../src
+set SrcRoot=../../html
 
 call gjslint.exe %SrcRoot%/app.js
