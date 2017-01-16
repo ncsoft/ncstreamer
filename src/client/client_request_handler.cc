@@ -86,7 +86,7 @@ std::string ClientRequestHandler::DecodeUri(const std::string &enc_string) {
     return enc_string;
   }
 
-  return std::move(std::string(buf));
+  return std::move(std::string{buf});
 }
 
 
