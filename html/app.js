@@ -9,3 +9,8 @@
 function command(cmd) {
   location.href = 'command://' + cmd;
 }
+
+
+function onClickFacebook() {
+  command('facebook');
+}
