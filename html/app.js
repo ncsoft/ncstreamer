@@ -10,14 +10,6 @@ function command(cmd) {
   location.href = 'command://' + cmd;
 }
 
-function onClickClose() {
-  // TODO
-}
-
 function onClickFacebook() {
   createFacebookLiveVideo();
-}
-
-function onClickMinimize() {
-  // TODO
 }
