@@ -11,7 +11,7 @@ function command(cmd) {
 }
 
 function onClickClose() {
- 
+  // TODO
 }
 
 function onClickFacebook() {
@@ -19,5 +19,5 @@ function onClickFacebook() {
 }
 
 function onClickMinimize() {
- 
+  // TODO
 }
