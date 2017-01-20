@@ -7,7 +7,8 @@
 
 
 function command(cmd) {
-  location.href = 'command://' + cmd;
+  var uri = ['command://', cmd].join('');
+  location.href = uri;
 }
 
 
