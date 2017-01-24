@@ -22,7 +22,7 @@ function onClickFacebook() {
   createFacebookLiveVideo(function(streamUrl) {
     command('streaming/start', {
       serviceProvider: 'facebook',
-      streamUrl: streamUrl
+      streamUrl: streamUrl,
     });
   });
 }
