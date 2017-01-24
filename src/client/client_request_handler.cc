@@ -90,7 +90,7 @@ std::string ClientRequestHandler::DecodeUri(const std::string &enc_string) {
 }
 
 
-void ClientRequestHandler::ExecuteJs(
+void ClientRequestHandler::ExecuteAngularJs(
     CefRefPtr<CefBrowser> browser,
     const std::string &controller,
     const std::string &func_name,
