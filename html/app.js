@@ -6,8 +6,14 @@
 'use strict';
 
 
-function command(cmd) {
-  var uri = ['command://', cmd].join('');
+function command(cmd, args) {
+  var argsArr = [];
+  for (var key in args) {
+    if (args.hasOwnProperty(key)) {
+      argsArr.push([key, encodeURIComponent(args[key])].join('='));
+    }
+  }
+  var uri = ['command://', cmd, '?', argsArr.join('&')].join('');
   location.href = uri;
 }
 
