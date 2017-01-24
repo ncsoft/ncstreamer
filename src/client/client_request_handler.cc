@@ -79,7 +79,7 @@ std::string ClientRequestHandler::DecodeUri(const std::string &enc_string) {
   }
 
   char buf[kMaxSize];
-  std::strncpy(buf, enc_string.c_str(), enc_string.size());
+  std::strncpy(buf, enc_string.c_str(), enc_string.size() + 1);
 
   HRESULT result = ::UrlUnescapeInPlace(buf, 0);
   if (result != S_OK) {
