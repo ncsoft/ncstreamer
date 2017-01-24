@@ -6,11 +6,11 @@
 'use strict';
 
 
-var facebookAppIds = {
+const facebookAppIds = {
   production: '',  // TODO(khpark): TBD
   test: '1513651075629637'
 };
-var facebookAppId = facebookAppIds.test;
+const facebookAppId = facebookAppIds.test;
 
 
 window.fbAsyncInit = function() {
