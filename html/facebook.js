@@ -23,13 +23,13 @@ window.fbAsyncInit = function() {
 };
 
 
-function createFacebookLiveVideo() {
+function createFacebookLiveVideo(callback) {
   FB.getLoginStatus(function(response) {
     if (response.status == 'connected') {
       console.info({
         Facebook: 'Already logged in.'
       });
-      createFacebookLiveVideoAfterLogin();
+      createFacebookLiveVideoAfterLogin(callback);
     } else {
       FB.login(function(response) {
         if (!response.authResponse) {
@@ -42,7 +42,7 @@ function createFacebookLiveVideo() {
           Facebook: 'Logged in, OK.',
           grantedScopes: response.authResponse.grantedScopes
         });
-        createFacebookLiveVideoAfterLogin();
+        createFacebookLiveVideoAfterLogin(callback);
       }, {
         scope: 'publish_actions',
         return_scopes: true
@@ -52,7 +52,7 @@ function createFacebookLiveVideo() {
 }
 
 
-function createFacebookLiveVideoAfterLogin() {
+function createFacebookLiveVideoAfterLogin(callback) {
   FB.api('/me/live_videos', 'post', function(response) {
     if (response.error) {
       console.error({
@@ -64,5 +64,6 @@ function createFacebookLiveVideoAfterLogin() {
       Facebook: '/me/live_videos',
       response: response
     });
+    callback(response.stream_url);
   });
 }

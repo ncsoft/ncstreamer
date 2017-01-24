@@ -19,5 +19,6 @@ function command(cmd, args) {
 
 
 function onClickFacebook() {
-  createFacebookLiveVideo();
+  createFacebookLiveVideo(function(streamUrl) {
+  });
 }
