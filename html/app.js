@@ -20,5 +20,9 @@ function command(cmd, args) {
 
 function onClickFacebook() {
   createFacebookLiveVideo(function(streamUrl) {
+    command('streaming/start', {
+      serviceProvider: 'facebook',
+      streamUrl: streamUrl
+    });
   });
 }
