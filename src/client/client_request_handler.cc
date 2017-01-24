@@ -120,12 +120,32 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
                                      CefRefPtr<CefBrowser> browser) {
   using This = ClientRequestHandler;
   static const std::unordered_map<std::string/*command*/,
-                                  CommandHandler> kCommandHandlers{};
+                                  CommandHandler> kCommandHandlers{
+      {"streaming/start",
+       std::bind(&This::OnCommandStreamingStart, this,
+           std::placeholders::_1, std::placeholders::_2)}};
+
   auto i = kCommandHandlers.find(cmd);
   if (i == kCommandHandlers.end()) {
     return;
   }
 
   i->second(args, browser);
+}
+
+
+void ClientRequestHandler::OnCommandStreamingStart(
+    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+  auto provider_i = args.find("serviceProvider");
+  auto url_i = args.find("streamUrl");
+  if (provider_i == args.end() ||
+      url_i == args.end()) {
+    return;
+  }
+
+  const std::string &service_provider = provider_i->second;
+  const std::string &stream_url = url_i->second;
+
+  // TODO(khpark): TBD
 }
 }  // namespace ncstreamer
