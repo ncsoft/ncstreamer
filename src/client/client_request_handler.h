@@ -30,10 +30,10 @@ class ClientRequestHandler : public CefRequestHandler {
 
   static CommandArgumentMap ParseQuery(const std::string &query);
   static std::string DecodeUri(const std::string &enc_string);
-  static void ExecuteJs(CefRefPtr<CefBrowser> browser,
-                        const std::string &controller,
-                        const std::string &func_name,
-                        const std::vector<std::string> &args);
+  static void ExecuteAngularJs(CefRefPtr<CefBrowser> browser,
+                               const std::string &controller,
+                               const std::string &func_name,
+                               const std::vector<std::string> &args);
 
   void OnCommand(const std::string &cmd,
                  const CommandArgumentMap &args,
@@ -42,6 +42,8 @@ class ClientRequestHandler : public CefRequestHandler {
   // command handlers
   using CommandHandler = std::function<void (
       const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser)>;
+  void OnCommandStreamingStart(
+      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
 
   IMPLEMENT_REFCOUNTING(ClientRequestHandler);
 };

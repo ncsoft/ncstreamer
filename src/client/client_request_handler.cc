@@ -79,18 +79,18 @@ std::string ClientRequestHandler::DecodeUri(const std::string &enc_string) {
   }
 
   char buf[kMaxSize];
-  std::strncpy(buf, enc_string.c_str(), enc_string.size());
+  std::strncpy(buf, enc_string.c_str(), enc_string.size() + 1);
 
   HRESULT result = ::UrlUnescapeInPlace(buf, 0);
   if (result != S_OK) {
     return enc_string;
   }
 
-  return std::move(std::string(buf));
+  return std::move(std::string{buf});
 }
 
 
-void ClientRequestHandler::ExecuteJs(
+void ClientRequestHandler::ExecuteAngularJs(
     CefRefPtr<CefBrowser> browser,
     const std::string &controller,
     const std::string &func_name,
@@ -120,12 +120,32 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
                                      CefRefPtr<CefBrowser> browser) {
   using This = ClientRequestHandler;
   static const std::unordered_map<std::string/*command*/,
-                                  CommandHandler> kCommandHandlers{};
+                                  CommandHandler> kCommandHandlers{
+      {"streaming/start",
+       std::bind(&This::OnCommandStreamingStart, this,
+           std::placeholders::_1, std::placeholders::_2)}};
+
   auto i = kCommandHandlers.find(cmd);
   if (i == kCommandHandlers.end()) {
     return;
   }
 
   i->second(args, browser);
+}
+
+
+void ClientRequestHandler::OnCommandStreamingStart(
+    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+  auto provider_i = args.find("serviceProvider");
+  auto url_i = args.find("streamUrl");
+  if (provider_i == args.end() ||
+      url_i == args.end()) {
+    return;
+  }
+
+  const std::string &service_provider = provider_i->second;
+  const std::string &stream_url = url_i->second;
+
+  // TODO(khpark): TBD
 }
 }  // namespace ncstreamer
