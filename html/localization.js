@@ -13,6 +13,8 @@ function translateTo(language) {
   const strSet = document.getElementsByClassName('ids');
   for (const str of strSet) {
     const key = str.innerHTML;
-    str.innerHTML = texts[key][language];
+    if (texts.hasOwnProperty(key)) {
+      str.innerHTML = texts[key][language];
+    }
   }
 }
