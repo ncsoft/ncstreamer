@@ -18,4 +18,10 @@ void Obs::SetUp() {
 void Obs::ShutDown() {
   obs_shutdown();
 }
+
+
+std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
+  std::vector<std::string> titles;
+  return titles;
+}
 }  // namespace ncstreamer

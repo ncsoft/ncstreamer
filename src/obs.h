@@ -7,11 +7,17 @@
 #define SRC_OBS_H_
 
 
+#include <string>
+#include <vector>
+
+
 namespace ncstreamer {
 class Obs {
  public:
   static void SetUp();
   static void ShutDown();
+
+  static std::vector<std::string> FindAllWindowsOnDesktop();
 };
 }  // namespace ncstreamer
 
