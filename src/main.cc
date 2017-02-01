@@ -6,6 +6,7 @@
 #include "windows.h"  // NOLINT
 
 #include "src/app.h"
+#include "src/obs.h"
 
 
 int APIENTRY WinMain(HINSTANCE hInstance,
@@ -26,7 +27,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
   CefRefPtr<ncstreamer::App> app{new ncstreamer::App{hInstance}};
 
   ::CefInitialize(main_args, settings, app, nullptr);
+  ncstreamer::Obs::SetUp();
+
   ::CefRunMessageLoop();
+
+  ncstreamer::Obs::ShutDown();
   ::CefShutdown();
 
   return 0;
