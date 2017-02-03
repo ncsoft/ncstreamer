@@ -10,7 +10,7 @@
 
 
 namespace ncstreamer {
-static const std::pair<uint32_t, uint32_t> kWindowMinimumSize{1200, 690};
+static const std::pair<uint32_t, uint32_t> kWindowMinimumSize{600, 800};
 }  // namespace ncstreamer
 
 
