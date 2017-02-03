@@ -11,6 +11,7 @@
 namespace ncstreamer {
 void Obs::SetUp() {
   obs_startup("en-US", nullptr, nullptr);
+  obs_load_all_modules();
 }
 
 
