@@ -1,6 +1,6 @@
-# vs2015
-vs2015/*.VC.db
-vs2015/*.VC.opendb
-vs2015/*.vcxproj.user
-vs2015/.vs/
-vs2015/build/
+# vs14.0 (Visual Studio 2015)
+vs14.0/*.VC.db
+vs14.0/*.VC.opendb
+vs14.0/*.vcxproj.user
+vs14.0/.vs/
+vs14.0/build/
