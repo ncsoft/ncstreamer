@@ -28,7 +28,11 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
   obs_properties_t *props = obs_source_properties(source);
   obs_property_t *prop = obs_properties_get(props, "window");
 
-  // TODO(khpark): fill titles from prop, here.
+  int count = obs_property_list_item_count(prop);
+  for (int i = 0; i < count; i++) {
+    const char *val = obs_property_list_item_name(prop, i);
+    titles.emplace_back(std::string(val));
+  }
 
   obs_properties_destroy(props);
   obs_source_release(source);
