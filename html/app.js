@@ -26,3 +26,15 @@ function onClickFacebook() {
     });
   });
 }
+
+
+function setUpStreamingSources(obj) {
+  if (!obj.hasOwnProperty('sources'))
+    return;
+  const select = document.getElementById('streaming-sources-select');
+  for (const source of obj.sources) {
+    const option = document.createElement('option');
+    option.text = source;
+    select.add(option);
+  }
+}
