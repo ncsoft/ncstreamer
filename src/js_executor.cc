@@ -18,6 +18,18 @@
 
 
 namespace ncstreamer {
+void JsExecutor::Execute(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::string &arg_name,
+    const std::vector<std::string> &arg_value) {
+  std::stringstream js;
+  AppendFunctionCall(func_name, arg_name, arg_value, &js);
+
+  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+}
+
+
 void JsExecutor::ExecuteAngularJs(
     CefRefPtr<CefBrowser> browser,
     const std::string &controller,

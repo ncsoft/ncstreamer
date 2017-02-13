@@ -17,6 +17,10 @@
 namespace ncstreamer {
 class JsExecutor {
  public:
+  static void Execute(CefRefPtr<CefBrowser> browser,
+                      const std::string &func_name,
+                      const std::string &arg_name,
+                      const std::vector<std::string> &arg_value);
   static void ExecuteAngularJs(CefRefPtr<CefBrowser> browser,
                                const std::string &controller,
                                const std::string &func_name,
