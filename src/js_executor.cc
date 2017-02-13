@@ -26,7 +26,17 @@ void JsExecutor::ExecuteAngularJs(
     const std::vector<std::string> &arg_value) {
   std::stringstream js;
   js << "angular.element('[ng-controller=" << controller << "]').scope().";
+  AppendFunctionCall(func_name, arg_name, arg_value, &js);
 
+  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+}
+
+
+void JsExecutor::AppendFunctionCall(
+    const std::string &func_name,
+    const std::string &arg_name,
+    const std::vector<std::string> &arg_value,
+    std::ostream *out) {
   boost::property_tree::ptree arg_value_tree;
   for (const auto &elem : arg_value) {
     boost::property_tree::ptree elem_node;
@@ -37,10 +47,8 @@ void JsExecutor::ExecuteAngularJs(
   boost::property_tree::ptree arg_value_root;
   arg_value_root.add_child(arg_name, arg_value_tree);
 
-  js << func_name << "(";
-  boost::property_tree::write_json(js, arg_value_root, false);
-  js << ")";
-
-  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+  *out << func_name << "(";
+  boost::property_tree::write_json(*out, arg_value_root, false);
+  *out << ")";
 }
 }  // namespace ncstreamer

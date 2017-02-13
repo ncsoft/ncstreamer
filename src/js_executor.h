@@ -7,6 +7,7 @@
 #define SRC_JS_EXECUTOR_H_
 
 
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -21,6 +22,11 @@ class JsExecutor {
                                const std::string &func_name,
                                const std::string &arg_name,
                                const std::vector<std::string> &arg_value);
+ private:
+  static void AppendFunctionCall(const std::string &func_name,
+                                 const std::string &arg_name,
+                                 const std::vector<std::string> &arg_value,
+                                 std::ostream *out);
 };
 }  // namespace ncstreamer
 
