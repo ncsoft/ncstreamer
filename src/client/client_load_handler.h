@@ -35,6 +35,8 @@ class ClientLoadHandler : public CefLoadHandler {
                             bool canGoForward) override;
 
  private:
+  void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
+
   bool main_browser_created_;
 
   IMPLEMENT_REFCOUNTING(ClientLoadHandler);

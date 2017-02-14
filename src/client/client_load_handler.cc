@@ -10,6 +10,9 @@
 
 #include "include/wrapper/cef_helpers.h"
 
+#include "src/js_executor.h"
+#include "src/obs.h"
+
 
 namespace ncstreamer {
 ClientLoadHandler::ClientLoadHandler()
@@ -61,6 +64,14 @@ void ClientLoadHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
   if (main_browser_created_ == false && isLoading == false) {
     ::ShowWindow(browser->GetHost()->GetWindowHandle(), TRUE);
     main_browser_created_ = true;
+    OnMainBrowserCreated(browser);
   }
+}
+
+
+void ClientLoadHandler::OnMainBrowserCreated(
+    CefRefPtr<CefBrowser> browser) {
+  const auto &sources = Obs::FindAllWindowsOnDesktop();
+  JsExecutor::Execute(browser, "setUpStreamingSources", "sources", sources);
 }
 }  // namespace ncstreamer
