@@ -7,10 +7,10 @@
 
 
 const facebookAppIds = {
-  production: '',  // TODO(khpark): TBD
-  test: '1513651075629637',
+  production: /*NC Streaming*/ '1789696898019802',
+  alpha: /*NC Streaming - Alpha*/ '1795379417451550',
 };
-const facebookAppId = facebookAppIds.test;
+const facebookAppId = facebookAppIds.alpha;
 
 
 window.fbAsyncInit = function() {
