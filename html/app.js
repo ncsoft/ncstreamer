@@ -20,9 +20,12 @@ function command(cmd, args) {
 
 function onClickFacebook() {
   createFacebookLiveVideo(function(streamUrl) {
+    const select = document.getElementById('streaming-sources-select');
+    const source = select.value;
     command('streaming/start', {
-      serviceProvider: 'facebook',
+      serviceProvider: 'Facebook Live',
       streamUrl: streamUrl,
+      source: source,
     });
   });
 }
