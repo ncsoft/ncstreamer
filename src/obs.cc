@@ -31,7 +31,7 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
   int count = obs_property_list_item_count(prop);
   for (int i = 0; i < count; i++) {
     const char *val = obs_property_list_item_name(prop, i);
-    titles.emplace_back(std::string(val));
+    titles.emplace_back(val);
   }
 
   obs_properties_destroy(props);
