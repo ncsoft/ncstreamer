@@ -54,7 +54,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(OBS_STUDIO_PATH)..;$(CEF3_2704_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -74,7 +74,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(OBS_STUDIO_PATH)..;$(CEF3_2704_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -100,6 +100,7 @@
     <ClCompile Include="..\src\js_executor.cc" />
     <ClCompile Include="..\src\main.cc" />
     <ClCompile Include="..\src\obs.cc" />
+    <ClCompile Include="..\src_imported\obs\obs-app.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\app.h" />
@@ -113,6 +114,7 @@
     <ClInclude Include="..\src\manifest.h" />
     <ClInclude Include="..\src\obs.h" />
     <ClInclude Include="..\src\resource.h" />
+    <ClInclude Include="..\src_imported\obs\obs-app.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\ncstreamer.rc" />

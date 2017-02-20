@@ -5,11 +5,22 @@
 
 #include "src/obs.h"
 
+#include <fstream>
 #include "obs-studio/libobs/obs.h"
+
+#include "src_imported/obs/obs-app.hpp"
 
 
 namespace ncstreamer {
 void Obs::SetUp() {
+  // create log file.
+  {
+    obs_app::MakeUserDirs();
+
+    static std::fstream static_log_file{};
+    obs_app::create_log_file(static_log_file);
+  }
+
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
 }
