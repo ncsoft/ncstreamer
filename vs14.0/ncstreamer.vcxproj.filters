@@ -7,6 +7,12 @@
     <Filter Include="src\client">
       <UniqueIdentifier>{654952c6-6701-4e16-97bb-677d2743e931}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src_imported">
+      <UniqueIdentifier>{7c7e18d0-fafd-4e62-855f-e161c84f405b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src_imported\obs">
+      <UniqueIdentifier>{4a3de959-8088-4e52-9612-c6f5c2e1493f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\app.cc">
@@ -38,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="..\src\js_executor.cc">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src_imported\obs\obs-app.cpp">
+      <Filter>src_imported\obs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="..\src\js_executor.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src_imported\obs\obs-app.hpp">
+      <Filter>src_imported\obs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
