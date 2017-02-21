@@ -25,7 +25,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
   CefSettings settings;
   settings.no_sandbox = true;
-  std::string temp_path = []() {
+  std::string temp_path = []() -> std::string {
     uint32 len = ::GetTempPath(0, NULL);
     std::unique_ptr<char[]> buf{new char[len]};
     ::GetTempPath(len, buf.get());
