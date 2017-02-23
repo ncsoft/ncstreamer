@@ -77,6 +77,15 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
 }
 
 
+bool Obs::StartStreaming(
+    const std::string &source_info,
+    const std::string &service_provider,
+    const std::string &stream_url) {
+  // TODO(khpark): TBD
+  return false;
+}
+
+
 bool Obs::SetUpLog() {
   bool dir_created = obs_app::MakeUserDirs();
   if (dir_created == false) {

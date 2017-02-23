@@ -23,6 +23,11 @@ class Obs {
 
   std::vector<std::string> FindAllWindowsOnDesktop();
 
+  bool StartStreaming(
+      const std::string &source_info,
+      const std::string &service_provider,
+      const std::string &stream_url);
+
  private:
   Obs();
   virtual ~Obs();
