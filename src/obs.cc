@@ -5,6 +5,7 @@
 
 #include "src/obs.h"
 
+#include <cassert>
 #include <fstream>
 #include "obs-studio/libobs/obs.h"
 
@@ -13,6 +14,12 @@
 
 namespace ncstreamer {
 void Obs::SetUp() {
+  assert(!static_instance);
+  static_instance = new Obs{};
+}
+
+
+Obs::Obs() {
   // create log file.
   {
     obs_app::MakeUserDirs();
@@ -27,7 +34,20 @@ void Obs::SetUp() {
 
 
 void Obs::ShutDown() {
+  assert(static_instance);
+  delete static_instance;
+  static_instance = nullptr;
+}
+
+
+Obs::~Obs() {
   obs_shutdown();
+}
+
+
+Obs *Obs::Get() {
+  assert(static_instance);
+  return static_instance;
 }
 
 
@@ -49,4 +69,7 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
   obs_source_release(source);
   return titles;
 }
+
+
+Obs *Obs::static_instance{nullptr};
 }  // namespace ncstreamer

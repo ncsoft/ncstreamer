@@ -16,8 +16,15 @@ class Obs {
  public:
   static void SetUp();
   static void ShutDown();
+  static Obs *Get();
 
-  static std::vector<std::string> FindAllWindowsOnDesktop();
+  std::vector<std::string> FindAllWindowsOnDesktop();
+
+ private:
+  Obs();
+  virtual ~Obs();
+
+  static Obs *static_instance;
 };
 }  // namespace ncstreamer
 
