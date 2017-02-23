@@ -92,4 +92,9 @@
       <Filter>src</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src_imported\readme.md">
+      <Filter>src_imported</Filter>
+    </None>
+  </ItemGroup>
 </Project>

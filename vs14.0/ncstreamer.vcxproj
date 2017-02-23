@@ -119,6 +119,9 @@
   <ItemGroup>
     <ResourceCompile Include="..\src\ncstreamer.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src_imported\readme.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
