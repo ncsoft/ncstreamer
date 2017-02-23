@@ -6,7 +6,6 @@
 #include "src/obs.h"
 
 #include <cassert>
-#include <fstream>
 #include "obs-studio/libobs/obs.h"
 
 #include "src_imported/from_obs_studio_ui/obs-app.hpp"
@@ -19,15 +18,9 @@ void Obs::SetUp() {
 }
 
 
-Obs::Obs() {
-  // create log file.
-  {
-    obs_app::MakeUserDirs();
-
-    static std::fstream static_log_file{};
-    obs_app::create_log_file(static_log_file);
-  }
-
+Obs::Obs()
+    : log_file_{} {
+  SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
 }
@@ -68,6 +61,17 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
   obs_properties_destroy(props);
   obs_source_release(source);
   return titles;
+}
+
+
+bool Obs::SetUpLog() {
+  bool dir_created = obs_app::MakeUserDirs();
+  if (dir_created == false) {
+    return false;
+  }
+
+  obs_app::create_log_file(log_file_);
+  return true;
 }
 
 

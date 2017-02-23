@@ -7,6 +7,7 @@
 #define SRC_OBS_H_
 
 
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -24,7 +25,11 @@ class Obs {
   Obs();
   virtual ~Obs();
 
+  bool SetUpLog();
+
   static Obs *static_instance;
+
+  std::fstream log_file_;
 };
 }  // namespace ncstreamer
 
