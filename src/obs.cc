@@ -23,6 +23,7 @@ Obs::Obs()
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
+  obs_log_loaded_modules();
 }
 
 
