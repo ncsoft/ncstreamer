@@ -8,7 +8,7 @@
 #include <fstream>
 #include "obs-studio/libobs/obs.h"
 
-#include "src_imported/obs/obs-app.hpp"
+#include "src_imported/from_obs_studio_ui/obs-app.hpp"
 
 
 namespace ncstreamer {
