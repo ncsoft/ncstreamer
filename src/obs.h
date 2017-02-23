@@ -26,6 +26,8 @@ class Obs {
   virtual ~Obs();
 
   bool SetUpLog();
+  void ResetAudio();
+  void ResetVideo();
 
   static Obs *static_instance;
 

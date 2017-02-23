@@ -24,6 +24,9 @@ Obs::Obs()
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
   obs_log_loaded_modules();
+
+  ResetAudio();
+  ResetVideo();
 }
 
 
@@ -73,6 +76,35 @@ bool Obs::SetUpLog() {
 
   obs_app::create_log_file(log_file_);
   return true;
+}
+
+
+void Obs::ResetAudio() {
+  struct obs_audio_info ai;
+  ai.samples_per_sec = 44100;
+  ai.speakers = SPEAKERS_STEREO;
+
+  obs_reset_audio(&ai);
+}
+
+
+void Obs::ResetVideo() {
+  struct obs_video_info ovi;
+  ovi.fps_num = 30;
+  ovi.fps_den = 1;
+  ovi.graphics_module = "libobs-d3d11.dll";
+  ovi.base_width = 1920;
+  ovi.base_height = 1080;
+  ovi.output_width = 1280;
+  ovi.output_height = 720;
+  ovi.output_format = VIDEO_FORMAT_NV12;
+  ovi.colorspace = VIDEO_CS_601;
+  ovi.range = VIDEO_RANGE_PARTIAL;
+  ovi.adapter = 0;
+  ovi.gpu_conversion = true;
+  ovi.scale_type = OBS_SCALE_BICUBIC;
+
+  obs_reset_video(&ovi);
 }
 
 
