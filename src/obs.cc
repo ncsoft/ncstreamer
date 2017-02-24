@@ -202,14 +202,16 @@ obs_output_t *Obs::CreateOutput() {
 void Obs::UpdateCurrentSource(const std::string &source_info) {
   ReleaseCurrentSource();
 
-  obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "window", source_info.c_str());
+  {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "window", source_info.c_str());
 
-  current_source_video_ = obs_source_create(
-      "window_capture", "Window Capture", settings, nullptr);
-  obs_data_release(settings);
+    current_source_video_ = obs_source_create(
+        "window_capture", "Window Capture", settings, nullptr);
+    obs_data_release(settings);
 
-  obs_set_output_source(0, current_source_video_);
+    obs_set_output_source(0, current_source_video_);
+  }
 }
 
 
