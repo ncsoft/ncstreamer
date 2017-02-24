@@ -56,6 +56,8 @@ class Obs {
       const std::string &stream_key);
   void ReleaseCurrentService();
 
+  bool StartOutput();
+
   static Obs *static_instance;
 
   std::fstream log_file_;

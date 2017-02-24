@@ -100,8 +100,7 @@ bool Obs::StartStreaming(
       /*audio_bitrate*/ 160,
       /*video_bitrate*/ 2500);
 
-  // TODO(khpark): TBD
-  return false;
+  return StartOutput();
 }
 
 
@@ -247,6 +246,23 @@ void Obs::ReleaseCurrentService() {
   }
   obs_service_release(current_service_);
   current_service_ = nullptr;
+}
+
+
+bool Obs::StartOutput() {
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "bind_ip", "default");
+  obs_output_update(stream_output_, settings);
+  obs_data_release(settings);
+
+  obs_output_set_video_encoder(stream_output_, video_encoder_);
+  obs_output_set_audio_encoder(stream_output_, audio_encoder_, 0);
+  obs_output_set_service(stream_output_, current_service_);
+  obs_output_set_delay(stream_output_, 0, OBS_OUTPUT_DELAY_PRESERVE);
+  obs_output_set_reconnect_settings(
+      stream_output_, /*max_retries*/ 20, /*retry_delay*/ 10);
+
+  return obs_output_start(stream_output_);
 }
 
 
