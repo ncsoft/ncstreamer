@@ -17,46 +17,10 @@ void Obs::SetUp() {
 }
 
 
-Obs::Obs()
-    : log_file_{},
-      audio_encoder_{nullptr},
-      video_encoder_{nullptr},
-      stream_output_{nullptr},
-      current_source_video_{nullptr},
-      current_service_{nullptr} {
-  SetUpLog();
-  obs_startup("en-US", nullptr, nullptr);
-  obs_load_all_modules();
-  obs_log_loaded_modules();
-
-  ResetAudio();
-  ResetVideo();
-
-  audio_encoder_ = CreateAudioEncoder();
-  video_encoder_ = CreateVideoEncoder();
-  obs_encoder_set_audio(audio_encoder_,  obs_get_audio());
-  obs_encoder_set_video(video_encoder_, obs_get_video());
-
-  stream_output_ = CreateOutput();
-}
-
-
 void Obs::ShutDown() {
   assert(static_instance);
   delete static_instance;
   static_instance = nullptr;
-}
-
-
-Obs::~Obs() {
-  ReleaseCurrentService();
-  ReleaseCurrentSource();
-
-  obs_output_release(stream_output_);
-  obs_encoder_release(video_encoder_);
-  obs_encoder_release(audio_encoder_);
-
-  obs_shutdown();
 }
 
 
@@ -130,6 +94,42 @@ void Obs::UpdateCurrentServiceEncoders(
 
   obs_data_release(audio_settings);
   obs_data_release(video_settings);
+}
+
+
+Obs::Obs()
+    : log_file_{},
+      audio_encoder_{nullptr},
+      video_encoder_{nullptr},
+      stream_output_{nullptr},
+      current_source_video_{nullptr},
+      current_service_{nullptr} {
+  SetUpLog();
+  obs_startup("en-US", nullptr, nullptr);
+  obs_load_all_modules();
+  obs_log_loaded_modules();
+
+  ResetAudio();
+  ResetVideo();
+
+  audio_encoder_ = CreateAudioEncoder();
+  video_encoder_ = CreateVideoEncoder();
+  obs_encoder_set_audio(audio_encoder_,  obs_get_audio());
+  obs_encoder_set_video(video_encoder_, obs_get_video());
+
+  stream_output_ = CreateOutput();
+}
+
+
+Obs::~Obs() {
+  ReleaseCurrentService();
+  ReleaseCurrentSource();
+
+  obs_output_release(stream_output_);
+  obs_encoder_release(video_encoder_);
+  obs_encoder_release(audio_encoder_);
+
+  obs_shutdown();
 }
 
 
