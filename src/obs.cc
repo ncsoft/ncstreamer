@@ -202,6 +202,7 @@ obs_output_t *Obs::CreateOutput() {
 void Obs::UpdateCurrentSource(const std::string &source_info) {
   ReleaseCurrentSource();
 
+  // video
   {
     obs_data_t *settings = obs_data_create();
     obs_data_set_string(settings, "window", source_info.c_str());
