@@ -21,7 +21,8 @@ Obs::Obs()
     : log_file_{},
       audio_encoder_{nullptr},
       video_encoder_{nullptr},
-      current_source_video_{nullptr} {
+      current_source_video_{nullptr},
+      current_service_{nullptr} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
@@ -45,6 +46,7 @@ void Obs::ShutDown() {
 
 
 Obs::~Obs() {
+  ReleaseCurrentService();
   ReleaseCurrentSource();
 
   obs_encoder_release(video_encoder_);
@@ -86,8 +88,53 @@ bool Obs::StartStreaming(
     const std::string &stream_url) {
   UpdateCurrentSource(source_info);
 
+  std::string stream_server;
+  std::string stream_key;
+  std::tie(stream_server, stream_key) = SplitStreamUrl(stream_url);
+  UpdateCurrentService(service_provider, stream_server, stream_key);
+  UpdateCurrentServiceEncoders(
+      /*audio_bitrate*/ 160,
+      /*video_bitrate*/ 2500);
+
   // TODO(khpark): TBD
   return false;
+}
+
+
+void Obs::UpdateCurrentServiceEncoders(
+    uint32_t audio_bitrate,
+    uint32_t video_bitrate) {
+  obs_data_t *video_settings = obs_data_create();
+  obs_data_set_string(video_settings, "rate_control", "CBR");
+  obs_data_set_int(video_settings, "bitrate", video_bitrate);
+
+  obs_data_t *audio_settings = obs_data_create();
+  obs_data_set_string(audio_settings, "rate_control", "CBR");
+  obs_data_set_int(audio_settings, "bitrate", audio_bitrate);
+
+  obs_service_apply_encoder_settings(
+      current_service_, video_settings, audio_settings);
+
+  video_t *video = obs_get_video();
+  enum video_format format = video_output_get_format(video);
+
+  if (format != VIDEO_FORMAT_NV12 && format != VIDEO_FORMAT_I420) {
+    obs_encoder_set_preferred_video_format(video_encoder_, VIDEO_FORMAT_NV12);
+  }
+
+  obs_encoder_update(video_encoder_, video_settings);
+  obs_encoder_update(audio_encoder_,  audio_settings);
+
+  obs_data_release(audio_settings);
+  obs_data_release(video_settings);
+}
+
+
+std::tuple<std::string /*server*/, std::string /*key*/>
+    Obs::SplitStreamUrl(const std::string &stream_url) {
+  std::size_t key_index = stream_url.find_last_of('/') + 1;
+  return std::make_tuple(stream_url.substr(0, key_index),
+                         stream_url.substr(key_index));
 }
 
 
@@ -163,6 +210,33 @@ void Obs::ReleaseCurrentSource() {
   }
   obs_source_release(current_source_video_);
   current_source_video_ = nullptr;
+}
+
+
+void Obs::UpdateCurrentService(
+    const std::string &service_provider,
+    const std::string &stream_server,
+    const std::string &stream_key) {
+  ReleaseCurrentService();
+
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "service", service_provider.c_str());
+  obs_data_set_string(settings, "server", stream_server.c_str());
+  obs_data_set_string(settings, "key", stream_key.c_str());
+  obs_data_set_bool(settings, "show_all", false);
+
+  current_service_ = obs_service_create(
+      "rtmp_common", "default_service", settings, nullptr);
+  obs_data_release(settings);
+}
+
+
+void Obs::ReleaseCurrentService() {
+  if (!current_service_) {
+    return;
+  }
+  obs_service_release(current_service_);
+  current_service_ = nullptr;
 }
 
 
