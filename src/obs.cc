@@ -20,7 +20,8 @@ void Obs::SetUp() {
 Obs::Obs()
     : log_file_{},
       audio_encoder_{nullptr},
-      video_encoder_{nullptr} {
+      video_encoder_{nullptr},
+      current_source_video_{nullptr} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
@@ -44,6 +45,8 @@ void Obs::ShutDown() {
 
 
 Obs::~Obs() {
+  ReleaseCurrentSource();
+
   obs_encoder_release(video_encoder_);
   obs_encoder_release(audio_encoder_);
 
@@ -81,6 +84,8 @@ bool Obs::StartStreaming(
     const std::string &source_info,
     const std::string &service_provider,
     const std::string &stream_url) {
+  UpdateCurrentSource(source_info);
+
   // TODO(khpark): TBD
   return false;
 }
@@ -135,6 +140,29 @@ obs_encoder_t *Obs::CreateAudioEncoder() {
 obs_encoder_t *Obs::CreateVideoEncoder() {
     return obs_video_encoder_create(
         "obs_x264", "simple_h264_stream", nullptr, nullptr);
+}
+
+
+void Obs::UpdateCurrentSource(const std::string &source_info) {
+  ReleaseCurrentSource();
+
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "window", source_info.c_str());
+
+  current_source_video_ = obs_source_create(
+      "window_capture", "Window Capture", settings, nullptr);
+  obs_data_release(settings);
+
+  obs_set_output_source(0, current_source_video_);
+}
+
+
+void Obs::ReleaseCurrentSource() {
+  if (!current_source_video_) {
+    return;
+  }
+  obs_source_release(current_source_video_);
+  current_source_video_ = nullptr;
 }
 
 

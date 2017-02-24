@@ -38,11 +38,15 @@ class Obs {
   obs_encoder_t *CreateAudioEncoder();
   obs_encoder_t *CreateVideoEncoder();
 
+  void UpdateCurrentSource(const std::string &source_info);
+  void ReleaseCurrentSource();
+
   static Obs *static_instance;
 
   std::fstream log_file_;
   obs_encoder_t *audio_encoder_;
   obs_encoder_t *video_encoder_;
+  obs_source_t *current_source_video_;
 };
 }  // namespace ncstreamer
 
