@@ -65,6 +65,7 @@ class Obs {
   obs_encoder_t *video_encoder_;
   obs_output_t *stream_output_;
 
+  obs_source_t *current_source_audio_;
   obs_source_t *current_source_video_;
   obs_service_t *current_service_;
 };

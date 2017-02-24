@@ -102,6 +102,7 @@ Obs::Obs()
       audio_encoder_{nullptr},
       video_encoder_{nullptr},
       stream_output_{nullptr},
+      current_source_audio_{nullptr},
       current_source_video_{nullptr},
       current_service_{nullptr} {
   SetUpLog();
@@ -213,10 +214,26 @@ void Obs::UpdateCurrentSource(const std::string &source_info) {
 
     obs_set_output_source(0, current_source_video_);
   }
+
+  // audio
+  {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "device_id", "default");
+
+    current_source_audio_ = obs_source_create(
+        "wasapi_output_capture", "Desktop Audio", settings, nullptr);
+    obs_data_release(settings);
+
+    obs_set_output_source(1, current_source_audio_);
+  }
 }
 
 
 void Obs::ReleaseCurrentSource() {
+  if (current_source_audio_) {
+    obs_source_release(current_source_audio_);
+    current_source_audio_ = nullptr;
+  }
   if (current_source_video_) {
     obs_source_release(current_source_video_);
     current_source_video_ = nullptr;
