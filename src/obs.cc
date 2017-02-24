@@ -21,6 +21,7 @@ Obs::Obs()
     : log_file_{},
       audio_encoder_{nullptr},
       video_encoder_{nullptr},
+      stream_output_{nullptr},
       current_source_video_{nullptr},
       current_service_{nullptr} {
   SetUpLog();
@@ -35,6 +36,8 @@ Obs::Obs()
   video_encoder_ = CreateVideoEncoder();
   obs_encoder_set_audio(audio_encoder_,  obs_get_audio());
   obs_encoder_set_video(video_encoder_, obs_get_video());
+
+  stream_output_ = CreateOutput();
 }
 
 
@@ -49,6 +52,7 @@ Obs::~Obs() {
   ReleaseCurrentService();
   ReleaseCurrentSource();
 
+  obs_output_release(stream_output_);
   obs_encoder_release(video_encoder_);
   obs_encoder_release(audio_encoder_);
 
@@ -187,6 +191,12 @@ obs_encoder_t *Obs::CreateAudioEncoder() {
 obs_encoder_t *Obs::CreateVideoEncoder() {
     return obs_video_encoder_create(
         "obs_x264", "simple_h264_stream", nullptr, nullptr);
+}
+
+
+obs_output_t *Obs::CreateOutput() {
+  return obs_output_create(
+      "rtmp_output", "simple_stream", nullptr, nullptr);
 }
 
 

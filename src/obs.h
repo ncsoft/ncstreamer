@@ -45,6 +45,7 @@ class Obs {
   void ResetVideo();
   obs_encoder_t *CreateAudioEncoder();
   obs_encoder_t *CreateVideoEncoder();
+  obs_output_t *CreateOutput();
 
   void UpdateCurrentSource(const std::string &source_info);
   void ReleaseCurrentSource();
@@ -60,6 +61,8 @@ class Obs {
   std::fstream log_file_;
   obs_encoder_t *audio_encoder_;
   obs_encoder_t *video_encoder_;
+  obs_output_t *stream_output_;
+
   obs_source_t *current_source_video_;
   obs_service_t *current_service_;
 };
