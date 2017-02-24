@@ -217,11 +217,10 @@ void Obs::UpdateCurrentSource(const std::string &source_info) {
 
 
 void Obs::ReleaseCurrentSource() {
-  if (!current_source_video_) {
-    return;
+  if (current_source_video_) {
+    obs_source_release(current_source_video_);
+    current_source_video_ = nullptr;
   }
-  obs_source_release(current_source_video_);
-  current_source_video_ = nullptr;
 }
 
 
