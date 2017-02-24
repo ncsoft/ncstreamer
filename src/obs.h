@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "obs-studio/libobs/obs.h"
+
 
 namespace ncstreamer {
 class Obs {
@@ -28,10 +30,14 @@ class Obs {
   bool SetUpLog();
   void ResetAudio();
   void ResetVideo();
+  obs_encoder_t *CreateAudioEncoder();
+  obs_encoder_t *CreateVideoEncoder();
 
   static Obs *static_instance;
 
   std::fstream log_file_;
+  obs_encoder_t *audio_encoder_;
+  obs_encoder_t *video_encoder_;
 };
 }  // namespace ncstreamer
 

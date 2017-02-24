@@ -6,7 +6,6 @@
 #include "src/obs.h"
 
 #include <cassert>
-#include "obs-studio/libobs/obs.h"
 
 #include "src_imported/from_obs_studio_ui/obs-app.hpp"
 
@@ -19,7 +18,9 @@ void Obs::SetUp() {
 
 
 Obs::Obs()
-    : log_file_{} {
+    : log_file_{},
+      audio_encoder_{nullptr},
+      video_encoder_{nullptr} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
@@ -27,6 +28,11 @@ Obs::Obs()
 
   ResetAudio();
   ResetVideo();
+
+  audio_encoder_ = CreateAudioEncoder();
+  video_encoder_ = CreateVideoEncoder();
+  obs_encoder_set_audio(audio_encoder_,  obs_get_audio());
+  obs_encoder_set_video(video_encoder_, obs_get_video());
 }
 
 
@@ -38,6 +44,9 @@ void Obs::ShutDown() {
 
 
 Obs::~Obs() {
+  obs_encoder_release(video_encoder_);
+  obs_encoder_release(audio_encoder_);
+
   obs_shutdown();
 }
 
@@ -105,6 +114,18 @@ void Obs::ResetVideo() {
   ovi.scale_type = OBS_SCALE_BICUBIC;
 
   obs_reset_video(&ovi);
+}
+
+
+obs_encoder_t *Obs::CreateAudioEncoder() {
+    return obs_audio_encoder_create(
+        "ffmpeg_aac", "simple_aac", nullptr, 0, nullptr);
+}
+
+
+obs_encoder_t *Obs::CreateVideoEncoder() {
+    return obs_video_encoder_create(
+        "obs_x264", "simple_h264_stream", nullptr, nullptr);
 }
 
 
