@@ -13,6 +13,15 @@ const app = {
 };
 
 
+function updateStreamingStatus(status) {
+  console.info({ status: status });
+
+  app.streaming.status = status;
+  const div = document.getElementById('streaming-status');
+  div.textContent = "Status: " + status;
+}
+
+
 function command(cmd, args) {
   let argsArr = [];
   for (const key in args) {
@@ -28,6 +37,7 @@ function command(cmd, args) {
 function onClickFacebook() {
   switch (app.streaming.status) {
     case 'standby': {
+      updateStreamingStatus('starting');
       createFacebookLiveVideo(function(streamUrl) {
         const select = document.getElementById('streaming-sources-select');
         const source = select.value;
@@ -36,13 +46,12 @@ function onClickFacebook() {
           streamUrl: streamUrl,
           source: source,
         });
-        app.streaming.status = 'onAir';
       });
       break;
     }
     case 'onAir': {
+      updateStreamingStatus('stopping');
       command('streaming/stop');
-      app.streaming.status = 'standby';
     }
   }
 }
@@ -57,4 +66,14 @@ function setUpStreamingSources(obj) {
     option.text = source;
     select.add(option);
   }
+}
+
+
+function onStreamingStarted() {
+  updateStreamingStatus('onAir');
+}
+
+
+function onStreamingStopped() {
+  updateStreamingStatus('standby');
 }
