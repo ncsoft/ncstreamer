@@ -36,8 +36,13 @@ function onClickFacebook() {
           streamUrl: streamUrl,
           source: source,
         });
+        app.streaming.status = 'onAir';
       });
       break;
+    }
+    case 'onAir': {
+      command('streaming/stop');
+      app.streaming.status = 'standby';
     }
   }
 }
