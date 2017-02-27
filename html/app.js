@@ -28,15 +28,15 @@ function command(cmd, args) {
 function onClickFacebook() {
   switch (app.streaming.status) {
     case 'standby': {
-  createFacebookLiveVideo(function(streamUrl) {
-    const select = document.getElementById('streaming-sources-select');
-    const source = select.value;
-    command('streaming/start', {
-      serviceProvider: 'Facebook Live',
-      streamUrl: streamUrl,
-      source: source,
-    });
-  });
+      createFacebookLiveVideo(function(streamUrl) {
+        const select = document.getElementById('streaming-sources-select');
+        const source = select.value;
+        command('streaming/start', {
+          serviceProvider: 'Facebook Live',
+          streamUrl: streamUrl,
+          source: source,
+        });
+      });
       break;
     }
   }
