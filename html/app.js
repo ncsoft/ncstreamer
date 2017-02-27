@@ -6,6 +6,13 @@
 'use strict';
 
 
+const app = {
+  streaming: {
+    status: 'standby',  // ['standby', 'starting', 'onAir', 'stopping']
+  },
+};
+
+
 function command(cmd, args) {
   let argsArr = [];
   for (const key in args) {
@@ -19,6 +26,8 @@ function command(cmd, args) {
 
 
 function onClickFacebook() {
+  switch (app.streaming.status) {
+    case 'standby': {
   createFacebookLiveVideo(function(streamUrl) {
     const select = document.getElementById('streaming-sources-select');
     const source = select.value;
@@ -28,6 +37,9 @@ function onClickFacebook() {
       source: source,
     });
   });
+      break;
+    }
+  }
 }
 
 
