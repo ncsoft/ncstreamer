@@ -13,6 +13,7 @@
 
 #include "include/wrapper/cef_helpers.h"
 
+#include "src/js_executor.h"
 #include "src/obs.h"
 
 
@@ -128,12 +129,17 @@ void ClientRequestHandler::OnCommandStreamingStart(
   const std::string &service_provider = provider_i->second;
   const std::string &stream_url = url_i->second;
 
-  Obs::Get()->StartStreaming(source, service_provider, stream_url);
+  Obs::Get()->StartStreaming(
+      source, service_provider, stream_url, [browser]() {
+    JsExecutor::Execute(browser, "onStreamingStarted");
+  });
 }
 
 
 void ClientRequestHandler::OnCommandStreamingStop(
     const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> browser) {
-  Obs::Get()->StopStreaming();
+  Obs::Get()->StopStreaming([browser]() {
+    JsExecutor::Execute(browser, "onStreamingStopped");
+  });
 }
 }  // namespace ncstreamer

@@ -53,7 +53,8 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
 bool Obs::StartStreaming(
     const std::string &source_info,
     const std::string &service_provider,
-    const std::string &stream_url) {
+    const std::string &stream_url,
+    const ObsOutput::OnStarted &on_streaming_started) {
   UpdateCurrentSource(source_info);
 
   std::string stream_server;
@@ -64,12 +65,14 @@ bool Obs::StartStreaming(
       /*audio_bitrate*/ 160,
       /*video_bitrate*/ 2500);
 
-  return StartOutput();
+  return stream_output_->Start(
+      audio_encoder_, video_encoder_, current_service_, on_streaming_started);
 }
 
 
-void Obs::StopStreaming() {
-  StopOutput();
+void Obs::StopStreaming(
+    const ObsOutput::OnStopped &on_streaming_stopped) {
+  stream_output_->Stop(on_streaming_stopped);
 }
 
 
@@ -106,7 +109,7 @@ Obs::Obs()
     : log_file_{},
       audio_encoder_{nullptr},
       video_encoder_{nullptr},
-      stream_output_{nullptr},
+      stream_output_{},
       current_source_audio_{nullptr},
       current_source_video_{nullptr},
       current_service_{nullptr} {
@@ -123,7 +126,7 @@ Obs::Obs()
   obs_encoder_set_audio(audio_encoder_,  obs_get_audio());
   obs_encoder_set_video(video_encoder_, obs_get_video());
 
-  stream_output_ = CreateOutput();
+  stream_output_.reset(new ObsOutput{});
 }
 
 
@@ -131,7 +134,7 @@ Obs::~Obs() {
   ReleaseCurrentService();
   ReleaseCurrentSource();
 
-  obs_output_release(stream_output_);
+  stream_output_.reset();
   obs_encoder_release(video_encoder_);
   obs_encoder_release(audio_encoder_);
 
@@ -196,12 +199,6 @@ obs_encoder_t *Obs::CreateAudioEncoder() {
 obs_encoder_t *Obs::CreateVideoEncoder() {
     return obs_video_encoder_create(
         "obs_x264", "simple_h264_stream", nullptr, nullptr);
-}
-
-
-obs_output_t *Obs::CreateOutput() {
-  return obs_output_create(
-      "rtmp_output", "simple_stream", nullptr, nullptr);
 }
 
 
@@ -270,28 +267,6 @@ void Obs::ReleaseCurrentService() {
   }
   obs_service_release(current_service_);
   current_service_ = nullptr;
-}
-
-
-bool Obs::StartOutput() {
-  obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "bind_ip", "default");
-  obs_output_update(stream_output_, settings);
-  obs_data_release(settings);
-
-  obs_output_set_video_encoder(stream_output_, video_encoder_);
-  obs_output_set_audio_encoder(stream_output_, audio_encoder_, 0);
-  obs_output_set_service(stream_output_, current_service_);
-  obs_output_set_delay(stream_output_, 0, OBS_OUTPUT_DELAY_PRESERVE);
-  obs_output_set_reconnect_settings(
-      stream_output_, /*max_retries*/ 20, /*retry_delay*/ 10);
-
-  return obs_output_start(stream_output_);
-}
-
-
-void Obs::StopOutput() {
-  obs_output_stop(stream_output_);
 }
 
 

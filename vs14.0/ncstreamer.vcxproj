@@ -100,6 +100,7 @@
     <ClCompile Include="..\src\js_executor.cc" />
     <ClCompile Include="..\src\main.cc" />
     <ClCompile Include="..\src\obs.cc" />
+    <ClCompile Include="..\src\obs\obs_output.cc" />
     <ClCompile Include="..\src_imported\from_obs_studio_ui\obs-app.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +114,7 @@
     <ClInclude Include="..\src\js_executor.h" />
     <ClInclude Include="..\src\manifest.h" />
     <ClInclude Include="..\src\obs.h" />
+    <ClInclude Include="..\src\obs\obs_output.h" />
     <ClInclude Include="..\src\resource.h" />
     <ClInclude Include="..\src_imported\from_obs_studio_ui\obs-app.hpp" />
   </ItemGroup>
