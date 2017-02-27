@@ -10,7 +10,7 @@
     <Filter Include="src_imported">
       <UniqueIdentifier>{7c7e18d0-fafd-4e62-855f-e161c84f405b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src_imported\obs">
+    <Filter Include="src_imported\from_obs_studio_ui">
       <UniqueIdentifier>{4a3de959-8088-4e52-9612-c6f5c2e1493f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -45,8 +45,8 @@
     <ClCompile Include="..\src\js_executor.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src_imported\obs\obs-app.cpp">
-      <Filter>src_imported\obs</Filter>
+    <ClCompile Include="..\src_imported\from_obs_studio_ui\obs-app.cpp">
+      <Filter>src_imported\from_obs_studio_ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,13 +83,18 @@
     <ClInclude Include="..\src\js_executor.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src_imported\obs\obs-app.hpp">
-      <Filter>src_imported\obs</Filter>
+    <ClInclude Include="..\src_imported\from_obs_studio_ui\obs-app.hpp">
+      <Filter>src_imported\from_obs_studio_ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\ncstreamer.rc">
       <Filter>src</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src_imported\readme.md">
+      <Filter>src_imported</Filter>
+    </None>
   </ItemGroup>
 </Project>

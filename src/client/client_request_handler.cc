@@ -13,6 +13,8 @@
 
 #include "include/wrapper/cef_helpers.h"
 
+#include "src/obs.h"
+
 
 namespace ncstreamer {
 ClientRequestHandler::ClientRequestHandler() {
@@ -110,16 +112,19 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
 
 void ClientRequestHandler::OnCommandStreamingStart(
     const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+  auto source_i = args.find("source");
   auto provider_i = args.find("serviceProvider");
   auto url_i = args.find("streamUrl");
-  if (provider_i == args.end() ||
+  if (source_i == args.end() ||
+      provider_i == args.end() ||
       url_i == args.end()) {
     return;
   }
 
+  const std::string &source = source_i->second;
   const std::string &service_provider = provider_i->second;
   const std::string &stream_url = url_i->second;
 
-  // TODO(khpark): TBD
+  Obs::Get()->StartStreaming(source, service_provider, stream_url);
 }
 }  // namespace ncstreamer
