@@ -99,6 +99,9 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
                                   CommandHandler> kCommandHandlers{
       {"streaming/start",
        std::bind(&This::OnCommandStreamingStart, this,
+           std::placeholders::_1, std::placeholders::_2)},
+      {"streaming/stop",
+       std::bind(&This::OnCommandStreamingStop, this,
            std::placeholders::_1, std::placeholders::_2)}};
 
   auto i = kCommandHandlers.find(cmd);
@@ -126,5 +129,11 @@ void ClientRequestHandler::OnCommandStreamingStart(
   const std::string &stream_url = url_i->second;
 
   Obs::Get()->StartStreaming(source, service_provider, stream_url);
+}
+
+
+void ClientRequestHandler::OnCommandStreamingStop(
+    const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> browser) {
+  Obs::Get()->StopStreaming();
 }
 }  // namespace ncstreamer

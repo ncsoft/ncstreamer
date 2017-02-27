@@ -28,6 +28,7 @@ class Obs {
       const std::string &source_info,
       const std::string &service_provider,
       const std::string &stream_url);
+  void StopStreaming();
 
   void UpdateCurrentServiceEncoders(
       uint32_t audio_bitrate,
@@ -57,6 +58,7 @@ class Obs {
   void ReleaseCurrentService();
 
   bool StartOutput();
+  void StopOutput();
 
   static Obs *static_instance;
 
