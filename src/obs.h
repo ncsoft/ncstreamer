@@ -8,11 +8,14 @@
 
 
 #include <fstream>
+#include <memory>
 #include <string>
 #include <tuple>
 #include <vector>
 
 #include "obs-studio/libobs/obs.h"
+
+#include "src/obs/obs_output.h"
 
 
 namespace ncstreamer {
@@ -46,7 +49,6 @@ class Obs {
   void ResetVideo();
   obs_encoder_t *CreateAudioEncoder();
   obs_encoder_t *CreateVideoEncoder();
-  obs_output_t *CreateOutput();
 
   void UpdateCurrentSource(const std::string &source_info);
   void ReleaseCurrentSource();
@@ -57,15 +59,12 @@ class Obs {
       const std::string &stream_key);
   void ReleaseCurrentService();
 
-  bool StartOutput();
-  void StopOutput();
-
   static Obs *static_instance;
 
   std::fstream log_file_;
   obs_encoder_t *audio_encoder_;
   obs_encoder_t *video_encoder_;
-  obs_output_t *stream_output_;
+  std::unique_ptr<ObsOutput> stream_output_;
 
   obs_source_t *current_source_audio_;
   obs_source_t *current_source_video_;

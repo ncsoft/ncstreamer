@@ -13,6 +13,9 @@
     <Filter Include="src_imported\from_obs_studio_ui">
       <UniqueIdentifier>{4a3de959-8088-4e52-9612-c6f5c2e1493f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\obs">
+      <UniqueIdentifier>{15705bdc-fd80-4f72-993c-e286cc470ef0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\app.cc">
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="..\src_imported\from_obs_studio_ui\obs-app.cpp">
       <Filter>src_imported\from_obs_studio_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\obs\obs_output.cc">
+      <Filter>src\obs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="..\src_imported\from_obs_studio_ui\obs-app.hpp">
       <Filter>src_imported\from_obs_studio_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\obs\obs_output.h">
+      <Filter>src\obs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
