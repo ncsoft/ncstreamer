@@ -30,8 +30,10 @@ class Obs {
   bool StartStreaming(
       const std::string &source_info,
       const std::string &service_provider,
-      const std::string &stream_url);
-  void StopStreaming();
+      const std::string &stream_url,
+      const ObsOutput::OnStarted &on_streaming_started);
+  void StopStreaming(
+      const ObsOutput::OnStopped &on_streaming_stopped);
 
   void UpdateCurrentServiceEncoders(
       uint32_t audio_bitrate,

@@ -53,7 +53,8 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
 bool Obs::StartStreaming(
     const std::string &source_info,
     const std::string &service_provider,
-    const std::string &stream_url) {
+    const std::string &stream_url,
+    const ObsOutput::OnStarted &on_streaming_started) {
   UpdateCurrentSource(source_info);
 
   std::string stream_server;
@@ -65,12 +66,13 @@ bool Obs::StartStreaming(
       /*video_bitrate*/ 2500);
 
   return stream_output_->Start(
-      audio_encoder_, video_encoder_, current_service_);
+      audio_encoder_, video_encoder_, current_service_, on_streaming_started);
 }
 
 
-void Obs::StopStreaming() {
-  stream_output_->Stop();
+void Obs::StopStreaming(
+    const ObsOutput::OnStopped &on_streaming_stopped) {
+  stream_output_->Stop(on_streaming_stopped);
 }
 
 
