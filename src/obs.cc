@@ -68,6 +68,11 @@ bool Obs::StartStreaming(
 }
 
 
+void Obs::StopStreaming() {
+  StopOutput();
+}
+
+
 void Obs::UpdateCurrentServiceEncoders(
     uint32_t audio_bitrate,
     uint32_t video_bitrate) {
@@ -282,6 +287,11 @@ bool Obs::StartOutput() {
       stream_output_, /*max_retries*/ 20, /*retry_delay*/ 10);
 
   return obs_output_start(stream_output_);
+}
+
+
+void Obs::StopOutput() {
+  obs_output_stop(stream_output_);
 }
 
 
