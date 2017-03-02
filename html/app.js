@@ -28,9 +28,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
   [
     'streaming-sources-select',
     'streaming-status',
+    'streaming-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
+
+  app.dom.streamingButton.addEventListener('click', onClickFacebook);
 });
 
 
