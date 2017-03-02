@@ -6,6 +6,16 @@
 'use strict';
 
 
+function importScript(file) {
+  const elem = document.createElement('script');
+  elem.src = file;
+  document.body.appendChild(elem);
+}
+
+
+importScript('facebook.js');
+
+
 const app = {
   streaming: {
     status: 'standby',  // ['standby', 'starting', 'onAir', 'stopping']

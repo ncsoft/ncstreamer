@@ -6,6 +6,9 @@
 'use strict';
 
 
+importScript('//connect.facebook.net/en_US/sdk.js');
+
+
 const facebookAppIds = {
   production: /*NC Streaming*/ '1789696898019802',
   alpha: /*NC Streaming - Alpha*/ '1795379417451550',
