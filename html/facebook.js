@@ -9,6 +9,12 @@
 importScript('//connect.facebook.net/en_US/sdk.js');
 
 
+const facebook = (function() {
+const exports = {
+  createLiveVideo: createFacebookLiveVideo,
+};
+
+
 const facebookAppIds = {
   production: /*NC Streaming*/ '1789696898019802',
   alpha: /*NC Streaming - Alpha*/ '1795379417451550',
@@ -70,3 +76,6 @@ function createFacebookLiveVideoAfterLogin(callback) {
     callback(response.stream_url);
   });
 }
+
+return exports;
+})();

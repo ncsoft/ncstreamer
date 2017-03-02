@@ -48,7 +48,7 @@ function onClickFacebook() {
   switch (app.streaming.status) {
     case 'standby': {
       updateStreamingStatus('starting');
-      createFacebookLiveVideo(function(streamUrl) {
+      facebook.createLiveVideo(function(streamUrl) {
         const select = document.getElementById('streaming-sources-select');
         const source = select.value;
         command('streaming/start', {
