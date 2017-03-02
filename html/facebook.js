@@ -11,7 +11,7 @@ importScript('//connect.facebook.net/en_US/sdk.js');
 
 const facebook = (function() {
   const exports = {
-    createLiveVideo: createFacebookLiveVideo,
+    createLiveVideo: createLiveVideo,
   };
 
 
@@ -32,13 +32,13 @@ const facebook = (function() {
   };
 
 
-  function createFacebookLiveVideo(callback) {
+  function createLiveVideo(callback) {
     FB.getLoginStatus(function(response) {
       if (response.status == 'connected') {
         console.info({
           Facebook: 'Already logged in.',
         });
-        createFacebookLiveVideoAfterLogin(callback);
+        createLiveVideoAfterLogin(callback);
       } else {
         FB.login(function(response) {
           if (!response.authResponse) {
@@ -51,7 +51,7 @@ const facebook = (function() {
             Facebook: 'Logged in, OK.',
             grantedScopes: response.authResponse.grantedScopes,
           });
-          createFacebookLiveVideoAfterLogin(callback);
+          createLiveVideoAfterLogin(callback);
         }, {
           scope: 'publish_actions',
           return_scopes: true,
@@ -61,7 +61,7 @@ const facebook = (function() {
   }
 
 
-  function createFacebookLiveVideoAfterLogin(callback) {
+  function createLiveVideoAfterLogin(callback) {
     FB.api('/me/live_videos', 'post', function(response) {
       if (response.error) {
         console.error({
