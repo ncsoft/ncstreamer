@@ -17,18 +17,35 @@ importScript('facebook.js');
 
 
 const app = {
+  dom: {},
   streaming: {
     status: 'standby',  // ['standby', 'starting', 'onAir', 'stopping']
   },
 };
 
 
+document.addEventListener('DOMContentLoaded', function(event) {
+  [
+    'streaming-sources-select',
+    'streaming-status',
+  ].forEach(function(domId) {
+    app.dom[toCamel(domId)] = document.getElementById(domId);
+  });
+});
+
+
+function toCamel(str) {
+  return str.replace(/(\-[a-z])/g, function(match) {
+    return match.toUpperCase().replace('-', '');
+  });
+}
+
+
 function updateStreamingStatus(status) {
   console.info({ status: status });
 
   app.streaming.status = status;
-  const div = document.getElementById('streaming-status');
-  div.textContent = "Status: " + status;
+  app.dom.streamingStatus.textContent = "Status: " + status;
 }
 
 
@@ -49,8 +66,7 @@ function onClickFacebook() {
     case 'standby': {
       updateStreamingStatus('starting');
       facebook.createLiveVideo(function(streamUrl) {
-        const select = document.getElementById('streaming-sources-select');
-        const source = select.value;
+        const source = app.dom.streamingSourcesSelect.value;
         command('streaming/start', {
           serviceProvider: 'Facebook Live',
           streamUrl: streamUrl,
@@ -74,11 +90,10 @@ function onClickFacebook() {
 function setUpStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources'))
     return;
-  const select = document.getElementById('streaming-sources-select');
   for (const source of obj.sources) {
     const option = document.createElement('option');
     option.text = source;
-    select.add(option);
+    app.dom.streamingSourcesSelect.add(option);
   }
 }
 
