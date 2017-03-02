@@ -56,7 +56,7 @@ function createFacebookLiveVideoAfterLogin(callback) {
   FB.api('/me/live_videos', 'post', function(response) {
     if (response.error) {
       console.error({
-        Facebook: 'response.error.message',
+        Facebook: response.error.message,
       });
       return;
     }
