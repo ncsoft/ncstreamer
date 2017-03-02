@@ -52,6 +52,10 @@ function onClickFacebook() {
     case 'onAir': {
       updateStreamingStatus('stopping');
       command('streaming/stop');
+      break;
+    }
+    default: {
+      break;
     }
   }
 }
