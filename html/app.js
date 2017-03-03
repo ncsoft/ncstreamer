@@ -74,7 +74,8 @@ function setUpStreamingSources(obj) {
 
   for (const source of obj.sources) {
     const option = document.createElement('option');
-    option.text = source;
+    option.value = source;
+    option.text = source.split(':')[0];
     app.dom.streamingSourcesSelect.add(option);
   }
 }
