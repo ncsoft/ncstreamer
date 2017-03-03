@@ -67,6 +67,11 @@ function command(cmd, args) {
 function setUpStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources'))
     return;
+
+  for (const child of app.dom.streamingSourcesSelect.children) {
+    child.remove();
+  }
+
   for (const source of obj.sources) {
     const option = document.createElement('option');
     option.text = source;
