@@ -64,6 +64,17 @@ function command(cmd, args) {
 }
 
 
+function setUpStreamingSources(obj) {
+  if (!obj.hasOwnProperty('sources'))
+    return;
+  for (const source of obj.sources) {
+    const option = document.createElement('option');
+    option.text = source;
+    app.dom.streamingSourcesSelect.add(option);
+  }
+}
+
+
 function onStreamingButtonClicked() {
   ({
     'standby': function() {
@@ -84,17 +95,6 @@ function onStreamingButtonClicked() {
     },
     'stopping': function() {},
   })[app.streaming.status]();
-}
-
-
-function setUpStreamingSources(obj) {
-  if (!obj.hasOwnProperty('sources'))
-    return;
-  for (const source of obj.sources) {
-    const option = document.createElement('option');
-    option.text = source;
-    app.dom.streamingSourcesSelect.add(option);
-  }
 }
 
 
