@@ -5,8 +5,6 @@
 
 #include "src/client/client_load_handler.h"
 
-#include <codecvt>
-#include <locale>
 #include <sstream>
 #include <string>
 
@@ -48,18 +46,14 @@ void ClientLoadHandler::OnLoadError(CefRefPtr<CefBrowser> /*browser*/,
     return;
   }
 
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  std::string utf8_err = converter.to_bytes(error_text);
-  std::string utf8_url = converter.to_bytes(failed_url);
+  std::wstringstream ss;
+  ss << L"<html><body bgcolor=\"white\">"
+     << L"<h2>Failed to load URL " << failed_url.c_str()
+     << L" with error " << error_text.c_str()
+     << L" (" << error_code
+     << L").</h2></body></html>";
 
-  std::stringstream ss;
-  ss << "<html><body bgcolor=\"white\">"
-     << "<h2>Failed to load URL " << utf8_url
-     << " with error " << utf8_err
-     << " (" << error_code
-     << ").</h2></body></html>";
-
-  frame->LoadString(ss.str(), utf8_url);
+  frame->LoadString(ss.str(), failed_url);
 }
 
 

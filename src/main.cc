@@ -11,10 +11,10 @@
 #include "src/obs.h"
 
 
-int APIENTRY WinMain(HINSTANCE hInstance,
-                     HINSTANCE /*hPrevInstance*/,
-                     LPTSTR /*lpCmdLine*/,
-                     int /*nCmdShow*/) {
+int APIENTRY wWinMain(HINSTANCE hInstance,
+                      HINSTANCE /*hPrevInstance*/,
+                      LPTSTR /*lpCmdLine*/,
+                      int /*nCmdShow*/) {
   ::CefEnableHighDPISupport();
   CefMainArgs main_args{hInstance};
 
