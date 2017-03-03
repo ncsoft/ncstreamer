@@ -13,7 +13,7 @@ function importScript(file) {
 }
 
 
-importScript('facebook.js');
+importScript('lib/facebook.js');
 
 
 const app = {
