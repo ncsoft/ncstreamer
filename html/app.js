@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
-  app.dom.streamingButton.addEventListener('click', onClickFacebook);
+  app.dom.streamingButton.addEventListener('click', onStreamingButtonClicked);
 });
 
 
@@ -64,7 +64,7 @@ function command(cmd, args) {
 }
 
 
-function onClickFacebook() {
+function onStreamingButtonClicked() {
   switch (app.streaming.status) {
     case 'standby': {
       updateStreamingStatus('starting');
