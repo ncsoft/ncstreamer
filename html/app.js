@@ -48,7 +48,30 @@ function updateStreamingStatus(status) {
   console.info({ status: status });
 
   app.streaming.status = status;
-  app.dom.streamingStatus.textContent = "Status: " + status;
+  const message = app.dom.streamingStatus;
+  const button = app.dom.streamingButton;
+  switch(status) {
+    case 'standby':
+      message.textContent = 'Status: ' + status;
+      button.name = 'Start Streaming';
+      button.disabled = false;
+      break;
+    case 'starting':
+      message.textContent = 'Status: ' + status;
+      button.name = 'Starting';
+      button.disabled = true;
+      break;
+    case 'onAir':
+      message.textContent = 'Status: ' + status;
+      button.name = 'Stop Streaming';
+      button.disabled = false;
+      break;
+    case 'stopping':
+      message.textContent = 'Status: ' + status;
+      button.name = 'Stopping';
+      button.disabled = true;
+      break;
+  }
 }
 
 
