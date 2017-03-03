@@ -65,8 +65,8 @@ function command(cmd, args) {
 
 
 function onStreamingButtonClicked() {
-  switch (app.streaming.status) {
-    case 'standby': {
+  ({
+    'standby': function() {
       updateStreamingStatus('starting');
       facebook.createLiveVideo(function(streamUrl) {
         const source = app.dom.streamingSourcesSelect.value;
@@ -76,17 +76,14 @@ function onStreamingButtonClicked() {
           source: source,
         });
       });
-      break;
-    }
-    case 'onAir': {
+    },
+    'starting': function() {},
+    'onAir': function() {
       updateStreamingStatus('stopping');
       command('streaming/stop');
-      break;
-    }
-    default: {
-      break;
-    }
-  }
+    },
+    'stopping': function() {},
+  })[app.streaming.status]();
 }
 
 
