@@ -15,6 +15,7 @@
 #include "src/client/client_load_handler.h"
 #include "src/client/client_request_handler.h"
 #include "src/lib/dimension.h"
+#include "src/lib/rectangle.h"
 
 
 namespace ncstreamer {
@@ -45,6 +46,10 @@ class Client : public CefClient {
   bool ResizeBrowser(
       CefRefPtr<CefBrowser> browser,
       Dimension inc);
+
+  void ResizeBrowserGradually(
+      CefRefPtr<CefBrowser> browser,
+      const Rectangle &preferable);
 
   CefRefPtr<ClientDisplayHandler> display_handler_;
   CefRefPtr<ClientLifeSpanHandler> life_span_handler_;
