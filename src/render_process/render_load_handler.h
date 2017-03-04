@@ -9,6 +9,8 @@
 
 #include "include/cef_load_handler.h"
 
+#include "src/lib/dimension.h"
+
 
 namespace ncstreamer {
 class RenderLoadHandler : public CefLoadHandler {
@@ -16,7 +18,14 @@ class RenderLoadHandler : public CefLoadHandler {
   RenderLoadHandler();
   virtual ~RenderLoadHandler();
 
+  void OnLoadEnd(
+      CefRefPtr<CefBrowser> browser,
+      CefRefPtr<CefFrame> frame,
+      int httpStatusCode) override;
+
  private:
+  Dimension GetScrollGap(CefRefPtr<CefFrame> frame) const;
+
   IMPLEMENT_REFCOUNTING(RenderLoadHandler);
 };
 }  // namespace ncstreamer
