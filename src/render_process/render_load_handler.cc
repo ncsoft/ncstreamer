@@ -8,6 +8,8 @@
 #include "include/cef_v8.h"
 #include "include/wrapper/cef_helpers.h"
 
+#include "src/render_process_message_types.h"
+
 
 namespace ncstreamer {
 RenderLoadHandler::RenderLoadHandler() {
@@ -39,7 +41,7 @@ void RenderLoadHandler::OnLoadEnd(
     return;
   }
 
-  CefString msgType{L"ScrollGap"};
+  CefString msgType{RenderProcessMessage::kScrollGap};
   CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create(msgType);
   CefRefPtr<CefListValue> args = msg->GetArgumentList();
   args->SetInt(0, gap.width());

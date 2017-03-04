@@ -75,6 +75,9 @@
     <ClCompile Include="..\src\lib\command_line.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\render_process_message_types.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="..\src\lib\command_line.h">
       <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render_process_message_types.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

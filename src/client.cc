@@ -11,6 +11,8 @@
 #include "include/base/cef_logging.h"
 #include "include/wrapper/cef_helpers.h"
 
+#include "src/render_process_message_types.h"
+
 
 namespace ncstreamer {
 Client::Client(HINSTANCE instance)
@@ -77,7 +79,7 @@ bool Client::OnRenderProcessMessageReceived(
                          CefRefPtr<CefProcessMessage> message)>;
   static const std::unordered_map<std::wstring, RenderProcessMessageHandler>
       kRenderProcessMessageHandlers{
-          {L"ScrollGap", OnRenderProcessScrollGap}};
+          {RenderProcessMessage::kScrollGap, OnRenderProcessScrollGap}};
 
   CefString msg_name = message->GetName();
   auto i = kRenderProcessMessageHandlers.find(msg_name);
