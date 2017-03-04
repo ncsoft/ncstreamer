@@ -8,7 +8,9 @@
 #include "windows.h"  // NOLINT
 
 #include "src/browser_app.h"
+#include "src/lib/command_line.h"
 #include "src/obs.h"
+#include "src/render_app.h"
 
 
 int APIENTRY wWinMain(HINSTANCE hInstance,
@@ -17,10 +19,13 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
                       int /*nCmdShow*/) {
   ::CefEnableHighDPISupport();
   CefMainArgs main_args{hInstance};
+  ncstreamer::CommandLine cmd_line{::GetCommandLine()};
 
-  CefRefPtr<CefApp> app{new ncstreamer::BrowserApp{hInstance}};
+  auto app = cmd_line.is_renderer() ?
+      CefRefPtr<CefApp>{new ncstreamer::RenderApp{}} :
+      CefRefPtr<CefApp>{new ncstreamer::BrowserApp{hInstance}};
 
-  int exit_code = ::CefExecuteProcess(main_args, nullptr, nullptr);
+  int exit_code = ::CefExecuteProcess(main_args, app, nullptr);
   if (exit_code >= 0) {
     return exit_code;
   }
