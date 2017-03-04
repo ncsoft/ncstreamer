@@ -57,6 +57,9 @@
     <ClCompile Include="..\src\render_app.cc">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\render_process_handler.cc">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -99,6 +102,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\render_app.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render_process_handler.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
