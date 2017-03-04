@@ -6,6 +6,7 @@
 #include "src/client.h"
 
 #include <algorithm>
+#include <functional>
 #include <unordered_map>
 
 #include "include/base/cef_logging.h"
