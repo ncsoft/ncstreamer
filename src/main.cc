@@ -7,7 +7,7 @@
 
 #include "windows.h"  // NOLINT
 
-#include "src/app.h"
+#include "src/browser_app.h"
 #include "src/obs.h"
 
 
@@ -18,7 +18,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
   ::CefEnableHighDPISupport();
   CefMainArgs main_args{hInstance};
 
-  CefRefPtr<CefApp> app{new ncstreamer::App{hInstance}};
+  CefRefPtr<CefApp> app{new ncstreamer::BrowserApp{hInstance}};
 
   int exit_code = ::CefExecuteProcess(main_args, nullptr, nullptr);
   if (exit_code >= 0) {
