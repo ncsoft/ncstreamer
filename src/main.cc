@@ -18,6 +18,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
   ::CefEnableHighDPISupport();
   CefMainArgs main_args{hInstance};
 
+  CefRefPtr<ncstreamer::App> app{new ncstreamer::App{hInstance}};
+
   int exit_code = ::CefExecuteProcess(main_args, nullptr, nullptr);
   if (exit_code >= 0) {
     return exit_code;
@@ -25,8 +27,6 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
 
   CefSettings settings;
   settings.no_sandbox = true;
-
-  CefRefPtr<ncstreamer::App> app{new ncstreamer::App{hInstance}};
 
   ::CefInitialize(main_args, settings, app, nullptr);
   ncstreamer::Obs::SetUp();
