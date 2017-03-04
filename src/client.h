@@ -38,11 +38,11 @@ class Client : public CefClient {
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefProcessMessage> message);
 
-  static bool OnRenderProcessScrollGap(
+  bool OnRenderProcessScrollGap(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefProcessMessage> message);
 
-  static bool ResizeBrowser(
+  bool ResizeBrowser(
       CefRefPtr<CefBrowser> browser,
       Dimension inc);
 

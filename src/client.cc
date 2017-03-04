@@ -80,7 +80,9 @@ bool Client::OnRenderProcessMessageReceived(
                          CefRefPtr<CefProcessMessage> message)>;
   static const std::unordered_map<std::wstring, RenderProcessMessageHandler>
       kRenderProcessMessageHandlers{
-          {RenderProcessMessage::kScrollGap, OnRenderProcessScrollGap}};
+          {RenderProcessMessage::kScrollGap,
+           std::bind(&Client::OnRenderProcessScrollGap, this,
+               std::placeholders::_1, std::placeholders::_2)}};
 
   CefString msg_name = message->GetName();
   auto i = kRenderProcessMessageHandlers.find(msg_name);
