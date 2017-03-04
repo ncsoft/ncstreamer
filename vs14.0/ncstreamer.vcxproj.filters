@@ -19,6 +19,9 @@
     <Filter Include="src\render_process">
       <UniqueIdentifier>{d86915cb-d3bf-4970-be60-34772d99a8f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\lib">
+      <UniqueIdentifier>{80cd3d03-5427-4e6a-8db8-67a30c4c4f91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\browser_process_handler.cc">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="..\src\render_process\render_load_handler.cc">
       <Filter>src\render_process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lib\dimension.cc">
+      <Filter>src\lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="..\src\render_process\render_load_handler.h">
       <Filter>src\render_process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\dimension.h">
+      <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
