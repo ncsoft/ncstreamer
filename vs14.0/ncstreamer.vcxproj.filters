@@ -16,6 +16,9 @@
     <Filter Include="src\obs">
       <UniqueIdentifier>{15705bdc-fd80-4f72-993c-e286cc470ef0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\render_process">
+      <UniqueIdentifier>{d86915cb-d3bf-4970-be60-34772d99a8f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\browser_process_handler.cc">
@@ -59,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="..\src\render_process_handler.cc">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render_process\render_load_handler.cc">
+      <Filter>src\render_process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="..\src\render_process_handler.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render_process\render_load_handler.h">
+      <Filter>src\render_process</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,8 @@
 
 #include "include/cef_render_process_handler.h"
 
+#include "src/render_process/render_load_handler.h"
+
 
 namespace ncstreamer {
 class RenderProcessHandler : public CefRenderProcessHandler {
@@ -16,7 +18,12 @@ class RenderProcessHandler : public CefRenderProcessHandler {
   RenderProcessHandler();
   virtual ~RenderProcessHandler();
 
+  // override CefRenderProcessHandler
+  CefRefPtr<CefLoadHandler> GetLoadHandler() override;
+
  private:
+  CefRefPtr<RenderLoadHandler> load_handler_;
+
   IMPLEMENT_REFCOUNTING(RenderProcessHandler);
 };
 }  // namespace ncstreamer
