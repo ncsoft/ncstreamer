@@ -107,7 +107,6 @@ function setUpStreamingSources(obj) {
 function onStreamingButtonClicked() {
   ({
     'standby': function() {
-      updateStreamingStatus('starting');
       facebook.createLiveVideo(function(streamUrl) {
         const source = app.dom.streamingSourcesSelect.value;
         command('streaming/start', {
@@ -116,11 +115,12 @@ function onStreamingButtonClicked() {
           source: source,
         });
       });
+      updateStreamingStatus('starting');
     },
     'starting': function() {},
     'onAir': function() {
-      updateStreamingStatus('stopping');
       command('streaming/stop');
+      updateStreamingStatus('stopping');
     },
     'stopping': function() {},
   })[app.streaming.status]();
