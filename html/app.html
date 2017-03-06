@@ -8,22 +8,35 @@
 <link href="css/font-awesome.css" rel="stylesheet">
 <link href="app.css" rel="stylesheet">
 
-<div class="panel panel-default">
-  <div><span class="fa fa-link"></span>플랫폼 연결</div>
-  <div>
-    NC 스트리밍으로 게임플레이를 방송할 수 있습니다.<br>
-    게시물을 등록할 페이스북 계정을 연결해 주세요.
+<div id="main-panel">
+<div id="control-panel">
+  <div id="provider-panel">
+    <div id="provider-guide-panel">
+      <div id="provider-guide-header">
+        <span class="fa fa-link"></span>
+        플랫폼 연결
+      </div>
+      <div>
+        NC 스트리밍으로<br>
+        게임플레이를 방송할 수 있습니다.<br>
+        게시물을 등록할 페이스북 계정을 연결해 주세요.
+      </div>
+    </div>
   </div>
-  <div>
+  <hr>
+  <div id="streaming-source-panel">
+    <div>방송할 게임</div>
     <select id="streaming-sources-select">
       <option>게임 목록을 받아오는 중입니다..</option>
     </select> 
   </div>
+  <hr>
+</div>
+<div id="button-panel">
   <div id="streaming-status">방송 준비 완료</div>
-  <div>
-    <button class="btn btn-block btn-primary"
-            id="streaming-button">방송 시작</button>
-  </div>
+  <button class="btn btn-block btn-primary"
+          id="streaming-button">방송 시작</button>
+</div>
 </div>
 
 <script src="app.js"></script>

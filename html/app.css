@@ -1,3 +1,69 @@
+#main-panel {
+  color: #caceda;
+  background-color: #2a2e39;
+
+  height: 553px;
+  font-size: 14px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+#main-panel div>div {
+  margin: 5px 0px;
+}
+
+
+#control-panel {
+  padding: 15px;
+}
+
+
+#control-panel>div {
+  padding: 15px 25px;
+}
+
+
+#provider-guide-panel {
+  text-align: center;
+  font-size: 11px;
+}
+
+
+#provider-guide-header {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+
+hr {
+  border-color: #343843;
+  margin: 0px;
+}
+
+
 #streaming-sources-select {
   width: 268px;
+  height: 32px;
+  border-width: 0px;
+
+  color: #66a2d6;
+  background-color: #20232c;
+  font-size: 12px;
+}
+
+
+#button-panel {
+  text-align: center;
+  font-size: 12px;
+  color: #3e6b94;
+}
+
+
+#streaming-button {
+  height: 50px;
+  font-size: 18px;
+  border-radius: 0px;
 }
