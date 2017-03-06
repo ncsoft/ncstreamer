@@ -52,30 +52,30 @@ function updateStreamingStatus(status) {
   app.streaming.status = status;
   const message = app.dom.streamingStatus;
   const button = app.dom.streamingButton;
-  switch(status) {
+  switch (status) {
     case 'standby':
       message.textContent = 'Status: ' + status;
-      button.name = 'Start Streaming';
+      button.textContent = 'Start Streaming';
       button.disabled = false;
       break;
     case 'setup':
       message.textContent = 'Status: ' + status;
-      button.name = 'Start Streaming';
+      button.textContent = 'Start Streaming';
       button.disabled = true;
       break;
     case 'starting':
       message.textContent = 'Status: ' + status;
-      button.name = 'Starting';
+      button.textContent = 'Starting';
       button.disabled = true;
       break;
     case 'onAir':
       message.textContent = 'Status: ' + status;
-      button.name = 'Stop Streaming';
+      button.textContent = 'Stop Streaming';
       button.disabled = false;
       break;
     case 'stopping':
       message.textContent = 'Status: ' + status;
-      button.name = 'Stopping';
+      button.textContent = 'Stopping';
       button.disabled = true;
       break;
   }
