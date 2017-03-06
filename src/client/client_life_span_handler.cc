@@ -8,6 +8,7 @@
 #include "include/cef_app.h"
 #include "include/wrapper/cef_helpers.h"
 
+#include "src/js_executor.h"
 #include "src/resource.h"
 
 
@@ -29,6 +30,11 @@ void ClientLifeSpanHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
   HWND wnd{browser->GetHost()->GetWindowHandle()};
   ::SendMessage(wnd, WM_SETICON, ICON_SMALL, (LPARAM) icon_);
 
+  if (browser->IsPopup()) {
+    JsExecutor::Execute(
+        main_browser_, "onBeforePopupOpen", browser->GetIdentifier());
+  }
+
   if (!main_browser_) {
     main_browser_ = browser;
   }
@@ -48,6 +54,11 @@ void ClientLifeSpanHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
   CEF_REQUIRE_UI_THREAD();
 
   browsers_.erase(browser->GetIdentifier());
+
+  if (browser->IsPopup()) {
+    JsExecutor::Execute(
+        main_browser_, "OnBeforePopupClose", browser->GetIdentifier());
+  }
 
   if (browser->IsSame(main_browser_)) {
     for (auto elem : browsers_) {
