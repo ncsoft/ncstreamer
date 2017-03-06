@@ -19,7 +19,7 @@ importScript('lib/facebook.js');
 const app = {
   dom: {},
   streaming: {
-    // ['standby', 'starting', 'onAir', 'stopping']
+    // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
   },
 };
@@ -56,6 +56,11 @@ function updateStreamingStatus(status) {
       message.textContent = 'Status: ' + status;
       button.name = 'Start Streaming';
       button.disabled = false;
+      break;
+    case 'setup':
+      message.textContent = 'Status: ' + status;
+      button.name = 'Start Streaming';
+      button.disabled = true;
       break;
     case 'starting':
       message.textContent = 'Status: ' + status;
@@ -117,6 +122,7 @@ function onStreamingButtonClicked() {
         });
         updateStreamingStatus('starting');
       });
+      updateStreamingStatus('setup');
     },
     'starting': function() {},
     'onAir': function() {
