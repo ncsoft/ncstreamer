@@ -1,13 +1,19 @@
+html,
+body {
+  height: 100%;
+}
+
+
 #main-panel {
+  height: 100%;
+
   color: #caceda;
   background-color: #2a2e39;
 
-  height: 553px;
   font-size: 14px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 
@@ -17,6 +23,8 @@
 
 
 #control-panel {
+  height: 100%;
+
   padding: 15px;
 }
 
