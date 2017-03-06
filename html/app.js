@@ -115,8 +115,8 @@ function onStreamingButtonClicked() {
           streamUrl: streamUrl,
           source: source,
         });
+        updateStreamingStatus('starting');
       });
-      updateStreamingStatus('starting');
     },
     'starting': function() {},
     'onAir': function() {
