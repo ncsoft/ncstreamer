@@ -21,6 +21,7 @@ const app = {
   streaming: {
     // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
+    popupBrowserId: 0,
   },
 };
 
@@ -131,6 +132,21 @@ function onStreamingButtonClicked() {
     },
     'stopping': function() {},
   })[app.streaming.status]();
+}
+
+
+function onBeforePopupOpen(browserId) {
+  if (app.streaming.status == 'setup') {
+    app.streaming.popupBrowserId = browserId;
+  }
+}
+
+
+function OnBeforePopupClose(browserId) {
+  if (app.streaming.popupBrowserId == browserId) {
+    app.streaming.popupBrowserId = 0;
+    updateStreamingStatus('standby');
+  }
 }
 
 
