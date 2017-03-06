@@ -19,7 +19,8 @@ importScript('lib/facebook.js');
 const app = {
   dom: {},
   streaming: {
-    status: 'standby',  // ['standby', 'starting', 'onAir', 'stopping']
+    // ['standby', 'starting', 'onAir', 'stopping']
+    status: 'standby',
   },
 };
 
