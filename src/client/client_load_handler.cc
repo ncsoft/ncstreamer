@@ -46,12 +46,12 @@ void ClientLoadHandler::OnLoadError(CefRefPtr<CefBrowser> /*browser*/,
     return;
   }
 
-  std::stringstream ss;
-  ss << "<html><body bgcolor=\"white\">"
-     << "<h2>Failed to load URL " << std::string{failed_url}
-     << " with error " << std::string{error_text}
-     << " (" << error_code
-     << ").</h2></body></html>";
+  std::wstringstream ss;
+  ss << L"<html><body bgcolor=\"white\">"
+     << L"<h2>Failed to load URL " << failed_url.c_str()
+     << L" with error " << error_text.c_str()
+     << L" (" << error_code
+     << L").</h2></body></html>";
 
   frame->LoadString(ss.str(), failed_url);
 }

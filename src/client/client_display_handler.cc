@@ -25,6 +25,6 @@ void ClientDisplayHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
   CEF_REQUIRE_UI_THREAD();
 
   HWND hwnd = browser->GetHost()->GetWindowHandle();
-  ::SetWindowText(hwnd, std::string{title}.c_str());
+  ::SetWindowTextW(hwnd, title.c_str());
 }
 }  // namespace ncstreamer

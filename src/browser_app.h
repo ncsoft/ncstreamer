@@ -3,8 +3,8 @@
  */
 
 
-#ifndef SRC_APP_H_
-#define SRC_APP_H_
+#ifndef SRC_BROWSER_APP_H_
+#define SRC_BROWSER_APP_H_
 
 
 #include "include/cef_app.h"
@@ -14,19 +14,19 @@
 
 
 namespace ncstreamer {
-class App : public CefApp {
+class BrowserApp : public CefApp {
  public:
-  explicit App(HINSTANCE instance);
-  virtual ~App();
+  explicit BrowserApp(HINSTANCE instance);
+  virtual ~BrowserApp();
 
   CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override;
 
  private:
   CefRefPtr<BrowserProcessHandler> browser_process_handler_;
 
-  IMPLEMENT_REFCOUNTING(App);
+  IMPLEMENT_REFCOUNTING(BrowserApp);
 };
 }  // namespace ncstreamer
 
 
-#endif  // SRC_APP_H_
+#endif  // SRC_BROWSER_APP_H_

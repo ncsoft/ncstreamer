@@ -272,7 +272,7 @@ bool OBSApp::InitGlobalConfigDefaults()
 
 static void OBSErrorBox(const std::stringstream &ss) {
 #ifdef _WIN32
-  ::MessageBox(NULL, ss.str().c_str(), "Error", MB_OK);
+  ::MessageBoxA(NULL, ss.str().c_str(), "Error", MB_OK);
 #endif
 }
 

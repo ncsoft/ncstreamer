@@ -25,12 +25,12 @@ class ClientRequestHandler : public CefRequestHandler {
                       bool is_redirect) override;
 
  private:
-  using CommandArgumentMap = std::unordered_map<std::string, std::string>;
+  using CommandArgumentMap = std::unordered_map<std::wstring, std::wstring>;
 
-  static CommandArgumentMap ParseQuery(const std::string &query);
-  static std::string DecodeUri(const std::string &enc_string);
+  static CommandArgumentMap ParseQuery(const std::wstring &query);
+  static std::wstring DecodeUri(const std::wstring &enc_string);
 
-  void OnCommand(const std::string &cmd,
+  void OnCommand(const std::wstring &cmd,
                  const CommandArgumentMap &args,
                  CefRefPtr<CefBrowser> browser);
 

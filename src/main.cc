@@ -7,34 +7,31 @@
 
 #include "windows.h"  // NOLINT
 
-#include "src/app.h"
+#include "src/browser_app.h"
+#include "src/lib/command_line.h"
 #include "src/obs.h"
+#include "src/render_app.h"
 
 
-int APIENTRY WinMain(HINSTANCE hInstance,
-                     HINSTANCE /*hPrevInstance*/,
-                     LPTSTR /*lpCmdLine*/,
-                     int /*nCmdShow*/) {
+int APIENTRY wWinMain(HINSTANCE hInstance,
+                      HINSTANCE /*hPrevInstance*/,
+                      LPTSTR /*lpCmdLine*/,
+                      int /*nCmdShow*/) {
   ::CefEnableHighDPISupport();
   CefMainArgs main_args{hInstance};
+  ncstreamer::CommandLine cmd_line{::GetCommandLine()};
 
-  int exit_code = ::CefExecuteProcess(main_args, nullptr, nullptr);
+  auto app = cmd_line.is_renderer() ?
+      CefRefPtr<CefApp>{new ncstreamer::RenderApp{}} :
+      CefRefPtr<CefApp>{new ncstreamer::BrowserApp{hInstance}};
+
+  int exit_code = ::CefExecuteProcess(main_args, app, nullptr);
   if (exit_code >= 0) {
     return exit_code;
   }
 
   CefSettings settings;
   settings.no_sandbox = true;
-  std::string temp_path = []() -> std::string {
-    uint32 len = ::GetTempPath(0, NULL);
-    std::unique_ptr<char[]> buf{new char[len]};
-    ::GetTempPath(len, buf.get());
-    return buf.get();
-  }();
-  temp_path += "cef_cache";
-  CefString(&settings.cache_path) = temp_path.c_str();
-
-  CefRefPtr<ncstreamer::App> app{new ncstreamer::App{hInstance}};
 
   ::CefInitialize(main_args, settings, app, nullptr);
   ncstreamer::Obs::SetUp();

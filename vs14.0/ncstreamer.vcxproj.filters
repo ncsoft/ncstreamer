@@ -16,11 +16,14 @@
     <Filter Include="src\obs">
       <UniqueIdentifier>{15705bdc-fd80-4f72-993c-e286cc470ef0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\render_process">
+      <UniqueIdentifier>{d86915cb-d3bf-4970-be60-34772d99a8f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lib">
+      <UniqueIdentifier>{80cd3d03-5427-4e6a-8db8-67a30c4c4f91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\app.cc">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\browser_process_handler.cc">
       <Filter>src</Filter>
     </ClCompile>
@@ -54,11 +57,32 @@
     <ClCompile Include="..\src\obs\obs_output.cc">
       <Filter>src\obs</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\browser_app.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render_app.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render_process_handler.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render_process\render_load_handler.cc">
+      <Filter>src\render_process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lib\dimension.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lib\command_line.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render_process_message_types.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lib\rectangle.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\app.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\browser_process_handler.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -94,6 +118,30 @@
     </ClInclude>
     <ClInclude Include="..\src\obs\obs_output.h">
       <Filter>src\obs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\browser_app.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render_app.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render_process_handler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render_process\render_load_handler.h">
+      <Filter>src\render_process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\dimension.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\command_line.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render_process_message_types.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\rectangle.h">
+      <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

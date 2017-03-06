@@ -38,8 +38,8 @@ void BrowserProcessHandler::OnContextInitialized() {
 
   CefRefPtr<Client> client{new Client{instance_}};
 
-  std::string uri{
-      CefCommandLine::GetGlobalCommandLine()->GetSwitchValue("url")};
+  std::wstring uri{
+      CefCommandLine::GetGlobalCommandLine()->GetSwitchValue(L"url")};
 
   CefBrowserSettings browser_settings;
 
