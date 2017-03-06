@@ -54,28 +54,28 @@ function updateStreamingStatus(status) {
   const button = app.dom.streamingButton;
   switch (status) {
     case 'standby':
-      message.textContent = 'Status: ' + status;
-      button.textContent = 'Start Streaming';
+      message.textContent = '방송 준비 완료';
+      button.textContent = '방송 시작';
       button.disabled = false;
       break;
     case 'setup':
-      message.textContent = 'Status: ' + status;
-      button.textContent = 'Start Streaming';
+      message.textContent = '방송 생성 중';
+      button.textContent = '방송 시작';
       button.disabled = true;
       break;
     case 'starting':
-      message.textContent = 'Status: ' + status;
-      button.textContent = 'Starting';
+      message.textContent = '방송 시작 중';
+      button.textContent = '방송 시작';
       button.disabled = true;
       break;
     case 'onAir':
-      message.textContent = 'Status: ' + status;
-      button.textContent = 'Stop Streaming';
+      message.textContent = '방송 중';
+      button.textContent = '방송 종료';
       button.disabled = false;
       break;
     case 'stopping':
-      message.textContent = 'Status: ' + status;
-      button.textContent = 'Stopping';
+      message.textContent = '방송 종료 중';
+      button.textContent = '방송 종료';
       button.disabled = true;
       break;
   }
