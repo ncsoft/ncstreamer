@@ -115,7 +115,8 @@ function setUpStreamingSources(obj) {
 function onStreamingButtonClicked() {
   ({
     'standby': function() {
-      facebook.createLiveVideo(function(streamUrl) {
+      const description = app.dom.streamingFeedDescription.value;
+      facebook.createLiveVideo(description, function(streamUrl) {
         const source = app.dom.streamingSourcesSelect.value;
         command('streaming/start', {
           serviceProvider: 'Facebook Live',
