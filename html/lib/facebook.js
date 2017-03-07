@@ -34,8 +34,7 @@ const facebook = (function() {
 
   function createLiveVideo(callback) {
     FB.getLoginStatus(function(response) {
-      // TODO(namk): fetch description from UI
-      const description = 'test streaming';
+      const description = app.dom.streamingFeedDescription.value;
       if (response.status == 'connected') {
         console.info({
           Facebook: 'Already logged in.',
