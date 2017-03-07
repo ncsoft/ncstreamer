@@ -63,6 +63,17 @@ hr {
 }
 
 
+#streaming-feed-description {
+  width: 268px;
+  height: 64px;
+  border-width: 0px;
+
+  color: #66a2d6;
+  background-color: #20232c;
+  font-size: 12px;
+}
+
+
 #button-panel {
   text-align: center;
   font-size: 12px;

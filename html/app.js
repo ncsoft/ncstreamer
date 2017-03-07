@@ -28,6 +28,7 @@ const app = {
 
 document.addEventListener('DOMContentLoaded', function(event) {
   [
+    'streaming-feed-description',
     'streaming-sources-select',
     'streaming-status',
     'streaming-button',
