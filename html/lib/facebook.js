@@ -32,13 +32,13 @@ const facebook = (function() {
   };
 
 
-  function createLiveVideo(description, callback) {
+  function createLiveVideo(description, setUserName, streaming) {
     FB.getLoginStatus(function(response) {
       if (response.status == 'connected') {
         console.info({
           Facebook: 'Already logged in.',
         });
-        createLiveVideoAfterLogin(description, callback);
+        createLiveVideoAfterLogin(description, setUserName, streaming);
       } else {
         FB.login(function(response) {
           if (!response.authResponse) {
@@ -51,7 +51,7 @@ const facebook = (function() {
             Facebook: 'Logged in, OK.',
             grantedScopes: response.authResponse.grantedScopes,
           });
-          createLiveVideoAfterLogin(description, callback);
+          createLiveVideoAfterLogin(description, setUserName, streaming);
         }, {
           scope: 'publish_actions',
           return_scopes: true,
@@ -61,7 +61,17 @@ const facebook = (function() {
   }
 
 
-  function createLiveVideoAfterLogin(description, callback) {
+  function createLiveVideoAfterLogin(description, setUserName, streaming) {
+    FB.api('/me', {fields: 'name'}, function(response) {
+      if (response.error) {
+        console.error({
+          Facebook: response.error.message,
+        });
+        return;
+      }
+      console.info(response.name);
+      setUserName(response.name);
+    });
     FB.api('/me/live_videos', 'post', {description: description},
         function(response) {
       if (response.error) {
@@ -74,7 +84,7 @@ const facebook = (function() {
         Facebook: '/me/live_videos',
         response: response,
       });
-      callback(response.stream_url);
+      streaming(response.stream_url);
     });
   }
 

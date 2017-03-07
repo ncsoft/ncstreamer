@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-sources-select',
     'streaming-status',
     'streaming-button',
+    'provider-user-name',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
@@ -116,7 +117,9 @@ function onStreamingButtonClicked() {
   ({
     'standby': function() {
       const description = app.dom.streamingFeedDescription.value;
-      facebook.createLiveVideo(description, function(streamUrl) {
+      facebook.createLiveVideo(description, function(userName) {
+        app.dom.providerUserName.textContent = userName;
+      }, function(streamUrl) {
         const source = app.dom.streamingSourcesSelect.value;
         command('streaming/start', {
           serviceProvider: 'Facebook Live',
