@@ -40,7 +40,7 @@ const facebook = (function() {
         console.info({
           Facebook: 'Already logged in.',
         });
-        createLiveVideoAfterLogin(callback, description);
+        createLiveVideoAfterLogin(description, callback);
       } else {
         FB.login(function(response) {
           if (!response.authResponse) {
@@ -53,7 +53,7 @@ const facebook = (function() {
             Facebook: 'Logged in, OK.',
             grantedScopes: response.authResponse.grantedScopes,
           });
-          createLiveVideoAfterLogin(callback, description);
+          createLiveVideoAfterLogin(description, callback);
         }, {
           scope: 'publish_actions',
           return_scopes: true,
@@ -63,7 +63,7 @@ const facebook = (function() {
   }
 
 
-  function createLiveVideoAfterLogin(callback, description) {
+  function createLiveVideoAfterLogin(description, callback) {
     FB.api('/me/live_videos', 'post', {description: description},
         function(response) {
       if (response.error) {
