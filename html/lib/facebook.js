@@ -65,7 +65,7 @@ const facebook = (function() {
     // TODO(namk): fetch description from UI
     const description = 'test streaming';
     FB.api('/me/live_videos', 'post', {description: description},
-      function(response) {
+        function(response) {
       if (response.error) {
         console.error({
           Facebook: response.error.message,
