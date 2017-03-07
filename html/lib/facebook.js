@@ -62,7 +62,10 @@ const facebook = (function() {
 
 
   function createLiveVideoAfterLogin(callback) {
-    FB.api('/me/live_videos', 'post', function(response) {
+    // TODO(namk): fetch description from UI
+    const description = 'test streaming';
+    FB.api('/me/live_videos', 'post', {description: description},
+      function(response) {
       if (response.error) {
         console.error({
           Facebook: response.error.message,
