@@ -33,8 +33,8 @@ void BrowserProcessHandler::OnContextInitialized() {
                       WS_VISIBLE;
   window_info.x = CW_USEDEFAULT;
   window_info.y = CW_USEDEFAULT;
-  window_info.width = static_cast<int>(kWindowMinimumSize.first);
-  window_info.height = static_cast<int>(kWindowMinimumSize.second);
+  window_info.width = kWindowMinimumSize.width();
+  window_info.height = kWindowMinimumSize.height();
 
   CefRefPtr<Client> client{new Client{instance_}};
 
