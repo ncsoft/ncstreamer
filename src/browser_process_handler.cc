@@ -12,6 +12,7 @@
 #include "include/wrapper/cef_helpers.h"
 
 #include "src/client.h"
+#include "src/lib/display.h"
 #include "src/manifest.h"
 
 
@@ -33,8 +34,8 @@ void BrowserProcessHandler::OnContextInitialized() {
                       WS_VISIBLE;
   window_info.x = CW_USEDEFAULT;
   window_info.y = CW_USEDEFAULT;
-  window_info.width = static_cast<int>(kWindowMinimumSize.first);
-  window_info.height = static_cast<int>(kWindowMinimumSize.second);
+  window_info.width = Display::Scale(kWindowMinimumSize.width());
+  window_info.height = Display::Scale(kWindowMinimumSize.height());
 
   CefRefPtr<Client> client{new Client{instance_}};
 

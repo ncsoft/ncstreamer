@@ -6,12 +6,12 @@
 #ifndef SRC_MANIFEST_H_
 #define SRC_MANIFEST_H_
 
-#include <utility>
+
+#include "src/lib/dimension.h"
 
 
 namespace ncstreamer {
-static const std::pair<uint32_t, uint32_t>
-    kWindowMinimumSize{(348 + 16) * 2, (603 - 11) * 2};
+static const Dimension kWindowMinimumSize{348 + 16, 603 - 11};
 }  // namespace ncstreamer
 
 
