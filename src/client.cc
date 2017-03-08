@@ -72,6 +72,11 @@ bool Client::OnProcessMessageReceived(
 }
 
 
+int Client::GetAbsCap(int value, unsigned int cap) {
+  return std::max<int>(std::min<int>(value, cap), 0 - cap);
+}
+
+
 bool Client::OnRenderProcessMessageReceived(
     CefRefPtr<CefBrowser> browser,
     CefRefPtr<CefProcessMessage> message) {
@@ -151,8 +156,8 @@ void Client::ResizeBrowserGradually(
   LONG current_w = current.right - current.left;
   LONG current_h = current.bottom - current.top;
 
-  if (current_w >= preferable.width() &&
-      current_h >= preferable.height()) {
+  if (current_w == preferable.width() &&
+      current_h == preferable.height()) {
     return;
   }
 
@@ -160,13 +165,13 @@ void Client::ResizeBrowserGradually(
   int next_y = current.top;
   int next_w = current_w;
   int next_h = current_h;
-  if (current_w < preferable.width()) {
-    int inc_w = std::min<int>(preferable.width() - current_w, 20);
+  if (current_w != preferable.width()) {
+    int inc_w = GetAbsCap(preferable.width() - current_w, 2);
     next_x = current.left - (inc_w / 2);
     next_w = current_w + inc_w;
   }
-  if (current_h < preferable.height()) {
-    int inc_h = std::min<int>(preferable.height() - current_h, 20);
+  if (current_h != preferable.height()) {
+    int inc_h = GetAbsCap(preferable.height() - current_h, 2);
     next_y = current.top - (inc_h / 2);
     next_h = current_h + inc_h;
   }
