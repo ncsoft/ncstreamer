@@ -161,12 +161,12 @@ void Client::ResizeBrowserGradually(
   int next_w = current_w;
   int next_h = current_h;
   if (current_w < preferable.width()) {
-    int inc_w = std::min<int>(preferable.width() - current_w, 20);
+    int inc_w = std::min<int>(preferable.width() - current_w, 2);
     next_x = current.left - (inc_w / 2);
     next_w = current_w + inc_w;
   }
   if (current_h < preferable.height()) {
-    int inc_h = std::min<int>(preferable.height() - current_h, 20);
+    int inc_h = std::min<int>(preferable.height() - current_h, 2);
     next_y = current.top - (inc_h / 2);
     next_h = current_h + inc_h;
   }
