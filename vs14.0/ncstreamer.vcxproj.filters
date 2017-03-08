@@ -81,6 +81,9 @@
     <ClCompile Include="..\src\lib\rectangle.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\lib\display.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -141,6 +144,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\lib\rectangle.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\display.h">
       <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>
