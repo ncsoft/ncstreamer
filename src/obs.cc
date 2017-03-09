@@ -201,6 +201,7 @@ obs_encoder_t *Obs::CreateVideoEncoder() {
 
 
 void Obs::ClearSceneData() {
+  obs_set_output_source(2, nullptr);
   obs_set_output_source(1, nullptr);
   obs_set_output_source(0, nullptr);
 }
@@ -230,6 +231,19 @@ void Obs::UpdateCurrentSource(const std::string &source_info) {
     obs_data_release(settings);
 
     obs_set_output_source(1, source);
+    obs_source_release(source);
+  }
+
+  // mic
+  {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "device_id", "default");
+
+    obs_source_t *source = obs_source_create(
+      "wasapi_input_capture", "Mic/Aux", settings, nullptr);
+    obs_data_release(settings);
+
+    obs_set_output_source(2, source);
     obs_source_release(source);
   }
 }
