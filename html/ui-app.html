@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NC Streamer</title>
+
+    <meta http-equiv="Cache-Control" content="no-store, must-revalidate" />
+    <meta http-equiv="Expires" content="0" />
+
+    <link href="http://ui-static.korea.ncsoft.corp/launcher/nc-launcher-streamer/css/nc-launcher-streamer.css" rel="stylesheet" />
+    <script src="http://ui-static.korea.ncsoft.corp/common/js/lib/jquery-3.1.0.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1 class="title"><strong>방송</strong><span class="label-beta">Beta</span></h1>
+        <div class="settings">
+            <!--<button class="btn-setting" type="button" value="Setting"></button>
+            <button class="btn-minimum" type="button" value="Minimum"></button>-->
+            <button class="btn-close" type="button" value="Close"></button>
+        </div>
+    </div>
+    <div class="contents">
+        <section class="connect-platform">
+            <header>
+                <h2>플랫폼 연결</h2>
+            </header>
+            <article>NC 스트리밍으로 게임플레이를<br />방송할 수 있습니다.<br />게시물을 등록할 페이스북 계정을 연결해 주세요.</article>
+        </section>
+    </div>
+    <div class="footer">
+        <button class="btn-connect" onclick="onClickFacebook()">페이스북 연결</button>
+    </div>
+</div>
+
+<!-- external libs -->
+<script src="//connect.facebook.net/en_US/sdk.js"></script>
+
+<!-- scripts -->
+<script src="app.js"></script>
+<script src="facebook.js"></script>
+
+</body>
+</html>

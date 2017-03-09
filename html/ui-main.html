@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NC Streamer</title>
+
+    <meta http-equiv="Cache-Control" content="no-store, must-revalidate" />
+    <meta http-equiv="Expires" content="0" />
+
+    <link href="http://ui-static.korea.ncsoft.corp/launcher/nc-launcher-streamer/css/nc-launcher-streamer.css" rel="stylesheet" />
+    <script src="http://ui-static.korea.ncsoft.corp/common/js/lib/jquery-3.1.0.min.js"></script>
+    <script src="http://ui-static.korea.ncsoft.corp/launcher/nc-launcher-streamer/js/nc-streamer.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1 class="title"><strong>방송</strong><span class="label-beta">Beta</span></h1>
+        <div class="settings">
+            <button class="btn-setting" type="button" value="Setting"></button>
+            <button class="btn-minimum" type="button" value="Minimum"></button>
+            <button class="btn-close" type="button" value="Close"></button>
+        </div>
+    </div>
+    <div class="contents">
+        <!-- 페이스북정보 -->
+        <section class="nc-streamer">
+            <div class="profile">
+                <span class="fb">{프로필 이름 최대 N자…}</span>
+                <a href="#" class="btn-view-streaming">방송 보기</a>
+            </div>
+            <div data-ui="custom-select" id="custom-select1">
+                <span class="opener">게시물 등록 장소</span>
+                <ul>
+                    <li data-value="1">내 타임라인에 공유</li>
+                    <li data-value="2">관리 중인 페이지에 공유</li>
+                </ul>
+                <input type="hidden" readonly="" value="" id="select-output-1">
+            </div>
+            <!-- 페이스북 인증 실패 -->
+            <!--<div class="message button">
+                <button >내 타임라인 및 관리 페이지 접근 허용</button>
+            </div>-->
+
+            <!-- 관리 중인 페이지가 없습니다. -->
+            <!--<div class="message admin">관리 중인 페이지가 없습니다.</div>-->
+
+            <!-- 관리 중인 페이지에 공유 -->
+            <!--<div data-ui="custom-select" id="custom-select1-1">
+                <span class="opener">{관리 중인 페이지1}</span>
+                <ul>
+                    <li data-value="1">{관리 중인 페이지1}</li>
+                    <li data-value="2">{관리 중인 페이지2}</li>
+                </ul>
+                <input type="hidden" readonly="" value="" id="select-output-1-1">
+            </div>-->
+
+            <!-- 내 타임라인에 공유 -->
+            <div data-ui="custom-select" id="custom-select2">
+                <span class="opener">게시물 공개 범위</span>
+                <ul>
+                    <li data-value="1">전체 공개</li>
+                    <li data-value="2">친구만 보기</li>
+                    <li data-value="3">나만 보기</li>
+                </ul>
+                <input type="hidden" readonly="" value="" id="select-output-2">
+            </div>
+            <div class="tooltip">
+                <span class="layer-close">닫기</span>
+                <p>NC TV에도 게시물을 등록하려면<br />'전체 공개'를 선택해 주세요.</p>
+            </div>
+        </section>
+
+        <!-- 방송 정보 -->
+        <section class="nc-streamer">
+            <h3>방송할 게임</h3>
+            <!-- 실행 중인 게임이 없는 경우 <div class="message game">방송할 게임을 실행해 주세요.</div>-->
+            <!-- 1개인 경우 <div class="message">방송할 게임을 실행해 주세요.</div>-->
+            <!-- 2개 이상인 경우 -->
+            <div data-ui="custom-select" id="custom-select3">
+                <span class="opener">{실행 중인 게임 1}</span>
+                <ul>
+                    <li data-value="1">{실행 중인 게임 1}</li>
+                    <li data-value="2">{실행 중인 게임 2}</li>
+                </ul>
+                <input type="hidden" readonly="" value="" id="select-output-3">
+            </div>
+            <div class="streaming-title">
+                <h3>방송 제목</h3>
+                <textarea rows="2" placeholder="최대 N자까지 입력할 수 있습니다."></textarea>
+            </div>
+        </section>
+
+        <!-- 간편 설정 -->
+        <section class="nc-streamer">
+            <h3>간편 설정</h3>
+            <div class="checkbox webcam">
+                <input type="checkbox" id="chkWebcam" />
+                <label for="chkWebcam">웹캠 사용</label>
+            </div>
+            <div class="checkbox mic">
+                <input type="checkbox" id="chkMic" />
+                <label for="chkMic">마이크 사용</label>
+            </div>
+        </section>
+    </div>
+    <div class="footer">
+        <!--<div class="msg status-error">일시적인 오류로 방송 서비스를 이용할 수 없습니다.<br />잠시 후 다시 시도해 주세요.</div>-->
+        <div class="msg status-ready">방송 준비 완료</div>
+        <!--<button class="btn-start" disabled="disabled">방송 시작</button>-->
+        <button class="btn-start loading" disabled="disabled">방송 준비 중</button>
+        <!--<button class="btn-start">방송 시작</button>-->
+    </div>
+</div>
+
+<!-- scripts -->
+<script src="main.js"></script>
+</body>
+</html>
