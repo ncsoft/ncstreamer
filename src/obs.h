@@ -51,9 +51,9 @@ class Obs {
   void ResetVideo();
   obs_encoder_t *CreateAudioEncoder();
   obs_encoder_t *CreateVideoEncoder();
+  void ClearSceneData();
 
   void UpdateCurrentSource(const std::string &source_info);
-  void ReleaseCurrentSource();
 
   void UpdateCurrentService(
       const std::string &service_provider,
@@ -68,8 +68,6 @@ class Obs {
   obs_encoder_t *video_encoder_;
   std::unique_ptr<ObsOutput> stream_output_;
 
-  obs_source_t *current_source_audio_;
-  obs_source_t *current_source_video_;
   obs_service_t *current_service_;
 };
 }  // namespace ncstreamer
