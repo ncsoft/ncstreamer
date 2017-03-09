@@ -110,8 +110,6 @@ Obs::Obs()
       audio_encoder_{nullptr},
       video_encoder_{nullptr},
       stream_output_{},
-      current_source_audio_{nullptr},
-      current_source_video_{nullptr},
       current_service_{nullptr} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
@@ -132,7 +130,7 @@ Obs::Obs()
 
 Obs::~Obs() {
   ReleaseCurrentService();
-  ReleaseCurrentSource();
+  ClearSceneData();
 
   stream_output_.reset();
   obs_encoder_release(video_encoder_);
@@ -202,19 +200,24 @@ obs_encoder_t *Obs::CreateVideoEncoder() {
 }
 
 
-void Obs::UpdateCurrentSource(const std::string &source_info) {
-  ReleaseCurrentSource();
+void Obs::ClearSceneData() {
+  obs_set_output_source(1, nullptr);
+  obs_set_output_source(0, nullptr);
+}
 
+
+void Obs::UpdateCurrentSource(const std::string &source_info) {
   // video
   {
     obs_data_t *settings = obs_data_create();
     obs_data_set_string(settings, "window", source_info.c_str());
 
-    current_source_video_ = obs_source_create(
+    obs_source_t *source = obs_source_create(
         "window_capture", "Window Capture", settings, nullptr);
     obs_data_release(settings);
 
-    obs_set_output_source(0, current_source_video_);
+    obs_set_output_source(0, source);
+    obs_source_release(source);
   }
 
   // audio
@@ -222,23 +225,12 @@ void Obs::UpdateCurrentSource(const std::string &source_info) {
     obs_data_t *settings = obs_data_create();
     obs_data_set_string(settings, "device_id", "default");
 
-    current_source_audio_ = obs_source_create(
+    obs_source_t *source = obs_source_create(
         "wasapi_output_capture", "Desktop Audio", settings, nullptr);
     obs_data_release(settings);
 
-    obs_set_output_source(1, current_source_audio_);
-  }
-}
-
-
-void Obs::ReleaseCurrentSource() {
-  if (current_source_audio_) {
-    obs_source_release(current_source_audio_);
-    current_source_audio_ = nullptr;
-  }
-  if (current_source_video_) {
-    obs_source_release(current_source_video_);
-    current_source_video_ = nullptr;
+    obs_set_output_source(1, source);
+    obs_source_release(source);
   }
 }
 
