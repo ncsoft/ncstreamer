@@ -7,6 +7,9 @@
 #define SRC_BROWSER_APP_H_
 
 
+#include <string>
+#include <vector>
+
 #include "include/cef_app.h"
 #include "windows.h"  // NOLINT
 
@@ -17,7 +20,8 @@ namespace ncstreamer {
 class BrowserApp : public CefApp {
  public:
   BrowserApp(HINSTANCE instance,
-             bool needs_to_find_sources);
+             bool needs_to_find_sources,
+             const std::vector<std::string> &sources);
   virtual ~BrowserApp();
 
   CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override;

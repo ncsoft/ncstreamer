@@ -6,8 +6,6 @@
 #include "src/client/client_load_handler.h"
 
 #include <sstream>
-#include <string>
-#include <vector>
 
 #include "include/wrapper/cef_helpers.h"
 
@@ -16,8 +14,11 @@
 
 
 namespace ncstreamer {
-ClientLoadHandler::ClientLoadHandler(bool needs_to_find_sources)
+ClientLoadHandler::ClientLoadHandler(
+    bool needs_to_find_sources,
+    const std::vector<std::string> &sources)
     : needs_to_find_sources_{needs_to_find_sources},
+      sources_{sources},
       main_browser_created_{false} {
 }
 
@@ -75,7 +76,7 @@ void ClientLoadHandler::OnMainBrowserCreated(
     CefRefPtr<CefBrowser> browser) {
   const auto &sources = (needs_to_find_sources_ == true) ?
       Obs::Get()->FindAllWindowsOnDesktop() :
-      std::vector<std::string>{};
+      sources_;
   JsExecutor::Execute(browser, "setUpStreamingSources", "sources", sources);
 }
 }  // namespace ncstreamer

@@ -7,6 +7,9 @@
 #define SRC_CLIENT_H_
 
 
+#include <string>
+#include <vector>
+
 #include "include/cef_client.h"
 #include "windows.h"  // NOLINT
 
@@ -22,7 +25,8 @@ namespace ncstreamer {
 class Client : public CefClient {
  public:
   Client(HINSTANCE instance,
-         bool needs_to_find_sources);
+         bool needs_to_find_sources,
+         const std::vector<std::string> &sources);
   virtual ~Client();
 
   CefRefPtr<CefDisplayHandler> GetDisplayHandler() override;

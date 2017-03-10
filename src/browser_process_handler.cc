@@ -5,8 +5,6 @@
 
 #include "src/browser_process_handler.h"
 
-#include <string>
-
 #include "include/cef_browser.h"
 #include "include/cef_command_line.h"
 #include "include/wrapper/cef_helpers.h"
@@ -19,9 +17,11 @@
 namespace ncstreamer {
 BrowserProcessHandler::BrowserProcessHandler(
     HINSTANCE instance,
-    bool needs_to_find_sources)
+    bool needs_to_find_sources,
+    const std::vector<std::string> &sources)
     : instance_{instance},
-      needs_to_find_sources_{needs_to_find_sources} {
+      needs_to_find_sources_{needs_to_find_sources},
+      sources_{sources} {
 }
 
 
@@ -42,7 +42,8 @@ void BrowserProcessHandler::OnContextInitialized() {
 
   CefRefPtr<Client> client{new Client{
       instance_,
-      needs_to_find_sources_}};
+      needs_to_find_sources_,
+      sources_}};
 
   std::wstring uri{
       CefCommandLine::GetGlobalCommandLine()->GetSwitchValue(L"url")};

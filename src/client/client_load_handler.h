@@ -7,13 +7,17 @@
 #define SRC_CLIENT_CLIENT_LOAD_HANDLER_H_
 
 
+#include <string>
+#include <vector>
+
 #include "include/cef_load_handler.h"
 
 
 namespace ncstreamer {
 class ClientLoadHandler : public CefLoadHandler {
  public:
-  explicit ClientLoadHandler(bool needs_to_find_sources);
+  ClientLoadHandler(bool needs_to_find_sources,
+                    const std::vector<std::string> &sources);
   virtual ~ClientLoadHandler();
 
   void OnLoadStart(CefRefPtr<CefBrowser> browser,
@@ -38,6 +42,8 @@ class ClientLoadHandler : public CefLoadHandler {
   void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
 
   const bool needs_to_find_sources_;
+  const std::vector<std::string> sources_;
+
   bool main_browser_created_;
 
   IMPLEMENT_REFCOUNTING(ClientLoadHandler);
