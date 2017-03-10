@@ -111,12 +111,12 @@ function setUpStreamingSources(obj) {
     app.dom.streamingSourcesSelect.disabled = true;
   } else {
     app.dom.streamingSourcesSelect.disabled = false;
-  for (const source of obj.sources) {
-    const option = document.createElement('option');
-    option.value = source;
-    option.text = source.split(':')[0];
-    app.dom.streamingSourcesSelect.add(option);
-  }
+    for (const source of obj.sources) {
+      const option = document.createElement('option');
+      option.value = source;
+      option.text = source.split(':')[0];
+      app.dom.streamingSourcesSelect.add(option);
+    }
   }
 }
 
