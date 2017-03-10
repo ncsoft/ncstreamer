@@ -104,11 +104,19 @@ function setUpStreamingSources(obj) {
     child.remove();
   }
 
+  if (obj.sources.length == 0) {
+    const option = document.createElement('option');
+    option.text = '실행 중인 게임이 없습니다.';
+    app.dom.streamingSourcesSelect.add(option);
+    app.dom.streamingSourcesSelect.disabled = true;
+  } else {
+    app.dom.streamingSourcesSelect.disabled = false;
   for (const source of obj.sources) {
     const option = document.createElement('option');
     option.value = source;
     option.text = source.split(':')[0];
     app.dom.streamingSourcesSelect.add(option);
+  }
   }
 }
 
