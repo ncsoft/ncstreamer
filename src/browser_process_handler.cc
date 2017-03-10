@@ -17,8 +17,11 @@
 
 
 namespace ncstreamer {
-BrowserProcessHandler::BrowserProcessHandler(HINSTANCE instance)
-    : instance_{instance} {
+BrowserProcessHandler::BrowserProcessHandler(
+    HINSTANCE instance,
+    bool needs_to_find_sources)
+    : instance_{instance},
+      needs_to_find_sources_{needs_to_find_sources} {
 }
 
 
@@ -37,7 +40,9 @@ void BrowserProcessHandler::OnContextInitialized() {
   window_info.width = Display::Scale(kWindowMinimumSize.width());
   window_info.height = Display::Scale(kWindowMinimumSize.height());
 
-  CefRefPtr<Client> client{new Client{instance_}};
+  CefRefPtr<Client> client{new Client{
+      instance_,
+      needs_to_find_sources_}};
 
   std::wstring uri{
       CefCommandLine::GetGlobalCommandLine()->GetSwitchValue(L"url")};

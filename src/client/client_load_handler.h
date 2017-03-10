@@ -13,7 +13,7 @@
 namespace ncstreamer {
 class ClientLoadHandler : public CefLoadHandler {
  public:
-  ClientLoadHandler();
+  explicit ClientLoadHandler(bool needs_to_find_sources);
   virtual ~ClientLoadHandler();
 
   void OnLoadStart(CefRefPtr<CefBrowser> browser,
@@ -37,6 +37,7 @@ class ClientLoadHandler : public CefLoadHandler {
  private:
   void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
 
+  const bool needs_to_find_sources_;
   bool main_browser_created_;
 
   IMPLEMENT_REFCOUNTING(ClientLoadHandler);

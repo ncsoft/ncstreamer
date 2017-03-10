@@ -18,10 +18,11 @@
 
 
 namespace ncstreamer {
-Client::Client(HINSTANCE instance)
+Client::Client(HINSTANCE instance,
+               bool needs_to_find_sources)
     : display_handler_{new ClientDisplayHandler{}},
       life_span_handler_{new ClientLifeSpanHandler{instance}},
-      load_handler_{new ClientLoadHandler{}},
+      load_handler_{new ClientLoadHandler{needs_to_find_sources}},
       request_handler_{new ClientRequestHandler{}} {
 }
 

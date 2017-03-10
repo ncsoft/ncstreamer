@@ -17,9 +17,11 @@ class CommandLine {
   virtual ~CommandLine();
 
   bool is_renderer() const { return is_renderer_; }
+  bool needs_to_find_sources() const { return needs_to_find_sources_; }
 
  private:
   bool is_renderer_;
+  bool needs_to_find_sources_;
 };
 }  // namespace ncstreamer
 

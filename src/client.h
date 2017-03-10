@@ -21,7 +21,8 @@
 namespace ncstreamer {
 class Client : public CefClient {
  public:
-  explicit Client(HINSTANCE instance);
+  Client(HINSTANCE instance,
+         bool needs_to_find_sources);
   virtual ~Client();
 
   CefRefPtr<CefDisplayHandler> GetDisplayHandler() override;

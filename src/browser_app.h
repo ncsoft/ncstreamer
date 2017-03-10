@@ -16,7 +16,8 @@
 namespace ncstreamer {
 class BrowserApp : public CefApp {
  public:
-  explicit BrowserApp(HINSTANCE instance);
+  BrowserApp(HINSTANCE instance,
+             bool needs_to_find_sources);
   virtual ~BrowserApp();
 
   CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override;
