@@ -40,7 +40,7 @@ class Client : public CefClient {
       CefRefPtr<CefProcessMessage> message) override;
 
  private:
-  static int GetAbsCap(int value, unsigned int cap);
+  static int GetAbsCap(int value);
 
   bool OnRenderProcessMessageReceived(
       CefRefPtr<CefBrowser> browser,

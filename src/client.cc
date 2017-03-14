@@ -6,6 +6,7 @@
 #include "src/client.h"
 
 #include <algorithm>
+#include <cmath>
 #include <functional>
 #include <unordered_map>
 
@@ -75,8 +76,8 @@ bool Client::OnProcessMessageReceived(
 }
 
 
-int Client::GetAbsCap(int value, unsigned int cap) {
-  return std::max<int>(std::min<int>(value, cap), 0 - cap);
+int Client::GetAbsCap(int value) {
+  return std::lround(static_cast<float>(value) / 2.0f);
 }
 
 
@@ -169,12 +170,12 @@ void Client::ResizeBrowserGradually(
   int next_w = current_w;
   int next_h = current_h;
   if (current_w != preferable.width()) {
-    int inc_w = GetAbsCap(preferable.width() - current_w, 2);
+    int inc_w = GetAbsCap(preferable.width() - current_w);
     next_x = current.left - (inc_w / 2);
     next_w = current_w + inc_w;
   }
   if (current_h != preferable.height()) {
-    int inc_h = GetAbsCap(preferable.height() - current_h, 2);
+    int inc_h = GetAbsCap(preferable.height() - current_h);
     next_y = current.top - (inc_h / 2);
     next_h = current_h + inc_h;
   }
@@ -186,7 +187,9 @@ void Client::ResizeBrowserGradually(
 
   browser->GetHost()->NotifyMoveOrResizeStarted();
 
-  CefPostTask(TID_UI,
-      base::Bind(&Client::ResizeBrowserGradually, this, browser, preferable));
+  ::CefPostDelayedTask(
+      TID_UI,
+      base::Bind(&Client::ResizeBrowserGradually, this, browser, preferable),
+      10 /*millisec*/);
 }
 }  // namespace ncstreamer
