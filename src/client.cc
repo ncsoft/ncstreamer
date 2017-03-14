@@ -146,12 +146,12 @@ bool Client::ResizeBrowser(
       rect_w + w_inc,
       rect_h + h_inc};
 
-  ResizeBrowserGradually(browser, preferable);
+  ResizeBrowserSmoothly(browser, preferable);
   return true;
 }
 
 
-void Client::ResizeBrowserGradually(
+void Client::ResizeBrowserSmoothly(
     CefRefPtr<CefBrowser> browser,
     const Rectangle &preferable) {
   HWND wnd = browser->GetHost()->GetWindowHandle();
@@ -189,7 +189,7 @@ void Client::ResizeBrowserGradually(
 
   ::CefPostDelayedTask(
       TID_UI,
-      base::Bind(&Client::ResizeBrowserGradually, this, browser, preferable),
+      base::Bind(&Client::ResizeBrowserSmoothly, this, browser, preferable),
       10 /*millisec*/);
 }
 }  // namespace ncstreamer

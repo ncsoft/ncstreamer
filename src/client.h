@@ -54,7 +54,7 @@ class Client : public CefClient {
       CefRefPtr<CefBrowser> browser,
       Dimension inc);
 
-  void ResizeBrowserGradually(
+  void ResizeBrowserSmoothly(
       CefRefPtr<CefBrowser> browser,
       const Rectangle &preferable);
 
