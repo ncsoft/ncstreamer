@@ -76,6 +76,28 @@ void Obs::StopStreaming(
 }
 
 
+void Obs::TurnOnMic() {
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "device_id", "default");
+
+  obs_source_t *source = obs_source_create(
+      "wasapi_input_capture", "Mic/Aux", settings, nullptr);
+  obs_data_release(settings);
+
+  obs_set_output_source(2, source);
+  obs_source_release(source);
+}
+
+
+void Obs::TurnOffMic() {
+  obs_source_t *source = obs_get_output_source(2);
+  if (source) {
+    obs_set_output_source(2, nullptr);
+    obs_source_release(source);
+  }
+}
+
+
 void Obs::UpdateCurrentServiceEncoders(
     uint32_t audio_bitrate,
     uint32_t video_bitrate) {
@@ -235,17 +257,7 @@ void Obs::UpdateCurrentSource(const std::string &source_info) {
   }
 
   // mic
-  {
-    obs_data_t *settings = obs_data_create();
-    obs_data_set_string(settings, "device_id", "default");
-
-    obs_source_t *source = obs_source_create(
-      "wasapi_input_capture", "Mic/Aux", settings, nullptr);
-    obs_data_release(settings);
-
-    obs_set_output_source(2, source);
-    obs_source_release(source);
-  }
+  TurnOnMic();
 }
 
 
