@@ -158,7 +158,7 @@ void ClientRequestHandler::OnCommandStreamingStop(
 
 void ClientRequestHandler::OnCommandTurnOnMic(
   const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> /*browser*/) {
-  Obs::Get()->TurnOffMic();
+  Obs::Get()->TurnOnMic();
 }
 
 
