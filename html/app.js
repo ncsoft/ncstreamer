@@ -32,12 +32,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-sources-select',
     'streaming-status',
     'streaming-button',
+    'streaming-mic-checkbox',
     'provider-user-name',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
   app.dom.streamingButton.addEventListener('click', onStreamingButtonClicked);
+  app.dom.streamingMicCheckbox.addEventListener('change', onMicCheckboxChange);
 });
 
 
@@ -145,6 +147,17 @@ function onStreamingButtonClicked() {
     },
     'stopping': function() {},
   })[app.streaming.status]();
+}
+
+
+function onMicCheckboxChange() {
+  if (app.dom.streamingMicCheckbox.checked) {
+    console.info('mic on');
+    command('settings/mic/on');
+  } else {
+    console.info('mic off');
+    command('settings/mic/off');
+  }
 }
 
 
