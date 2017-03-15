@@ -135,7 +135,7 @@ Obs::Obs()
   obs_log_loaded_modules();
 
   ResetAudio();
-  ResetVideo();
+  ResetVideo({1280, 720}, 30);
 
   audio_encoder_ = CreateAudioEncoder();
   video_encoder_ = CreateVideoEncoder();
@@ -186,15 +186,15 @@ void Obs::ResetAudio() {
 }
 
 
-void Obs::ResetVideo() {
+void Obs::ResetVideo(const Dimension &output_size, uint32_t fps) {
   struct obs_video_info ovi;
-  ovi.fps_num = 30;
+  ovi.fps_num = fps;
   ovi.fps_den = 1;
   ovi.graphics_module = "libobs-d3d11.dll";
   ovi.base_width = 1920;
   ovi.base_height = 1080;
-  ovi.output_width = 1280;
-  ovi.output_height = 720;
+  ovi.output_width = output_size.width();
+  ovi.output_height = output_size.height();
   ovi.output_format = VIDEO_FORMAT_NV12;
   ovi.colorspace = VIDEO_CS_601;
   ovi.range = VIDEO_RANGE_PARTIAL;

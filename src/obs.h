@@ -15,6 +15,7 @@
 
 #include "obs-studio/libobs/obs.h"
 
+#include "src/lib/dimension.h"
 #include "src/obs/obs_output.h"
 
 
@@ -50,7 +51,7 @@ class Obs {
 
   bool SetUpLog();
   void ResetAudio();
-  void ResetVideo();
+  void ResetVideo(const Dimension &output_size, uint32_t fps);
   obs_encoder_t *CreateAudioEncoder();
   obs_encoder_t *CreateVideoEncoder();
   void ClearSceneData();
