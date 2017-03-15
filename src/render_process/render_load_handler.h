@@ -24,7 +24,7 @@ class RenderLoadHandler : public CefLoadHandler {
       int httpStatusCode) override;
 
  private:
-  Dimension GetScrollGap(CefRefPtr<CefFrame> frame) const;
+  Dimension<int> GetScrollGap(CefRefPtr<CefFrame> frame) const;
 
   IMPLEMENT_REFCOUNTING(RenderLoadHandler);
 };

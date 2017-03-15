@@ -186,7 +186,7 @@ void Obs::ResetAudio() {
 }
 
 
-void Obs::ResetVideo(const Dimension &output_size, uint32_t fps) {
+void Obs::ResetVideo(const Dimension<uint32_t> &output_size, uint32_t fps) {
   struct obs_video_info ovi;
   ovi.fps_num = fps;
   ovi.fps_den = 1;

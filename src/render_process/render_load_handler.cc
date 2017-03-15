@@ -36,7 +36,7 @@ void RenderLoadHandler::OnLoadEnd(
     return;
   }
 
-  Dimension gap = GetScrollGap(frame);
+  Dimension<int> gap = GetScrollGap(frame);
   if (gap.empty() == true) {
     return;
   }
@@ -50,7 +50,8 @@ void RenderLoadHandler::OnLoadEnd(
 }
 
 
-Dimension RenderLoadHandler::GetScrollGap(CefRefPtr<CefFrame> frame) const {
+Dimension<int>
+    RenderLoadHandler::GetScrollGap(CefRefPtr<CefFrame> frame) const {
   CEF_REQUIRE_RENDERER_THREAD();
 
   static const CefString kJsCode =
@@ -68,7 +69,7 @@ Dimension RenderLoadHandler::GetScrollGap(CefRefPtr<CefFrame> frame) const {
   CefRefPtr<CefV8Context> context = frame->GetV8Context();
   CefRefPtr<CefV8Value> returnValue;
   CefRefPtr<CefV8Exception> exception;
-  Dimension gap{0, 0};
+  Dimension<int> gap{0, 0};
 
   context->Enter();
   bool success = context->Eval(kJsCode, returnValue, exception);

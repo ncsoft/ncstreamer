@@ -11,7 +11,7 @@
 
 
 namespace ncstreamer {
-static const Dimension kWindowMinimumSize{348 + 16, 603 - 11};
+static const Dimension<int> kWindowMinimumSize{348 + 16, 603 - 11};
 }  // namespace ncstreamer
 
 
