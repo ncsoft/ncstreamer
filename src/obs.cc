@@ -84,15 +84,15 @@ void Obs::TurnOnMic() {
       "wasapi_input_capture", "Mic/Aux", settings, nullptr);
   obs_data_release(settings);
 
-  obs_set_output_source(2, source);
+  obs_set_output_source(3, source);
   obs_source_release(source);
 }
 
 
 void Obs::TurnOffMic() {
-  obs_source_t *source = obs_get_output_source(2);
+  obs_source_t *source = obs_get_output_source(3);
   if (source) {
-    obs_set_output_source(2, nullptr);
+    obs_set_output_source(3, nullptr);
     obs_source_release(source);
   }
 }
@@ -223,7 +223,7 @@ obs_encoder_t *Obs::CreateVideoEncoder() {
 
 
 void Obs::ClearSceneData() {
-  obs_set_output_source(2, nullptr);
+  obs_set_output_source(3, nullptr);
   obs_set_output_source(1, nullptr);
   obs_set_output_source(0, nullptr);
 }
