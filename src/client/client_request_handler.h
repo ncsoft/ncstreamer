@@ -41,9 +41,9 @@ class ClientRequestHandler : public CefRequestHandler {
       const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
   void OnCommandStreamingStop(
       const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
-  void OnCommandTurnOnMic(
+  void OnCommandSettingsMicOn(
     const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
-  void OnCommandTurnOffMic(
+  void OnCommandSettingsMicOff(
     const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
 
   IMPLEMENT_REFCOUNTING(ClientRequestHandler);
