@@ -52,7 +52,7 @@ hr {
 }
 
 
-#streaming-sources-select {
+.streaming-select {
   width: 268px;
   height: 32px;
   border-width: 0px;
