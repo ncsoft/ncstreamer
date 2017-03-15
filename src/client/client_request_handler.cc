@@ -105,6 +105,12 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
            std::placeholders::_1, std::placeholders::_2)},
       {L"streaming/stop",
        std::bind(&This::OnCommandStreamingStop, this,
+           std::placeholders::_1, std::placeholders::_2)},
+      {L"streaming/micOn",
+           std::bind(&This::OnCommandTurnOnMic, this,
+           std::placeholders::_1, std::placeholders::_2)},
+      {L"streaming/micOff",
+           std::bind(&This::OnCommandTurnOffMic, this,
            std::placeholders::_1, std::placeholders::_2)}};
 
   auto i = kCommandHandlers.find(cmd);
@@ -147,5 +153,17 @@ void ClientRequestHandler::OnCommandStreamingStop(
   Obs::Get()->StopStreaming([browser]() {
     JsExecutor::Execute(browser, "onStreamingStopped");
   });
+}
+
+
+void ClientRequestHandler::OnCommandTurnOnMic(
+  const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> /*browser*/) {
+  Obs::Get()->TurnOffMic();
+}
+
+
+void ClientRequestHandler::OnCommandTurnOffMic(
+  const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> /*browser*/) {
+  Obs::Get()->TurnOffMic();
 }
 }  // namespace ncstreamer
