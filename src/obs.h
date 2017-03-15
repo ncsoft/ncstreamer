@@ -35,6 +35,7 @@ class Obs {
       const ObsOutput::OnStarted &on_streaming_started);
   void StopStreaming(
       const ObsOutput::OnStopped &on_streaming_stopped);
+
   void TurnOnMic();
   void TurnOffMic();
 
