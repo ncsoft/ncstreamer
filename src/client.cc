@@ -82,7 +82,14 @@ int Client::GetIncCap(int current, int preferable, std::size_t index) {
     return 0;
   }
 
-  return std::lround(static_cast<float>(gap) / 2.0f);
+  unsigned int u_gap = std::abs(gap);
+  static const double kBase{1.2};
+  unsigned int inc = std::lround(std::pow(kBase, index));
+  unsigned int next_inc = std::lround(std::pow(kBase, index + 1));
+  if (inc + next_inc > u_gap) {
+    return gap;
+  }
+  return (gap > 0) ? inc : 0 - inc;
 }
 
 
