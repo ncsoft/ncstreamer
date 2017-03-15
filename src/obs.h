@@ -38,6 +38,10 @@ class Obs {
 
   void TurnOnMic();
   void TurnOffMic();
+  void UpdateVideoQuality(
+      const Dimension<uint32_t> &output_size,
+      uint32_t fps,
+      uint32_t bitrate);
 
   void UpdateCurrentServiceEncoders(
       uint32_t audio_bitrate,

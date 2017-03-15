@@ -94,6 +94,15 @@ void Obs::TurnOffMic() {
 }
 
 
+void Obs::UpdateVideoQuality(
+    const Dimension<uint32_t> &output_size,
+    uint32_t fps,
+    uint32_t bitrate) {
+  ResetVideo(output_size, fps);
+  UpdateCurrentServiceEncoders(160, bitrate);
+}
+
+
 void Obs::UpdateCurrentServiceEncoders(
     uint32_t audio_bitrate,
     uint32_t video_bitrate) {

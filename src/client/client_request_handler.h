@@ -45,6 +45,8 @@ class ClientRequestHandler : public CefRequestHandler {
       const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsMicOff(
       const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsVideoQualityUpdate(
+      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
 
   IMPLEMENT_REFCOUNTING(ClientRequestHandler);
 };
