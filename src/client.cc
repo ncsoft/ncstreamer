@@ -77,8 +77,8 @@ bool Client::OnProcessMessageReceived(
 
 
 int Client::GetIncCap(int current, int preferable, std::size_t index) {
-  int value = preferable - current;
-  return std::lround(static_cast<float>(value) / 2.0f);
+  int gap = preferable - current;
+  return std::lround(static_cast<float>(gap) / 2.0f);
 }
 
 
