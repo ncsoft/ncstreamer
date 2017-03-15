@@ -251,9 +251,6 @@ void Obs::UpdateCurrentSource(const std::string &source_info) {
     obs_set_output_source(1, source);
     obs_source_release(source);
   }
-
-  // mic
-  TurnOnMic();
 }
 
 
