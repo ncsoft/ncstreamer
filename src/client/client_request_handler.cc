@@ -5,6 +5,7 @@
 
 #include "src/client/client_request_handler.h"
 
+#include <cassert>
 #include <codecvt>
 #include <locale>
 #include <regex>  // NOLINT
@@ -115,6 +116,7 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
 
   auto i = kCommandHandlers.find(cmd);
   if (i == kCommandHandlers.end()) {
+    assert(false);
     return;
   }
 
@@ -130,6 +132,7 @@ void ClientRequestHandler::OnCommandStreamingStart(
   if (source_i == args.end() ||
       provider_i == args.end() ||
       url_i == args.end()) {
+    assert(false);
     return;
   }
 
