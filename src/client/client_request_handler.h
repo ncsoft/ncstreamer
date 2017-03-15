@@ -42,9 +42,9 @@ class ClientRequestHandler : public CefRequestHandler {
   void OnCommandStreamingStop(
       const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsMicOn(
-    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsMicOff(
-    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
 
   IMPLEMENT_REFCOUNTING(ClientRequestHandler);
 };
