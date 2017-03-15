@@ -56,7 +56,8 @@ class Client : public CefClient {
 
   void ResizeBrowserSmoothly(
       CefRefPtr<CefBrowser> browser,
-      const Rectangle &preferable);
+      const Rectangle &preferable,
+      std::size_t index);
 
   CefRefPtr<ClientDisplayHandler> display_handler_;
   CefRefPtr<ClientLifeSpanHandler> life_span_handler_;
