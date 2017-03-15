@@ -76,7 +76,7 @@ bool Client::OnProcessMessageReceived(
 }
 
 
-int Client::GetIncCap(int current, int preferable) {
+int Client::GetIncCap(int current, int preferable, std::size_t index) {
   int value = preferable - current;
   return std::lround(static_cast<float>(value) / 2.0f);
 }
@@ -172,12 +172,12 @@ void Client::ResizeBrowserSmoothly(
   int next_w = current_w;
   int next_h = current_h;
   if (current_w != preferable.width()) {
-    int inc_w = GetIncCap(current_w, preferable.width());
+    int inc_w = GetIncCap(current_w, preferable.width(), index);
     next_x = current.left - (inc_w / 2);
     next_w = current_w + inc_w;
   }
   if (current_h != preferable.height()) {
-    int inc_h = GetIncCap(current_h, preferable.height());
+    int inc_h = GetIncCap(current_h, preferable.height(), index);
     next_y = current.top - (inc_h / 2);
     next_h = current_h + inc_h;
   }
