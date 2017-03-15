@@ -106,11 +106,11 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
       {L"streaming/stop",
        std::bind(&This::OnCommandStreamingStop, this,
            std::placeholders::_1, std::placeholders::_2)},
-      {L"streaming/micOn",
-           std::bind(&This::OnCommandTurnOnMic, this,
+      {L"settings/mic/on",
+           std::bind(&This::OnCommandSettingsMicOn, this,
            std::placeholders::_1, std::placeholders::_2)},
-      {L"streaming/micOff",
-           std::bind(&This::OnCommandTurnOffMic, this,
+      {L"settings/mic/off",
+           std::bind(&This::OnCommandSettingsMicOff, this,
            std::placeholders::_1, std::placeholders::_2)}};
 
   auto i = kCommandHandlers.find(cmd);
@@ -156,13 +156,13 @@ void ClientRequestHandler::OnCommandStreamingStop(
 }
 
 
-void ClientRequestHandler::OnCommandTurnOnMic(
+void ClientRequestHandler::OnCommandSettingsMicOn(
   const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> /*browser*/) {
-  Obs::Get()->TurnOffMic();
+  Obs::Get()->TurnOnMic();
 }
 
 
-void ClientRequestHandler::OnCommandTurnOffMic(
+void ClientRequestHandler::OnCommandSettingsMicOff(
   const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> /*browser*/) {
   Obs::Get()->TurnOffMic();
 }
