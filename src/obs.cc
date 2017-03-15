@@ -90,11 +90,7 @@ void Obs::TurnOnMic() {
 
 
 void Obs::TurnOffMic() {
-  obs_source_t *source = obs_get_output_source(3);
-  if (source) {
-    obs_set_output_source(3, nullptr);
-    obs_source_release(source);
-  }
+  obs_set_output_source(3, nullptr);
 }
 
 
