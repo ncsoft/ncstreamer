@@ -76,8 +76,20 @@ bool Client::OnProcessMessageReceived(
 }
 
 
-int Client::GetAbsCap(int value) {
-  return std::lround(static_cast<float>(value) / 2.0f);
+int Client::GetIncCap(int current, int preferable, std::size_t index) {
+  int gap = preferable - current;
+  if (gap == 0) {
+    return 0;
+  }
+
+  unsigned int u_gap = std::abs(gap);
+  static const double kBase{1.2};
+  unsigned int inc = std::lround(std::pow(kBase, index));
+  unsigned int next_inc = std::lround(std::pow(kBase, index + 1));
+  if (inc + next_inc > u_gap) {
+    return gap;
+  }
+  return (gap > 0) ? inc : 0 - inc;
 }
 
 
@@ -146,14 +158,15 @@ bool Client::ResizeBrowser(
       rect_w + w_inc,
       rect_h + h_inc};
 
-  ResizeBrowserGradually(browser, preferable);
+  ResizeBrowserSmoothly(browser, preferable, 0);
   return true;
 }
 
 
-void Client::ResizeBrowserGradually(
+void Client::ResizeBrowserSmoothly(
     CefRefPtr<CefBrowser> browser,
-    const Rectangle &preferable) {
+    const Rectangle &preferable,
+    std::size_t index) {
   HWND wnd = browser->GetHost()->GetWindowHandle();
   RECT current;
   ::GetWindowRect(wnd, &current);
@@ -170,12 +183,12 @@ void Client::ResizeBrowserGradually(
   int next_w = current_w;
   int next_h = current_h;
   if (current_w != preferable.width()) {
-    int inc_w = GetAbsCap(preferable.width() - current_w);
+    int inc_w = GetIncCap(current_w, preferable.width(), index);
     next_x = current.left - (inc_w / 2);
     next_w = current_w + inc_w;
   }
   if (current_h != preferable.height()) {
-    int inc_h = GetAbsCap(preferable.height() - current_h);
+    int inc_h = GetIncCap(current_h, preferable.height(), index);
     next_y = current.top - (inc_h / 2);
     next_h = current_h + inc_h;
   }
@@ -189,7 +202,8 @@ void Client::ResizeBrowserGradually(
 
   ::CefPostDelayedTask(
       TID_UI,
-      base::Bind(&Client::ResizeBrowserGradually, this, browser, preferable),
+      base::Bind(&Client::ResizeBrowserSmoothly, this,
+          browser, preferable, index + 1),
       10 /*millisec*/);
 }
 }  // namespace ncstreamer

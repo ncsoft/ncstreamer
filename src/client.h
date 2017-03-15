@@ -40,7 +40,7 @@ class Client : public CefClient {
       CefRefPtr<CefProcessMessage> message) override;
 
  private:
-  static int GetAbsCap(int value);
+  static int GetIncCap(int current, int preferable, std::size_t index);
 
   bool OnRenderProcessMessageReceived(
       CefRefPtr<CefBrowser> browser,
@@ -54,9 +54,10 @@ class Client : public CefClient {
       CefRefPtr<CefBrowser> browser,
       Dimension inc);
 
-  void ResizeBrowserGradually(
+  void ResizeBrowserSmoothly(
       CefRefPtr<CefBrowser> browser,
-      const Rectangle &preferable);
+      const Rectangle &preferable,
+      std::size_t index);
 
   CefRefPtr<ClientDisplayHandler> display_handler_;
   CefRefPtr<ClientLifeSpanHandler> life_span_handler_;
