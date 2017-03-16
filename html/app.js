@@ -159,7 +159,7 @@ function setUpSteamingQuality() {
   }
 
   for (const level in app.streaming.quality) {
-    if (!app.streming.quality.hasOwnProperty(level))
+    if (!app.streaming.quality.hasOwnProperty(level))
       return;
 
     const quality = app.streaming.quality[level];
