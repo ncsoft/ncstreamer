@@ -5,6 +5,7 @@
 
 #include "src/client/client_request_handler.h"
 
+#include <cassert>
 #include <codecvt>
 #include <locale>
 #include <regex>  // NOLINT
@@ -111,10 +112,14 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
            std::placeholders::_1, std::placeholders::_2)},
       {L"settings/mic/off",
            std::bind(&This::OnCommandSettingsMicOff, this,
+           std::placeholders::_1, std::placeholders::_2)},
+      {L"settings/video_quality/update",
+       std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
            std::placeholders::_1, std::placeholders::_2)}};
 
   auto i = kCommandHandlers.find(cmd);
   if (i == kCommandHandlers.end()) {
+    assert(false);
     return;
   }
 
@@ -130,6 +135,7 @@ void ClientRequestHandler::OnCommandStreamingStart(
   if (source_i == args.end() ||
       provider_i == args.end() ||
       url_i == args.end()) {
+    assert(false);
     return;
   }
 
@@ -165,5 +171,43 @@ void ClientRequestHandler::OnCommandSettingsMicOn(
 void ClientRequestHandler::OnCommandSettingsMicOff(
   const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> /*browser*/) {
   Obs::Get()->TurnOffMic();
+}
+
+
+void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
+    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+  auto width_i = args.find(L"width");
+  auto height_i = args.find(L"height");
+  auto fps_i = args.find(L"fps");
+  auto bitrate_i = args.find(L"bitrate");
+  if (width_i == args.end() ||
+      height_i == args.end() ||
+      fps_i == args.end() ||
+      bitrate_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  uint32_t width{0};
+  uint32_t height{0};
+  uint32_t fps{0};
+  uint32_t bitrate{0};
+  try {
+    width = std::stoul(width_i->second);
+    height = std::stoul(height_i->second);
+    fps = std::stoul(fps_i->second);
+    bitrate = std::stoul(bitrate_i->second);
+  } catch (...) {
+  }
+
+  if (width == 0 ||
+      height == 0 ||
+      fps == 0 ||
+      bitrate == 0) {
+    assert(false);
+    return;
+  }
+
+  Obs::Get()->UpdateVideoQuality({width, height}, fps, bitrate);
 }
 }  // namespace ncstreamer

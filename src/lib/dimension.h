@@ -8,21 +8,22 @@
 
 
 namespace ncstreamer {
+template <typename T>
 class Dimension {
  public:
-  Dimension(int width, int height)
+  Dimension(T width, T height)
       : width_{width}, height_{height} {}
 
-  int width() const { return width_; }
-  int height() const { return height_; }
+  T width() const { return width_; }
+  T height() const { return height_; }
   bool empty() const { return width_ == 0 && height_ == 0; }
 
-  void set_width(int width) { width_ = width; }
-  void set_height(int height) { height_ = height; }
+  void set_width(T width) { width_ = width; }
+  void set_height(T height) { height_ = height; }
 
  private:
-  int width_;
-  int height_;
+  T width_;
+  T height_;
 };
 }  // namespace ncstreamer
 

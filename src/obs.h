@@ -15,6 +15,7 @@
 
 #include "obs-studio/libobs/obs.h"
 
+#include "src/lib/dimension.h"
 #include "src/obs/obs_output.h"
 
 
@@ -34,8 +35,13 @@ class Obs {
       const ObsOutput::OnStarted &on_streaming_started);
   void StopStreaming(
       const ObsOutput::OnStopped &on_streaming_stopped);
+
   void TurnOnMic();
   void TurnOffMic();
+  void UpdateVideoQuality(
+      const Dimension<uint32_t> &output_size,
+      uint32_t fps,
+      uint32_t bitrate);
 
   void UpdateCurrentServiceEncoders(
       uint32_t audio_bitrate,
@@ -50,7 +56,7 @@ class Obs {
 
   bool SetUpLog();
   void ResetAudio();
-  void ResetVideo();
+  void ResetVideo(const Dimension<uint32_t> &output_size, uint32_t fps);
   obs_encoder_t *CreateAudioEncoder();
   obs_encoder_t *CreateVideoEncoder();
   void ClearSceneData();

@@ -133,7 +133,7 @@ bool Client::OnRenderProcessScrollGap(
 
 bool Client::ResizeBrowser(
     CefRefPtr<CefBrowser> browser,
-    Dimension inc) {
+    Dimension<int> inc) {
   CEF_REQUIRE_UI_THREAD();
 
   if (inc.empty()) {

@@ -52,7 +52,7 @@ class Client : public CefClient {
 
   bool ResizeBrowser(
       CefRefPtr<CefBrowser> browser,
-      Dimension inc);
+      Dimension<int> inc);
 
   void ResizeBrowserSmoothly(
       CefRefPtr<CefBrowser> browser,
