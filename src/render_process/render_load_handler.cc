@@ -36,7 +36,7 @@ void RenderLoadHandler::OnLoadEnd(
     return;
   }
 
-  Dimension<int> gap = GetScrollGap(frame);
+  const Dimension<int> &gap = GetScrollGap(frame);
   if (gap.empty() == true) {
     return;
   }
