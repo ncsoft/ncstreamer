@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
   });
 
   app.dom.streamingButton.addEventListener('click', onStreamingButtonClicked);
+  app.dom.streamingQualitySelect.addEventListener('change',
+                                                  onStreamingQualityChange);
   app.dom.streamingMicCheckbox.addEventListener('change', onMicCheckboxChange);
   setUpSteamingQuality();
 });
@@ -171,20 +173,13 @@ function setUpSteamingQuality() {
 
     app.dom.streamingQualitySelect.add(option);
   }
+  onStreamingQualityChange();
 }
 
 
 function onStreamingButtonClicked() {
   ({
     'standby': function() {
-      const curValue = app.dom.streamingQualitySelect.value;
-      console.info(curValue);
-      command('settings/video_quality/update', {
-        width: app.streaming.quality[curValue].resolution.width,
-        height: app.streaming.quality[curValue].resolution.height,
-        fps: app.streaming.quality[curValue].fps,
-        bitrate: app.streaming.quality[curValue].bitrate,
-      });
       const description = app.dom.streamingFeedDescription.value;
       facebook.createLiveVideo(description, function(userName) {
         app.dom.providerUserName.textContent = userName;
@@ -206,6 +201,19 @@ function onStreamingButtonClicked() {
     },
     'stopping': function() {},
   })[app.streaming.status]();
+}
+
+
+function onStreamingQualityChange() {
+  const curValue = app.dom.streamingQualitySelect.value;
+  const curQuality = app.streaming.quality[curValue];
+  console.info(curValue);
+  command('settings/video_quality/update', {
+    width: curQuality.resolution.width,
+    height: curQuality.resolution.height,
+    fps: curQuality.fps,
+    bitrate: curQuality.bitrate,
+  });
 }
 
 
