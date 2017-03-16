@@ -30,7 +30,7 @@ body {
 
 
 #control-panel>div {
-  padding: 15px 25px;
+  padding: 5px 5px;
 }
 
 
@@ -65,7 +65,7 @@ hr {
 
 #streaming-feed-description {
   width: 268px;
-  height: 64px;
+  height: 32px;
   border-width: 0px;
 
   color: #66a2d6;
