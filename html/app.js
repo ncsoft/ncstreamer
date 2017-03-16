@@ -22,6 +22,32 @@ const app = {
     // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
     popupBrowserId: 0,
+    quality: {
+      high: {
+        resolution: {
+          width: 1280,
+          height: 720,
+        },
+        fps: 30,
+        bitrate: 2500,
+      },
+      medium: {
+        resolution: {
+          width: 854,
+          height: 480,
+        },
+        fps: 25,
+        bitrate: 2000,
+      },
+      low: {
+        resolution: {
+          width: 640,
+          height: 360,
+        },
+        fps: 20,
+        bitrate: 1500,
+      },
+    },
   },
 };
 
@@ -32,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-sources-select',
     'streaming-status',
     'streaming-button',
+    'streaming-quality-select',
     'streaming-mic-checkbox',
     'provider-user-name',
   ].forEach(function(domId) {
@@ -40,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   app.dom.streamingButton.addEventListener('click', onStreamingButtonClicked);
   app.dom.streamingMicCheckbox.addEventListener('change', onMicCheckboxChange);
+  setUpSteamingQuality();
 });
 
 
@@ -123,9 +151,40 @@ function setUpStreamingSources(obj) {
 }
 
 
+function setUpSteamingQuality() {
+  for (const option of app.dom.streamingQualitySelect) {
+    option.remove();
+  }
+
+  for (const level in app.streaming.quality) {
+    if (!app.streming.quality.hasOwnProperty(level))
+      return;
+
+    const quality = app.streaming.quality[level];
+    const option = document.createElement('option');
+    option.value = level;
+    option.text = [
+        level,
+        quality.resolution.width + '*' + quality.resolution.height,
+        'fps: ' + quality.fps,
+        'bitrate: ' + quality.bitrate].join(', ');
+
+    app.dom.streamingQualitySelect.add(option);
+  }
+}
+
+
 function onStreamingButtonClicked() {
   ({
     'standby': function() {
+      const curValue = app.dom.streamingQualitySelect.value;
+      console.info(curValue);
+      command('settings/video_quality/update', {
+        width: app.streaming.quality[curValue].resolution.width,
+        height: app.streaming.quality[curValue].resolution.height,
+        fps: app.streaming.quality[curValue].fps,
+        bitrate: app.streaming.quality[curValue].bitrate,
+      });
       const description = app.dom.streamingFeedDescription.value;
       facebook.createLiveVideo(description, function(userName) {
         app.dom.providerUserName.textContent = userName;
