@@ -52,7 +52,7 @@ void ClientLoadHandler::OnLoadError(CefRefPtr<CefBrowser> /*browser*/,
   std::wstringstream ss;
   ss << L"<html><body bgcolor=\"white\">"
      << L"<h2>Failed to load URL " << failed_url.c_str()
-     << L" with error " << error_text.c_str()
+     << L" with error " << (error_text.c_str() ? error_text.c_str() : L"NULL")
      << L" (" << error_code
      << L").</h2></body></html>";
 
