@@ -22,6 +22,9 @@
     <Filter Include="src\lib">
       <UniqueIdentifier>{80cd3d03-5427-4e6a-8db8-67a30c4c4f91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\streaming_service">
+      <UniqueIdentifier>{5d98a8e6-1741-4276-b9ba-287cce27e2f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\browser_process_handler.cc">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="..\src\lib\display.cc">
       <Filter>src\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\streaming_service\streaming_service_provider.cc">
+      <Filter>src\streaming_service</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="..\src\lib\display.h">
       <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\streaming_service\streaming_service_provider.h">
+      <Filter>src\streaming_service</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

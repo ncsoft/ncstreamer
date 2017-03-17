@@ -115,6 +115,7 @@
     <ClCompile Include="..\src\render_process\render_load_handler.cc" />
     <ClCompile Include="..\src\render_process_handler.cc" />
     <ClCompile Include="..\src\render_process_message_types.cpp" />
+    <ClCompile Include="..\src\streaming_service\streaming_service_provider.cc" />
     <ClCompile Include="..\src_imported\from_obs_studio_ui\obs-app.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="..\src\render_process_handler.h" />
     <ClInclude Include="..\src\render_process_message_types.h" />
     <ClInclude Include="..\src\resource.h" />
+    <ClInclude Include="..\src\streaming_service\streaming_service_provider.h" />
     <ClInclude Include="..\src_imported\from_obs_studio_ui\obs-app.hpp" />
   </ItemGroup>
   <ItemGroup>
