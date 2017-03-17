@@ -207,7 +207,7 @@ function onStreamingButtonClicked() {
 function onStreamingQualityChange() {
   const curValue = app.dom.streamingQualitySelect.value;
   const curQuality = app.streaming.quality[curValue];
-  console.info(curValue);
+  console.info({ streamingQuality: curValue });
   command('settings/video_quality/update', {
     width: curQuality.resolution.width,
     height: curQuality.resolution.height,
