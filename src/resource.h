@@ -7,7 +7,7 @@
 #define SRC_RESOURCE_H_
 
 
-#define IDI_NCSTREAMER_32PX 101
+#define IDI_NCSTREAMER_256PX 101
 
 
 #endif  // SRC_RESOURCE_H_

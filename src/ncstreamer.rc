@@ -30,7 +30,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_NCSTREAMER_32PX ICON "..\\res\\ncstreamer_32px.ico"
+IDI_NCSTREAMER_256PX ICON "..\\res\\ncstreamer_256px.ico"
 
 
 #ifdef APSTUDIO_INVOKED
