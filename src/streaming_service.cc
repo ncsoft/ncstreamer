@@ -7,6 +7,8 @@
 
 #include <cassert>
 
+#include "src/streaming_service/facebook.h"
+
 
 namespace ncstreamer {
 void StreamingService::SetUp() {
@@ -29,7 +31,8 @@ StreamingService *StreamingService::Get() {
 
 
 StreamingService::StreamingService()
-    : service_providers_{} {
+    : service_providers_{
+          {L"Facebook Live", std::shared_ptr<Facebook>{new Facebook{}}}} {
 }
 
 
