@@ -7,7 +7,8 @@
 
 
 function importScript(file) {
-  const elem = document.createElement('script');
+  const tag = 'script';
+  const elem = document.createElement(tag);
   elem.src = file;
   document.body.appendChild(elem);
 }
