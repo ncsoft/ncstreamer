@@ -14,7 +14,7 @@
 
 namespace ncstreamer {
 ClientLifeSpanHandler::ClientLifeSpanHandler(HINSTANCE instance)
-    : icon_{::LoadIcon(instance, MAKEINTRESOURCE(IDI_NCSTREAMER_32PX))},
+    : icon_{::LoadIcon(instance, MAKEINTRESOURCE(IDI_NCSTREAMER_256PX))},
       browsers_{},
       main_browser_{} {
 }
