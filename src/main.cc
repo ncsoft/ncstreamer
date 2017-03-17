@@ -11,6 +11,7 @@
 #include "src/lib/command_line.h"
 #include "src/obs.h"
 #include "src/render_app.h"
+#include "src/streaming_service.h"
 
 
 int APIENTRY wWinMain(HINSTANCE hInstance,
@@ -38,9 +39,11 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
 
   ::CefInitialize(main_args, settings, app, nullptr);
   ncstreamer::Obs::SetUp();
+  ncstreamer::StreamingService::SetUp();
 
   ::CefRunMessageLoop();
 
+  ncstreamer::StreamingService::ShutDown();
   ncstreamer::Obs::ShutDown();
   ::CefShutdown();
 
