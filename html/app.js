@@ -66,10 +66,13 @@ document.addEventListener('DOMContentLoaded', function(event) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
-  app.dom.streamingButton.addEventListener('click', onStreamingButtonClicked);
-  app.dom.streamingQualitySelect.addEventListener('change',
-                                                  onStreamingQualityChange);
-  app.dom.streamingMicCheckbox.addEventListener('change', onMicCheckboxChange);
+  app.dom.streamingButton.addEventListener(
+      'click', onStreamingButtonClicked);
+  app.dom.streamingQualitySelect.addEventListener(
+      'change', onStreamingQualityChange);
+  app.dom.streamingMicCheckbox.addEventListener(
+      'change', onMicCheckboxChange);
+
   setUpSteamingQuality();
 });
 
