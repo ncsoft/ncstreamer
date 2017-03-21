@@ -220,11 +220,11 @@ function OnBeforePopupClose(browserId) {
 }
 
 
-function onStreamingStarted() {
+cef.streamingStart.onResponse = function() {
   updateStreamingStatus('onAir');
-}
+};
 
 
-function onStreamingStopped() {
+cef.streamingStop.onResponse = function() {
   updateStreamingStatus('standby');
-}
+};

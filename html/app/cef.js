@@ -10,18 +10,23 @@ const cef = (function() {
   const protocols = {
     'streaming/start': {
       request: ['serviceProvider', 'streamUrl', 'source'],
+      response: [],
     },
     'streaming/stop': {
       request: [],
+      response: [],
     },
     'settings/video_quality/update': {
       request: ['width', 'height', 'fps', 'bitrate'],
+      response: [],
     },
     'settings/mic/on': {
       request: [],
+      response: [],
     },
     'settings/mic/off': {
       request: [],
+      response: [],
     },
   };
 
@@ -39,8 +44,21 @@ const cef = (function() {
         });
         request(type, obj);
       },
+      onResponse: function(...values) {
+        // do nothing, by default.
+        // override this, if necessary.
+      },
     };
   }
+
+  exports.onResponse = function(type, obj) {
+    const protocol = protocols[type];
+    const values = [];
+    protocol.response.forEach(function(name) {
+      values.push(obj[name]);
+    });
+    return exports[camelize(type)].onResponse(...values);
+  };
 
   return exports;
 
