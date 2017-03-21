@@ -6,6 +6,15 @@
 'use strict';
 
 
+const cef = (function() {
+  const exports = {
+    request: request,
+  };
+
+  return exports;
+
+
+  // private functions
 function request(type, args) {
   let argsArr = [];
   for (const key in args) {
@@ -16,3 +25,4 @@ function request(type, args) {
   const uri = ['cef://', type, '?', argsArr.join('&')].join('');
   location.href = uri;
 }
+})();
