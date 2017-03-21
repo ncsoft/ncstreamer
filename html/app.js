@@ -109,18 +109,6 @@ function updateStreamingStatus(status) {
 }
 
 
-function request(type, args) {
-  let argsArr = [];
-  for (const key in args) {
-    if (args.hasOwnProperty(key)) {
-      argsArr.push([key, encodeURIComponent(args[key])].join('='));
-    }
-  }
-  const uri = ['cef://', type, '?', argsArr.join('&')].join('');
-  location.href = uri;
-}
-
-
 function setUpStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources'))
     return;
