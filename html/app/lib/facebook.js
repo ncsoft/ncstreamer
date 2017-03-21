@@ -6,9 +6,6 @@
 'use strict';
 
 
-importScript('//connect.facebook.net/en_US/sdk.js');
-
-
 const facebook = (function() {
   const exports = {
     createLiveVideo: createLiveVideo,

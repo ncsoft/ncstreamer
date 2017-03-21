@@ -6,17 +6,6 @@
 'use strict';
 
 
-function importScript(file) {
-  const tag = 'script';
-  const elem = document.createElement(tag);
-  elem.src = file;
-  document.body.appendChild(elem);
-}
-
-
-importScript('app/lib/facebook.js');
-
-
 const app = {
   dom: {},
   streaming: {
