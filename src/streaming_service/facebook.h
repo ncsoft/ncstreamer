@@ -15,6 +15,11 @@ class Facebook : public StreamingServiceProvider {
  public:
   Facebook();
   virtual ~Facebook();
+
+  void LogIn(
+      HWND parent,
+      const OnFailed &on_failed,
+      const OnLoggedIn &on_logged_in) override;
 };
 }  // namespace ncstreamer
 

@@ -13,4 +13,12 @@ Facebook::Facebook() {
 
 Facebook::~Facebook() {
 }
+
+
+void Facebook::LogIn(
+    HWND parent,
+    const OnFailed &on_failed,
+    const OnLoggedIn &on_logged_in) {
+  // TODO(khpark): TBD
+}
 }  // namespace ncstreamer
