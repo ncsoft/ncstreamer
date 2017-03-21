@@ -116,7 +116,7 @@ function request(cmd, args) {
       argsArr.push([key, encodeURIComponent(args[key])].join('='));
     }
   }
-  const uri = ['command://', cmd, '?', argsArr.join('&')].join('');
+  const uri = ['cef://', cmd, '?', argsArr.join('&')].join('');
   location.href = uri;
 }
 
