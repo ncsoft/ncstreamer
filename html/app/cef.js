@@ -8,8 +8,12 @@
 
 const cef = (function() {
   const protocols = {
+    'service_provider/log_in': {
+      request: ['serviceProvider'],
+      response: ['userName', 'userPages'],
+    },
     'streaming/start': {
-      request: ['serviceProvider', 'streamUrl', 'source'],
+      request: ['source', 'userPage'],
       response: [],
     },
     'streaming/stop': {
