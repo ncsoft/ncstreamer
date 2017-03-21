@@ -109,7 +109,7 @@ function updateStreamingStatus(status) {
 }
 
 
-function command(cmd, args) {
+function request(cmd, args) {
   let argsArr = [];
   for (const key in args) {
     if (args.hasOwnProperty(key)) {
@@ -178,7 +178,7 @@ function onStreamingButtonClicked() {
         app.dom.providerUserName.textContent = userName;
       }, function(streamUrl) {
         const source = app.dom.streamingSourcesSelect.value;
-        command('streaming/start', {
+        request('streaming/start', {
           serviceProvider: 'Facebook Live',
           streamUrl: streamUrl,
           source: source,
@@ -189,7 +189,7 @@ function onStreamingButtonClicked() {
     },
     'starting': function() {},
     'onAir': function() {
-      command('streaming/stop');
+      request('streaming/stop');
       updateStreamingStatus('stopping');
     },
     'stopping': function() {},
@@ -201,7 +201,7 @@ function onStreamingQualityChange() {
   const curValue = app.dom.streamingQualitySelect.value;
   const curQuality = app.streaming.quality[curValue];
   console.info({ streamingQuality: curValue });
-  command('settings/video_quality/update', {
+  request('settings/video_quality/update', {
     width: curQuality.resolution.width,
     height: curQuality.resolution.height,
     fps: curQuality.fps,
@@ -213,10 +213,10 @@ function onStreamingQualityChange() {
 function onMicCheckboxChange() {
   if (app.dom.streamingMicCheckbox.checked) {
     console.info('mic on');
-    command('settings/mic/on');
+    request('settings/mic/on');
   } else {
     console.info('mic off');
-    command('settings/mic/off');
+    request('settings/mic/off');
   }
 }
 
