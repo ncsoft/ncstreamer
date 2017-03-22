@@ -70,11 +70,11 @@ void JsExecutor::AppendFunctionCall(
     const std::string &arg_name,
     const std::vector<std::string> &arg_value,
     std::ostream *out) {
-  boost::property_tree::ptree arg_value_root;
-  arg_value_root.add_child(arg_name, ToPtree(arg_value));
+  boost::property_tree::ptree args;
+  args.add_child(arg_name, ToPtree(arg_value));
 
   *out << func_name << "(";
-  boost::property_tree::write_json(*out, arg_value_root, false);
+  boost::property_tree::write_json(*out, args, false);
   *out << ")";
 }
 
