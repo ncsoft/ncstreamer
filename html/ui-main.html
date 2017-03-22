@@ -9,7 +9,7 @@
 
     <link href="http://ui-static.korea.ncsoft.corp/launcher/nc-launcher-streamer/css/nc-launcher-streamer.css" rel="stylesheet" />
     <script src="http://ui-static.korea.ncsoft.corp/common/js/lib/jquery-3.1.0.min.js"></script>
-    <script src="http://ui-static.korea.ncsoft.corp/launcher/nc-launcher-streamer/js/nc-streamer.js"></script>
+    <script src="http://ui-static.korea.ncsoft.corp/launcher/nc-launcher-streamer/js/nc-launcher-streamer.js"></script>
 </head>
 <body>
 
@@ -26,8 +26,9 @@
         <!-- 페이스북정보 -->
         <section class="nc-streamer">
             <div class="profile">
-                <span class="fb">{프로필 이름 최대 N자…}</span>
-                <a href="#" class="btn-view-streaming">방송 보기</a>
+                <span class="name fb">프로필이름열자말줄임</span>
+                <!-- 방송 중 아닐때 --><!--<a href="#" class="btn-view-streaming">방송 보기</a>-->
+                <!-- 방송 중 --><a href="#" class="btn-view-streaming live">방송 보기</a>
             </div>
             <div data-ui="custom-select" id="custom-select1">
                 <span class="opener">게시물 등록 장소</span>
@@ -87,7 +88,7 @@
             </div>
             <div class="streaming-title">
                 <h3>방송 제목</h3>
-                <textarea rows="2" placeholder="최대 N자까지 입력할 수 있습니다."></textarea>
+                <div class="broadcast-title"><textarea rows="2" id="main-broadcast-title" placeholder="최대 100자까지 입력할 수 있습니다."></textarea></div>
             </div>
         </section>
 
@@ -105,8 +106,8 @@
         </section>
     </div>
     <div class="footer">
-        <!--<div class="msg status-error">일시적인 오류로 방송 서비스를 이용할 수 없습니다.<br />잠시 후 다시 시도해 주세요.</div>-->
-        <div class="msg status-ready">방송 준비 완료</div>
+        <div class="msg status-error">일시적인 오류로 방송 서비스를 이용할 수 없습니다.<br />잠시 후 다시 시도해 주세요.</div>
+        <!--<div class="msg status-ready">방송 준비 완료</div>-->
         <!--<button class="btn-start" disabled="disabled">방송 시작</button>-->
         <button class="btn-start loading" disabled="disabled">방송 준비 중</button>
         <!--<button class="btn-start">방송 시작</button>-->
