@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-feed-description',
     'streaming-sources-select',
     'streaming-status',
-    'streaming-button',
+    'streaming-control-button',
     'streaming-quality-select',
     'streaming-mic-checkbox',
     'provider-user-name',
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
-  app.dom.streamingButton.addEventListener(
-      'click', onStreamingButtonClicked);
+  app.dom.streamingControlButton.addEventListener(
+      'click', onStreamingControlButtonClicked);
   app.dom.streamingQualitySelect.addEventListener(
       'change', onStreamingQualityChange);
   app.dom.streamingMicCheckbox.addEventListener(
@@ -78,7 +78,7 @@ function updateStreamingStatus(status) {
 
   app.streaming.status = status;
   const message = app.dom.streamingStatus;
-  const button = app.dom.streamingButton;
+  const button = app.dom.streamingControlButton;
   switch (status) {
     case 'standby':
       message.textContent = '방송 준비 완료';
@@ -158,7 +158,7 @@ function setUpSteamingQuality() {
 }
 
 
-function onStreamingButtonClicked() {
+function onStreamingControlButtonClicked() {
   ({
     'standby': function() {
       const description = app.dom.streamingFeedDescription.value;
