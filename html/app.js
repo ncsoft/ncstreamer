@@ -172,16 +172,11 @@ function onStreamingLoginButtonClicked() {
 function onStreamingControlButtonClicked() {
   ({
     'standby': function() {
+      const source = app.dom.streamingSourcesSelect.value;
+      const userPage = app.dom.streamingUserPageSelect.value;
       const description = app.dom.streamingFeedDescription.value;
-      facebook.createLiveVideo(description, function(userName) {
-        app.dom.providerUserName.textContent = userName;
-      }, function(streamUrl) {
-        const source = app.dom.streamingSourcesSelect.value;
-        cef.streamingStart.request(
-            'Facebook Live', streamUrl, source);
-        updateStreamingStatus('starting');
-      });
-      updateStreamingStatus('setup');
+      cef.streamingStart.request(source, userPage, description);
+      updateStreamingStatus('starting');
     },
     'starting': function() {},
     'onAir': function() {
