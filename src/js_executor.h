@@ -38,6 +38,9 @@ class JsExecutor {
                                  const std::string &arg_name,
                                  const std::vector<std::string> &arg_value,
                                  std::ostream *out);
+  static void AppendFunctionCall(const std::string &func_name,
+                                 const boost::property_tree::ptree &args,
+                                 std::ostream *out);
 
   static boost::property_tree::ptree
       ToPtree(const std::vector<std::string> &values);

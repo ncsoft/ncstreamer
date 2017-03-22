@@ -73,6 +73,14 @@ void JsExecutor::AppendFunctionCall(
   boost::property_tree::ptree args;
   args.add_child(arg_name, ToPtree(arg_value));
 
+  AppendFunctionCall(func_name, args, out);
+}
+
+
+void JsExecutor::AppendFunctionCall(
+    const std::string &func_name,
+    const boost::property_tree::ptree &args,
+    std::ostream *out) {
   *out << func_name << "(";
   boost::property_tree::write_json(*out, args, false);
   *out << ")";
