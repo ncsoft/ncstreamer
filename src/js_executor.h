@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "boost/property_tree/ptree.hpp"
 #include "include/cef_browser.h"
 
 
@@ -37,6 +38,9 @@ class JsExecutor {
                                  const std::string &arg_name,
                                  const std::vector<std::string> &arg_value,
                                  std::ostream *out);
+
+  static boost::property_tree::ptree
+      ToPtree(const std::vector<std::string> &values);
 };
 }  // namespace ncstreamer
 
