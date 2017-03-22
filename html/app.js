@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-control-button',
     'streaming-quality-select',
     'streaming-mic-checkbox',
+    'streaming-user-page-select',
     'provider-user-name',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
@@ -233,6 +234,17 @@ function OnBeforePopupClose(browserId) {
 cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
   app.dom.loginPagePanel.style.display = 'none';
   app.dom.mainPagePanel.style.display = 'flex';
+  
+  for (const child of app.dom.streamingUserPageSelect.children) {
+    child.remove();
+  }
+
+  for (const userPage of userPages) {
+    const option = document.createElement('option');
+    option.value = userPage;
+    option.text = userPage;
+    app.dom.streamingUserPageSelect.add(option);
+  }
 };
 
 
