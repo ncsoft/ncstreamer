@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   [
     'login-page-panel',
     'main-page-panel',
+    'streaming-login-button',
     'streaming-feed-description',
     'streaming-sources-select',
     'streaming-status',
@@ -57,6 +58,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
+  app.dom.streamingLoginButton.addEventListener(
+      'click', onStreamingLoginButtonClicked);
   app.dom.streamingControlButton.addEventListener(
       'click', onStreamingControlButtonClicked);
   app.dom.streamingQualitySelect.addEventListener(
@@ -160,6 +163,11 @@ function setUpSteamingQuality() {
 }
 
 
+function onStreamingLoginButtonClicked() {
+  cef.serviceProviderLogIn.request('Facebook Live');
+}
+
+
 function onStreamingControlButtonClicked() {
   ({
     'standby': function() {
@@ -220,6 +228,12 @@ function OnBeforePopupClose(browserId) {
     updateStreamingStatus('standby');
   }
 }
+
+
+cef.serviceProviderLogIn.onResponse = function(userName, userPage) {
+  app.dom.loginPagePanel.style.display = 'none';
+  app.dom.mainPagePanel.style.display = 'flex';
+};
 
 
 cef.streamingStart.onResponse = function() {
