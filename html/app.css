@@ -109,3 +109,8 @@ hr {
   font-size: 18px;
   border-radius: 0px;
 }
+
+
+#main-page-panel {
+  display: none;
+}

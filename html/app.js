@@ -44,6 +44,8 @@ const app = {
 
 document.addEventListener('DOMContentLoaded', function(event) {
   [
+    'login-page-panel',
+    'main-page-panel',
     'streaming-feed-description',
     'streaming-sources-select',
     'streaming-status',
