@@ -4,7 +4,7 @@ body {
 }
 
 
-#main-panel {
+.main-panel {
   height: 100%;
 
   color: #caceda;
@@ -17,19 +17,19 @@ body {
 }
 
 
-#main-panel div>div {
+.main-panel div>div {
   margin: 5px 0px;
 }
 
 
-#control-panel {
+.control-panel {
   height: 100%;
 
   padding: 15px;
 }
 
 
-#control-panel>div {
+.control-panel>div {
   padding: 5px 5px;
 }
 
@@ -97,14 +97,14 @@ hr {
 }
 
 
-#button-panel {
+.button-panel {
   text-align: center;
   font-size: 12px;
   color: #3e6b94;
 }
 
 
-#streaming-button {
+.streaming-button {
   height: 50px;
   font-size: 18px;
   border-radius: 0px;
