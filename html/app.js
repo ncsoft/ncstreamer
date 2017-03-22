@@ -230,7 +230,7 @@ function OnBeforePopupClose(browserId) {
 }
 
 
-cef.serviceProviderLogIn.onResponse = function(userName, userPage) {
+cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
   app.dom.loginPagePanel.style.display = 'none';
   app.dom.mainPagePanel.style.display = 'flex';
 };
