@@ -16,20 +16,19 @@ std::wstring Uri::ToString(
     const std::pair<std::wstring, std::wstring> &authority,
     const std::wstring &path,
     const Query &query) {
-  CefURLParts parts;
-  CefString(&parts.scheme) = scheme.c_str();
-  CefString(&parts.host) = authority.first.c_str();
-  CefString(&parts.port) = authority.second.c_str();
-  CefString(&parts.path) = path.c_str();
-  CefString(&parts.query) = ToString(query).c_str();
-
-  CefString uri;
-  bool result = ::CefCreateURL(parts, uri);
-  if (result == false) {
-    return L"";
+  std::wstringstream ss;
+  ss << scheme << L"://";
+  ss << authority.first;
+  if (authority.second.empty() == false) {
+    ss << L":" << authority.second;
   }
-
-  return uri;
+  if (path.empty() == false) {
+    ss << path;
+  }
+  if (query.empty() == false) {
+    ss << L"?" << ToString(query);
+  }
+  return ss.str();
 }
 
 
