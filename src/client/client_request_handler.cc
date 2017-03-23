@@ -48,7 +48,7 @@ bool ClientRequestHandler::OnBeforeBrowse(CefRefPtr<CefBrowser> browser,
     std::wstring host{matches[4]};
     std::wstring path{matches[5]};
     std::wstring query{matches[7]};
-    if (scheme == L"command") {
+    if (scheme == L"cef") {
       OnCommand(host + path, ParseQuery(query), browser);
     } else {
       return false;  // proceed navigation.
