@@ -102,6 +102,12 @@
     <ClCompile Include="..\src\lib\cef_fit_client.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\lib\cef_types.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lib\windows_types.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -180,6 +186,12 @@
       <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="..\src\lib\cef_fit_client.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\cef_types.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\windows_types.h">
       <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>

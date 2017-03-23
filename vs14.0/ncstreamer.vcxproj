@@ -105,11 +105,13 @@
     <ClCompile Include="..\src\client\client_request_handler.cc" />
     <ClCompile Include="..\src\js_executor.cc" />
     <ClCompile Include="..\src\lib\cef_fit_client.cc" />
+    <ClCompile Include="..\src\lib\cef_types.cc" />
     <ClCompile Include="..\src\lib\command_line.cc" />
     <ClCompile Include="..\src\lib\dimension.cc" />
     <ClCompile Include="..\src\lib\display.cc" />
     <ClCompile Include="..\src\lib\rectangle.cc" />
     <ClCompile Include="..\src\lib\uri.cc" />
+    <ClCompile Include="..\src\lib\windows_types.cc" />
     <ClCompile Include="..\src\main.cc" />
     <ClCompile Include="..\src\obs.cc" />
     <ClCompile Include="..\src\obs\obs_output.cc" />
@@ -132,11 +134,13 @@
     <ClInclude Include="..\src\client\client_request_handler.h" />
     <ClInclude Include="..\src\js_executor.h" />
     <ClInclude Include="..\src\lib\cef_fit_client.h" />
+    <ClInclude Include="..\src\lib\cef_types.h" />
     <ClInclude Include="..\src\lib\command_line.h" />
     <ClInclude Include="..\src\lib\dimension.h" />
     <ClInclude Include="..\src\lib\display.h" />
     <ClInclude Include="..\src\lib\rectangle.h" />
     <ClInclude Include="..\src\lib\uri.h" />
+    <ClInclude Include="..\src\lib\windows_types.h" />
     <ClInclude Include="..\src\manifest.h" />
     <ClInclude Include="..\src\obs.h" />
     <ClInclude Include="..\src\obs\obs_output.h" />
