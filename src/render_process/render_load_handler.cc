@@ -26,10 +26,6 @@ void RenderLoadHandler::OnLoadEnd(
     int httpStatusCode) {
   CEF_REQUIRE_RENDERER_THREAD();
 
-  if (browser->IsPopup() == false) {
-    return;
-  }
-
   if (frame->IsValid() == false ||
       frame->IsMain() == false ||
       frame->IsFocused() == false) {
