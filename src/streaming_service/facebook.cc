@@ -51,6 +51,7 @@ void Facebook::LogIn(
 
   CefBrowserSettings browser_settings;
 
+  facebook_client_->SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
       window_info, facebook_client_, login_uri, browser_settings, NULL);
 }
@@ -60,10 +61,20 @@ const Uri Facebook::kLoginRedirectUri{
     L"https://www.facebook.com/connect/login_success.html"};
 
 
-Facebook::FacebookClient::FacebookClient() {
+Facebook::FacebookClient::FacebookClient()
+    : on_failed_{},
+      on_logged_in_{} {
 }
 
 
 Facebook::FacebookClient::~FacebookClient() {
+}
+
+
+void Facebook::FacebookClient::SetHandlers(
+    const OnFailed &on_failed,
+    const OnLoggedIn &on_logged_in) {
+  on_failed_ = on_failed;
+  on_logged_in_ = on_logged_in;
 }
 }  // namespace ncstreamer

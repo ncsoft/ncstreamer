@@ -37,7 +37,14 @@ class Facebook::FacebookClient : public CefFitClient {
   FacebookClient();
   virtual ~FacebookClient();
 
+  void SetHandlers(
+      const OnFailed &on_failed,
+      const OnLoggedIn &on_logged_in);
+
  private:
+  OnFailed on_failed_;
+  OnLoggedIn on_logged_in_;
+
   IMPLEMENT_REFCOUNTING(FacebookClient);
 };
 }  // namespace ncstreamer
