@@ -46,6 +46,33 @@ const std::wstring &Uri::Query::GetParameter(const std::wstring &key) const {
 }
 
 
+Uri::Uri(const std::wstring &uri_string)
+    : uri_string_{uri_string},
+      scheme_{},
+      authority_{},
+      path_{},
+      query_{},
+      fragment_{} {
+  // from https://tools.ietf.org/html/rfc3986#appendix-B
+  static const std::wregex kUriPattern{
+      LR"(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)"};
+
+  std::wsmatch matches;
+  bool found = std::regex_search(uri_string, matches, kUriPattern);
+  if (found) {
+    scheme_ = matches[2];
+    authority_ = matches[4];
+    path_ = matches[5];
+    query_ = Query{matches[7]};
+    fragment_ = matches[9];
+  }
+}
+
+
+Uri::~Uri() {
+}
+
+
 std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,

@@ -32,6 +32,9 @@ class Uri {
     std::unordered_map<std::wstring, std::wstring> params_;
   };
 
+  explicit Uri(const std::wstring &uri_string);
+  virtual ~Uri();
+
   static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
@@ -50,10 +53,20 @@ class Uri {
       const std::wstring &authority,
       const std::wstring &path);
 
+  const std::wstring &uri_string() const { return uri_string_; }
+
  private:
   static std::wstring ToString(const QueryParamVector &query);
 
   static std::wstring Encode(const std::wstring &raw);
+
+  const std::wstring uri_string_;
+
+  std::wstring scheme_;
+  std::wstring authority_;
+  std::wstring path_;
+  Query query_;
+  std::wstring fragment_;
 };
 }  // namespace ncstreamer
 
