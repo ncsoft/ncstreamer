@@ -23,6 +23,8 @@ class Rectangle {
   void set_width(int width) { width_ = width; }
   void set_height(int height) { height_ = height; }
 
+  Rectangle Center(int width, int height) const;
+
  private:
   int x_;
   int y_;
