@@ -33,6 +33,23 @@ std::wstring Uri::ToString(
 }
 
 
+std::wstring Uri::ToString(
+    const std::wstring &scheme,
+    const std::wstring &authority,
+    const std::wstring &path,
+    const Query &query) {
+  return ToString(scheme, authority, path, query, L"");
+}
+
+
+std::wstring Uri::ToString(
+    const std::wstring &scheme,
+    const std::wstring &authority,
+    const std::wstring &path) {
+  return ToString(scheme, authority, path, {}, L"");
+}
+
+
 std::wstring Uri::ToString(const Query &query) {
   if (query.empty() == true) {
     return L"";
