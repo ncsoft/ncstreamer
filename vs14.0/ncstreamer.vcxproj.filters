@@ -96,6 +96,9 @@
     <ClCompile Include="..\src\streaming_service\facebook.cc">
       <Filter>src\streaming_service</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\lib\uri.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="..\src\streaming_service\facebook.h">
       <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\uri.h">
+      <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

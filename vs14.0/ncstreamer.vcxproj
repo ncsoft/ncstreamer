@@ -108,6 +108,7 @@
     <ClCompile Include="..\src\lib\dimension.cc" />
     <ClCompile Include="..\src\lib\display.cc" />
     <ClCompile Include="..\src\lib\rectangle.cc" />
+    <ClCompile Include="..\src\lib\uri.cc" />
     <ClCompile Include="..\src\main.cc" />
     <ClCompile Include="..\src\obs.cc" />
     <ClCompile Include="..\src\obs\obs_output.cc" />
@@ -133,6 +134,7 @@
     <ClInclude Include="..\src\lib\dimension.h" />
     <ClInclude Include="..\src\lib\display.h" />
     <ClInclude Include="..\src\lib\rectangle.h" />
+    <ClInclude Include="..\src\lib\uri.h" />
     <ClInclude Include="..\src\manifest.h" />
     <ClInclude Include="..\src\obs.h" />
     <ClInclude Include="..\src\obs\obs_output.h" />
