@@ -22,7 +22,8 @@ class Uri {
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
-      const Query &query);
+      const Query &query,
+      const std::wstring &fragment);
 
  private:
   static std::wstring ToString(const Query &query);

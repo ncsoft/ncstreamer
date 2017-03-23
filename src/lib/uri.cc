@@ -15,7 +15,8 @@ std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path,
-    const Query &query) {
+    const Query &query,
+    const std::wstring &fragment) {
   std::wstringstream ss;
   ss << scheme << L"://";
   ss << authority;
@@ -24,6 +25,9 @@ std::wstring Uri::ToString(
   }
   if (query.empty() == false) {
     ss << L"?" << ToString(query);
+  }
+  if (fragment.empty() == false) {
+    ss << L"#" << fragment;
   }
   return ss.str();
 }
