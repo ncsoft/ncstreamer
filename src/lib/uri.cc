@@ -15,7 +15,7 @@ std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path,
-    const Query &query,
+    const QueryParamVector &query,
     const std::wstring &fragment) {
   std::wstringstream ss;
   ss << scheme << L"://";
@@ -37,7 +37,7 @@ std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path,
-    const Query &query) {
+    const QueryParamVector &query) {
   return ToString(scheme, authority, path, query, L"");
 }
 
@@ -50,12 +50,12 @@ std::wstring Uri::ToString(
 }
 
 
-std::wstring Uri::ToString(const Query &query) {
+std::wstring Uri::ToString(const QueryParamVector &query) {
   if (query.empty() == true) {
     return L"";
   }
 
-  static const auto to_string = [](const Query::const_iterator &i) {
+  static const auto to_string = [](const QueryParamVector::const_iterator &i) {
     std::wstringstream ss;
     ss << i->first << L"=" << Encode(i->second);
     return ss.str();

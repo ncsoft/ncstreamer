@@ -15,21 +15,20 @@
 namespace ncstreamer {
 class Uri {
  public:
-  using QueryParameter = std::pair<std::wstring, std::wstring>;
-  using Query = std::vector<QueryParameter>;
+  using QueryParamVector = std::vector<std::pair<std::wstring, std::wstring>>;
 
   static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
-      const Query &query,
+      const QueryParamVector &query,
       const std::wstring &fragment);
 
   static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
-      const Query &query);
+      const QueryParamVector &query);
 
   static std::wstring ToString(
       const std::wstring &scheme,
@@ -37,7 +36,8 @@ class Uri {
       const std::wstring &path);
 
  private:
-  static std::wstring ToString(const Query &query);
+  static std::wstring ToString(const QueryParamVector &query);
+
   static std::wstring Encode(const std::wstring &raw);
 };
 }  // namespace ncstreamer
