@@ -40,5 +40,13 @@ StreamingService::~StreamingService() {
 }
 
 
+std::wstring StreamingService::FailMessage::ToUnknownServiceProvider(
+    const std::wstring &service_provider_id) {
+  std::wstringstream msg;
+  msg << L"unknown service provider: " << service_provider_id;
+  return msg.str();
+}
+
+
 StreamingService *StreamingService::static_instance{nullptr};
 }  // namespace ncstreamer

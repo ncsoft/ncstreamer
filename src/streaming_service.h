@@ -24,6 +24,12 @@ class StreamingService {
   StreamingService();
   virtual ~StreamingService();
 
+  class FailMessage {
+   public:
+    static std::wstring ToUnknownServiceProvider(
+        const std::wstring &service_provider_id);
+  };
+
   static StreamingService *static_instance;
 
   std::unordered_map<
