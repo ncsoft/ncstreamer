@@ -39,8 +39,7 @@ void Facebook::LogIn(
       L"www.facebook.com",
       L"/v2.8/dialog/oauth",
       {{L"client_id", kNcStreamerAppId},
-       {L"redirect_uri",
-        L"https://www.facebook.com/connect/login_success.html"},
+       {L"redirect_uri", kLoginRedirectUri.uri_string()},
        {L"display", L"popup"}});
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
@@ -55,6 +54,10 @@ void Facebook::LogIn(
   CefBrowserHost::CreateBrowser(
       window_info, facebook_client_, login_uri, browser_settings, NULL);
 }
+
+
+const Uri Facebook::kLoginRedirectUri{
+    L"https://www.facebook.com/connect/login_success.html"};
 
 
 Facebook::FacebookClient::FacebookClient() {

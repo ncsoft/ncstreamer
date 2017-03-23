@@ -8,6 +8,7 @@
 
 
 #include "src/lib/cef_fit_client.h"
+#include "src/lib/uri.h"
 #include "src/streaming_service/streaming_service_provider.h"
 
 
@@ -24,6 +25,8 @@ class Facebook : public StreamingServiceProvider {
 
  private:
   class FacebookClient;
+
+  static const Uri kLoginRedirectUri;
 
   CefRefPtr<FacebookClient> facebook_client_;
 };
