@@ -40,6 +40,25 @@ StreamingService::~StreamingService() {
 }
 
 
+void StreamingService::LogIn(
+    const std::wstring &service_provider_id,
+    HWND parent,
+    const StreamingServiceProvider::OnFailed &on_failed,
+    const StreamingServiceProvider::OnLoggedIn &on_logged_in) {
+  auto i = service_providers_.find(service_provider_id);
+  if (i == service_providers_.end()) {
+    on_failed(FailMessage::ToUnknownServiceProvider(service_provider_id));
+    return;
+  }
+  const auto &service_provider = i->second;
+
+  service_provider->LogIn(
+      parent,
+      on_failed,
+      on_logged_in);
+}
+
+
 std::wstring StreamingService::FailMessage::ToUnknownServiceProvider(
     const std::wstring &service_provider_id) {
   std::wstringstream msg;

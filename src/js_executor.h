@@ -10,6 +10,7 @@
 #include <ostream>
 #include <string>
 #include <vector>
+#include <utility>
 
 #include "boost/property_tree/ptree.hpp"
 #include "include/cef_browser.h"
@@ -27,6 +28,13 @@ class JsExecutor {
                       const std::string &func_name,
                       const std::string &arg_name,
                       const std::vector<std::string> &arg_value);
+
+  static void Execute(
+      CefRefPtr<CefBrowser> browser,
+      const std::string &func_name,
+      const std::pair<std::string, std::string> &arg0,
+      const std::pair<std::string, std::vector<std::string>> &arg1);
+
   static void ExecuteAngularJs(CefRefPtr<CefBrowser> browser,
                                const std::string &controller,
                                const std::string &func_name,

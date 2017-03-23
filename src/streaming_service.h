@@ -10,6 +10,8 @@
 #include <memory>
 #include <unordered_map>
 
+#include "windows.h"  // NOLINT
+
 #include "src/streaming_service/streaming_service_provider.h"
 
 
@@ -19,6 +21,12 @@ class StreamingService {
   static void SetUp();
   static void ShutDown();
   static StreamingService *Get();
+
+  void LogIn(
+      const std::wstring &service_provider_id,
+      HWND parent,
+      const StreamingServiceProvider::OnFailed &on_failed,
+      const StreamingServiceProvider::OnLoggedIn &on_logged_in);
 
  private:
   StreamingService();

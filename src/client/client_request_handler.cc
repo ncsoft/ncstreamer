@@ -11,6 +11,7 @@
 #include <regex>  // NOLINT
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include "Shlwapi.h"
 
@@ -18,6 +19,7 @@
 
 #include "src/js_executor.h"
 #include "src/obs.h"
+#include "src/streaming_service.h"
 
 
 namespace ncstreamer {
@@ -139,6 +141,25 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
   }
 
   const std::wstring &service_provider = provider_i->second;
+
+  StreamingService::Get()->LogIn(
+      service_provider,
+      browser->GetHost()->GetWindowHandle(),
+      [](const std::wstring &error) {
+  }, [browser](
+      const std::wstring &user_name,
+      const std::vector<std::wstring> &user_pages) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::vector<std::string> utf8_pages;
+    for (const auto &page : user_pages) {
+      utf8_pages.emplace_back(converter.to_bytes(page));
+    }
+    JsExecutor::Execute(
+        browser,
+        "cef.onResponse",
+        std::make_pair("userName", converter.to_bytes(user_name)),
+        std::make_pair("userPages", utf8_pages));
+  });
 }
 
 

@@ -51,6 +51,22 @@ void JsExecutor::Execute(
 }
 
 
+void JsExecutor::Execute(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::pair<std::string, std::string> &arg0,
+    const std::pair<std::string, std::vector<std::string>> &arg1) {
+  std::stringstream js;
+  boost::property_tree::ptree args;
+
+  args.add(arg0.first, arg0.second);
+  args.add_child(arg1.first, ToPtree(arg1.second));
+
+  AppendFunctionCall(func_name, args, &js);
+  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+}
+
+
 void JsExecutor::ExecuteAngularJs(
     CefRefPtr<CefBrowser> browser,
     const std::string &controller,
