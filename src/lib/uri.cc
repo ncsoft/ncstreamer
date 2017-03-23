@@ -13,15 +13,12 @@
 namespace ncstreamer {
 std::wstring Uri::ToString(
     const std::wstring &scheme,
-    const std::pair<std::wstring, std::wstring> &authority,
+    const std::wstring &authority,
     const std::wstring &path,
     const Query &query) {
   std::wstringstream ss;
   ss << scheme << L"://";
-  ss << authority.first;
-  if (authority.second.empty() == false) {
-    ss << L":" << authority.second;
-  }
+  ss << authority;
   if (path.empty() == false) {
     ss << path;
   }

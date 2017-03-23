@@ -20,7 +20,7 @@ class Uri {
 
   static std::wstring ToString(
       const std::wstring &scheme,
-      const std::pair<std::wstring, std::wstring> &authority,
+      const std::wstring &authority,
       const std::wstring &path,
       const Query &query);
 
