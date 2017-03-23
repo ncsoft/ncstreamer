@@ -17,8 +17,6 @@
 #include "src/client/client_life_span_handler.h"
 #include "src/client/client_load_handler.h"
 #include "src/client/client_request_handler.h"
-#include "src/lib/dimension.h"
-#include "src/lib/rectangle.h"
 
 
 namespace ncstreamer {
@@ -34,31 +32,7 @@ class Client : public CefClient {
   CefRefPtr<CefLoadHandler> GetLoadHandler() override;
   CefRefPtr<CefRequestHandler> GetRequestHandler() override;
 
-  bool OnProcessMessageReceived(
-      CefRefPtr<CefBrowser> browser,
-      CefProcessId source_process,
-      CefRefPtr<CefProcessMessage> message) override;
-
  private:
-  static int GetIncCap(int current, int preferable, std::size_t index);
-
-  bool OnRenderProcessMessageReceived(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefProcessMessage> message);
-
-  bool OnRenderProcessScrollGap(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefProcessMessage> message);
-
-  bool ResizeBrowser(
-      CefRefPtr<CefBrowser> browser,
-      Dimension<int> inc);
-
-  void ResizeBrowserSmoothly(
-      CefRefPtr<CefBrowser> browser,
-      const Rectangle &preferable,
-      std::size_t index);
-
   CefRefPtr<ClientDisplayHandler> display_handler_;
   CefRefPtr<ClientLifeSpanHandler> life_span_handler_;
   CefRefPtr<ClientLoadHandler> load_handler_;

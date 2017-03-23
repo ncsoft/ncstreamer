@@ -11,15 +11,15 @@ namespace ncstreamer {
 template <typename T>
 class Dimension {
  public:
-  Dimension(T width, T height)
+  Dimension(const T &width, const T &height)
       : width_{width}, height_{height} {}
 
-  T width() const { return width_; }
-  T height() const { return height_; }
+  const T &width() const { return width_; }
+  const T &height() const { return height_; }
   bool empty() const { return width_ == 0 && height_ == 0; }
 
-  void set_width(T width) { width_ = width; }
-  void set_height(T height) { height_ = height; }
+  void set_width(const T &width) { width_ = width; }
+  void set_height(const T &height) { height_ = height; }
 
  private:
   T width_;

@@ -11,6 +11,7 @@
 #include <regex>  // NOLINT
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include "Shlwapi.h"
 
@@ -18,6 +19,7 @@
 
 #include "src/js_executor.h"
 #include "src/obs.h"
+#include "src/streaming_service.h"
 
 
 namespace ncstreamer {
@@ -48,7 +50,7 @@ bool ClientRequestHandler::OnBeforeBrowse(CefRefPtr<CefBrowser> browser,
     std::wstring host{matches[4]};
     std::wstring path{matches[5]};
     std::wstring query{matches[7]};
-    if (scheme == L"command") {
+    if (scheme == L"cef") {
       OnCommand(host + path, ParseQuery(query), browser);
     } else {
       return false;  // proceed navigation.
@@ -101,6 +103,9 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
   using This = ClientRequestHandler;
   static const std::unordered_map<std::wstring/*command*/,
                                   CommandHandler> kCommandHandlers{
+      {L"service_provider/log_in",
+       std::bind(&This::OnCommandServiceProviderLogIn, this,
+           std::placeholders::_1, std::placeholders::_2)},
       {L"streaming/start",
        std::bind(&This::OnCommandStreamingStart, this,
            std::placeholders::_1, std::placeholders::_2)},
@@ -124,6 +129,37 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
   }
 
   i->second(args, browser);
+}
+
+
+void ClientRequestHandler::OnCommandServiceProviderLogIn(
+    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+  auto provider_i = args.find(L"serviceProvider");
+  if (provider_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::wstring &service_provider = provider_i->second;
+
+  StreamingService::Get()->LogIn(
+      service_provider,
+      browser->GetHost()->GetWindowHandle(),
+      [](const std::wstring &error) {
+  }, [browser](
+      const std::wstring &user_name,
+      const std::vector<std::wstring> &user_pages) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::vector<std::string> utf8_pages;
+    for (const auto &page : user_pages) {
+      utf8_pages.emplace_back(converter.to_bytes(page));
+    }
+    JsExecutor::Execute(
+        browser,
+        "cef.onResponse",
+        std::make_pair("userName", converter.to_bytes(user_name)),
+        std::make_pair("userPages", utf8_pages));
+  });
 }
 
 

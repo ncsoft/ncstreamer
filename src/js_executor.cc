@@ -6,6 +6,7 @@
 #include "src/js_executor.h"
 
 #include <sstream>
+#include <utility>
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4819)
@@ -14,7 +15,6 @@
 #ifdef _MSC_VER
 #pragma warning(default: 4819)
 #endif
-#include "boost/property_tree/ptree.hpp"
 
 
 namespace ncstreamer {
@@ -51,6 +51,22 @@ void JsExecutor::Execute(
 }
 
 
+void JsExecutor::Execute(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::pair<std::string, std::string> &arg0,
+    const std::pair<std::string, std::vector<std::string>> &arg1) {
+  std::stringstream js;
+  boost::property_tree::ptree args;
+
+  args.add(arg0.first, arg0.second);
+  args.add_child(arg1.first, ToPtree(arg1.second));
+
+  AppendFunctionCall(func_name, args, &js);
+  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+}
+
+
 void JsExecutor::ExecuteAngularJs(
     CefRefPtr<CefBrowser> browser,
     const std::string &controller,
@@ -70,18 +86,31 @@ void JsExecutor::AppendFunctionCall(
     const std::string &arg_name,
     const std::vector<std::string> &arg_value,
     std::ostream *out) {
-  boost::property_tree::ptree arg_value_tree;
-  for (const auto &elem : arg_value) {
-    boost::property_tree::ptree elem_node;
-    elem_node.put("", elem);
-    arg_value_tree.push_back({"", elem_node});
-  }
+  boost::property_tree::ptree args;
+  args.add_child(arg_name, ToPtree(arg_value));
 
-  boost::property_tree::ptree arg_value_root;
-  arg_value_root.add_child(arg_name, arg_value_tree);
+  AppendFunctionCall(func_name, args, out);
+}
 
+
+void JsExecutor::AppendFunctionCall(
+    const std::string &func_name,
+    const boost::property_tree::ptree &args,
+    std::ostream *out) {
   *out << func_name << "(";
-  boost::property_tree::write_json(*out, arg_value_root, false);
+  boost::property_tree::write_json(*out, args, false);
   *out << ")";
+}
+
+
+boost::property_tree::ptree
+    JsExecutor::ToPtree(const std::vector<std::string> &values) {
+  boost::property_tree::ptree arr;
+  for (const std::string &value : values) {
+    boost::property_tree::ptree node;
+    node.put("", value);
+    arr.push_back({"", node});
+  }
+  return std::move(arr);
 }
 }  // namespace ncstreamer

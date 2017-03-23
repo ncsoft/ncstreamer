@@ -26,17 +26,13 @@ void RenderLoadHandler::OnLoadEnd(
     int httpStatusCode) {
   CEF_REQUIRE_RENDERER_THREAD();
 
-  if (browser->IsPopup() == false) {
-    return;
-  }
-
   if (frame->IsValid() == false ||
       frame->IsMain() == false ||
       frame->IsFocused() == false) {
     return;
   }
 
-  Dimension<int> gap = GetScrollGap(frame);
+  const Dimension<int> &gap = GetScrollGap(frame);
   if (gap.empty() == true) {
     return;
   }
