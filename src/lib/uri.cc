@@ -5,12 +5,47 @@
 
 #include "src/lib/uri.h"
 
+#include <regex>  // NOLINT
 #include <sstream>
 
 #include "include/cef_parser.h"
 
 
 namespace ncstreamer {
+Uri::Query::Query(const std::wstring &query_string)
+    : query_string_{query_string},
+      params_{} {
+  static const std::wregex kParamPattern{LR"(([\w+%]+)=([^&]*))"};
+
+  for (std::wsregex_iterator i{
+      query_string.begin(), query_string.end(), kParamPattern};
+      i != std::wsregex_iterator{}; ++i) {
+    const auto &elem = *i;
+    const std::wstring &key = elem[1].str();
+    const std::wstring &value = elem[2].str();
+    params_.emplace(key, value);
+  }
+}
+
+
+Uri::Query::Query()
+    : query_string_{},
+      params_{} {
+}
+
+
+Uri::Query::~Query() {
+}
+
+
+const std::wstring &Uri::Query::GetParameter(const std::wstring &key) const {
+  static const std::wstring kEmpty{};
+
+  auto i = params_.find(key);
+  return (i != params_.end()) ? i->second : kEmpty;
+}
+
+
 std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,

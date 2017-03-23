@@ -8,6 +8,7 @@
 
 
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -16,6 +17,20 @@ namespace ncstreamer {
 class Uri {
  public:
   using QueryParamVector = std::vector<std::pair<std::wstring, std::wstring>>;
+
+  class Query {
+   public:
+    explicit Query(const std::wstring &query_string);
+    Query();
+    virtual ~Query();
+
+    const std::wstring &query_string() const { return query_string_; }
+    const std::wstring &GetParameter(const std::wstring &key) const;
+
+   private:
+    std::wstring query_string_;
+    std::unordered_map<std::wstring, std::wstring> params_;
+  };
 
   static std::wstring ToString(
       const std::wstring &scheme,
