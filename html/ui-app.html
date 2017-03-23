@@ -11,14 +11,14 @@
 <div class="header">
   <h1 class="title"><strong>방송</strong><span class="label-beta">Beta</span></h1>
   <div class="settings">
-    <!--<button class="btn-setting" type="button" value="Setting"></button>
-            <button class="btn-minimum" type="button" value="Minimum"></button>-->
-    <button class="btn-close" type="button" value="Close"></button>
+    <!--<button id="streaming-setting-button" class="btn-setting" type="button" value="Setting"></button>
+            <button id="streaming-minimize-button" class="btn-minimum" type="button" value="Minimum"></button>-->
+    <button id="streaming-close-button" class="btn-close" type="button" value="Close"></button>
   </div>
 </div>
 
 <!--login page-->
-<div class="contents">
+<div id="login-page-panel" class="contents">
   <section class="connect-platform">
     <header>
       <h2>플랫폼 연결</h2>
@@ -27,20 +27,20 @@
   </section>
 </div>
 <div class="footer">
-  <button class="btn-connect" onclick="onClickFacebook()">페이스북 연결</button>
+  <button id="streaming-login-button" class="btn-connect" onclick="onClickFacebook()">페이스북 연결</button>
 </div>
 
 <!--main page-->
-<div class="contents">
+<div id="main-page-panel" class="contents">
   <!-- 페이스북정보 -->
   <section class="nc-streamer">
     <div class="profile">
-      <span class="name fb">프로필이름열자말줄임</span>
+      <span id="provider-user-name" class="name fb">프로필이름열자말줄임</span>
       <!-- 방송 중 아닐때 -->
       <!--<a href="#" class="btn-view-streaming">방송 보기</a>-->
-      <!-- 방송 중 --><a href="#" class="btn-view-streaming live">방송 보기</a>
+      <!-- 방송 중 --><a id="provider-page-link" href="#" class="btn-view-streaming live">방송 보기</a>
     </div>
-    <div data-ui="custom-select" id="custom-select1">
+    <div id="streaming-user-page-select" data-ui="custom-select">
       <span class="opener">게시물 등록 장소</span>
       <ul>
         <li data-value="1">내 타임라인에 공유</li>
@@ -66,7 +66,7 @@
                 <input type="hidden" readonly="" value="" id="select-output-1-1">
             </div>-->
     <!-- 내 타임라인에 공유 -->
-    <div data-ui="custom-select" id="custom-select2">
+    <div id="streaming-page-access" data-ui="custom-select">
       <span class="opener">게시물 공개 범위</span>
       <ul>
         <li data-value="1">전체 공개</li>
@@ -86,7 +86,7 @@
     <!-- 실행 중인 게임이 없는 경우 <div class="message game">방송할 게임을 실행해 주세요.</div>-->
     <!-- 1개인 경우 <div class="message">방송할 게임을 실행해 주세요.</div>-->
     <!-- 2개 이상인 경우 -->
-    <div data-ui="custom-select" id="custom-select3">
+    <div id="streaming-game-select" data-ui="custom-select">
       <span class="opener">{실행 중인 게임 1}</span>
       <ul>
         <li data-value="1">{실행 중인 게임 1}</li>
@@ -96,7 +96,7 @@
     </div>
     <div class="streaming-title">
       <h3>방송 제목</h3>
-      <div class="broadcast-title"><textarea rows="2" id="main-broadcast-title" placeholder="최대 100자까지 입력할 수 있습니다."></textarea></div>
+      <div class="broadcast-title"><textarea id="streaming-feed-description" rows="2" id="main-broadcast-title" placeholder="최대 100자까지 입력할 수 있습니다."></textarea></div>
     </div>
   </section>
   <!-- 간편 설정 -->
@@ -107,8 +107,8 @@
       <label for="chkWebcam">웹캠 사용</label>
     </div>
     <div class="checkbox mic">
-      <input type="checkbox" id="chkMic" />
-      <label class="on" for="chkMic">마이크 사용</label>
+      <input id="streaming-mic-checkbox" type="checkbox"/>
+      <label class="on" for="streaming-mic-checkbox">마이크 사용</label>
     </div>
   </section>
 </div>
@@ -117,7 +117,7 @@
   <!--<div class="msg status-ready">방송 준비 완료</div>-->
   <!--<button class="btn-start" disabled="disabled">방송 시작</button>-->
   <!--<button class="btn-start loading" disabled="disabled">방송 준비 중</button>-->
-  <button class="btn-start">방송 시작</button>
+  <button id="streaming-control-button" class="btn-start">방송 시작</button>
 </div>
 </div>
 
