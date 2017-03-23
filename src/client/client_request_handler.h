@@ -37,6 +37,8 @@ class ClientRequestHandler : public CefRequestHandler {
   // command handlers
   using CommandHandler = std::function<void (
       const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser)>;
+  void OnCommandServiceProviderLogIn(
+      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
   void OnCommandStreamingStart(
       const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
   void OnCommandStreamingStop(

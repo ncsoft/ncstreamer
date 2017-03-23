@@ -101,6 +101,9 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
   using This = ClientRequestHandler;
   static const std::unordered_map<std::wstring/*command*/,
                                   CommandHandler> kCommandHandlers{
+      {L"service_provider/log_in",
+       std::bind(&This::OnCommandServiceProviderLogIn, this,
+           std::placeholders::_1, std::placeholders::_2)},
       {L"streaming/start",
        std::bind(&This::OnCommandStreamingStart, this,
            std::placeholders::_1, std::placeholders::_2)},
@@ -124,6 +127,18 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
   }
 
   i->second(args, browser);
+}
+
+
+void ClientRequestHandler::OnCommandServiceProviderLogIn(
+    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+  auto provider_i = args.find(L"serviceProvider");
+  if (provider_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::wstring &service_provider = provider_i->second;
 }
 
 
