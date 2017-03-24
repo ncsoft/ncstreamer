@@ -92,12 +92,12 @@ Uri::Uri(
     const std::wstring &path,
     const Query &query,
     const std::wstring &fragment)
-    : uri_string_{ToString(scheme, authority, path, query, fragment)},
-      scheme_{scheme},
+    : scheme_{scheme},
       authority_{authority},
       path_{path},
       query_{query},
-      fragment_{fragment} {
+      fragment_{fragment},
+      uri_string_{ToString(scheme, authority, path, query, fragment)} {
 }
 
 
@@ -106,12 +106,12 @@ Uri::Uri(
     const std::wstring &authority,
     const std::wstring &path,
     const Query &query)
-    : uri_string_{ToString(scheme, authority, path, query, L"")},
-      scheme_{scheme},
+    : scheme_{scheme},
       authority_{authority},
       path_{path},
       query_{query},
-      fragment_{} {
+      fragment_{},
+      uri_string_{ToString(scheme, authority, path, query, L"")} {
 }
 
 
@@ -119,22 +119,22 @@ Uri::Uri(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path)
-    : uri_string_{ToString(scheme, authority, path, {}, L"")},
-      scheme_{scheme},
+    : scheme_{scheme},
       authority_{authority},
       path_{path},
       query_{},
-      fragment_{} {
+      fragment_{},
+      uri_string_{ToString(scheme, authority, path, {}, L"")} {
 }
 
 
 Uri::Uri(const std::wstring &uri_string)
-    : uri_string_{uri_string},
-      scheme_{},
+    : scheme_{},
       authority_{},
       path_{},
       query_{},
-      fragment_{} {
+      fragment_{},
+      uri_string_{uri_string} {
   // from https://tools.ietf.org/html/rfc3986#appendix-B
   static const std::wregex kUriPattern{
       LR"(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)"};
