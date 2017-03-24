@@ -16,10 +16,10 @@
 namespace ncstreamer {
 class Uri {
  public:
-  using QueryParamVector = std::vector<std::pair<std::wstring, std::wstring>>;
-
   class Query {
    public:
+    using ParamVector = std::vector<std::pair<std::wstring, std::wstring>>;
+
     explicit Query(const std::wstring &query_string);
     Query();
     virtual ~Query();
@@ -37,25 +37,25 @@ class Uri {
 
   static std::wstring ToString(
       const std::wstring &scheme_authority_path,
-      const QueryParamVector &query,
+      const Query::ParamVector &query,
       const std::wstring &fragment);
 
   static std::wstring ToString(
       const std::wstring &scheme_authority_path,
-      const QueryParamVector &query);
+      const Query::ParamVector &query);
 
   static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
-      const QueryParamVector &query,
+      const Query::ParamVector &query,
       const std::wstring &fragment);
 
   static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
-      const QueryParamVector &query);
+      const Query::ParamVector &query);
 
   static std::wstring ToString(
       const std::wstring &scheme,
@@ -70,7 +70,7 @@ class Uri {
   const std::wstring &fragment() const { return fragment_; }
 
  private:
-  static std::wstring ToString(const QueryParamVector &query);
+  static std::wstring ToString(const Query::ParamVector &query);
 
   static std::wstring Encode(const std::wstring &raw);
 
