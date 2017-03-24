@@ -81,6 +81,11 @@ std::wstring Uri::Query::Encode(const std::wstring &raw) {
 }
 
 
+std::size_t Uri::Hasher::operator()(const Uri &uri) const {
+  return std::hash<std::wstring>()(uri.uri_string());
+}
+
+
 Uri::Uri(
     const std::wstring &scheme,
     const std::wstring &authority,

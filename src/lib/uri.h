@@ -37,6 +37,11 @@ class Uri {
     std::unordered_map<std::wstring, std::wstring> params_;
   };
 
+  class Hasher {
+   public:
+    std::size_t operator()(const Uri &uri) const;
+  };
+
   Uri(const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
