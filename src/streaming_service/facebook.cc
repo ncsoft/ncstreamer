@@ -35,9 +35,7 @@ void Facebook::LogIn(
   }()};
 
   const std::wstring &login_uri = Uri::ToString(
-      L"https",
-      L"www.facebook.com",
-      L"/v2.8/dialog/oauth",
+      L"https://www.facebook.com/v2.8/dialog/oauth",
       {{L"client_id", kNcStreamerAppId},
        {L"redirect_uri", kLoginRedirectUri.uri_string()},
        {L"response_type", L"token"},
