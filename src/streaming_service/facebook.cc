@@ -6,9 +6,21 @@
 #include "src/streaming_service/facebook.h"
 
 #include <cassert>
+#include <codecvt>
 #include <functional>
+#include <locale>
+#include <string>
 #include <unordered_map>
 
+#ifdef _MSC_VER
+#pragma warning(disable: 4819)
+#endif
+#include "boost/property_tree/json_parser.hpp"
+#ifdef _MSC_VER
+#pragma warning(default: 4819)
+#endif
+
+#include "boost/property_tree/ptree.hpp"
 #include "include/cef_browser.h"
 #include "include/wrapper/cef_helpers.h"
 
@@ -67,6 +79,8 @@ void Facebook::LogIn(
 
 Facebook::FacebookClient::FacebookClient()
     : access_token_{},
+      me_id_{},
+      me_name_{},
       on_failed_{},
       on_logged_in_{} {
 }
@@ -206,7 +220,21 @@ bool Facebook::FacebookClient::OnGetMe(
   CefRefPtr<Visitor> visitor{new Visitor{[this](const std::wstring &str) {
     OutputDebugString((str + L"\r\n").c_str());
 
-    // TODO(khpark): extract user info.
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::string utf8 = converter.to_bytes(str);
+
+    boost::property_tree::ptree me;
+    std::stringstream me_ss{utf8};
+    try {
+      boost::property_tree::read_json(me_ss, me);
+      me_id_ = converter.from_bytes(me.get<std::string>("id"));
+      me_name_ = converter.from_bytes(me.get<std::string>("name"));
+    } catch (const std::exception &/*e*/) {
+      me_id_ = L"";
+      me_name_ = L"";
+    }
+    OutputDebugString((me_id_ + L"\r\n").c_str());
+    OutputDebugString((me_name_ + L"\r\n").c_str());
   }}};
 
   frame->GetText(visitor);

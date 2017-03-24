@@ -81,6 +81,8 @@ class Facebook::FacebookClient
       const Uri &uri);
 
   std::wstring access_token_;
+  std::wstring me_id_;
+  std::wstring me_name_;
 
   OnFailed on_failed_;
   OnLoggedIn on_logged_in_;
