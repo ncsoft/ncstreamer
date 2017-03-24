@@ -43,4 +43,10 @@ const Uri &FacebookApi::Login::Redirect::static_uri() {
   static const Uri kUri{kScheme, kAuthority, L"/connect/login_success.html"};
   return kUri;
 }
+
+
+std::wstring FacebookApi::Login::Redirect::ExtractAccessToken(
+    const Uri::Query &query) {
+  return query.GetParameter(L"access_token");
+}
 }  // namespace ncstreamer

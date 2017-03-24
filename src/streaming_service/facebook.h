@@ -7,6 +7,8 @@
 #define SRC_STREAMING_SERVICE_FACEBOOK_H_
 
 
+#include "include/cef_request_handler.h"
+
 #include "src/lib/cef_fit_client.h"
 #include "src/lib/uri.h"
 #include "src/streaming_service/streaming_service_provider.h"
@@ -30,7 +32,9 @@ class Facebook : public StreamingServiceProvider {
 };
 
 
-class Facebook::FacebookClient : public CefFitClient {
+class Facebook::FacebookClient
+    : public CefFitClient,
+      public CefRequestHandler {
  public:
   FacebookClient();
   virtual ~FacebookClient();
@@ -39,7 +43,27 @@ class Facebook::FacebookClient : public CefFitClient {
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 
+ protected:
+  // overrides CefClient
+  CefRefPtr<CefRequestHandler> GetRequestHandler() override;
+
+  // overrides CefRequestHandler
+  bool OnBeforeBrowse(
+      CefRefPtr<CefBrowser> browser,
+      CefRefPtr<CefFrame> frame,
+      CefRefPtr<CefRequest> request,
+      bool is_redirect) override;
+
  private:
+  bool OnAccessToken(
+      CefRefPtr<CefBrowser> browser,
+      CefRefPtr<CefFrame> frame,
+      CefRefPtr<CefRequest> request,
+      bool is_redirect,
+      const Uri &uri);
+
+  std::wstring access_token_;
+
   OnFailed on_failed_;
   OnLoggedIn on_logged_in_;
 

@@ -49,6 +49,8 @@ class FacebookApi::Login::Oauth {
 class FacebookApi::Login::Redirect {
  public:
   static const Uri &static_uri();
+
+  static std::wstring ExtractAccessToken(const Uri::Query &query);
 };
 }  // namespace ncstreamer
 
