@@ -172,13 +172,6 @@ std::wstring Uri::ToString(
 
 
 std::wstring Uri::ToString(
-    const std::wstring &scheme_authority_path,
-    const Query &query) {
-  return ToString(scheme_authority_path, query, L"");
-}
-
-
-std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path,
@@ -191,22 +184,5 @@ std::wstring Uri::ToString(
     ss << path;
   }
   return ToString(ss.str(), query, fragment);
-}
-
-
-std::wstring Uri::ToString(
-    const std::wstring &scheme,
-    const std::wstring &authority,
-    const std::wstring &path,
-    const Query &query) {
-  return ToString(scheme, authority, path, query, L"");
-}
-
-
-std::wstring Uri::ToString(
-    const std::wstring &scheme,
-    const std::wstring &authority,
-    const std::wstring &path) {
-  return ToString(scheme, authority, path, {}, L"");
 }
 }  // namespace ncstreamer

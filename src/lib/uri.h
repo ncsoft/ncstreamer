@@ -63,26 +63,11 @@ class Uri {
       const std::wstring &fragment);
 
   static std::wstring ToString(
-      const std::wstring &scheme_authority_path,
-      const Query &query);
-
-  static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
       const Query &query,
       const std::wstring &fragment);
-
-  static std::wstring ToString(
-      const std::wstring &scheme,
-      const std::wstring &authority,
-      const std::wstring &path,
-      const Query &query);
-
-  static std::wstring ToString(
-      const std::wstring &scheme,
-      const std::wstring &authority,
-      const std::wstring &path);
 
   const std::wstring &scheme() const { return scheme_; }
   const std::wstring &authority() const { return authority_; }
