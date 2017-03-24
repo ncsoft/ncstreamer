@@ -80,7 +80,7 @@ std::wstring Uri::ToString(
   std::wstringstream ss;
   ss << scheme_authority_path;
   if (query.empty() == false) {
-    ss << L"?" << ToString(query);
+    ss << L"?" << Query::ToString(query);
   }
   if (fragment.empty() == false) {
     ss << L"#" << fragment;
@@ -129,13 +129,12 @@ std::wstring Uri::ToString(
 }
 
 
-std::wstring Uri::ToString(const Query::ParamVector &query) {
+std::wstring Uri::Query::ToString(const ParamVector &query) {
   if (query.empty() == true) {
     return L"";
   }
 
-  static const auto to_string = [](
-      const Query::ParamVector::const_iterator &i) {
+  static const auto to_string = [](const ParamVector::const_iterator &i) {
     std::wstringstream ss;
     ss << i->first << L"=" << Encode(i->second);
     return ss.str();
@@ -151,7 +150,7 @@ std::wstring Uri::ToString(const Query::ParamVector &query) {
 }
 
 
-std::wstring Uri::Encode(const std::wstring &raw) {
+std::wstring Uri::Query::Encode(const std::wstring &raw) {
   return ::CefURIEncode(raw, false).c_str();
 }
 }  // namespace ncstreamer

@@ -24,10 +24,14 @@ class Uri {
     Query();
     virtual ~Query();
 
+    static std::wstring ToString(const ParamVector &query);
+
     const std::wstring &query_string() const { return query_string_; }
     const std::wstring &GetParameter(const std::wstring &key) const;
 
    private:
+    static std::wstring Encode(const std::wstring &raw);
+
     std::wstring query_string_;
     std::unordered_map<std::wstring, std::wstring> params_;
   };
@@ -70,10 +74,6 @@ class Uri {
   const std::wstring &fragment() const { return fragment_; }
 
  private:
-  static std::wstring ToString(const Query::ParamVector &query);
-
-  static std::wstring Encode(const std::wstring &raw);
-
   const std::wstring uri_string_;
 
   std::wstring scheme_;
