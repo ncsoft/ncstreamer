@@ -20,6 +20,7 @@ class Uri {
    public:
     using ParamVector = std::vector<std::pair<std::wstring, std::wstring>>;
 
+    explicit Query(const ParamVector &params);
     explicit Query(const std::wstring &query_string);
     Query();
     virtual ~Query();

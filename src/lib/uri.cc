@@ -12,6 +12,15 @@
 
 
 namespace ncstreamer {
+Uri::Query::Query(const ParamVector &params)
+    : query_string_{ToString(params)},
+      params_{} {
+  for (const auto &param : params) {
+    params_.emplace(param);
+  }
+}
+
+
 Uri::Query::Query(const std::wstring &query_string)
     : query_string_{query_string},
       params_{} {
