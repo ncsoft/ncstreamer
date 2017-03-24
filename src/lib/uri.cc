@@ -38,11 +38,37 @@ Uri::Query::~Query() {
 }
 
 
+std::wstring Uri::Query::ToString(const ParamVector &query) {
+  if (query.empty() == true) {
+    return L"";
+  }
+
+  static const auto to_string = [](const ParamVector::const_iterator &i) {
+    std::wstringstream ss;
+    ss << i->first << L"=" << Encode(i->second);
+    return ss.str();
+  };
+
+  std::wstringstream ss;
+  auto i = query.begin();
+  ss << to_string(i);
+  for (++i; i != query.end(); ++i) {
+    ss << L"&" << to_string(i);
+  }
+  return ss.str();
+}
+
+
 const std::wstring &Uri::Query::GetParameter(const std::wstring &key) const {
   static const std::wstring kEmpty{};
 
   auto i = params_.find(key);
   return (i != params_.end()) ? i->second : kEmpty;
+}
+
+
+std::wstring Uri::Query::Encode(const std::wstring &raw) {
+  return ::CefURIEncode(raw, false).c_str();
 }
 
 
@@ -126,31 +152,5 @@ std::wstring Uri::ToString(
     const std::wstring &authority,
     const std::wstring &path) {
   return ToString(scheme, authority, path, {}, L"");
-}
-
-
-std::wstring Uri::Query::ToString(const ParamVector &query) {
-  if (query.empty() == true) {
-    return L"";
-  }
-
-  static const auto to_string = [](const ParamVector::const_iterator &i) {
-    std::wstringstream ss;
-    ss << i->first << L"=" << Encode(i->second);
-    return ss.str();
-  };
-
-  std::wstringstream ss;
-  auto i = query.begin();
-  ss << to_string(i);
-  for (++i; i != query.end(); ++i) {
-    ss << L"&" << to_string(i);
-  }
-  return ss.str();
-}
-
-
-std::wstring Uri::Query::Encode(const std::wstring &raw) {
-  return ::CefURIEncode(raw, false).c_str();
 }
 }  // namespace ncstreamer
