@@ -57,6 +57,14 @@ class Uri {
   explicit Uri(const std::wstring &uri_string);
   virtual ~Uri();
 
+  const std::wstring &scheme() const { return scheme_; }
+  const std::wstring &authority() const { return authority_; }
+  const std::wstring &path() const { return path_; }
+  const Query &query() const { return query_; }
+  const std::wstring &fragment() const { return fragment_; }
+  const std::wstring &uri_string() const { return uri_string_; }
+
+ private:
   static std::wstring ToString(
       const std::wstring &scheme_authority_path,
       const Query &query,
@@ -69,14 +77,6 @@ class Uri {
       const Query &query,
       const std::wstring &fragment);
 
-  const std::wstring &scheme() const { return scheme_; }
-  const std::wstring &authority() const { return authority_; }
-  const std::wstring &path() const { return path_; }
-  const Query &query() const { return query_; }
-  const std::wstring &fragment() const { return fragment_; }
-  const std::wstring &uri_string() const { return uri_string_; }
-
- private:
   std::wstring scheme_;
   std::wstring authority_;
   std::wstring path_;
