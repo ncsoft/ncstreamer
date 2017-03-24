@@ -96,6 +96,33 @@ Uri::Uri(
 }
 
 
+Uri::Uri(
+    const std::wstring &scheme,
+    const std::wstring &authority,
+    const std::wstring &path,
+    const Query &query)
+    : uri_string_{ToString(scheme, authority, path, query, L"")},
+      scheme_{scheme},
+      authority_{authority},
+      path_{path},
+      query_{query},
+      fragment_{} {
+}
+
+
+Uri::Uri(
+    const std::wstring &scheme,
+    const std::wstring &authority,
+    const std::wstring &path)
+    : uri_string_{ToString(scheme, authority, path, {}, L"")},
+      scheme_{scheme},
+      authority_{authority},
+      path_{path},
+      query_{},
+      fragment_{} {
+}
+
+
 Uri::Uri(const std::wstring &uri_string)
     : uri_string_{uri_string},
       scheme_{},

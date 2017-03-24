@@ -42,6 +42,13 @@ class Uri {
       const std::wstring &path,
       const Query &query,
       const std::wstring &fragment);
+  Uri(const std::wstring &scheme,
+      const std::wstring &authority,
+      const std::wstring &path,
+      const Query &query);
+  Uri(const std::wstring &scheme,
+      const std::wstring &authority,
+      const std::wstring &path);
   explicit Uri(const std::wstring &uri_string);
   virtual ~Uri();
 
