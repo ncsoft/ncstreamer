@@ -49,4 +49,29 @@ std::wstring FacebookApi::Login::Redirect::ExtractAccessToken(
     const Uri::Query &query) {
   return query.GetParameter(L"access_token");
 }
+
+
+const wchar_t *FacebookApi::Graph::kAuthority{L"graph.facebook.com"};
+
+
+const Uri &FacebookApi::Graph::Me::static_uri() {
+  static const Uri kUri{kScheme, kAuthority, static_path()};
+  return kUri;
+}
+
+
+Uri FacebookApi::Graph::Me::BuildUri(const std::wstring &access_token) {
+  return {kScheme, kAuthority, static_path(), Uri::Query{{
+      {L"access_token", access_token}}}};
+}
+
+
+const std::wstring &FacebookApi::Graph::Me::static_path() {
+  static const std::wstring kPath{[]() {
+    std::wstringstream ss;
+    ss << L"/" << kVersion << L"/me";
+    return ss.str();
+  }()};
+  return kPath;
+}
 }  // namespace ncstreamer

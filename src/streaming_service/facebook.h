@@ -34,6 +34,7 @@ class Facebook : public StreamingServiceProvider {
 
 class Facebook::FacebookClient
     : public CefFitClient,
+      public CefLoadHandler,
       public CefRequestHandler {
  public:
   FacebookClient();
@@ -45,7 +46,14 @@ class Facebook::FacebookClient
 
  protected:
   // overrides CefClient
+  CefRefPtr<CefLoadHandler> GetLoadHandler() override;
   CefRefPtr<CefRequestHandler> GetRequestHandler() override;
+
+  // overrides CefLoadHandler
+  void OnLoadEnd(
+      CefRefPtr<CefBrowser> browser,
+      CefRefPtr<CefFrame> frame,
+      int httpStatusCode) override;
 
   // overrides CefRequestHandler
   bool OnBeforeBrowse(
@@ -55,6 +63,16 @@ class Facebook::FacebookClient
       bool is_redirect) override;
 
  private:
+  void GetMe(
+      const CefRefPtr<CefFrame> &frame,
+      const std::wstring &access_token);
+
+  bool OnGetMe(
+      CefRefPtr<CefBrowser> browser,
+      CefRefPtr<CefFrame> frame,
+      int http_status_code,
+      const Uri &uri);
+
   bool OnAccessToken(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefFrame> frame,

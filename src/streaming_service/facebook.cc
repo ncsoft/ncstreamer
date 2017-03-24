@@ -84,9 +84,54 @@ void Facebook::FacebookClient::SetHandlers(
 }
 
 
+CefRefPtr<CefLoadHandler>
+    Facebook::FacebookClient::GetLoadHandler() {
+  return this;
+}
+
+
 CefRefPtr<CefRequestHandler>
     Facebook::FacebookClient::GetRequestHandler() {
   return this;
+}
+
+
+void Facebook::FacebookClient::OnLoadEnd(
+    CefRefPtr<CefBrowser> browser,
+    CefRefPtr<CefFrame> frame,
+    int http_status_code) {
+  CEF_REQUIRE_UI_THREAD();
+
+  if (frame->IsMain() == false) {
+    return;
+  }
+
+  using Handler = std::function<bool(
+      CefRefPtr<CefBrowser> browser,
+      CefRefPtr<CefFrame> frame,
+      int http_status_code,
+      const Uri &uri)>;
+
+  using Api = FacebookApi;
+  using This = Facebook::FacebookClient;
+
+  static const std::unordered_map<std::wstring, Handler> kHandlers{
+      {Api::Graph::Me::static_uri().scheme_authority_path(),
+       std::bind(&This::OnGetMe, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3,
+           std::placeholders::_4)}};
+
+  Uri uri{frame->GetURL()};
+  OutputDebugString((uri.uri_string() + L"\r\n").c_str());
+
+  auto i = kHandlers.find(uri.scheme_authority_path());
+  if (i == kHandlers.end()) {
+    return;
+  }
+
+  i->second(browser, frame, http_status_code, uri);
 }
 
 
@@ -129,6 +174,43 @@ bool Facebook::FacebookClient::OnBeforeBrowse(
   }
 
   return i->second(browser, frame, request, is_redirect, uri);
+}
+
+
+void Facebook::FacebookClient::GetMe(
+    const CefRefPtr<CefFrame> &frame,
+    const std::wstring &access_token) {
+  Uri me_uri{FacebookApi::Graph::Me::BuildUri(access_token)};
+  frame->LoadURL(me_uri.uri_string());
+}
+
+
+bool Facebook::FacebookClient::OnGetMe(
+    CefRefPtr<CefBrowser> browser,
+    CefRefPtr<CefFrame> frame,
+    int /*http_status_code*/,
+    const Uri &uri) {
+  CEF_REQUIRE_UI_THREAD();
+
+  class Visitor : public CefStringVisitor {
+   public:
+    using OnVisit = std::function<void(const std::wstring &str)>;
+    explicit Visitor(const OnVisit &on_visit) : on_visit_{on_visit} {}
+   protected:
+    void Visit(const CefString &str) override { on_visit_(str); }
+   private:
+    OnVisit on_visit_;
+    IMPLEMENT_REFCOUNTING(Visitor);
+  };
+
+  CefRefPtr<Visitor> visitor{new Visitor{[this](const std::wstring &str) {
+    OutputDebugString((str + L"\r\n").c_str());
+
+    // TODO(khpark): extract user info.
+  }}};
+
+  frame->GetText(visitor);
+  return true;
 }
 
 
