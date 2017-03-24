@@ -120,6 +120,7 @@
     <ClCompile Include="..\src\render_process_handler.cc" />
     <ClCompile Include="..\src\render_process_message_types.cpp" />
     <ClCompile Include="..\src\streaming_service\facebook.cc" />
+    <ClCompile Include="..\src\streaming_service\facebook_api.cc" />
     <ClCompile Include="..\src\streaming_service\streaming_service_provider.cc" />
     <ClCompile Include="..\src\streaming_service.cc" />
     <ClCompile Include="..\src_imported\from_obs_studio_ui\obs-app.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="..\src\render_process_message_types.h" />
     <ClInclude Include="..\src\resource.h" />
     <ClInclude Include="..\src\streaming_service\facebook.h" />
+    <ClInclude Include="..\src\streaming_service\facebook_api.h" />
     <ClInclude Include="..\src\streaming_service\streaming_service_provider.h" />
     <ClInclude Include="..\src\streaming_service.h" />
     <ClInclude Include="..\src_imported\from_obs_studio_ui\obs-app.hpp" />
