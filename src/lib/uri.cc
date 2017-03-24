@@ -110,12 +110,12 @@ Uri::~Uri() {
 
 std::wstring Uri::ToString(
     const std::wstring &scheme_authority_path,
-    const Query::ParamVector &query,
+    const Query &query,
     const std::wstring &fragment) {
   std::wstringstream ss;
   ss << scheme_authority_path;
-  if (query.empty() == false) {
-    ss << L"?" << Query::ToString(query);
+  if (query.query_string().empty() == false) {
+    ss << L"?" << query.query_string();
   }
   if (fragment.empty() == false) {
     ss << L"#" << fragment;
@@ -126,7 +126,7 @@ std::wstring Uri::ToString(
 
 std::wstring Uri::ToString(
     const std::wstring &scheme_authority_path,
-    const Query::ParamVector &query) {
+    const Query &query) {
   return ToString(scheme_authority_path, query, L"");
 }
 
@@ -135,7 +135,7 @@ std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path,
-    const Query::ParamVector &query,
+    const Query &query,
     const std::wstring &fragment) {
   std::wstringstream ss;
   ss << scheme << L"://";
@@ -151,7 +151,7 @@ std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path,
-    const Query::ParamVector &query) {
+    const Query &query) {
   return ToString(scheme, authority, path, query, L"");
 }
 

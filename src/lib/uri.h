@@ -42,25 +42,25 @@ class Uri {
 
   static std::wstring ToString(
       const std::wstring &scheme_authority_path,
-      const Query::ParamVector &query,
+      const Query &query,
       const std::wstring &fragment);
 
   static std::wstring ToString(
       const std::wstring &scheme_authority_path,
-      const Query::ParamVector &query);
+      const Query &query);
 
   static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
-      const Query::ParamVector &query,
+      const Query &query,
       const std::wstring &fragment);
 
   static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,
-      const Query::ParamVector &query);
+      const Query &query);
 
   static std::wstring ToString(
       const std::wstring &scheme,

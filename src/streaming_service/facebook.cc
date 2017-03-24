@@ -36,10 +36,11 @@ void Facebook::LogIn(
 
   const std::wstring &login_uri = Uri::ToString(
       L"https://www.facebook.com/v2.8/dialog/oauth",
-      {{L"client_id", kNcStreamerAppId},
-       {L"redirect_uri", kLoginRedirectUri.uri_string()},
-       {L"response_type", L"token"},
-       {L"display", L"popup"}});
+      Uri::Query{{
+          {L"client_id", kNcStreamerAppId},
+          {L"redirect_uri", kLoginRedirectUri.uri_string()},
+          {L"response_type", L"token"},
+          {L"display", L"popup"}}});
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
