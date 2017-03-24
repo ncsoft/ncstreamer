@@ -40,6 +40,7 @@ void Facebook::LogIn(
       L"/v2.8/dialog/oauth",
       {{L"client_id", kNcStreamerAppId},
        {L"redirect_uri", kLoginRedirectUri.uri_string()},
+       {L"response_type", L"token"},
        {L"display", L"popup"}});
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
