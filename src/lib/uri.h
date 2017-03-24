@@ -41,6 +41,10 @@ class Uri {
       const std::wstring &fragment);
 
   static std::wstring ToString(
+      const std::wstring &scheme_authority_path,
+      const QueryParamVector &query);
+
+  static std::wstring ToString(
       const std::wstring &scheme,
       const std::wstring &authority,
       const std::wstring &path,

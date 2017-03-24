@@ -90,6 +90,13 @@ std::wstring Uri::ToString(
 
 
 std::wstring Uri::ToString(
+    const std::wstring &scheme_authority_path,
+    const QueryParamVector &query) {
+  return ToString(scheme_authority_path, query, L"");
+}
+
+
+std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path,
