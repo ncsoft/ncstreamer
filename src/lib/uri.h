@@ -37,6 +37,11 @@ class Uri {
     std::unordered_map<std::wstring, std::wstring> params_;
   };
 
+  Uri(const std::wstring &scheme,
+      const std::wstring &authority,
+      const std::wstring &path,
+      const Query &query,
+      const std::wstring &fragment);
   explicit Uri(const std::wstring &uri_string);
   virtual ~Uri();
 

@@ -81,6 +81,21 @@ std::wstring Uri::Query::Encode(const std::wstring &raw) {
 }
 
 
+Uri::Uri(
+    const std::wstring &scheme,
+    const std::wstring &authority,
+    const std::wstring &path,
+    const Query &query,
+    const std::wstring &fragment)
+    : uri_string_{ToString(scheme, authority, path, query, fragment)},
+      scheme_{scheme},
+      authority_{authority},
+      path_{path},
+      query_{query},
+      fragment_{fragment} {
+}
+
+
 Uri::Uri(const std::wstring &uri_string)
     : uri_string_{uri_string},
       scheme_{},
