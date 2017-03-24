@@ -74,6 +74,22 @@ Uri::~Uri() {
 
 
 std::wstring Uri::ToString(
+    const std::wstring &scheme_authority_path,
+    const QueryParamVector &query,
+    const std::wstring &fragment) {
+  std::wstringstream ss;
+  ss << scheme_authority_path;
+  if (query.empty() == false) {
+    ss << L"?" << ToString(query);
+  }
+  if (fragment.empty() == false) {
+    ss << L"#" << fragment;
+  }
+  return ss.str();
+}
+
+
+std::wstring Uri::ToString(
     const std::wstring &scheme,
     const std::wstring &authority,
     const std::wstring &path,
@@ -85,13 +101,7 @@ std::wstring Uri::ToString(
   if (path.empty() == false) {
     ss << path;
   }
-  if (query.empty() == false) {
-    ss << L"?" << ToString(query);
-  }
-  if (fragment.empty() == false) {
-    ss << L"#" << fragment;
-  }
-  return ss.str();
+  return ToString(ss.str(), query, fragment);
 }
 
 
