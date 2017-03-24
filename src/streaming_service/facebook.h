@@ -26,8 +26,6 @@ class Facebook : public StreamingServiceProvider {
  private:
   class FacebookClient;
 
-  static const Uri kLoginRedirectUri;
-
   CefRefPtr<FacebookClient> facebook_client_;
 };
 

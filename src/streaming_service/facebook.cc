@@ -10,6 +10,7 @@
 #include "src/lib/cef_types.h"
 #include "src/lib/uri.h"
 #include "src/lib/windows_types.h"
+#include "src/streaming_service/facebook_api.h"
 
 
 namespace ncstreamer {
@@ -34,13 +35,11 @@ void Facebook::LogIn(
     return kAlpha;
   }()};
 
-  const std::wstring &login_uri = Uri::ToString(
-      L"https://www.facebook.com/v2.8/dialog/oauth",
-      Uri::Query{{
-          {L"client_id", kNcStreamerAppId},
-          {L"redirect_uri", kLoginRedirectUri.uri_string()},
-          {L"response_type", L"token"},
-          {L"display", L"popup"}}});
+  static const Uri kLoginUri{FacebookApi::Login::Oauth::BuildUri(
+      kNcStreamerAppId,
+      FacebookApi::Login::Redirect::static_uri(),
+      L"token",
+      L"popup")};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
@@ -53,12 +52,12 @@ void Facebook::LogIn(
 
   facebook_client_->SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
-      window_info, facebook_client_, login_uri, browser_settings, NULL);
+      window_info,
+      facebook_client_,
+      kLoginUri.uri_string(),
+      browser_settings,
+      NULL);
 }
-
-
-const Uri Facebook::kLoginRedirectUri{
-    L"https://www.facebook.com/connect/login_success.html"};
 
 
 Facebook::FacebookClient::FacebookClient()
