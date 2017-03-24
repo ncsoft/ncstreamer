@@ -62,6 +62,9 @@ class Uri {
   const std::wstring &path() const { return path_; }
   const Query &query() const { return query_; }
   const std::wstring &fragment() const { return fragment_; }
+  const std::wstring &scheme_authority_path() const {
+    return scheme_authority_path_;
+  }
   const std::wstring &uri_string() const { return uri_string_; }
 
  private:
@@ -83,6 +86,7 @@ class Uri {
   Query query_;
   std::wstring fragment_;
 
+  std::wstring scheme_authority_path_;
   std::wstring uri_string_;
 };
 }  // namespace ncstreamer

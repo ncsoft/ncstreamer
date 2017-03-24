@@ -97,7 +97,8 @@ Uri::Uri(
       path_{path},
       query_{query},
       fragment_{fragment},
-      uri_string_{ToString(scheme, authority, path, query, fragment)} {
+      scheme_authority_path_{ToString(scheme, authority, path, {}, L"")},
+      uri_string_{ToString(scheme_authority_path_, query, fragment)} {
 }
 
 
@@ -111,7 +112,8 @@ Uri::Uri(
       path_{path},
       query_{query},
       fragment_{},
-      uri_string_{ToString(scheme, authority, path, query, L"")} {
+      scheme_authority_path_{ToString(scheme, authority, path, {}, L"")},
+      uri_string_{ToString(scheme_authority_path_, query, L"")} {
 }
 
 
@@ -124,7 +126,8 @@ Uri::Uri(
       path_{path},
       query_{},
       fragment_{},
-      uri_string_{ToString(scheme, authority, path, {}, L"")} {
+      scheme_authority_path_{ToString(scheme, authority, path, {}, L"")},
+      uri_string_{scheme_authority_path_} {
 }
 
 
@@ -134,6 +137,7 @@ Uri::Uri(const std::wstring &uri_string)
       path_{},
       query_{},
       fragment_{},
+      scheme_authority_path_{},
       uri_string_{uri_string} {
   // from https://tools.ietf.org/html/rfc3986#appendix-B
   static const std::wregex kUriPattern{
@@ -148,6 +152,7 @@ Uri::Uri(const std::wstring &uri_string)
     query_ = Query{matches[7]};
     fragment_ = matches[9];
   }
+  scheme_authority_path_ = ToString(scheme_, authority_, path_, {}, L"");
 }
 
 
