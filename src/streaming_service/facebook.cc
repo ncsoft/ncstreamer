@@ -233,8 +233,8 @@ bool Facebook::FacebookClient::OnGetMe(
       me_id_ = L"";
       me_name_ = L"";
     }
-    OutputDebugString((me_id_ + L"\r\n").c_str());
-    OutputDebugString((me_name_ + L"\r\n").c_str());
+    OutputDebugString((me_id_ + L"/id\r\n").c_str());
+    OutputDebugString((me_name_ + L"/name\r\n").c_str());
   }}};
 
   frame->GetText(visitor);
