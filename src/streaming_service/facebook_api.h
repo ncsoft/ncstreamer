@@ -8,6 +8,7 @@
 
 
 #include <string>
+#include <vector>
 
 #include "src/lib/uri.h"
 
@@ -40,7 +41,8 @@ class FacebookApi::Login::Oauth {
       const std::wstring &client_id,
       const Uri &redirect_uri,
       const std::wstring &response_type,
-      const std::wstring &display);
+      const std::wstring &display,
+      const std::vector<std::wstring> &scope);
 
  private:
   static const std::wstring &static_path();

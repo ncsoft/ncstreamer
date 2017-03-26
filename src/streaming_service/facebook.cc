@@ -56,7 +56,8 @@ void Facebook::LogIn(
       kNcStreamerAppId,
       FacebookApi::Login::Redirect::static_uri(),
       L"token",
-      L"popup")};
+      L"popup",
+      {})};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
