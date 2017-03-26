@@ -7,6 +7,7 @@
 #define SRC_STREAMING_SERVICE_FACEBOOK_H_
 
 
+#include <string>
 #include "include/cef_request_handler.h"
 
 #include "src/lib/cef_fit_client.h"
