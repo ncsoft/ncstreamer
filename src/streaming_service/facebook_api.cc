@@ -64,9 +64,12 @@ const Uri &FacebookApi::Graph::Me::static_uri() {
 }
 
 
-Uri FacebookApi::Graph::Me::BuildUri(const std::wstring &access_token) {
+Uri FacebookApi::Graph::Me::BuildUri(
+    const std::wstring &access_token,
+    const std::vector<std::wstring> &fields) {
   return {kScheme, kAuthority, static_path(), Uri::Query{{
-      {L"access_token", access_token}}}};
+      {L"access_token", access_token},
+      {L"fields", String::Join(fields, L",")}}}};
 }
 
 

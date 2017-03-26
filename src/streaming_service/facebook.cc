@@ -195,7 +195,10 @@ bool Facebook::FacebookClient::OnBeforeBrowse(
 void Facebook::FacebookClient::GetMe(
     const CefRefPtr<CefFrame> &frame,
     const std::wstring &access_token) {
-  Uri me_uri{FacebookApi::Graph::Me::BuildUri(access_token)};
+  Uri me_uri{FacebookApi::Graph::Me::BuildUri(
+      access_token,
+      {L"id",
+       L"name"})};
   frame->LoadURL(me_uri.uri_string());
 }
 

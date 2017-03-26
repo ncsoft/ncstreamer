@@ -69,7 +69,9 @@ class FacebookApi::Graph {
 class FacebookApi::Graph::Me {
  public:
   static const Uri &static_uri();
-  static Uri BuildUri(const std::wstring &access_token);
+  static Uri BuildUri(
+      const std::wstring &access_token,
+      const std::vector<std::wstring> &fields);
 
  private:
   static const std::wstring &static_path();
