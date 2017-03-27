@@ -43,6 +43,8 @@ class StreamingService {
   std::unordered_map<
       std::wstring /*provider_id*/,
       std::shared_ptr<StreamingServiceProvider>> service_providers_;
+
+  std::shared_ptr<StreamingServiceProvider> current_service_provider_;
 };
 }  // namespace ncstreamer
 
