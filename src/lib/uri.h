@@ -8,6 +8,7 @@
 
 
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -15,18 +16,78 @@
 namespace ncstreamer {
 class Uri {
  public:
-  using QueryParameter = std::pair<std::wstring, std::wstring>;
-  using Query = std::vector<QueryParameter>;
+  class Query {
+   public:
+    using ParamVector = std::vector<std::pair<std::wstring, std::wstring>>;
+
+    explicit Query(const ParamVector &params);
+    explicit Query(const std::wstring &query_string);
+    Query();
+    virtual ~Query();
+
+    static std::wstring ToString(const ParamVector &query);
+
+    const std::wstring &query_string() const { return query_string_; }
+    const std::wstring &GetParameter(const std::wstring &key) const;
+
+   private:
+    static std::wstring Encode(const std::wstring &raw);
+
+    std::wstring query_string_;
+    std::unordered_map<std::wstring, std::wstring> params_;
+  };
+
+  class Hasher {
+   public:
+    std::size_t operator()(const Uri &uri) const;
+  };
+
+  Uri(const std::wstring &scheme,
+      const std::wstring &authority,
+      const std::wstring &path,
+      const Query &query,
+      const std::wstring &fragment);
+  Uri(const std::wstring &scheme,
+      const std::wstring &authority,
+      const std::wstring &path,
+      const Query &query);
+  Uri(const std::wstring &scheme,
+      const std::wstring &authority,
+      const std::wstring &path);
+  explicit Uri(const std::wstring &uri_string);
+  virtual ~Uri();
+
+  const std::wstring &scheme() const { return scheme_; }
+  const std::wstring &authority() const { return authority_; }
+  const std::wstring &path() const { return path_; }
+  const Query &query() const { return query_; }
+  const std::wstring &fragment() const { return fragment_; }
+  const std::wstring &scheme_authority_path() const {
+    return scheme_authority_path_;
+  }
+  const std::wstring &uri_string() const { return uri_string_; }
+
+ private:
+  static std::wstring ToString(
+      const std::wstring &scheme_authority_path,
+      const Query &query,
+      const std::wstring &fragment);
 
   static std::wstring ToString(
       const std::wstring &scheme,
-      const std::pair<std::wstring, std::wstring> &authority,
+      const std::wstring &authority,
       const std::wstring &path,
-      const Query &query);
+      const Query &query,
+      const std::wstring &fragment);
 
- private:
-  static std::wstring ToString(const Query &query);
-  static std::wstring Encode(const std::wstring &raw);
+  std::wstring scheme_;
+  std::wstring authority_;
+  std::wstring path_;
+  Query query_;
+  std::wstring fragment_;
+
+  std::wstring scheme_authority_path_;
+  std::wstring uri_string_;
 };
 }  // namespace ncstreamer
 
