@@ -74,6 +74,13 @@ void JsExecutor::Execute<std::string>(
     const std::string &func_name,
     const std::pair<std::string, std::string> &arg0,
     const std::pair<std::string, std::vector<std::string>> &arg1);
+template
+void JsExecutor::Execute<boost::property_tree::ptree>(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::pair<std::string, std::string> &arg0,
+    const std::pair<std::string,
+                    std::vector<boost::property_tree::ptree>> &arg1);
 
 
 void JsExecutor::ExecuteAngularJs(
@@ -128,5 +135,11 @@ boost::property_tree::ptree JsExecutor::BuildTree(
   boost::property_tree::ptree node;
   node.put("", value);
   return node;
+}
+
+
+boost::property_tree::ptree JsExecutor::BuildTree(
+    const boost::property_tree::ptree &value) {
+  return value;
 }
 }  // namespace ncstreamer
