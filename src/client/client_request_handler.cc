@@ -13,9 +13,9 @@
 #include <utility>
 #include <vector>
 
-#include "Shlwapi.h"
-
 #include "include/wrapper/cef_helpers.h"
+
+#include "Shlwapi.h"  // NOLINT
 
 #include "src/js_executor.h"
 #include "src/obs.h"
