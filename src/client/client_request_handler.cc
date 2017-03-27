@@ -161,7 +161,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
       service_provider,
       browser->GetHost()->GetWindowHandle(),
       [](const std::wstring &error) {
-  }, [browser](
+  }, [browser, cmd](
       const std::wstring &user_name,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -172,7 +172,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     JsExecutor::Execute<boost::property_tree::ptree>(
         browser,
         "cef.onResponse",
-        "service_provider/log_in",
+        converter.to_bytes(cmd),
         std::make_pair("userName", converter.to_bytes(user_name)),
         std::make_pair("userPages", tree_pages));
   });
