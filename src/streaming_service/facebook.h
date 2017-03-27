@@ -7,6 +7,11 @@
 #define SRC_STREAMING_SERVICE_FACEBOOK_H_
 
 
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "boost/property_tree/ptree.hpp"
 #include "include/cef_request_handler.h"
 
 #include "src/lib/cef_fit_client.h"
@@ -63,11 +68,17 @@ class Facebook::FacebookClient
       bool is_redirect) override;
 
  private:
+  using AccountMap =
+      std::unordered_map<std::wstring /*id*/, UserPage>;
+
+  static std::vector<UserPage> ExtractAccountAll(
+      const boost::property_tree::ptree &tree);
+
   void GetMe(
       const CefRefPtr<CefFrame> &frame,
       const std::wstring &access_token);
 
-  bool OnGetMe(
+  void OnGetMe(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefFrame> frame,
       int http_status_code,
@@ -83,6 +94,7 @@ class Facebook::FacebookClient
   std::wstring access_token_;
   std::wstring me_id_;
   std::wstring me_name_;
+  AccountMap me_accounts_;
 
   OnFailed on_failed_;
   OnLoggedIn on_logged_in_;

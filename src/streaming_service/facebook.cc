@@ -56,7 +56,8 @@ void Facebook::LogIn(
       kNcStreamerAppId,
       FacebookApi::Login::Redirect::static_uri(),
       L"token",
-      L"popup")};
+      L"popup",
+      {L"pages_show_list"})};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
@@ -81,6 +82,7 @@ Facebook::FacebookClient::FacebookClient()
     : access_token_{},
       me_id_{},
       me_name_{},
+      me_accounts_{},
       on_failed_{},
       on_logged_in_{} {
 }
@@ -120,7 +122,7 @@ void Facebook::FacebookClient::OnLoadEnd(
     return;
   }
 
-  using Handler = std::function<bool(
+  using Handler = std::function<void(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefFrame> frame,
       int http_status_code,
@@ -191,15 +193,37 @@ bool Facebook::FacebookClient::OnBeforeBrowse(
 }
 
 
+std::vector<StreamingServiceProvider::UserPage>
+    Facebook::FacebookClient::ExtractAccountAll(
+        const boost::property_tree::ptree &tree) {
+  std::vector<UserPage> accounts;
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+  const auto &arr = tree.get_child("data");
+  for (const auto &elem : arr) {
+    const auto &account = elem.second;
+    const auto &id = converter.from_bytes(account.get<std::string>("id"));
+    const auto &name = converter.from_bytes(account.get<std::string>("name"));
+    accounts.emplace_back(id, name);
+  }
+
+  return accounts;
+}
+
+
 void Facebook::FacebookClient::GetMe(
     const CefRefPtr<CefFrame> &frame,
     const std::wstring &access_token) {
-  Uri me_uri{FacebookApi::Graph::Me::BuildUri(access_token)};
+  Uri me_uri{FacebookApi::Graph::Me::BuildUri(
+      access_token,
+      {L"id",
+       L"name",
+       L"accounts"})};
   frame->LoadURL(me_uri.uri_string());
 }
 
 
-bool Facebook::FacebookClient::OnGetMe(
+void Facebook::FacebookClient::OnGetMe(
     CefRefPtr<CefBrowser> browser,
     CefRefPtr<CefFrame> frame,
     int /*http_status_code*/,
@@ -217,7 +241,10 @@ bool Facebook::FacebookClient::OnGetMe(
     IMPLEMENT_REFCOUNTING(Visitor);
   };
 
-  CefRefPtr<Visitor> visitor{new Visitor{[this](const std::wstring &str) {
+  CefRefPtr<Visitor> visitor{new Visitor{[this, browser](
+      const std::wstring &str) {
+    CEF_REQUIRE_UI_THREAD();
+
     OutputDebugString((str + L"\r\n").c_str());
 
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -225,20 +252,41 @@ bool Facebook::FacebookClient::OnGetMe(
 
     boost::property_tree::ptree me;
     std::stringstream me_ss{utf8};
+    std::wstring id{};
+    std::wstring name{};
+    std::vector<UserPage> accounts;
     try {
       boost::property_tree::read_json(me_ss, me);
-      me_id_ = converter.from_bytes(me.get<std::string>("id"));
-      me_name_ = converter.from_bytes(me.get<std::string>("name"));
+      id = converter.from_bytes(me.get<std::string>("id"));
+      name = converter.from_bytes(me.get<std::string>("name"));
+      accounts = ExtractAccountAll(me.get_child("accounts"));
     } catch (const std::exception &/*e*/) {
-      me_id_ = L"";
-      me_name_ = L"";
     }
-    OutputDebugString((me_id_ + L"\r\n").c_str());
-    OutputDebugString((me_name_ + L"\r\n").c_str());
+
+    if (id.empty() == true) {
+      std::wstringstream msg;
+      msg << L"could not get me from: " << str;
+      on_failed_(msg.str());
+      return;
+    }
+
+    me_id_ = id;
+    me_name_ = name;
+    for (const auto &account : accounts) {
+      me_accounts_.emplace(account.id(), account);
+    }
+
+    OutputDebugString((me_id_ + L"/id\r\n").c_str());
+    OutputDebugString((me_name_ + L"/name\r\n").c_str());
+    OutputDebugString(
+        (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
+
+    on_logged_in_(name, accounts);
+
+    browser->GetHost()->CloseBrowser(false);
   }}};
 
   frame->GetText(visitor);
-  return true;
 }
 
 

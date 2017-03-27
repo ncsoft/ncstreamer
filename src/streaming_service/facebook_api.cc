@@ -7,6 +7,8 @@
 
 #include <sstream>
 
+#include "src/lib/string.h"
+
 
 namespace ncstreamer {
 const wchar_t *FacebookApi::kScheme{L"https"};
@@ -20,12 +22,14 @@ Uri FacebookApi::Login::Oauth::BuildUri(
     const std::wstring &client_id,
     const Uri &redirect_uri,
     const std::wstring &response_type,
-    const std::wstring &display) {
+    const std::wstring &display,
+    const std::vector<std::wstring> &scope) {
   return {kScheme, kAuthority, static_path(), Uri::Query{{
       {L"client_id", client_id},
       {L"redirect_uri", redirect_uri.uri_string()},
       {L"response_type", response_type},
-      {L"display", display}}}};
+      {L"display", display},
+      {L"scope", String::Join(scope, L",")}}}};
 }
 
 
@@ -60,9 +64,12 @@ const Uri &FacebookApi::Graph::Me::static_uri() {
 }
 
 
-Uri FacebookApi::Graph::Me::BuildUri(const std::wstring &access_token) {
+Uri FacebookApi::Graph::Me::BuildUri(
+    const std::wstring &access_token,
+    const std::vector<std::wstring> &fields) {
   return {kScheme, kAuthority, static_path(), Uri::Query{{
-      {L"access_token", access_token}}}};
+      {L"access_token", access_token},
+      {L"fields", String::Join(fields, L",")}}}};
 }
 
 

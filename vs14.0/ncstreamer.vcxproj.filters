@@ -111,6 +111,9 @@
     <ClCompile Include="..\src\streaming_service\facebook_api.cc">
       <Filter>src\streaming_service</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\lib\string.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="..\src\streaming_service\facebook_api.h">
       <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\string.h">
+      <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,9 +13,10 @@
 #include <utility>
 #include <vector>
 
-#include "Shlwapi.h"
-
+#include "boost/property_tree/ptree.hpp"
 #include "include/wrapper/cef_helpers.h"
+
+#include "Shlwapi.h"  // NOLINT
 
 #include "src/js_executor.h"
 #include "src/obs.h"
@@ -148,17 +149,17 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
       [](const std::wstring &error) {
   }, [browser](
       const std::wstring &user_name,
-      const std::vector<std::wstring> &user_pages) {
+      const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::vector<std::string> utf8_pages;
+    std::vector<boost::property_tree::ptree> tree_pages;
     for (const auto &page : user_pages) {
-      utf8_pages.emplace_back(converter.to_bytes(page));
+      tree_pages.emplace_back(page.ToTree());
     }
-    JsExecutor::Execute(
+    JsExecutor::Execute<boost::property_tree::ptree>(
         browser,
         "cef.onResponse",
         std::make_pair("userName", converter.to_bytes(user_name)),
-        std::make_pair("userPages", utf8_pages));
+        std::make_pair("userPages", tree_pages));
   });
 }
 
