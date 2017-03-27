@@ -68,7 +68,7 @@ class Facebook::FacebookClient
       const CefRefPtr<CefFrame> &frame,
       const std::wstring &access_token);
 
-  bool OnGetMe(
+  void OnGetMe(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefFrame> frame,
       int http_status_code,

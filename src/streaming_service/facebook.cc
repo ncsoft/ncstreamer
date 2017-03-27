@@ -120,7 +120,7 @@ void Facebook::FacebookClient::OnLoadEnd(
     return;
   }
 
-  using Handler = std::function<bool(
+  using Handler = std::function<void(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefFrame> frame,
       int http_status_code,
@@ -199,7 +199,7 @@ void Facebook::FacebookClient::GetMe(
 }
 
 
-bool Facebook::FacebookClient::OnGetMe(
+void Facebook::FacebookClient::OnGetMe(
     CefRefPtr<CefBrowser> browser,
     CefRefPtr<CefFrame> frame,
     int /*http_status_code*/,
@@ -240,7 +240,6 @@ bool Facebook::FacebookClient::OnGetMe(
   }}};
 
   frame->GetText(visitor);
-  return true;
 }
 
 
