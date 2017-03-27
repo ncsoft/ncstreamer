@@ -296,21 +296,6 @@ function onMicCheckboxChange() {
 }
 
 
-function onBeforePopupOpen(browserId) {
-  if (app.streaming.status == 'setup') {
-    app.streaming.popupBrowserId = browserId;
-  }
-}
-
-
-function OnBeforePopupClose(browserId) {
-  if (app.streaming.popupBrowserId == browserId) {
-    app.streaming.popupBrowserId = 0;
-    updateStreamingStatus('standby');
-  }
-}
-
-
 cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
   for (const element of app.dom.loginPagePanel) {
     element.style.display = 'none';
