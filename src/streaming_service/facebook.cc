@@ -57,7 +57,7 @@ void Facebook::LogIn(
       FacebookApi::Login::Redirect::static_uri(),
       L"token",
       L"popup",
-      {})};
+      {L"pages_show_list"})};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
@@ -82,6 +82,7 @@ Facebook::FacebookClient::FacebookClient()
     : access_token_{},
       me_id_{},
       me_name_{},
+      me_accounts_{},
       on_failed_{},
       on_logged_in_{} {
 }
@@ -192,13 +193,32 @@ bool Facebook::FacebookClient::OnBeforeBrowse(
 }
 
 
+std::vector<StreamingServiceProvider::UserPage>
+    Facebook::FacebookClient::ExtractAccountAll(
+        const boost::property_tree::ptree &tree) {
+  std::vector<UserPage> accounts;
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+  const auto &arr = tree.get_child("data");
+  for (const auto &elem : arr) {
+    const auto &account = elem.second;
+    const auto &id = converter.from_bytes(account.get<std::string>("id"));
+    const auto &name = converter.from_bytes(account.get<std::string>("name"));
+    accounts.emplace_back(id, name);
+  }
+
+  return accounts;
+}
+
+
 void Facebook::FacebookClient::GetMe(
     const CefRefPtr<CefFrame> &frame,
     const std::wstring &access_token) {
   Uri me_uri{FacebookApi::Graph::Me::BuildUri(
       access_token,
       {L"id",
-       L"name"})};
+       L"name",
+       L"accounts"})};
   frame->LoadURL(me_uri.uri_string());
 }
 
@@ -233,10 +253,12 @@ void Facebook::FacebookClient::OnGetMe(
     std::stringstream me_ss{utf8};
     std::wstring id{};
     std::wstring name{};
+    std::vector<UserPage> accounts;
     try {
       boost::property_tree::read_json(me_ss, me);
       id = converter.from_bytes(me.get<std::string>("id"));
       name = converter.from_bytes(me.get<std::string>("name"));
+      accounts = ExtractAccountAll(me.get_child("accounts"));
     } catch (const std::exception &/*e*/) {
     }
 
@@ -246,8 +268,14 @@ void Facebook::FacebookClient::OnGetMe(
 
     me_id_ = id;
     me_name_ = name;
+    for (const auto &account : accounts) {
+      me_accounts_.emplace(account.id(), account);
+    }
+
     OutputDebugString((me_id_ + L"/id\r\n").c_str());
     OutputDebugString((me_name_ + L"/name\r\n").c_str());
+    OutputDebugString(
+        (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
   }}};
 
   frame->GetText(visitor);
