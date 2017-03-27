@@ -285,17 +285,6 @@ function onStreamingQualityChange() {
 }
 
 
-function onMicCheckboxChange() {
-  if (app.dom.streamingMicCheckbox.checked) {
-    console.info('mic on');
-    cef.settingsMicOn.request();
-  } else {
-    console.info('mic off');
-    cef.settingsMicOff.request();
-  }
-}
-
-
 cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
   for (const element of app.dom.loginPagePanel) {
     element.style.display = 'none';
