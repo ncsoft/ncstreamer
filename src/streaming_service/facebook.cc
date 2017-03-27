@@ -218,6 +218,8 @@ bool Facebook::FacebookClient::OnGetMe(
   };
 
   CefRefPtr<Visitor> visitor{new Visitor{[this](const std::wstring &str) {
+    CEF_REQUIRE_UI_THREAD();
+
     OutputDebugString((str + L"\r\n").c_str());
 
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
