@@ -154,7 +154,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     for (const auto &page : user_pages) {
       utf8_pages.emplace_back(converter.to_bytes(page));
     }
-    JsExecutor::Execute(
+    JsExecutor::Execute<std::string>(
         browser,
         "cef.onResponse",
         std::make_pair("userName", converter.to_bytes(user_name)),

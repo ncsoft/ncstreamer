@@ -51,11 +51,12 @@ void JsExecutor::Execute(
 }
 
 
+template <typename T>
 void JsExecutor::Execute(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
     const std::pair<std::string, std::string> &arg0,
-    const std::pair<std::string, std::vector<std::string>> &arg1) {
+    const std::pair<std::string, std::vector<T>> &arg1) {
   std::stringstream js;
   boost::property_tree::ptree args;
 
@@ -65,6 +66,14 @@ void JsExecutor::Execute(
   AppendFunctionCall(func_name, args, &js);
   browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
 }
+
+
+template
+void JsExecutor::Execute<std::string>(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::pair<std::string, std::string> &arg0,
+    const std::pair<std::string, std::vector<std::string>> &arg1);
 
 
 void JsExecutor::ExecuteAngularJs(
@@ -103,14 +112,21 @@ void JsExecutor::AppendFunctionCall(
 }
 
 
+template <typename T>
 boost::property_tree::ptree
-    JsExecutor::ToPtree(const std::vector<std::string> &values) {
+    JsExecutor::ToPtree(const std::vector<T> &values) {
   boost::property_tree::ptree arr;
-  for (const std::string &value : values) {
-    boost::property_tree::ptree node;
-    node.put("", value);
-    arr.push_back({"", node});
+  for (const T &value : values) {
+    arr.push_back({"", BuildTree(value)});
   }
   return std::move(arr);
+}
+
+
+boost::property_tree::ptree JsExecutor::BuildTree(
+    const std::string &value) {
+  boost::property_tree::ptree node;
+  node.put("", value);
+  return node;
 }
 }  // namespace ncstreamer
