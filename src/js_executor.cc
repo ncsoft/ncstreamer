@@ -55,13 +55,13 @@ template <typename T>
 void JsExecutor::Execute(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
-    const std::pair<std::string, std::string> &arg0,
-    const std::pair<std::string, std::vector<T>> &arg1) {
+    const std::pair<std::string, std::string> &arg1_0,
+    const std::pair<std::string, std::vector<T>> &arg1_1) {
   std::stringstream js;
   boost::property_tree::ptree args;
 
-  args.add(arg0.first, arg0.second);
-  args.add_child(arg1.first, ToPtree(arg1.second));
+  args.add(arg1_0.first, arg1_0.second);
+  args.add_child(arg1_1.first, ToPtree(arg1_1.second));
 
   AppendFunctionCall(func_name, args, &js);
   browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
@@ -72,15 +72,15 @@ template
 void JsExecutor::Execute<std::string>(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
-    const std::pair<std::string, std::string> &arg0,
-    const std::pair<std::string, std::vector<std::string>> &arg1);
+    const std::pair<std::string, std::string> &arg1_0,
+    const std::pair<std::string, std::vector<std::string>> &arg1_1);
 template
 void JsExecutor::Execute<boost::property_tree::ptree>(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
-    const std::pair<std::string, std::string> &arg0,
+    const std::pair<std::string, std::string> &arg1_0,
     const std::pair<std::string,
-                    std::vector<boost::property_tree::ptree>> &arg1);
+                    std::vector<boost::property_tree::ptree>> &arg1_1);
 
 
 void JsExecutor::ExecuteAngularJs(
