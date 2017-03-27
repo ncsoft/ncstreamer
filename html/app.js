@@ -236,8 +236,8 @@ cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
 
   for (const userPage of userPages) {
     const option = document.createElement('option');
-    option.value = userPage;
-    option.text = userPage;
+    option.value = userPage.id;
+    option.text = userPage.name;
     app.dom.streamingUserPageSelect.add(option);
   }
 };
