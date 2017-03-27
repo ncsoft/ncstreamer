@@ -36,24 +36,31 @@ class ClientRequestHandler : public CefRequestHandler {
 
   // command handlers
   using CommandHandler = std::function<void (
+      const std::wstring &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser)>;
   void OnCommandServiceProviderLogIn(
+      const std::wstring &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
   void OnCommandStreamingStart(
+      const std::wstring &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
   void OnCommandStreamingStop(
+      const std::wstring &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsMicOn(
+      const std::wstring &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsMicOff(
+      const std::wstring &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsVideoQualityUpdate(
+      const std::wstring &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
 
