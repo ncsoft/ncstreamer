@@ -227,14 +227,21 @@ void Facebook::FacebookClient::OnGetMe(
 
     boost::property_tree::ptree me;
     std::stringstream me_ss{utf8};
+    std::wstring id{};
+    std::wstring name{};
     try {
       boost::property_tree::read_json(me_ss, me);
-      me_id_ = converter.from_bytes(me.get<std::string>("id"));
-      me_name_ = converter.from_bytes(me.get<std::string>("name"));
+      id = converter.from_bytes(me.get<std::string>("id"));
+      name = converter.from_bytes(me.get<std::string>("name"));
     } catch (const std::exception &/*e*/) {
-      me_id_ = L"";
-      me_name_ = L"";
     }
+
+    if (id.empty() == true) {
+      return;
+    }
+
+    me_id_ = id;
+    me_name_ = name;
     OutputDebugString((me_id_ + L"/id\r\n").c_str());
     OutputDebugString((me_name_ + L"/name\r\n").c_str());
   }}};
