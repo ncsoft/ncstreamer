@@ -241,7 +241,8 @@ void Facebook::FacebookClient::OnGetMe(
     IMPLEMENT_REFCOUNTING(Visitor);
   };
 
-  CefRefPtr<Visitor> visitor{new Visitor{[this](const std::wstring &str) {
+  CefRefPtr<Visitor> visitor{new Visitor{[this, browser](
+      const std::wstring &str) {
     CEF_REQUIRE_UI_THREAD();
 
     OutputDebugString((str + L"\r\n").c_str());
@@ -263,6 +264,9 @@ void Facebook::FacebookClient::OnGetMe(
     }
 
     if (id.empty() == true) {
+      std::wstringstream msg;
+      msg << L"could not get me from: " << str;
+      on_failed_(msg.str());
       return;
     }
 
@@ -276,6 +280,10 @@ void Facebook::FacebookClient::OnGetMe(
     OutputDebugString((me_name_ + L"/name\r\n").c_str());
     OutputDebugString(
         (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
+
+    on_logged_in_(name, accounts);
+
+    browser->GetHost()->CloseBrowser(false);
   }}};
 
   frame->GetText(visitor);
