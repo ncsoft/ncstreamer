@@ -158,6 +158,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     JsExecutor::Execute<boost::property_tree::ptree>(
         browser,
         "cef.onResponse",
+        "service_provider/log_in",
         std::make_pair("userName", converter.to_bytes(user_name)),
         std::make_pair("userPages", tree_pages));
   });

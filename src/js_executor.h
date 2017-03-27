@@ -33,6 +33,7 @@ class JsExecutor {
   static void Execute(
       CefRefPtr<CefBrowser> browser,
       const std::string &func_name,
+      const std::string &arg0,
       const std::pair<std::string, std::string> &arg1_0,
       const std::pair<std::string, std::vector<T>> &arg1_1);
 
@@ -49,6 +50,10 @@ class JsExecutor {
                                  std::ostream *out);
   static void AppendFunctionCall(const std::string &func_name,
                                  const boost::property_tree::ptree &arg,
+                                 std::ostream *out);
+  static void AppendFunctionCall(const std::string &func_name,
+                                 const std::string &arg0,
+                                 const boost::property_tree::ptree &arg1,
                                  std::ostream *out);
 
   template <typename T>

@@ -55,6 +55,7 @@ template <typename T>
 void JsExecutor::Execute(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
+    const std::string &arg0,
     const std::pair<std::string, std::string> &arg1_0,
     const std::pair<std::string, std::vector<T>> &arg1_1) {
   std::stringstream js;
@@ -63,7 +64,7 @@ void JsExecutor::Execute(
   arg1.add(arg1_0.first, arg1_0.second);
   arg1.add_child(arg1_1.first, ToPtree(arg1_1.second));
 
-  AppendFunctionCall(func_name, arg1, &js);
+  AppendFunctionCall(func_name, arg0, arg1, &js);
   browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
 }
 
@@ -72,12 +73,14 @@ template
 void JsExecutor::Execute<std::string>(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
+    const std::string &arg0,
     const std::pair<std::string, std::string> &arg1_0,
     const std::pair<std::string, std::vector<std::string>> &arg1_1);
 template
 void JsExecutor::Execute<boost::property_tree::ptree>(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
+    const std::string &arg0,
     const std::pair<std::string, std::string> &arg1_0,
     const std::pair<std::string,
                     std::vector<boost::property_tree::ptree>> &arg1_1);
@@ -115,6 +118,18 @@ void JsExecutor::AppendFunctionCall(
     std::ostream *out) {
   *out << func_name << "(";
   boost::property_tree::write_json(*out, arg, false);
+  *out << ")";
+}
+
+
+void JsExecutor::AppendFunctionCall(
+    const std::string &func_name,
+    const std::string &arg0,
+    const boost::property_tree::ptree &arg1,
+    std::ostream *out) {
+  *out << func_name << "(";
+  *out << "'" << arg0 << "',";
+  boost::property_tree::write_json(*out, arg1, false);
   *out << ")";
 }
 
