@@ -48,7 +48,7 @@ class JsExecutor {
                                  const std::vector<std::string> &arg_value,
                                  std::ostream *out);
   static void AppendFunctionCall(const std::string &func_name,
-                                 const boost::property_tree::ptree &args,
+                                 const boost::property_tree::ptree &arg,
                                  std::ostream *out);
 
   template <typename T>

@@ -111,10 +111,10 @@ void JsExecutor::AppendFunctionCall(
 
 void JsExecutor::AppendFunctionCall(
     const std::string &func_name,
-    const boost::property_tree::ptree &args,
+    const boost::property_tree::ptree &arg,
     std::ostream *out) {
   *out << func_name << "(";
-  boost::property_tree::write_json(*out, args, false);
+  boost::property_tree::write_json(*out, arg, false);
   *out << ")";
 }
 
