@@ -29,14 +29,14 @@ class StreamingService {
       const StreamingServiceProvider::OnLoggedIn &on_logged_in);
 
  private:
-  StreamingService();
-  virtual ~StreamingService();
-
   class FailMessage {
    public:
     static std::wstring ToUnknownServiceProvider(
         const std::wstring &service_provider_id);
   };
+
+  StreamingService();
+  virtual ~StreamingService();
 
   static StreamingService *static_instance;
 
