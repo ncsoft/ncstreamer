@@ -110,6 +110,7 @@
     <ClCompile Include="..\src\lib\dimension.cc" />
     <ClCompile Include="..\src\lib\display.cc" />
     <ClCompile Include="..\src\lib\http_downloader.cc" />
+    <ClCompile Include="..\src\lib\http_download_service.cc" />
     <ClCompile Include="..\src\lib\rectangle.cc" />
     <ClCompile Include="..\src\lib\string.cc" />
     <ClCompile Include="..\src\lib\uri.cc" />
@@ -142,6 +143,7 @@
     <ClInclude Include="..\src\lib\dimension.h" />
     <ClInclude Include="..\src\lib\display.h" />
     <ClInclude Include="..\src\lib\http_downloader.h" />
+    <ClInclude Include="..\src\lib\http_download_service.h" />
     <ClInclude Include="..\src\lib\rectangle.h" />
     <ClInclude Include="..\src\lib\string.h" />
     <ClInclude Include="..\src\lib\uri.h" />
