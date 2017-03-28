@@ -46,29 +46,49 @@ document.addEventListener('DOMContentLoaded', function(event) {
   [
     'login-page-panel',
     'main-page-panel',
+  ].forEach(function(domCls) {
+    app.dom[toCamel(domCls)] = document.getElementsByClassName(domCls);
+  });
+
+  [
+    'streaming-setting-button',
+    'streaming-minimize-button',
+    'streaming-close-button',
     'streaming-login-button',
-    'streaming-feed-description',
-    'streaming-sources-select',
-    'streaming-status',
-    'streaming-control-button',
-    'streaming-quality-select',
-    'streaming-mic-checkbox',
-    'streaming-user-page-select',
     'provider-user-name',
+    'streaming-user-page-select',
+    'streaming-managing-page-select',
+    'streaming-page-access',
+    'streaming-game-select',
+    'streaming-feed-description',
+    'streaming-mic-checkbox',
+    'streaming-error-text',
+    'streaming-normal-text',
+    'streaming-control-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
+  app.dom.streamingSettingButton.addEventListener(
+      'click', onStreamingSettingButtonClicked);
+  app.dom.streamingMinimizeButton.addEventListener(
+      'click', onStreamingMinimizeButtonClicked);
+  app.dom.streamingCloseButton.addEventListener(
+      'click', onStreamingCloseButtonClicked);
   app.dom.streamingLoginButton.addEventListener(
       'click', onStreamingLoginButtonClicked);
+  app.dom.streamingUserPageSelect.addEventListener(
+      'customSelectChange', onStreamingUserPageSelectChanged);
+  app.dom.streamingManagingPageSelect.addEventListener(
+      'customSelectChange', onStreamingManagingPageSelectChanged);
+  app.dom.streamingPageAccess.addEventListener(
+      'customSelectChange', onStreamingPageAccessChanged);
+  app.dom.streamingGameSelect.addEventListener(
+      'customSelectChange', onStreamingGameSelectChanged);
+  app.dom.streamingMicCheckbox.addEventListener(
+      'change', onStreamingMicCheckboxChanged);
   app.dom.streamingControlButton.addEventListener(
       'click', onStreamingControlButtonClicked);
-  app.dom.streamingQualitySelect.addEventListener(
-      'change', onStreamingQualityChange);
-  app.dom.streamingMicCheckbox.addEventListener(
-      'change', onMicCheckboxChange);
-
-  setUpSteamingQuality();
 });
 
 
@@ -164,12 +184,62 @@ function setUpSteamingQuality() {
 }
 
 
+function onStreamingSettingButtonClicked() {
+  console.info('click streamingSettingButton');
+}
+
+
+function onStreamingMinimizeButtonClicked() {
+  console.info('click streamingMinimizeButton');
+}
+
+
+function onStreamingCloseButtonClicked() {
+  console.info('click streamingCloseeButton');
+}
+
+
 function onStreamingLoginButtonClicked() {
+  console.info('click streamingLoginButton');
   cef.serviceProviderLogIn.request('Facebook Live');
 }
 
 
+function onStreamingUserPageSelectChanged() {
+  console.info('change streamingUserPageSelect');
+}
+
+
+function onStreamingManagingPageSelectChanged() {
+  console.info('change streamingManagingPageSelect');
+}
+
+
+function onStreamingPageAccessChanged() {
+  console.info('change streamingPageAccess');
+}
+
+
+function onStreamingGameSelectChanged() {
+  console.info('change streamingGameSelect');
+}
+
+
+function onStreamingMicCheckboxChanged() {
+  console.info('change streamingMicCheckbox');
+  if (app.dom.streamingMicCheckbox.checked) {
+    console.info('mic on');
+    cef.settingsMicOn.request();
+  } else {
+    console.info('mic off');
+    cef.settingsMicOff.request();
+  }
+}
+
+
+
 function onStreamingControlButtonClicked() {
+  console.info('change streamingControlButton');
   ({
     'standby': function() {
       const source = app.dom.streamingSourcesSelect.value;
