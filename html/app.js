@@ -237,13 +237,12 @@ function onStreamingMicCheckboxChanged() {
 }
 
 
-
 function onStreamingControlButtonClicked() {
   console.info('change streamingControlButton');
   ({
     'standby': function() {
-      const source = app.dom.streamingSourcesSelect.value;
-      const userPage = app.dom.streamingUserPageSelect.value;
+      const source = app.dom.streamingGameSelect.value;
+      const userPage = app.dom.streamingManagingPageSelect.value;
       const description = app.dom.streamingFeedDescription.value;
       cef.streamingStart.request(source, userPage, description);
       updateStreamingStatus('starting');
@@ -297,18 +296,30 @@ function OnBeforePopupClose(browserId) {
 
 
 cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
-  app.dom.loginPagePanel.style.display = 'none';
-  app.dom.mainPagePanel.style.display = 'flex';
-  
-  for (const child of app.dom.streamingUserPageSelect.children) {
-    child.remove();
+  for (const element of app.dom.loginPagePanel) {
+    element.style.display = 'none';
+  }
+  for (const element of app.dom.mainPagePanel) {
+    element.style.display = 'block';
   }
 
-  for (const userPage of userPages) {
-    const option = document.createElement('option');
-    option.value = userPage.id;
-    option.text = userPage.name;
-    app.dom.streamingUserPageSelect.add(option);
+  const display = app.dom.streamingManagingPageSelect.children[0];
+  const contents = app.dom.streamingManagingPageSelect.children[1];
+  while (contents.firstChild) {
+    contents.removeChild(contents.firstChild);
+  }
+
+  if (userPages.length == 0) {
+    display.textContent = '관리 중인 페이지가 없습니다.';
+  } else {
+    for (const userPage of userPages) {
+      const li = document.createElement('li');
+      const node = userPage;
+      li.setAttribute('data-value', userPage);
+      li.appendChild(node);
+      contents.appendChild(li);
+    }
+    display.textContent = contents.firstChild.textContent;
   }
 };
 
