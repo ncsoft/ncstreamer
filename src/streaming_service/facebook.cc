@@ -85,77 +85,6 @@ void Facebook::LogIn(
 }
 
 
-void Facebook::OnAccessToken(const std::wstring &access_token) {
-  GetMe(access_token);
-}
-
-
-Facebook::FacebookClient::FacebookClient(
-    Facebook *owner)
-    : owner_{owner} {
-}
-
-
-Facebook::FacebookClient::~FacebookClient() {
-}
-
-
-void Facebook::SetHandlers(
-    const OnFailed &on_failed,
-    const OnLoggedIn &on_logged_in) {
-  on_failed_ = on_failed;
-  on_logged_in_ = on_logged_in;
-}
-
-
-CefRefPtr<CefRequestHandler>
-    Facebook::FacebookClient::GetRequestHandler() {
-  return this;
-}
-
-
-bool Facebook::FacebookClient::OnBeforeBrowse(
-    CefRefPtr<CefBrowser> browser,
-    CefRefPtr<CefFrame> frame,
-    CefRefPtr<CefRequest> request,
-    bool is_redirect) {
-  CEF_REQUIRE_UI_THREAD();
-
-  if (frame->IsMain() == false) {
-    return false;  // proceed navigation.
-  }
-
-  using Handler = std::function<bool(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefFrame> frame,
-      CefRefPtr<CefRequest> request,
-      bool is_redirect,
-      const Uri &uri)>;
-
-  using Api = FacebookApi;
-  using This = Facebook::FacebookClient;
-
-  static const std::unordered_map<std::wstring, Handler> kHandlers{
-      {Api::Login::Redirect::static_uri().scheme_authority_path(),
-       std::bind(&This::OnAccessToken, this,
-           std::placeholders::_1,
-           std::placeholders::_2,
-           std::placeholders::_3,
-           std::placeholders::_4,
-           std::placeholders::_5)}};
-
-  Uri uri{request->GetURL()};
-  OutputDebugString((uri.uri_string() + L"\r\n").c_str());
-
-  auto i = kHandlers.find(uri.scheme_authority_path());
-  if (i == kHandlers.end()) {
-    return false;  // proceed navigation.
-  }
-
-  return i->second(browser, frame, request, is_redirect, uri);
-}
-
-
 std::vector<StreamingServiceProvider::UserPage>
     Facebook::ExtractAccountAll(
         const boost::property_tree::ptree &tree) {
@@ -226,6 +155,77 @@ void Facebook::GetMe(
 
     on_logged_in_(name, accounts);
   });
+}
+
+
+void Facebook::SetHandlers(
+    const OnFailed &on_failed,
+    const OnLoggedIn &on_logged_in) {
+  on_failed_ = on_failed;
+  on_logged_in_ = on_logged_in;
+}
+
+
+void Facebook::OnAccessToken(const std::wstring &access_token) {
+  GetMe(access_token);
+}
+
+
+Facebook::FacebookClient::FacebookClient(
+    Facebook *owner)
+    : owner_{owner} {
+}
+
+
+Facebook::FacebookClient::~FacebookClient() {
+}
+
+
+CefRefPtr<CefRequestHandler>
+    Facebook::FacebookClient::GetRequestHandler() {
+  return this;
+}
+
+
+bool Facebook::FacebookClient::OnBeforeBrowse(
+    CefRefPtr<CefBrowser> browser,
+    CefRefPtr<CefFrame> frame,
+    CefRefPtr<CefRequest> request,
+    bool is_redirect) {
+  CEF_REQUIRE_UI_THREAD();
+
+  if (frame->IsMain() == false) {
+    return false;  // proceed navigation.
+  }
+
+  using Handler = std::function<bool(
+      CefRefPtr<CefBrowser> browser,
+      CefRefPtr<CefFrame> frame,
+      CefRefPtr<CefRequest> request,
+      bool is_redirect,
+      const Uri &uri)>;
+
+  using Api = FacebookApi;
+  using This = Facebook::FacebookClient;
+
+  static const std::unordered_map<std::wstring, Handler> kHandlers{
+      {Api::Login::Redirect::static_uri().scheme_authority_path(),
+       std::bind(&This::OnAccessToken, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3,
+           std::placeholders::_4,
+           std::placeholders::_5)}};
+
+  Uri uri{request->GetURL()};
+  OutputDebugString((uri.uri_string() + L"\r\n").c_str());
+
+  auto i = kHandlers.find(uri.scheme_authority_path());
+  if (i == kHandlers.end()) {
+    return false;  // proceed navigation.
+  }
+
+  return i->second(browser, frame, request, is_redirect, uri);
 }
 
 
