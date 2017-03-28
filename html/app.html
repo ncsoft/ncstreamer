@@ -1,88 +1,128 @@
 <!DOCTYPE html>
-<meta http-equiv="Cache-Control" content="no-cache" />
+<meta charset="UTF-8">
+<title>NC Streamer</title>
+<meta http-equiv="Cache-Control" content="no-store, must-revalidate" />
+<meta http-equiv="Expires" content="0" />
+<link href="//ui-static.korea.ncsoft.corp/launcher/nc-launcher-streamer/css/nc-launcher-streamer.css" rel="stylesheet" />
+<script src="//ui-static.korea.ncsoft.corp/common/js/lib/jquery-3.1.0.min.js"></script>
+<script src="//ui-static.korea.ncsoft.corp/launcher/nc-launcher-streamer/js/nc-launcher-streamer.js"></script>
 
-<meta charset="utf-8">
-<title>방송 (BETA)</title>
-<link href="css/bootstrap.css" rel="stylesheet">
-<link href="css/bootstrap-theme.css" rel="stylesheet">
-<link href="css/font-awesome.css" rel="stylesheet">
-<link href="app.css" rel="stylesheet">
+<div class="container">
+<div class="header">
+  <h1 class="title"><strong>방송</strong><span class="label-beta">Beta</span></h1>
+  <div class="settings">
+    <button id="streaming-setting-button" class="btn-setting" value="Setting"></button>
+    <button id="streaming-minimize-button" class="btn-minimum" value="Minimum"></button>
+    <button id="streaming-close-button" class="btn-close" value="Close"></button>
+  </div>
+</div>
 
 <!--login page-->
-<div id="login-page-panel" class="main-panel">
-<div class="control-panel">
-<div id="provider-panel">
-    <div id="provider-guide-panel">
-      <div id="provider-guide-header">
-        <span class="fa fa-link"></span>
-        플랫폼 연결
-      </div>
-      <div>
-        NC 스트리밍으로<br>
-        게임플레이를 방송할 수 있습니다.<br>
-        게시물을 등록할 페이스북 계정을 연결해 주세요.
-      </div>
-    </div>
-  </div>
-  <hr>
+<div class="contents login-page-panel">
+  <section class="connect-platform">
+    <header>
+      <h2>플랫폼 연결</h2>
+    </header>
+    <article>NC 스트리밍으로 게임플레이를<br />방송할 수 있습니다.<br />게시물을 등록할 페이스북 계정을 연결해 주세요.</article>
+  </section>
 </div>
-<div class="button-panel">
-  <button class="btn btn-block btn-primary streaming-button"
-          id="streaming-login-button">페이스북 연결</button>
-</div>
+<div class="footer login-page-panel">
+  <button id="streaming-login-button" class="btn-connect">페이스북 연결</button>
 </div>
 
 <!--main page-->
-<div id="main-page-panel" class="main-panel">
-<div class="control-panel">
-  <div id="streaming-user-page-panel">
-    <div>페이지</div>
-    <select class="streaming-select" id="streaming-user-page-select">
-      <option>게시물 등록 장소</option>
-    </select>
-  </div>
-  <hr>
-  <div id="streaming-source-panel">
-    <div>방송할 게임</div>
-    <select class="streaming-select" id="streaming-sources-select">
-      <option>게임 목록을 받아오는 중입니다..</option>
-    </select>
-  </div>
-  <hr>
-  <div id="streaming-title-panel">
-    <div>방송 제목</div>
-      <textarea id="streaming-feed-description" 
-      placeholder="최대 100자까지 입력할 수 있습니다."></textarea>
-  </div>
-  <hr>
-  <div id="streaming-quality-panel">
-    <div>품질</div>
-    <select id="streaming-quality-select" class="streaming-select">
-    </select>
-  </div>
-  <hr>
-  <div id="streaming-easy-setting">
-    <div>간편 설정</div>
-    <div id="mic-panel">
-      <span class="fa fa-microphone">
-        <label id="streaming-mic-label">
-          <input type="checkbox" id="streaming-mic-checkbox">
-          마이크 사용
-        </label>
-      </span>
+<div class="contents main-page-panel">
+  <!-- 페이스북정보 -->
+  <section class="nc-streamer">
+    <div class="profile">
+      <span id="provider-user-name" class="name fb">프로필이름열자말줄임</span>
+      <!-- 방송 중 아닐때 -->
+      <!--<a href="#" class="btn-view-streaming">방송 보기</a>-->
+      <!-- 방송 중 --><a id="provider-page-link" href="#" class="btn-view-streaming live">방송 보기</a>
     </div>
-  </div>
-  <hr>
+    <div id="streaming-user-page-select" data-ui="custom-select">
+      <span class="opener">게시물 등록 장소</span>
+      <ul>
+        <li data-value="1">내 타임라인에 공유</li>
+        <li data-value="2">관리 중인 페이지에 공유</li>
+      </ul>
+      <input type="hidden" readonly="" value="">
+    </div>
+    <!-- 페이스북 인증 실패 -->
+    <!--<div class="message button">
+                <button >내 타임라인 및 관리 페이지 접근 허용</button>
+            </div>-->
+
+    <!-- 관리 중인 페이지가 없습니다. -->
+    <!--<div class="message admin">관리 중인 페이지가 없습니다.</div>-->
+
+    <!-- 관리 중인 페이지에 공유 -->
+    <div id="streaming-managing-page-select" data-ui="custom-select">
+      <span class="opener">{관리 중인 페이지1}</span>
+      <ul>
+        <li data-value="1">{관리 중인 페이지1}</li>
+        <li data-value="2">{관리 중인 페이지2}</li>
+      </ul>
+      <input type="hidden" readonly="" value="">
+    </div>
+    <!-- 내 타임라인에 공유 -->
+    <div id="streaming-page-access" data-ui="custom-select">
+      <span class="opener">게시물 공개 범위</span>
+      <ul>
+        <li data-value="1">전체 공개</li>
+        <li data-value="2">친구만 보기</li>
+        <li data-value="3">나만 보기</li>
+      </ul>
+      <input type="hidden" readonly="" value="">
+    </div>
+    <div class="tooltip">
+      <span class="layer-close">닫기</span>
+      <p>NC TV에도 게시물을 등록하려면<br />'전체 공개'를 선택해 주세요.</p>
+    </div>
+  </section>
+  <!-- 방송 정보 -->
+  <section class="nc-streamer">
+    <h3>방송할 게임</h3>
+    <!-- 실행 중인 게임이 없는 경우 <div class="message game">방송할 게임을 실행해 주세요.</div>-->
+    <!-- 1개인 경우 <div class="message">방송할 게임을 실행해 주세요.</div>-->
+    <!-- 2개 이상인 경우 -->
+    <div id="streaming-game-select" data-ui="custom-select">
+      <span class="opener">{실행 중인 게임 1}</span>
+      <ul>
+        <li data-value="1">{실행 중인 게임 1}</li>
+        <li data-value="2">{실행 중인 게임 2}</li>
+      </ul>
+      <input type="hidden" readonly="" value="">
+    </div>
+    <div class="streaming-title">
+      <h3>방송 제목</h3>
+      <div class="broadcast-title">
+        <textarea id="streaming-feed-description" rows="2"
+                  placeholder="최대 100자까지 입력할 수 있습니다."></textarea>
+      </div>
+    </div>
+  </section>
+  <!-- 간편 설정 -->
+  <section class="nc-streamer">
+    <h3>간편 설정</h3>
+    <!--<div class="checkbox webcam">
+      <input type="checkbox" id="chkWebcam" />
+      <label for="chkWebcam">웹캠 사용</label>
+    </div>-->
+    <div class="checkbox mic">
+      <input type="checkbox" id="streaming-mic-checkbox"/>
+      <label class="on" for="streaming-mic-checkbox">마이크 사용</label>
+    </div>
+  </section>
 </div>
-<div class="button-panel">
-  <div id="provider-user-name"></div>
-  <div id="streaming-status">방송 준비 완료</div>
-  <button class="btn btn-block btn-primary streaming-button"
-          id="streaming-control-button">방송 시작</button>
+<div class="footer main-page-panel">
+  <div id="streaming-error-text" class="msg status-error">일시적인 오류로 방송 서비스를 이용할 수 없습니다.<br />잠시 후 다시 시도해 주세요.</div>
+  <div id="streaming-normal-text" class="msg status-ready">방송 준비 완료</div>
+  <!--<button class="btn-start" disabled="disabled">방송 시작</button>-->
+  <!--<button class="btn-start loading" disabled="disabled">방송 준비 중</button>-->
+  <button id="streaming-control-button" class="btn-start">방송 시작</button>
 </div>
 </div>
 
-<script src="//connect.facebook.net/en_US/sdk.js"></script>
-<script src="app/lib/facebook.js"></script>
 <script src="app/cef.js"></script>
 <script src="app.js"></script>
