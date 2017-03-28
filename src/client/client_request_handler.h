@@ -36,19 +36,33 @@ class ClientRequestHandler : public CefRequestHandler {
 
   // command handlers
   using CommandHandler = std::function<void (
-      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser)>;
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser)>;
   void OnCommandServiceProviderLogIn(
-      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandStreamingStart(
-      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandStreamingStop(
-      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsMicOn(
-      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsMicOff(
-      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsVideoQualityUpdate(
-      const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser);
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
 
   IMPLEMENT_REFCOUNTING(ClientRequestHandler);
 };

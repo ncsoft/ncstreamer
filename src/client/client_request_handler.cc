@@ -106,22 +106,34 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
                                   CommandHandler> kCommandHandlers{
       {L"service_provider/log_in",
        std::bind(&This::OnCommandServiceProviderLogIn, this,
-           std::placeholders::_1, std::placeholders::_2)},
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {L"streaming/start",
        std::bind(&This::OnCommandStreamingStart, this,
-           std::placeholders::_1, std::placeholders::_2)},
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {L"streaming/stop",
        std::bind(&This::OnCommandStreamingStop, this,
-           std::placeholders::_1, std::placeholders::_2)},
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {L"settings/mic/on",
            std::bind(&This::OnCommandSettingsMicOn, this,
-           std::placeholders::_1, std::placeholders::_2)},
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {L"settings/mic/off",
            std::bind(&This::OnCommandSettingsMicOff, this,
-           std::placeholders::_1, std::placeholders::_2)},
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {L"settings/video_quality/update",
        std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
-           std::placeholders::_1, std::placeholders::_2)}};
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)}};
 
   auto i = kCommandHandlers.find(cmd);
   if (i == kCommandHandlers.end()) {
@@ -129,12 +141,14 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
     return;
   }
 
-  i->second(args, browser);
+  i->second(cmd, args, browser);
 }
 
 
 void ClientRequestHandler::OnCommandServiceProviderLogIn(
-    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+    const std::wstring &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
   auto provider_i = args.find(L"serviceProvider");
   if (provider_i == args.end()) {
     assert(false);
@@ -147,7 +161,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
       service_provider,
       browser->GetHost()->GetWindowHandle(),
       [](const std::wstring &error) {
-  }, [browser](
+  }, [browser, cmd](
       const std::wstring &user_name,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -158,6 +172,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     JsExecutor::Execute<boost::property_tree::ptree>(
         browser,
         "cef.onResponse",
+        converter.to_bytes(cmd),
         std::make_pair("userName", converter.to_bytes(user_name)),
         std::make_pair("userPages", tree_pages));
   });
@@ -165,7 +180,9 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
 
 
 void ClientRequestHandler::OnCommandStreamingStart(
-    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+    const std::wstring &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
   auto source_i = args.find(L"source");
   auto provider_i = args.find(L"serviceProvider");
   auto url_i = args.find(L"streamUrl");
@@ -192,7 +209,9 @@ void ClientRequestHandler::OnCommandStreamingStart(
 
 
 void ClientRequestHandler::OnCommandStreamingStop(
-    const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> browser) {
+    const std::wstring &cmd,
+    const CommandArgumentMap &/*args*/,
+    CefRefPtr<CefBrowser> browser) {
   Obs::Get()->StopStreaming([browser]() {
     JsExecutor::Execute(browser, "onStreamingStopped");
   });
@@ -200,19 +219,25 @@ void ClientRequestHandler::OnCommandStreamingStop(
 
 
 void ClientRequestHandler::OnCommandSettingsMicOn(
-  const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> /*browser*/) {
+    const std::wstring &cmd,
+    const CommandArgumentMap &/*args*/,
+    CefRefPtr<CefBrowser> /*browser*/) {
   Obs::Get()->TurnOnMic();
 }
 
 
 void ClientRequestHandler::OnCommandSettingsMicOff(
-  const CommandArgumentMap &/*args*/, CefRefPtr<CefBrowser> /*browser*/) {
+    const std::wstring &cmd,
+    const CommandArgumentMap &/*args*/,
+    CefRefPtr<CefBrowser> /*browser*/) {
   Obs::Get()->TurnOffMic();
 }
 
 
 void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
-    const CommandArgumentMap &args, CefRefPtr<CefBrowser> browser) {
+    const std::wstring &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
   auto width_i = args.find(L"width");
   auto height_i = args.find(L"height");
   auto fps_i = args.find(L"fps");

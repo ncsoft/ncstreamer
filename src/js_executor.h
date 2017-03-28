@@ -33,8 +33,9 @@ class JsExecutor {
   static void Execute(
       CefRefPtr<CefBrowser> browser,
       const std::string &func_name,
-      const std::pair<std::string, std::string> &arg0,
-      const std::pair<std::string, std::vector<T>> &arg1);
+      const std::string &arg0,
+      const std::pair<std::string, std::string> &arg1_0,
+      const std::pair<std::string, std::vector<T>> &arg1_1);
 
   static void ExecuteAngularJs(CefRefPtr<CefBrowser> browser,
                                const std::string &controller,
@@ -48,7 +49,11 @@ class JsExecutor {
                                  const std::vector<std::string> &arg_value,
                                  std::ostream *out);
   static void AppendFunctionCall(const std::string &func_name,
-                                 const boost::property_tree::ptree &args,
+                                 const boost::property_tree::ptree &arg,
+                                 std::ostream *out);
+  static void AppendFunctionCall(const std::string &func_name,
+                                 const std::string &arg0,
+                                 const boost::property_tree::ptree &arg1,
                                  std::ostream *out);
 
   template <typename T>
