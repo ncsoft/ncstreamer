@@ -99,34 +99,50 @@ function toCamel(str) {
 }
 
 
+function addClass(element, className) {
+  element.className += ' loading';
+}
+
+
+function removeClass(element, className) {
+  const check = new RegExp('(\\s|^)' + className + '(\\s|$)');
+  element.className = element.className.replace(check, ' ').trim();
+}
+
+
 function updateStreamingStatus(status) {
   console.info({ status: status });
 
   app.streaming.status = status;
-  const message = app.dom.streamingStatus;
+  const message = app.dom.streamingNormalText;
   const button = app.dom.streamingControlButton;
   switch (status) {
     case 'standby':
+      removeClass(button, 'loading');
       message.textContent = '방송 준비 완료';
       button.textContent = '방송 시작';
       button.disabled = false;
       break;
     case 'setup':
+      removeClass(button, 'loading');
       message.textContent = '방송 생성 중';
       button.textContent = '방송 시작';
       button.disabled = true;
       break;
     case 'starting':
+      addClass(button, 'loading');
       message.textContent = '방송 시작 중';
       button.textContent = '방송 시작';
       button.disabled = true;
       break;
     case 'onAir':
+      removeClass(button, 'loading');
       message.textContent = '방송 중';
       button.textContent = '방송 종료';
       button.disabled = false;
       break;
     case 'stopping':
+      addClass(button, 'loading');
       message.textContent = '방송 종료 중';
       button.textContent = '방송 종료';
       button.disabled = true;
