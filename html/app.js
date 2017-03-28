@@ -155,23 +155,23 @@ function setUpStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources'))
     return;
 
-  for (const child of app.dom.streamingSourcesSelect.children) {
-    child.remove();
+  const display = app.dom.streamingGameSelect.children[0];
+  const contents = app.dom.streamingGameSelect.children[1];
+  while (contents.firstChild) {
+    contents.removeChild(contents.firstChild);
   }
 
   if (obj.sources.length == 0) {
-    const option = document.createElement('option');
-    option.text = '실행 중인 게임이 없습니다.';
-    app.dom.streamingSourcesSelect.add(option);
-    app.dom.streamingSourcesSelect.disabled = true;
+    display.textContent = '실행 중인 게임이 없습니다.';
   } else {
-    app.dom.streamingSourcesSelect.disabled = false;
     for (const source of obj.sources) {
-      const option = document.createElement('option');
-      option.value = source;
-      option.text = source.split(':')[0];
-      app.dom.streamingSourcesSelect.add(option);
+      const li = document.createElement('li');
+      const node = document.createTextNode(source.split(':')[0]);
+      li.setAttribute('data-value', source);
+      li.appendChild(node);
+      contents.appendChild(li);
     }
+    display.textContent = contents.firstChild.textContent;
   }
 }
 
