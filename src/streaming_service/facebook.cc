@@ -32,7 +32,14 @@
 
 namespace ncstreamer {
 Facebook::Facebook()
-    : facebook_client_{new FacebookClient{}} {
+    : facebook_client_{new FacebookClient{this}},
+      http_download_service_{},
+      access_token_{},
+      me_id_{},
+      me_name_{},
+      me_accounts_{},
+      on_failed_{},
+      on_logged_in_{} {
 }
 
 
@@ -68,7 +75,7 @@ void Facebook::LogIn(
 
   CefBrowserSettings browser_settings;
 
-  facebook_client_->SetHandlers(on_failed, on_logged_in);
+  SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
       window_info,
       facebook_client_,
@@ -78,13 +85,14 @@ void Facebook::LogIn(
 }
 
 
-Facebook::FacebookClient::FacebookClient()
-    : access_token_{},
-      me_id_{},
-      me_name_{},
-      me_accounts_{},
-      on_failed_{},
-      on_logged_in_{} {
+void Facebook::OnAccessToken(const std::wstring &access_token) {
+  GetMe(access_token);
+}
+
+
+Facebook::FacebookClient::FacebookClient(
+    Facebook *owner)
+    : owner_{owner} {
 }
 
 
@@ -92,7 +100,7 @@ Facebook::FacebookClient::~FacebookClient() {
 }
 
 
-void Facebook::FacebookClient::SetHandlers(
+void Facebook::SetHandlers(
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
   on_failed_ = on_failed;
@@ -100,54 +108,9 @@ void Facebook::FacebookClient::SetHandlers(
 }
 
 
-CefRefPtr<CefLoadHandler>
-    Facebook::FacebookClient::GetLoadHandler() {
-  return this;
-}
-
-
 CefRefPtr<CefRequestHandler>
     Facebook::FacebookClient::GetRequestHandler() {
   return this;
-}
-
-
-void Facebook::FacebookClient::OnLoadEnd(
-    CefRefPtr<CefBrowser> browser,
-    CefRefPtr<CefFrame> frame,
-    int http_status_code) {
-  CEF_REQUIRE_UI_THREAD();
-
-  if (frame->IsMain() == false) {
-    return;
-  }
-
-  using Handler = std::function<void(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefFrame> frame,
-      int http_status_code,
-      const Uri &uri)>;
-
-  using Api = FacebookApi;
-  using This = Facebook::FacebookClient;
-
-  static const std::unordered_map<std::wstring, Handler> kHandlers{
-      {Api::Graph::Me::static_uri().scheme_authority_path(),
-       std::bind(&This::OnGetMe, this,
-           std::placeholders::_1,
-           std::placeholders::_2,
-           std::placeholders::_3,
-           std::placeholders::_4)}};
-
-  Uri uri{frame->GetURL()};
-  OutputDebugString((uri.uri_string() + L"\r\n").c_str());
-
-  auto i = kHandlers.find(uri.scheme_authority_path());
-  if (i == kHandlers.end()) {
-    return;
-  }
-
-  i->second(browser, frame, http_status_code, uri);
 }
 
 
@@ -194,7 +157,7 @@ bool Facebook::FacebookClient::OnBeforeBrowse(
 
 
 std::vector<StreamingServiceProvider::UserPage>
-    Facebook::FacebookClient::ExtractAccountAll(
+    Facebook::ExtractAccountAll(
         const boost::property_tree::ptree &tree) {
   std::vector<UserPage> accounts;
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -211,44 +174,24 @@ std::vector<StreamingServiceProvider::UserPage>
 }
 
 
-void Facebook::FacebookClient::GetMe(
-    const CefRefPtr<CefFrame> &frame,
+void Facebook::GetMe(
     const std::wstring &access_token) {
   Uri me_uri{FacebookApi::Graph::Me::BuildUri(
       access_token,
       {L"id",
        L"name",
        L"accounts"})};
-  frame->LoadURL(me_uri.uri_string());
-}
 
-
-void Facebook::FacebookClient::OnGetMe(
-    CefRefPtr<CefBrowser> browser,
-    CefRefPtr<CefFrame> frame,
-    int /*http_status_code*/,
-    const Uri &uri) {
-  CEF_REQUIRE_UI_THREAD();
-
-  class Visitor : public CefStringVisitor {
-   public:
-    using OnVisit = std::function<void(const std::wstring &str)>;
-    explicit Visitor(const OnVisit &on_visit) : on_visit_{on_visit} {}
-   protected:
-    void Visit(const CefString &str) override { on_visit_(str); }
-   private:
-    OnVisit on_visit_;
-    IMPLEMENT_REFCOUNTING(Visitor);
-  };
-
-  CefRefPtr<Visitor> visitor{new Visitor{[this, browser](
-      const std::wstring &str) {
-    CEF_REQUIRE_UI_THREAD();
-
-    OutputDebugString((str + L"\r\n").c_str());
-
+  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  http_download_service_.DownloadAsString(
+      converter.to_bytes(me_uri.uri_string()),
+      [this](const boost::system::error_code &ec) {
+    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring msg{converter.from_bytes(ec.message())};
+    on_failed_(msg);
+  }, [this](const std::string &utf8) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::string utf8 = converter.to_bytes(str);
+    std::wstring str = converter.from_bytes(utf8);
 
     boost::property_tree::ptree me;
     std::stringstream me_ss{utf8};
@@ -282,17 +225,13 @@ void Facebook::FacebookClient::OnGetMe(
         (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
 
     on_logged_in_(name, accounts);
-
-    browser->GetHost()->CloseBrowser(false);
-  }}};
-
-  frame->GetText(visitor);
+  });
 }
 
 
 bool Facebook::FacebookClient::OnAccessToken(
-    CefRefPtr<CefBrowser> /*browser*/,
-    CefRefPtr<CefFrame> frame,
+    CefRefPtr<CefBrowser> browser,
+    CefRefPtr<CefFrame> /*frame*/,
     CefRefPtr<CefRequest> /*request*/,
     bool /*is_redirect*/,
     const Uri &uri) {
@@ -307,8 +246,8 @@ bool Facebook::FacebookClient::OnAccessToken(
     return false;  // proceed navigation.
   }
 
-  access_token_ = access_token;
-  GetMe(frame, access_token);
+  owner_->OnAccessToken(access_token);
+  browser->GetHost()->CloseBrowser(false);
   return true;
 }
 }  // namespace ncstreamer
