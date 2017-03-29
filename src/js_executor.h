@@ -26,6 +26,9 @@ class JsExecutor {
                       const int &arg_value);
   static void Execute(CefRefPtr<CefBrowser> browser,
                       const std::string &func_name,
+                      const std::string &arg_value);
+  static void Execute(CefRefPtr<CefBrowser> browser,
+                      const std::string &func_name,
                       const std::string &arg_name,
                       const std::vector<std::string> &arg_value);
 

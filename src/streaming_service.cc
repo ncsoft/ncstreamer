@@ -62,10 +62,39 @@ void StreamingService::LogIn(
 }
 
 
+void StreamingService::PostLiveVideo(
+    const std::wstring &user_page_id,
+    const std::wstring &description,
+    const OnFailed &on_failed,
+    const OnLiveVideoPosted &on_live_video_posted) {
+  if (!current_service_provider_) {
+    on_failed(FailMessage::ToNotLoggedIn());
+    return;
+  }
+
+  const std::wstring &service_provider_id = *current_service_provider_id_;
+  current_service_provider_->PostLiveVideo(
+      user_page_id,
+      description,
+      on_failed,
+      [on_live_video_posted, service_provider_id](
+          const std::wstring &stream_url) {
+        on_live_video_posted(service_provider_id, stream_url);
+      });
+}
+
+
 std::wstring StreamingService::FailMessage::ToUnknownServiceProvider(
     const std::wstring &service_provider_id) {
   std::wstringstream msg;
   msg << L"unknown service provider: " << service_provider_id;
+  return msg.str();
+}
+
+
+std::wstring StreamingService::FailMessage::ToNotLoggedIn() {
+  std::wstringstream msg;
+  msg << L"not logged in";
   return msg.str();
 }
 

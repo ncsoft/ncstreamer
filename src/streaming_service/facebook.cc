@@ -85,6 +85,15 @@ void Facebook::LogIn(
 }
 
 
+void Facebook::PostLiveVideo(
+    const std::wstring &user_page_id,
+    const std::wstring &description,
+    const OnFailed &on_failed,
+    const OnLiveVideoPosted &on_live_video_posted) {
+  // TODO(khpark): TBD
+}
+
+
 std::vector<StreamingServiceProvider::UserPage>
     Facebook::ExtractAccountAll(
         const boost::property_tree::ptree &tree) {

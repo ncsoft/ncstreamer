@@ -26,6 +26,8 @@ class StreamingServiceProvider {
   using OnLoggedIn =
       std::function<void(const std::wstring &user_name,
                          const std::vector<UserPage> &user_pages)>;
+  using OnLiveVideoPosted =
+      std::function<void(const std::wstring &stream_url)>;
 
   StreamingServiceProvider();
   virtual ~StreamingServiceProvider() = 0;
@@ -34,6 +36,12 @@ class StreamingServiceProvider {
       HWND parent,
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in) = 0;
+
+  virtual void PostLiveVideo(
+      const std::wstring &user_page_id,
+      const std::wstring &description,
+      const OnFailed &on_failed,
+      const OnLiveVideoPosted &on_live_video_posted) = 0;
 };
 
 

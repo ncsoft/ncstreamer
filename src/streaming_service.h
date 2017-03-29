@@ -20,6 +20,9 @@ class StreamingService {
  public:
   using OnFailed = StreamingServiceProvider::OnFailed;
   using OnLoggedIn = StreamingServiceProvider::OnLoggedIn;
+  using OnLiveVideoPosted =
+      std::function<void(const std::wstring &service_provider,
+                         const std::wstring &stream_url)>;
 
   static void SetUp();
   static void ShutDown();
@@ -31,11 +34,18 @@ class StreamingService {
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 
+  void PostLiveVideo(
+      const std::wstring &user_page_id,
+      const std::wstring &description,
+      const OnFailed &on_failed,
+      const OnLiveVideoPosted &on_live_video_posted);
+
  private:
   class FailMessage {
    public:
     static std::wstring ToUnknownServiceProvider(
         const std::wstring &service_provider_id);
+    static std::wstring ToNotLoggedIn();
   };
 
   StreamingService();
