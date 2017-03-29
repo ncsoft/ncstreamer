@@ -4,7 +4,6 @@
 
 
 #include "src/lib/http_downloader.h"
-#include <functional>
 
 
 namespace ncstreamer {
