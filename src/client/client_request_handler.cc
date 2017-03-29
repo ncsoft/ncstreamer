@@ -161,6 +161,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
       service_provider,
       browser->GetHost()->GetWindowHandle(),
       [](const std::wstring &error) {
+    // TODO(khpark): TBD
   }, [browser, cmd](
       const std::wstring &user_name,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
