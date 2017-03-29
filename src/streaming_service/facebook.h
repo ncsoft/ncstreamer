@@ -15,6 +15,7 @@
 #include "include/cef_request_handler.h"
 
 #include "src/lib/cef_fit_client.h"
+#include "src/lib/http_download_service.h"
 #include "src/lib/uri.h"
 #include "src/streaming_service/streaming_service_provider.h"
 
@@ -31,34 +32,46 @@ class Facebook : public StreamingServiceProvider {
       const OnLoggedIn &on_logged_in) override;
 
  private:
+  using AccountMap =
+      std::unordered_map<std::wstring /*id*/, UserPage>;
+
   class FacebookClient;
 
-  CefRefPtr<FacebookClient> facebook_client_;
-};
+  static std::vector<UserPage> ExtractAccountAll(
+      const boost::property_tree::ptree &tree);
 
-
-class Facebook::FacebookClient
-    : public CefFitClient,
-      public CefLoadHandler,
-      public CefRequestHandler {
- public:
-  FacebookClient();
-  virtual ~FacebookClient();
+  void GetMe();
 
   void SetHandlers(
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 
+  void OnAccessToken(
+      const std::wstring &access_token);
+
+  CefRefPtr<FacebookClient> facebook_client_;
+  HttpDownloadService http_download_service_;
+
+  std::wstring access_token_;
+  std::wstring me_id_;
+  std::wstring me_name_;
+  AccountMap me_accounts_;
+
+  OnFailed on_failed_;
+  OnLoggedIn on_logged_in_;
+};
+
+
+class Facebook::FacebookClient
+    : public CefFitClient,
+      public CefRequestHandler {
+ public:
+  explicit FacebookClient(Facebook *owner);
+  virtual ~FacebookClient();
+
  protected:
   // overrides CefClient
-  CefRefPtr<CefLoadHandler> GetLoadHandler() override;
   CefRefPtr<CefRequestHandler> GetRequestHandler() override;
-
-  // overrides CefLoadHandler
-  void OnLoadEnd(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefFrame> frame,
-      int httpStatusCode) override;
 
   // overrides CefRequestHandler
   bool OnBeforeBrowse(
@@ -68,22 +81,6 @@ class Facebook::FacebookClient
       bool is_redirect) override;
 
  private:
-  using AccountMap =
-      std::unordered_map<std::wstring /*id*/, UserPage>;
-
-  static std::vector<UserPage> ExtractAccountAll(
-      const boost::property_tree::ptree &tree);
-
-  void GetMe(
-      const CefRefPtr<CefFrame> &frame,
-      const std::wstring &access_token);
-
-  void OnGetMe(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefFrame> frame,
-      int http_status_code,
-      const Uri &uri);
-
   bool OnAccessToken(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefFrame> frame,
@@ -91,13 +88,7 @@ class Facebook::FacebookClient
       bool is_redirect,
       const Uri &uri);
 
-  std::wstring access_token_;
-  std::wstring me_id_;
-  std::wstring me_name_;
-  AccountMap me_accounts_;
-
-  OnFailed on_failed_;
-  OnLoggedIn on_logged_in_;
+  Facebook *owner_;
 
   IMPLEMENT_REFCOUNTING(FacebookClient);
 };
