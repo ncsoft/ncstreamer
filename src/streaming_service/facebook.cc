@@ -103,10 +103,9 @@ std::vector<StreamingServiceProvider::UserPage>
 }
 
 
-void Facebook::GetMe(
-    const std::wstring &access_token) {
+void Facebook::GetMe() {
   Uri me_uri{FacebookApi::Graph::Me::BuildUri(
-      access_token,
+      access_token_,
       {L"id",
        L"name",
        L"accounts"})};
@@ -167,7 +166,8 @@ void Facebook::SetHandlers(
 
 
 void Facebook::OnAccessToken(const std::wstring &access_token) {
-  GetMe(access_token);
+  access_token_ = access_token;
+  GetMe();
 }
 
 

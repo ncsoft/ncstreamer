@@ -40,8 +40,7 @@ class Facebook : public StreamingServiceProvider {
   static std::vector<UserPage> ExtractAccountAll(
       const boost::property_tree::ptree &tree);
 
-  void GetMe(
-      const std::wstring &access_token);
+  void GetMe();
 
   void SetHandlers(
       const OnFailed &on_failed,
