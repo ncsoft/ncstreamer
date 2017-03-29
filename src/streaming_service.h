@@ -47,6 +47,7 @@ class StreamingService {
       std::wstring /*service_provider_id*/,
       std::shared_ptr<StreamingServiceProvider>> service_providers_;
 
+  const std::wstring *current_service_provider_id_;
   std::shared_ptr<StreamingServiceProvider> current_service_provider_;
 };
 }  // namespace ncstreamer

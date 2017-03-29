@@ -33,6 +33,7 @@ StreamingService *StreamingService::Get() {
 StreamingService::StreamingService()
     : service_providers_{
           {L"Facebook Live", std::shared_ptr<Facebook>{new Facebook{}}}},
+      current_service_provider_id_{nullptr},
       current_service_provider_{} {
 }
 
@@ -51,6 +52,7 @@ void StreamingService::LogIn(
     on_failed(FailMessage::ToUnknownServiceProvider(service_provider_id));
     return;
   }
+  current_service_provider_id_ = &(i->first);
   current_service_provider_ = i->second;
 
   current_service_provider_->LogIn(
