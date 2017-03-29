@@ -44,7 +44,7 @@ class StreamingService {
   static StreamingService *static_instance;
 
   std::unordered_map<
-      std::wstring /*provider_id*/,
+      std::wstring /*service_provider_id*/,
       std::shared_ptr<StreamingServiceProvider>> service_providers_;
 
   std::shared_ptr<StreamingServiceProvider> current_service_provider_;
