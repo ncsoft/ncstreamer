@@ -44,8 +44,8 @@ StreamingService::~StreamingService() {
 void StreamingService::LogIn(
     const std::wstring &service_provider_id,
     HWND parent,
-    const StreamingServiceProvider::OnFailed &on_failed,
-    const StreamingServiceProvider::OnLoggedIn &on_logged_in) {
+    const OnFailed &on_failed,
+    const OnLoggedIn &on_logged_in) {
   auto i = service_providers_.find(service_provider_id);
   if (i == service_providers_.end()) {
     on_failed(FailMessage::ToUnknownServiceProvider(service_provider_id));

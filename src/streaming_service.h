@@ -18,6 +18,9 @@
 namespace ncstreamer {
 class StreamingService {
  public:
+  using OnFailed = StreamingServiceProvider::OnFailed;
+  using OnLoggedIn = StreamingServiceProvider::OnLoggedIn;
+
   static void SetUp();
   static void ShutDown();
   static StreamingService *Get();
@@ -25,8 +28,8 @@ class StreamingService {
   void LogIn(
       const std::wstring &service_provider_id,
       HWND parent,
-      const StreamingServiceProvider::OnFailed &on_failed,
-      const StreamingServiceProvider::OnLoggedIn &on_logged_in);
+      const OnFailed &on_failed,
+      const OnLoggedIn &on_logged_in);
 
  private:
   class FailMessage {
