@@ -120,6 +120,9 @@
     <ClCompile Include="..\src\lib\http_download_service.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\lib\http_types.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -216,6 +219,9 @@
       <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="..\src\lib\http_download_service.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\http_types.h">
       <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>

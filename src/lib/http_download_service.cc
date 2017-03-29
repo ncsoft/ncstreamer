@@ -27,12 +27,14 @@ HttpDownloadService::~HttpDownloadService() {
 
 void HttpDownloadService::DownloadAsString(
     const std::string &uri,
+    const urdl::http::request_method &method,
     const HttpDownloader::ErrorHandler &err_handler,
     const HttpDownloader::OpenHandler &open_handler,
     const HttpDownloader::ReadHandler &read_handler,
     const HttpDownloader::CompleteHandlerAsString &complete_handler) {
   downloader_->DownloadAsString(
       uri,
+      method,
       err_handler,
       open_handler,
       read_handler,
@@ -42,6 +44,7 @@ void HttpDownloadService::DownloadAsString(
 
 void HttpDownloadService::DownloadAsString(
     const std::string &uri,
+    const urdl::http::request_method &method,
     const HttpDownloader::ErrorHandler &err_handler,
     const HttpDownloader::CompleteHandlerAsString &complete_handler) {
   static const HttpDownloader::OpenHandler kDefaultOpenHandler{
@@ -51,6 +54,7 @@ void HttpDownloadService::DownloadAsString(
 
   DownloadAsString(
       uri,
+      method,
       err_handler,
       kDefaultOpenHandler,
       kDefaultReadHandler,

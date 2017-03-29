@@ -25,6 +25,7 @@
 #include "include/wrapper/cef_helpers.h"
 
 #include "src/lib/cef_types.h"
+#include "src/lib/http_types.h"
 #include "src/lib/uri.h"
 #include "src/lib/windows_types.h"
 #include "src/streaming_service/facebook_api.h"
@@ -122,6 +123,7 @@ void Facebook::GetMe() {
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
   http_download_service_.DownloadAsString(
       converter.to_bytes(me_uri.uri_string()),
+      HttpRequestMethod::kGet,
       [this](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};

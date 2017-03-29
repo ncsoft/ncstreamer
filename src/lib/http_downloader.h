@@ -42,6 +42,7 @@ class HttpDownloader
 
   void DownloadAsString(
       const urdl::url &url,
+      const urdl::http::request_method &method,
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,

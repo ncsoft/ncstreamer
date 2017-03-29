@@ -5,6 +5,8 @@
 
 #include "src/lib/http_downloader.h"
 
+#include "src/lib/http_types.h"
+
 
 namespace ncstreamer {
 HttpDownloader::HttpDownloader(boost::asio::io_service *svc)
@@ -34,6 +36,8 @@ void HttpDownloader::DownloadAsFile(
     return;
   }
 
+  rstream_.set_option(HttpRequestMethod::kGet);
+
   std::fstream *ofstream{new std::fstream{
       file_name.c_str(), std::ios_base::out | std::ios_base::binary}};
   out_.reset(ofstream);
@@ -55,6 +59,7 @@ void HttpDownloader::DownloadAsFile(
 
 void HttpDownloader::DownloadAsString(
     const urdl::url &url,
+    const urdl::http::request_method &method,
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
@@ -65,6 +70,8 @@ void HttpDownloader::DownloadAsString(
     err_handler(boost::asio::error::already_started);
     return;
   }
+
+  rstream_.set_option(method);
 
   std::stringstream *stringstream{new std::stringstream{}};
   out_.reset(stringstream);
