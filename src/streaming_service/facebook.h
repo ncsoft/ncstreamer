@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "boost/property_tree/ptree.hpp"
+#include "include/cef_life_span_handler.h"
 #include "include/cef_request_handler.h"
 
 #include "src/lib/cef_fit_client.h"
@@ -41,7 +42,7 @@ class Facebook : public StreamingServiceProvider {
   using AccountMap =
       std::unordered_map<std::wstring /*id*/, UserPage>;
 
-  class FacebookClient;
+  class LoginClient;
 
   static std::vector<UserPage> ExtractAccountAll(
       const boost::property_tree::ptree &tree);
@@ -55,7 +56,7 @@ class Facebook : public StreamingServiceProvider {
   void OnAccessToken(
       const std::wstring &access_token);
 
-  CefRefPtr<FacebookClient> facebook_client_;
+  CefRefPtr<LoginClient> login_client_;
   HttpDownloadService http_download_service_;
 
   std::wstring access_token_;
@@ -68,16 +69,24 @@ class Facebook : public StreamingServiceProvider {
 };
 
 
-class Facebook::FacebookClient
+class Facebook::LoginClient
     : public CefFitClient,
+      public CefLifeSpanHandler,
       public CefRequestHandler {
  public:
-  explicit FacebookClient(Facebook *owner);
-  virtual ~FacebookClient();
+  LoginClient(
+      Facebook *const owner,
+      const HWND &base_window);
+  virtual ~LoginClient();
 
  protected:
   // overrides CefClient
+  CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override;
   CefRefPtr<CefRequestHandler> GetRequestHandler() override;
+
+  // overrides CefLifeSpanHandler
+  void OnAfterCreated(
+      CefRefPtr<CefBrowser> browser) override;
 
   // overrides CefRequestHandler
   bool OnBeforeBrowse(
@@ -94,9 +103,10 @@ class Facebook::FacebookClient
       bool is_redirect,
       const Uri &uri);
 
-  Facebook *owner_;
+  Facebook *const owner_;
+  const HWND base_window_;
 
-  IMPLEMENT_REFCOUNTING(FacebookClient);
+  IMPLEMENT_REFCOUNTING(LoginClient);
 };
 }  // namespace ncstreamer
 
