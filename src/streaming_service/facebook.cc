@@ -90,13 +90,16 @@ void Facebook::PostLiveVideo(
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
-      access_token_,
-      user_page_id,
-      description)};
+      user_page_id)};
+  boost::property_tree::ptree post_content{
+      FacebookApi::Graph::LiveVideos::BuildPostContent(
+          access_token_,
+          description)};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
   http_request_service_.Post(
       converter.to_bytes(live_video_uri.uri_string()),
+      post_content,
       [this](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};

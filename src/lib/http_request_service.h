@@ -12,6 +12,7 @@
 #include <thread>  // NOLINT
 
 #include "boost/asio/io_service.hpp"
+#include "boost/property_tree/ptree.hpp"
 
 #include "src/lib/http_request.h"
 
@@ -36,6 +37,7 @@ class HttpRequestService {
 
   void Post(
       const std::string &uri,
+      const boost::property_tree::ptree &post_content,
       const HttpRequest::ErrorHandler &err_handler,
       const HttpRequest::OpenHandler &open_handler,
       const HttpRequest::ReadHandler &read_handler,
@@ -43,6 +45,7 @@ class HttpRequestService {
 
   void Post(
       const std::string &uri,
+      const boost::property_tree::ptree &post_content,
       const HttpRequest::ErrorHandler &err_handler,
       const HttpRequest::ResponseCompleteHandler &complete_handler);
 

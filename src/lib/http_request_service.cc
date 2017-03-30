@@ -60,12 +60,14 @@ void HttpRequestService::Get(
 
 void HttpRequestService::Post(
     const std::string &uri,
+    const boost::property_tree::ptree &post_content,
     const HttpRequest::ErrorHandler &err_handler,
     const HttpRequest::OpenHandler &open_handler,
     const HttpRequest::ReadHandler &read_handler,
     const HttpRequest::ResponseCompleteHandler &complete_handler) {
   http_request_->Post(
       uri,
+      post_content,
       err_handler,
       open_handler,
       read_handler,
@@ -75,6 +77,7 @@ void HttpRequestService::Post(
 
 void HttpRequestService::Post(
     const std::string &uri,
+    const boost::property_tree::ptree &post_content,
     const HttpRequest::ErrorHandler &err_handler,
     const HttpRequest::ResponseCompleteHandler &complete_handler) {
   static const HttpRequest::OpenHandler kDefaultOpenHandler{
@@ -84,6 +87,7 @@ void HttpRequestService::Post(
 
   Post(
       uri,
+      post_content,
       err_handler,
       kDefaultOpenHandler,
       kDefaultReadHandler,

@@ -13,6 +13,7 @@
 #include <string>
 
 #include "boost/asio/io_service.hpp"
+#include "boost/property_tree/ptree.hpp"
 
 #pragma warning(push)
 #pragma warning(disable: 4244)
@@ -43,6 +44,7 @@ class HttpRequest
   void Request(
       const urdl::url &url,
       const urdl::http::request_method &method,
+      const boost::property_tree::ptree &post_content,
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,
@@ -57,6 +59,7 @@ class HttpRequest
 
   void Post(
       const urdl::url &url,
+      const boost::property_tree::ptree &post_content,
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,

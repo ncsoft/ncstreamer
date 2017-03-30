@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "boost/property_tree/ptree.hpp"
+
 #include "src/lib/uri.h"
 
 
@@ -82,8 +84,10 @@ class FacebookApi::Graph::Me {
 class FacebookApi::Graph::LiveVideos {
  public:
   static Uri BuildUri(
+      const std::wstring &user_page_id);
+
+  static boost::property_tree::ptree BuildPostContent(
       const std::wstring &access_token,
-      const std::wstring &user_page_id,
       const std::wstring &description);
 
  private:

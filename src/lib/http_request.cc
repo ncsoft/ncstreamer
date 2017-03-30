@@ -60,6 +60,7 @@ void HttpRequest::Download(
 void HttpRequest::Request(
     const urdl::url &url,
     const urdl::http::request_method &method,
+    const boost::property_tree::ptree &post_content,
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
@@ -72,6 +73,9 @@ void HttpRequest::Request(
   }
 
   rstream_.set_option(method);
+  if (post_content.empty() == false) {
+    HttpRequestContent::SetJson(post_content, &rstream_);
+  }
 
   std::stringstream *stringstream{new std::stringstream{}};
   out_.reset(stringstream);
@@ -96,9 +100,12 @@ void HttpRequest::Get(
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
     const ResponseCompleteHandler &complete_handler) {
+  static const boost::property_tree::ptree kEmptyPostContent;
+
   Request(
       url,
       HttpRequestMethod::kGet,
+      kEmptyPostContent,
       err_handler,
       open_handler,
       read_handler,
@@ -108,6 +115,7 @@ void HttpRequest::Get(
 
 void HttpRequest::Post(
     const urdl::url &url,
+    const boost::property_tree::ptree &post_content,
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
@@ -115,6 +123,7 @@ void HttpRequest::Post(
   Request(
       url,
       HttpRequestMethod::kPost,
+      post_content,
       err_handler,
       open_handler,
       read_handler,

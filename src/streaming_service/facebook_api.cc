@@ -5,7 +5,10 @@
 
 #include "src/streaming_service/facebook_api.h"
 
+#include <codecvt>
+#include <locale>
 #include <sstream>
+#include <utility>
 
 #include "src/lib/string.h"
 
@@ -84,12 +87,23 @@ const std::wstring &FacebookApi::Graph::Me::static_path() {
 
 
 Uri FacebookApi::Graph::LiveVideos::BuildUri(
-    const std::wstring &access_token,
-    const std::wstring &user_page_id,
-    const std::wstring &description) {
-  return {kScheme, kAuthority, BuildPath(user_page_id), Uri::Query{{
-      {L"access_token", access_token},
-      {L"description", description}}}};
+    const std::wstring &user_page_id) {
+  return {kScheme, kAuthority, BuildPath(user_page_id)};
+}
+
+
+boost::property_tree::ptree
+    FacebookApi::Graph::LiveVideos::BuildPostContent(
+        const std::wstring &access_token,
+        const std::wstring &description) {
+  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+  boost::property_tree::ptree post_content;
+  post_content.add<std::string>(
+      "access_token", converter.to_bytes(access_token));
+  post_content.add<std::string>(
+      "description", converter.to_bytes(description));
+  return std::move(post_content);
 }
 
 
