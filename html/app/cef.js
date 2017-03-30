@@ -13,7 +13,7 @@ const cef = (function() {
       response: ['userName', 'userPages'],
     },
     'streaming/start': {
-      request: ['source', 'userPage', 'description'],
+      request: ['source', 'userPage', 'privacy', 'description'],
       response: [],
     },
     'streaming/stop': {

@@ -267,8 +267,9 @@ function onStreamingControlButtonClicked() {
     'standby': function() {
       const source = app.dom.streamingGameSelect.children[2].value;
       const userPage = app.dom.streamingManagingPageSelect.children[2].value;
+      const privacy = app.dom.streamingPageAccess.children[2].value;
       const description = app.dom.streamingFeedDescription.value;
-      cef.streamingStart.request(source, userPage, description);
+      cef.streamingStart.request(source, userPage, privacy, description);
       updateStreamingStatus('starting');
     },
     'starting': function() {},
