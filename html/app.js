@@ -225,6 +225,12 @@ function onStreamingLoginButtonClicked() {
 
 function onStreamingUserPageSelectChanged() {
   console.info('change streamingUserPageSelect');
+  const managingSelect = app.dom.streamingManagingPageSelect;
+  if (app.dom.streamingUserPageSelect.children[2].value == 2) {
+    managingSelect.style.display = 'block';
+  } else {
+    managingSelect.style.display = 'none';
+  }
 }
 
 
