@@ -33,7 +33,7 @@
 
 namespace ncstreamer {
 Facebook::Facebook()
-    : facebook_client_{new FacebookClient{this}},
+    : login_client_{new LoginClient{this}},
       http_download_service_{},
       access_token_{},
       me_id_{},
@@ -80,7 +80,7 @@ void Facebook::LogIn(
   SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
       window_info,
-      facebook_client_,
+      login_client_,
       kLoginUri.uri_string(),
       browser_settings,
       NULL);
@@ -223,23 +223,23 @@ void Facebook::OnAccessToken(const std::wstring &access_token) {
 }
 
 
-Facebook::FacebookClient::FacebookClient(
+Facebook::LoginClient::LoginClient(
     Facebook *const owner)
     : owner_{owner} {
 }
 
 
-Facebook::FacebookClient::~FacebookClient() {
+Facebook::LoginClient::~LoginClient() {
 }
 
 
 CefRefPtr<CefRequestHandler>
-    Facebook::FacebookClient::GetRequestHandler() {
+    Facebook::LoginClient::GetRequestHandler() {
   return this;
 }
 
 
-bool Facebook::FacebookClient::OnBeforeBrowse(
+bool Facebook::LoginClient::OnBeforeBrowse(
     CefRefPtr<CefBrowser> browser,
     CefRefPtr<CefFrame> frame,
     CefRefPtr<CefRequest> request,
@@ -258,7 +258,7 @@ bool Facebook::FacebookClient::OnBeforeBrowse(
       const Uri &uri)>;
 
   using Api = FacebookApi;
-  using This = Facebook::FacebookClient;
+  using This = Facebook::LoginClient;
 
   static const std::unordered_map<std::wstring, Handler> kHandlers{
       {Api::Login::Redirect::static_uri().scheme_authority_path(),
@@ -281,7 +281,7 @@ bool Facebook::FacebookClient::OnBeforeBrowse(
 }
 
 
-bool Facebook::FacebookClient::OnAccessToken(
+bool Facebook::LoginClient::OnAccessToken(
     CefRefPtr<CefBrowser> browser,
     CefRefPtr<CefFrame> /*frame*/,
     CefRefPtr<CefRequest> /*request*/,

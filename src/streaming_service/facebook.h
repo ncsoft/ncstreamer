@@ -41,7 +41,7 @@ class Facebook : public StreamingServiceProvider {
   using AccountMap =
       std::unordered_map<std::wstring /*id*/, UserPage>;
 
-  class FacebookClient;
+  class LoginClient;
 
   static std::vector<UserPage> ExtractAccountAll(
       const boost::property_tree::ptree &tree);
@@ -55,7 +55,7 @@ class Facebook : public StreamingServiceProvider {
   void OnAccessToken(
       const std::wstring &access_token);
 
-  CefRefPtr<FacebookClient> facebook_client_;
+  CefRefPtr<LoginClient> login_client_;
   HttpDownloadService http_download_service_;
 
   std::wstring access_token_;
@@ -68,12 +68,12 @@ class Facebook : public StreamingServiceProvider {
 };
 
 
-class Facebook::FacebookClient
+class Facebook::LoginClient
     : public CefFitClient,
       public CefRequestHandler {
  public:
-  explicit FacebookClient(Facebook *const owner);
-  virtual ~FacebookClient();
+  explicit LoginClient(Facebook *const owner);
+  virtual ~LoginClient();
 
  protected:
   // overrides CefClient
@@ -96,7 +96,7 @@ class Facebook::FacebookClient
 
   Facebook *const owner_;
 
-  IMPLEMENT_REFCOUNTING(FacebookClient);
+  IMPLEMENT_REFCOUNTING(LoginClient);
 };
 }  // namespace ncstreamer
 
