@@ -157,6 +157,7 @@ function setUpStreamingSources(obj) {
 
   const display = app.dom.streamingGameSelect.children[0];
   const contents = app.dom.streamingGameSelect.children[1];
+  const input = app.dom.streamingGameSelect.children[2];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
@@ -171,6 +172,7 @@ function setUpStreamingSources(obj) {
       li.appendChild(node);
       contents.appendChild(li);
     }
+    input.value = contents.firstChild['data-value'];
     display.textContent = contents.firstChild.textContent;
   }
 }
@@ -297,6 +299,7 @@ cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
 
   const display = app.dom.streamingManagingPageSelect.children[0];
   const contents = app.dom.streamingManagingPageSelect.children[1];
+  const input = app.dom.streamingManagingPageSelect.children[2];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
@@ -311,6 +314,7 @@ cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
       li.appendChild(node);
       contents.appendChild(li);
     }
+    input.value = contents.firstChild['data-value'];
     display.textContent = contents.firstChild.textContent;
   }
 };
