@@ -90,6 +90,38 @@ void HttpRequest::Request(
 }
 
 
+void HttpRequest::Get(
+    const urdl::url &url,
+    const ErrorHandler &err_handler,
+    const OpenHandler &open_handler,
+    const ReadHandler &read_handler,
+    const ResponseCompleteHandler &complete_handler) {
+  Request(
+      url,
+      HttpRequestMethod::kGet,
+      err_handler,
+      open_handler,
+      read_handler,
+      complete_handler);
+}
+
+
+void HttpRequest::Post(
+    const urdl::url &url,
+    const ErrorHandler &err_handler,
+    const OpenHandler &open_handler,
+    const ReadHandler &read_handler,
+    const ResponseCompleteHandler &complete_handler) {
+  Request(
+      url,
+      HttpRequestMethod::kPost,
+      err_handler,
+      open_handler,
+      read_handler,
+      complete_handler);
+}
+
+
 void HttpRequest::Request(const urdl::url &url) {
   auto self{shared_from_this()};
   rstream_.async_open(

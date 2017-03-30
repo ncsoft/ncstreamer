@@ -25,16 +25,14 @@ HttpRequestService::~HttpRequestService() {
 }
 
 
-void HttpRequestService::Request(
+void HttpRequestService::Get(
     const std::string &uri,
-    const urdl::http::request_method &method,
     const HttpRequest::ErrorHandler &err_handler,
     const HttpRequest::OpenHandler &open_handler,
     const HttpRequest::ReadHandler &read_handler,
     const HttpRequest::ResponseCompleteHandler &complete_handler) {
-  http_request_->Request(
+  http_request_->Get(
       uri,
-      method,
       err_handler,
       open_handler,
       read_handler,
@@ -42,9 +40,8 @@ void HttpRequestService::Request(
 }
 
 
-void HttpRequestService::Request(
+void HttpRequestService::Get(
     const std::string &uri,
-    const urdl::http::request_method &method,
     const HttpRequest::ErrorHandler &err_handler,
     const HttpRequest::ResponseCompleteHandler &complete_handler) {
   static const HttpRequest::OpenHandler kDefaultOpenHandler{
@@ -52,9 +49,41 @@ void HttpRequestService::Request(
   static const HttpRequest::ReadHandler kDefaultReadHandler{
         [](std::size_t /*read_size*/) {}};
 
-  Request(
+  Get(
       uri,
-      method,
+      err_handler,
+      kDefaultOpenHandler,
+      kDefaultReadHandler,
+      complete_handler);
+}
+
+
+void HttpRequestService::Post(
+    const std::string &uri,
+    const HttpRequest::ErrorHandler &err_handler,
+    const HttpRequest::OpenHandler &open_handler,
+    const HttpRequest::ReadHandler &read_handler,
+    const HttpRequest::ResponseCompleteHandler &complete_handler) {
+  http_request_->Post(
+      uri,
+      err_handler,
+      open_handler,
+      read_handler,
+      complete_handler);
+}
+
+
+void HttpRequestService::Post(
+    const std::string &uri,
+    const HttpRequest::ErrorHandler &err_handler,
+    const HttpRequest::ResponseCompleteHandler &complete_handler) {
+  static const HttpRequest::OpenHandler kDefaultOpenHandler{
+        [](std::size_t /*file_size*/) {}};
+  static const HttpRequest::ReadHandler kDefaultReadHandler{
+        [](std::size_t /*read_size*/) {}};
+
+  Post(
+      uri,
       err_handler,
       kDefaultOpenHandler,
       kDefaultReadHandler,

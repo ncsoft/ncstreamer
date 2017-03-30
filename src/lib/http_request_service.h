@@ -22,17 +22,27 @@ class HttpRequestService {
   HttpRequestService();
   virtual ~HttpRequestService();
 
-  void Request(
+  void Get(
       const std::string &uri,
-      const urdl::http::request_method &method,
       const HttpRequest::ErrorHandler &err_handler,
       const HttpRequest::OpenHandler &open_handler,
       const HttpRequest::ReadHandler &read_handler,
       const HttpRequest::ResponseCompleteHandler &complete_handler);
 
-  void Request(
+  void Get(
       const std::string &uri,
-      const urdl::http::request_method &method,
+      const HttpRequest::ErrorHandler &err_handler,
+      const HttpRequest::ResponseCompleteHandler &complete_handler);
+
+  void Post(
+      const std::string &uri,
+      const HttpRequest::ErrorHandler &err_handler,
+      const HttpRequest::OpenHandler &open_handler,
+      const HttpRequest::ReadHandler &read_handler,
+      const HttpRequest::ResponseCompleteHandler &complete_handler);
+
+  void Post(
+      const std::string &uri,
       const HttpRequest::ErrorHandler &err_handler,
       const HttpRequest::ResponseCompleteHandler &complete_handler);
 

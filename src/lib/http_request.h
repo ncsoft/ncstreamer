@@ -48,6 +48,20 @@ class HttpRequest
       const ReadHandler &read_handler,
       const ResponseCompleteHandler &complete_handler);
 
+  void Get(
+      const urdl::url &url,
+      const ErrorHandler &err_handler,
+      const OpenHandler &open_handler,
+      const ReadHandler &read_handler,
+      const ResponseCompleteHandler &complete_handler);
+
+  void Post(
+      const urdl::url &url,
+      const ErrorHandler &err_handler,
+      const OpenHandler &open_handler,
+      const ReadHandler &read_handler,
+      const ResponseCompleteHandler &complete_handler);
+
  private:
   using CompleteHandler = std::function<void()>;
   using OstreamCloseHandler = std::function<void()>;

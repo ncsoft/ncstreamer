@@ -102,9 +102,8 @@ void Facebook::PostLiveVideo(
       description)};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  http_request_service_.Request(
+  http_request_service_.Post(
       converter.to_bytes(live_video_uri.uri_string()),
-      HttpRequestMethod::kPost,
       [this](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};
@@ -163,9 +162,8 @@ void Facebook::GetMe() {
        L"accounts"})};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  http_request_service_.Request(
+  http_request_service_.Get(
       converter.to_bytes(me_uri.uri_string()),
-      HttpRequestMethod::kGet,
       [this](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};
