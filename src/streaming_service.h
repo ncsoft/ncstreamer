@@ -36,6 +36,8 @@ class StreamingService {
 
   void PostLiveVideo(
       const std::wstring &user_page_id,
+      const std::wstring &privacy,
+      const std::wstring &title,
       const std::wstring &description,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted);

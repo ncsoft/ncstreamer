@@ -3,13 +3,13 @@
  */
 
 
-#include "src/lib/http_downloader.h"
+#include "src/lib/http_request.h"
 
 #include "src/lib/http_types.h"
 
 
 namespace ncstreamer {
-HttpDownloader::HttpDownloader(boost::asio::io_service *svc)
+HttpRequest::HttpRequest(boost::asio::io_service *svc)
     : rstream_{*svc},
       out_{},
       buffer_{},
@@ -22,13 +22,13 @@ HttpDownloader::HttpDownloader(boost::asio::io_service *svc)
 }
 
 
-void HttpDownloader::DownloadAsFile(
+void HttpRequest::Download(
     const urdl::url &url,
     const std::string &file_name,
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
-    const CompleteHandlerAsFile &complete_handler) {
+    const DownloadCompleteHandler &complete_handler) {
   if (rstream_.is_open()) {
     // borrowed error code from boost::asio::error temporarily.
     // TODO(khpark): replace this error code with in-house one.
@@ -53,17 +53,18 @@ void HttpDownloader::DownloadAsFile(
     ofstream->close();
   };
 
-  Download(url);
+  Request(url);
 }
 
 
-void HttpDownloader::DownloadAsString(
+void HttpRequest::Request(
     const urdl::url &url,
     const urdl::http::request_method &method,
+    const boost::property_tree::ptree &post_content,
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
-    const CompleteHandlerAsString &complete_handler) {
+    const ResponseCompleteHandler &complete_handler) {
   if (rstream_.is_open()) {
     // borrowed error code from boost::asio::error temporarily.
     // TODO(khpark): replace this error code with in-house one.
@@ -72,6 +73,9 @@ void HttpDownloader::DownloadAsString(
   }
 
   rstream_.set_option(method);
+  if (post_content.empty() == false) {
+    HttpRequestContent::SetJson(post_content, &rstream_);
+  }
 
   std::stringstream *stringstream{new std::stringstream{}};
   out_.reset(stringstream);
@@ -86,11 +90,48 @@ void HttpDownloader::DownloadAsString(
   static const OstreamCloseHandler kDefaultOstreamCloseHandler{[]() {}};
   ostream_close_handler_ = kDefaultOstreamCloseHandler;
 
-  Download(url);
+  Request(url);
 }
 
 
-void HttpDownloader::Download(const urdl::url &url) {
+void HttpRequest::Get(
+    const urdl::url &url,
+    const ErrorHandler &err_handler,
+    const OpenHandler &open_handler,
+    const ReadHandler &read_handler,
+    const ResponseCompleteHandler &complete_handler) {
+  static const boost::property_tree::ptree kEmptyPostContent;
+
+  Request(
+      url,
+      HttpRequestMethod::kGet,
+      kEmptyPostContent,
+      err_handler,
+      open_handler,
+      read_handler,
+      complete_handler);
+}
+
+
+void HttpRequest::Post(
+    const urdl::url &url,
+    const boost::property_tree::ptree &post_content,
+    const ErrorHandler &err_handler,
+    const OpenHandler &open_handler,
+    const ReadHandler &read_handler,
+    const ResponseCompleteHandler &complete_handler) {
+  Request(
+      url,
+      HttpRequestMethod::kPost,
+      post_content,
+      err_handler,
+      open_handler,
+      read_handler,
+      complete_handler);
+}
+
+
+void HttpRequest::Request(const urdl::url &url) {
   auto self{shared_from_this()};
   rstream_.async_open(
       url, [this, self](const boost::system::error_code &ec) {
@@ -103,7 +144,7 @@ void HttpDownloader::Download(const urdl::url &url) {
     open_handler_(rstream_.content_length());
 
     rstream_.async_read_some(boost::asio::buffer(buffer_),
-                             std::bind(&HttpDownloader::OnRead,
+                             std::bind(&HttpRequest::OnRead,
                                        self,
                                        std::placeholders::_1,
                                        std::placeholders::_2));
@@ -111,7 +152,7 @@ void HttpDownloader::Download(const urdl::url &url) {
 }
 
 
-void HttpDownloader::OnRead(const boost::system::error_code &ec,
+void HttpRequest::OnRead(const boost::system::error_code &ec,
                             std::size_t length) {
   if (ec) {
     rstream_.close();
@@ -127,7 +168,7 @@ void HttpDownloader::OnRead(const boost::system::error_code &ec,
 
   out_->write(buffer_, length);
   rstream_.async_read_some(boost::asio::buffer(buffer_),
-                           std::bind(&HttpDownloader::OnRead,
+                           std::bind(&HttpRequest::OnRead,
                                      shared_from_this(),
                                      std::placeholders::_1,
                                      std::placeholders::_2));

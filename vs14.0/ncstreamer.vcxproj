@@ -109,8 +109,8 @@
     <ClCompile Include="..\src\lib\command_line.cc" />
     <ClCompile Include="..\src\lib\dimension.cc" />
     <ClCompile Include="..\src\lib\display.cc" />
-    <ClCompile Include="..\src\lib\http_downloader.cc" />
-    <ClCompile Include="..\src\lib\http_download_service.cc" />
+    <ClCompile Include="..\src\lib\http_request.cc" />
+    <ClCompile Include="..\src\lib\http_request_service.cc" />
     <ClCompile Include="..\src\lib\http_types.cc" />
     <ClCompile Include="..\src\lib\rectangle.cc" />
     <ClCompile Include="..\src\lib\string.cc" />
@@ -143,9 +143,10 @@
     <ClInclude Include="..\src\lib\command_line.h" />
     <ClInclude Include="..\src\lib\dimension.h" />
     <ClInclude Include="..\src\lib\display.h" />
-    <ClInclude Include="..\src\lib\http_downloader.h" />
-    <ClInclude Include="..\src\lib\http_download_service.h" />
+    <ClInclude Include="..\src\lib\http_request.h" />
+    <ClInclude Include="..\src\lib\http_request_service.h" />
     <ClInclude Include="..\src\lib\http_types.h" />
+    <ClInclude Include="..\src\lib\json_parser.h" />
     <ClInclude Include="..\src\lib\rectangle.h" />
     <ClInclude Include="..\src\lib\string.h" />
     <ClInclude Include="..\src\lib\uri.h" />

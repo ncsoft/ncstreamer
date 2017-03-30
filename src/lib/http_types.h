@@ -7,6 +7,8 @@
 #define SRC_LIB_HTTP_TYPES_H_
 
 
+#include "boost/property_tree/ptree.hpp"
+
 #pragma warning(push)
 #pragma warning(disable: 4244)
 #include "urdl/istream.hpp"
@@ -21,6 +23,20 @@ class HttpRequestMethod {
   static const urdl::http::request_method kPost;
   static const urdl::http::request_method kPut;
   static const urdl::http::request_method kDelete;
+};
+
+
+class HttpRequestContentType {
+ public:
+  static const urdl::http::request_content_type kApplicationJson;
+};
+
+
+class HttpRequestContent {
+ public:
+  static void SetJson(
+      const boost::property_tree::ptree &content,
+      urdl::read_stream *out);
 };
 }  // namespace ncstreamer
 

@@ -3,8 +3,8 @@
  */
 
 
-#ifndef SRC_LIB_HTTP_DOWNLOADER_H_
-#define SRC_LIB_HTTP_DOWNLOADER_H_
+#ifndef SRC_LIB_HTTP_REQUEST_H_
+#define SRC_LIB_HTTP_REQUEST_H_
 
 
 #include <functional>
@@ -13,6 +13,7 @@
 #include <string>
 
 #include "boost/asio/io_service.hpp"
+#include "boost/property_tree/ptree.hpp"
 
 #pragma warning(push)
 #pragma warning(disable: 4244)
@@ -21,38 +22,54 @@
 
 
 namespace ncstreamer {
-class HttpDownloader
-    : public std::enable_shared_from_this<HttpDownloader> {
+class HttpRequest
+    : public std::enable_shared_from_this<HttpRequest> {
  public:
   using ErrorHandler = std::function<void(const boost::system::error_code &ec)>;
   using OpenHandler = std::function<void(std::size_t file_size)>;
   using ReadHandler = std::function<void(std::size_t read_size)>;
-  using CompleteHandlerAsFile = std::function<void()>;
-  using CompleteHandlerAsString = std::function<void(const std::string &data)>;
+  using DownloadCompleteHandler = std::function<void()>;
+  using ResponseCompleteHandler = std::function<void(const std::string &data)>;
 
-  explicit HttpDownloader(boost::asio::io_service *svc);
+  explicit HttpRequest(boost::asio::io_service *svc);
 
-  void DownloadAsFile(
+  void Download(
       const urdl::url &url,
       const std::string &file_name,
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,
-      const CompleteHandlerAsFile &complete_handler);
+      const DownloadCompleteHandler &complete_handler);
 
-  void DownloadAsString(
+  void Request(
       const urdl::url &url,
       const urdl::http::request_method &method,
+      const boost::property_tree::ptree &post_content,
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,
-      const CompleteHandlerAsString &complete_handler);
+      const ResponseCompleteHandler &complete_handler);
+
+  void Get(
+      const urdl::url &url,
+      const ErrorHandler &err_handler,
+      const OpenHandler &open_handler,
+      const ReadHandler &read_handler,
+      const ResponseCompleteHandler &complete_handler);
+
+  void Post(
+      const urdl::url &url,
+      const boost::property_tree::ptree &post_content,
+      const ErrorHandler &err_handler,
+      const OpenHandler &open_handler,
+      const ReadHandler &read_handler,
+      const ResponseCompleteHandler &complete_handler);
 
  private:
   using CompleteHandler = std::function<void()>;
   using OstreamCloseHandler = std::function<void()>;
 
-  void Download(const urdl::url &url);
+  void Request(const urdl::url &url);
 
   void OnRead(const boost::system::error_code &ec,
               std::size_t length);
@@ -71,4 +88,4 @@ class HttpDownloader
 }  // namespace ncstreamer
 
 
-#endif  // SRC_LIB_HTTP_DOWNLOADER_H_
+#endif  // SRC_LIB_HTTP_REQUEST_H_

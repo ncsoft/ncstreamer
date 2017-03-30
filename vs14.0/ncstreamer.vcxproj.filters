@@ -114,10 +114,10 @@
     <ClCompile Include="..\src\lib\string.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\http_downloader.cc">
+    <ClCompile Include="..\src\lib\http_request.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\http_download_service.cc">
+    <ClCompile Include="..\src\lib\http_request_service.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
     <ClCompile Include="..\src\lib\http_types.cc">
@@ -215,13 +215,16 @@
     <ClInclude Include="..\src\lib\string.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\http_downloader.h">
+    <ClInclude Include="..\src\lib\http_request.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\http_download_service.h">
+    <ClInclude Include="..\src\lib\http_request_service.h">
       <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="..\src\lib\http_types.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\json_parser.h">
       <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>

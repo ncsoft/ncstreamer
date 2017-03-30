@@ -12,20 +12,13 @@
 #include <string>
 #include <unordered_map>
 
-#ifdef _MSC_VER
-#pragma warning(disable: 4819)
-#endif
-#include "boost/property_tree/json_parser.hpp"
-#ifdef _MSC_VER
-#pragma warning(default: 4819)
-#endif
-
 #include "boost/property_tree/ptree.hpp"
 #include "include/cef_browser.h"
 #include "include/wrapper/cef_helpers.h"
 
 #include "src/lib/cef_types.h"
 #include "src/lib/http_types.h"
+#include "src/lib/json_parser.h"
 #include "src/lib/uri.h"
 #include "src/lib/windows_types.h"
 #include "src/streaming_service/facebook_api.h"
@@ -34,7 +27,7 @@
 namespace ncstreamer {
 Facebook::Facebook()
     : login_client_{},
-      http_download_service_{},
+      http_request_service_{},
       access_token_{},
       me_id_{},
       me_name_{},
@@ -93,18 +86,24 @@ void Facebook::LogIn(
 
 void Facebook::PostLiveVideo(
     const std::wstring &user_page_id,
+    const std::wstring &privacy,
+    const std::wstring &title,
     const std::wstring &description,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
-      access_token_,
-      user_page_id,
-      description)};
+      user_page_id)};
+  boost::property_tree::ptree post_content{
+      FacebookApi::Graph::LiveVideos::BuildPostContent(
+          access_token_,
+          privacy,
+          title,
+          description)};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  http_download_service_.DownloadAsString(
+  http_request_service_.Post(
       converter.to_bytes(live_video_uri.uri_string()),
-      HttpRequestMethod::kPost,
+      post_content,
       [this](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};
@@ -163,9 +162,8 @@ void Facebook::GetMe() {
        L"accounts"})};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  http_download_service_.DownloadAsString(
+  http_request_service_.Get(
       converter.to_bytes(me_uri.uri_string()),
-      HttpRequestMethod::kGet,
       [this](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};
