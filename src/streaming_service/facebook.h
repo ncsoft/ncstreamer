@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "boost/property_tree/ptree.hpp"
+#include "include/cef_life_span_handler.h"
 #include "include/cef_request_handler.h"
 
 #include "src/lib/cef_fit_client.h"
@@ -70,14 +71,22 @@ class Facebook : public StreamingServiceProvider {
 
 class Facebook::LoginClient
     : public CefFitClient,
+      public CefLifeSpanHandler,
       public CefRequestHandler {
  public:
-  explicit LoginClient(Facebook *const owner);
+  LoginClient(
+      Facebook *const owner,
+      const HWND &base_window);
   virtual ~LoginClient();
 
  protected:
   // overrides CefClient
+  CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override;
   CefRefPtr<CefRequestHandler> GetRequestHandler() override;
+
+  // overrides CefLifeSpanHandler
+  void OnAfterCreated(
+      CefRefPtr<CefBrowser> browser) override;
 
   // overrides CefRequestHandler
   bool OnBeforeBrowse(
@@ -95,6 +104,7 @@ class Facebook::LoginClient
       const Uri &uri);
 
   Facebook *const owner_;
+  const HWND base_window_;
 
   IMPLEMENT_REFCOUNTING(LoginClient);
 };

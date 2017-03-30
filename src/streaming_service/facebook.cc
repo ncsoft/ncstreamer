@@ -78,7 +78,7 @@ void Facebook::LogIn(
   CefBrowserSettings browser_settings;
 
   if (!login_client_) {
-    login_client_ = new LoginClient{this};
+    login_client_ = new LoginClient{this, parent};
   }
 
   SetHandlers(on_failed, on_logged_in);
@@ -228,8 +228,10 @@ void Facebook::OnAccessToken(const std::wstring &access_token) {
 
 
 Facebook::LoginClient::LoginClient(
-    Facebook *const owner)
-    : owner_{owner} {
+    Facebook *const owner,
+    const HWND &base_window)
+    : owner_{owner},
+      base_window_{base_window} {
 }
 
 
@@ -237,9 +239,27 @@ Facebook::LoginClient::~LoginClient() {
 }
 
 
+CefRefPtr<CefLifeSpanHandler>
+    Facebook::LoginClient::GetLifeSpanHandler() {
+  return this;
+}
+
+
 CefRefPtr<CefRequestHandler>
     Facebook::LoginClient::GetRequestHandler() {
   return this;
+}
+
+
+void Facebook::LoginClient::OnAfterCreated(
+    CefRefPtr<CefBrowser> browser) {
+  CEF_REQUIRE_UI_THREAD();
+
+  HWND wnd = browser->GetHost()->GetWindowHandle();
+
+  HICON icon = (HICON) ::SendMessage(
+      base_window_, WM_GETICON, ICON_SMALL, (LPARAM) NULL);
+  ::SendMessage(wnd, WM_SETICON, ICON_SMALL, (LPARAM) icon);
 }
 
 
