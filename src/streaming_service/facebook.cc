@@ -33,7 +33,7 @@
 
 namespace ncstreamer {
 Facebook::Facebook()
-    : login_client_{new LoginClient{this}},
+    : login_client_{},
       http_download_service_{},
       access_token_{},
       me_id_{},
@@ -76,6 +76,10 @@ void Facebook::LogIn(
   CefWindowRectangle::Reset(popup_rect, &window_info);
 
   CefBrowserSettings browser_settings;
+
+  if (!login_client_) {
+    login_client_ = new LoginClient{this};
+  }
 
   SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
