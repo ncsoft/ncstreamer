@@ -13,7 +13,7 @@ HttpDownloadService::HttpDownloadService()
       io_thread_{[this]() {
         io_service_.run();
       }},
-      downloader_{new HttpDownloader{&io_service_}} {
+      http_request_{new HttpRequest{&io_service_}} {
 }
 
 
@@ -28,11 +28,11 @@ HttpDownloadService::~HttpDownloadService() {
 void HttpDownloadService::DownloadAsString(
     const std::string &uri,
     const urdl::http::request_method &method,
-    const HttpDownloader::ErrorHandler &err_handler,
-    const HttpDownloader::OpenHandler &open_handler,
-    const HttpDownloader::ReadHandler &read_handler,
-    const HttpDownloader::CompleteHandlerAsString &complete_handler) {
-  downloader_->DownloadAsString(
+    const HttpRequest::ErrorHandler &err_handler,
+    const HttpRequest::OpenHandler &open_handler,
+    const HttpRequest::ReadHandler &read_handler,
+    const HttpRequest::CompleteHandlerAsString &complete_handler) {
+  http_request_->DownloadAsString(
       uri,
       method,
       err_handler,
@@ -45,11 +45,11 @@ void HttpDownloadService::DownloadAsString(
 void HttpDownloadService::DownloadAsString(
     const std::string &uri,
     const urdl::http::request_method &method,
-    const HttpDownloader::ErrorHandler &err_handler,
-    const HttpDownloader::CompleteHandlerAsString &complete_handler) {
-  static const HttpDownloader::OpenHandler kDefaultOpenHandler{
+    const HttpRequest::ErrorHandler &err_handler,
+    const HttpRequest::CompleteHandlerAsString &complete_handler) {
+  static const HttpRequest::OpenHandler kDefaultOpenHandler{
         [](std::size_t /*file_size*/) {}};
-  static const HttpDownloader::ReadHandler kDefaultReadHandler{
+  static const HttpRequest::ReadHandler kDefaultReadHandler{
         [](std::size_t /*read_size*/) {}};
 
   DownloadAsString(

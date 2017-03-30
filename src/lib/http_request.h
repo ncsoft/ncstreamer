@@ -3,8 +3,8 @@
  */
 
 
-#ifndef SRC_LIB_HTTP_DOWNLOADER_H_
-#define SRC_LIB_HTTP_DOWNLOADER_H_
+#ifndef SRC_LIB_HTTP_REQUEST_H_
+#define SRC_LIB_HTTP_REQUEST_H_
 
 
 #include <functional>
@@ -21,8 +21,8 @@
 
 
 namespace ncstreamer {
-class HttpDownloader
-    : public std::enable_shared_from_this<HttpDownloader> {
+class HttpRequest
+    : public std::enable_shared_from_this<HttpRequest> {
  public:
   using ErrorHandler = std::function<void(const boost::system::error_code &ec)>;
   using OpenHandler = std::function<void(std::size_t file_size)>;
@@ -30,7 +30,7 @@ class HttpDownloader
   using CompleteHandlerAsFile = std::function<void()>;
   using CompleteHandlerAsString = std::function<void(const std::string &data)>;
 
-  explicit HttpDownloader(boost::asio::io_service *svc);
+  explicit HttpRequest(boost::asio::io_service *svc);
 
   void DownloadAsFile(
       const urdl::url &url,
@@ -71,4 +71,4 @@ class HttpDownloader
 }  // namespace ncstreamer
 
 
-#endif  // SRC_LIB_HTTP_DOWNLOADER_H_
+#endif  // SRC_LIB_HTTP_REQUEST_H_

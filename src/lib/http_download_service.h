@@ -13,7 +13,7 @@
 
 #include "boost/asio/io_service.hpp"
 
-#include "src/lib/http_downloader.h"
+#include "src/lib/http_request.h"
 
 
 namespace ncstreamer {
@@ -25,23 +25,23 @@ class HttpDownloadService {
   void DownloadAsString(
       const std::string &uri,
       const urdl::http::request_method &method,
-      const HttpDownloader::ErrorHandler &err_handler,
-      const HttpDownloader::OpenHandler &open_handler,
-      const HttpDownloader::ReadHandler &read_handler,
-      const HttpDownloader::CompleteHandlerAsString &complete_handler);
+      const HttpRequest::ErrorHandler &err_handler,
+      const HttpRequest::OpenHandler &open_handler,
+      const HttpRequest::ReadHandler &read_handler,
+      const HttpRequest::CompleteHandlerAsString &complete_handler);
 
   void DownloadAsString(
       const std::string &uri,
       const urdl::http::request_method &method,
-      const HttpDownloader::ErrorHandler &err_handler,
-      const HttpDownloader::CompleteHandlerAsString &complete_handler);
+      const HttpRequest::ErrorHandler &err_handler,
+      const HttpRequest::CompleteHandlerAsString &complete_handler);
 
  private:
   boost::asio::io_service io_service_;
   boost::asio::io_service::work io_service_work_;
   std::thread io_thread_;
 
-  std::shared_ptr<HttpDownloader> downloader_;
+  std::shared_ptr<HttpRequest> http_request_;
 };
 }  // namespace ncstreamer
 

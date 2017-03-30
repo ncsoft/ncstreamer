@@ -3,13 +3,13 @@
  */
 
 
-#include "src/lib/http_downloader.h"
+#include "src/lib/http_request.h"
 
 #include "src/lib/http_types.h"
 
 
 namespace ncstreamer {
-HttpDownloader::HttpDownloader(boost::asio::io_service *svc)
+HttpRequest::HttpRequest(boost::asio::io_service *svc)
     : rstream_{*svc},
       out_{},
       buffer_{},
@@ -22,7 +22,7 @@ HttpDownloader::HttpDownloader(boost::asio::io_service *svc)
 }
 
 
-void HttpDownloader::DownloadAsFile(
+void HttpRequest::DownloadAsFile(
     const urdl::url &url,
     const std::string &file_name,
     const ErrorHandler &err_handler,
@@ -57,7 +57,7 @@ void HttpDownloader::DownloadAsFile(
 }
 
 
-void HttpDownloader::DownloadAsString(
+void HttpRequest::DownloadAsString(
     const urdl::url &url,
     const urdl::http::request_method &method,
     const ErrorHandler &err_handler,
@@ -90,7 +90,7 @@ void HttpDownloader::DownloadAsString(
 }
 
 
-void HttpDownloader::Download(const urdl::url &url) {
+void HttpRequest::Download(const urdl::url &url) {
   auto self{shared_from_this()};
   rstream_.async_open(
       url, [this, self](const boost::system::error_code &ec) {
@@ -103,7 +103,7 @@ void HttpDownloader::Download(const urdl::url &url) {
     open_handler_(rstream_.content_length());
 
     rstream_.async_read_some(boost::asio::buffer(buffer_),
-                             std::bind(&HttpDownloader::OnRead,
+                             std::bind(&HttpRequest::OnRead,
                                        self,
                                        std::placeholders::_1,
                                        std::placeholders::_2));
@@ -111,7 +111,7 @@ void HttpDownloader::Download(const urdl::url &url) {
 }
 
 
-void HttpDownloader::OnRead(const boost::system::error_code &ec,
+void HttpRequest::OnRead(const boost::system::error_code &ec,
                             std::size_t length) {
   if (ec) {
     rstream_.close();
@@ -127,7 +127,7 @@ void HttpDownloader::OnRead(const boost::system::error_code &ec,
 
   out_->write(buffer_, length);
   rstream_.async_read_some(boost::asio::buffer(buffer_),
-                           std::bind(&HttpDownloader::OnRead,
+                           std::bind(&HttpRequest::OnRead,
                                      shared_from_this(),
                                      std::placeholders::_1,
                                      std::placeholders::_2));
