@@ -57,7 +57,7 @@ void HttpRequest::DownloadAsFile(
 }
 
 
-void HttpRequest::DownloadAsString(
+void HttpRequest::Request(
     const urdl::url &url,
     const urdl::http::request_method &method,
     const ErrorHandler &err_handler,

@@ -25,14 +25,14 @@ HttpRequestService::~HttpRequestService() {
 }
 
 
-void HttpRequestService::DownloadAsString(
+void HttpRequestService::Request(
     const std::string &uri,
     const urdl::http::request_method &method,
     const HttpRequest::ErrorHandler &err_handler,
     const HttpRequest::OpenHandler &open_handler,
     const HttpRequest::ReadHandler &read_handler,
     const HttpRequest::CompleteHandlerAsString &complete_handler) {
-  http_request_->DownloadAsString(
+  http_request_->Request(
       uri,
       method,
       err_handler,
@@ -42,7 +42,7 @@ void HttpRequestService::DownloadAsString(
 }
 
 
-void HttpRequestService::DownloadAsString(
+void HttpRequestService::Request(
     const std::string &uri,
     const urdl::http::request_method &method,
     const HttpRequest::ErrorHandler &err_handler,
@@ -52,7 +52,7 @@ void HttpRequestService::DownloadAsString(
   static const HttpRequest::ReadHandler kDefaultReadHandler{
         [](std::size_t /*read_size*/) {}};
 
-  DownloadAsString(
+  Request(
       uri,
       method,
       err_handler,

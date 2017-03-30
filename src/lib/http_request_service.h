@@ -22,7 +22,7 @@ class HttpRequestService {
   HttpRequestService();
   virtual ~HttpRequestService();
 
-  void DownloadAsString(
+  void Request(
       const std::string &uri,
       const urdl::http::request_method &method,
       const HttpRequest::ErrorHandler &err_handler,
@@ -30,7 +30,7 @@ class HttpRequestService {
       const HttpRequest::ReadHandler &read_handler,
       const HttpRequest::CompleteHandlerAsString &complete_handler);
 
-  void DownloadAsString(
+  void Request(
       const std::string &uri,
       const urdl::http::request_method &method,
       const HttpRequest::ErrorHandler &err_handler,

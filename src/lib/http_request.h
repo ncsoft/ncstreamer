@@ -40,7 +40,7 @@ class HttpRequest
       const ReadHandler &read_handler,
       const CompleteHandlerAsFile &complete_handler);
 
-  void DownloadAsString(
+  void Request(
       const urdl::url &url,
       const urdl::http::request_method &method,
       const ErrorHandler &err_handler,
