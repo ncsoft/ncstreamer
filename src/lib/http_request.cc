@@ -63,7 +63,7 @@ void HttpRequest::Request(
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
-    const CompleteHandlerAsString &complete_handler) {
+    const ResponseCompleteHandler &complete_handler) {
   if (rstream_.is_open()) {
     // borrowed error code from boost::asio::error temporarily.
     // TODO(khpark): replace this error code with in-house one.

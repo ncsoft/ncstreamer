@@ -28,13 +28,13 @@ class HttpRequestService {
       const HttpRequest::ErrorHandler &err_handler,
       const HttpRequest::OpenHandler &open_handler,
       const HttpRequest::ReadHandler &read_handler,
-      const HttpRequest::CompleteHandlerAsString &complete_handler);
+      const HttpRequest::ResponseCompleteHandler &complete_handler);
 
   void Request(
       const std::string &uri,
       const urdl::http::request_method &method,
       const HttpRequest::ErrorHandler &err_handler,
-      const HttpRequest::CompleteHandlerAsString &complete_handler);
+      const HttpRequest::ResponseCompleteHandler &complete_handler);
 
  private:
   boost::asio::io_service io_service_;
