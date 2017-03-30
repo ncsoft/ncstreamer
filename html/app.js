@@ -172,7 +172,7 @@ function setUpStreamingSources(obj) {
       li.appendChild(node);
       contents.appendChild(li);
     }
-    input.value = contents.firstChild['data-value'];
+    input.value = contents.firstChild.getAttribute('data-value');
     display.textContent = contents.firstChild.textContent;
   }
 }
@@ -265,8 +265,8 @@ function onStreamingControlButtonClicked() {
   console.info('change streamingControlButton');
   ({
     'standby': function() {
-      const source = app.dom.streamingGameSelect.value;
-      const userPage = app.dom.streamingManagingPageSelect.value;
+      const source = app.dom.streamingGameSelect.children[2].value;
+      const userPage = app.dom.streamingManagingPageSelect.children[2].value;
       const description = app.dom.streamingFeedDescription.value;
       cef.streamingStart.request(source, userPage, description);
       updateStreamingStatus('starting');
@@ -320,7 +320,7 @@ cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
       li.appendChild(node);
       contents.appendChild(li);
     }
-    input.value = contents.firstChild['data-value'];
+    input.value = contents.firstChild.getAttribute('data-value');
     display.textContent = contents.firstChild.textContent;
   }
 };
