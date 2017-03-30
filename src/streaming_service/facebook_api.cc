@@ -81,4 +81,22 @@ const std::wstring &FacebookApi::Graph::Me::static_path() {
   }()};
   return kPath;
 }
+
+
+Uri FacebookApi::Graph::LiveVideos::BuildUri(
+    const std::wstring &access_token,
+    const std::wstring &user_page_id,
+    const std::wstring &description) {
+  return {kScheme, kAuthority, BuildPath(user_page_id), Uri::Query{{
+      {L"access_token", access_token},
+      {L"description", description}}}};
+}
+
+
+std::wstring FacebookApi::Graph::LiveVideos::BuildPath(
+    const std::wstring &user_page_id) {
+  std::wstringstream ss;
+  ss << L"/" << user_page_id << L"/live_videos";
+  return ss.str();
+}
 }  // namespace ncstreamer

@@ -65,7 +65,8 @@ void Facebook::LogIn(
       FacebookApi::Login::Redirect::static_uri(),
       L"token",
       L"popup",
-      {L"pages_show_list"})};
+      {L"pages_show_list",
+       L"publish_actions"})};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
@@ -91,7 +92,44 @@ void Facebook::PostLiveVideo(
     const std::wstring &description,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
-  // TODO(khpark): TBD
+  Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
+      access_token_,
+      user_page_id,
+      description)};
+
+  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  http_download_service_.DownloadAsString(
+      converter.to_bytes(live_video_uri.uri_string()),
+      HttpRequestMethod::kPost,
+      [this](const boost::system::error_code &ec) {
+    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring msg{converter.from_bytes(ec.message())};
+    on_failed_(msg);
+  }, [this, on_live_video_posted](const std::string &utf8) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring str = converter.from_bytes(utf8);
+
+    boost::property_tree::ptree tree;
+    std::stringstream ss{utf8};
+    std::wstring stream_url{};
+    try {
+      boost::property_tree::read_json(ss, tree);
+      stream_url = converter.from_bytes(tree.get<std::string>("stream_url"));
+    } catch (const std::exception &/*e*/) {
+      stream_url = L"";
+    }
+
+    if (stream_url.empty() == true) {
+      std::wstringstream msg;
+      msg << L"could not get stream_url from: " << str;
+      on_failed_(msg.str());
+      return;
+    }
+
+    OutputDebugString((stream_url + L"/stream_url\r\n").c_str());
+
+    on_live_video_posted(stream_url);
+  });
 }
 
 
