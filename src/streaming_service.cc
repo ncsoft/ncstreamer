@@ -64,6 +64,8 @@ void StreamingService::LogIn(
 
 void StreamingService::PostLiveVideo(
     const std::wstring &user_page_id,
+    const std::wstring &privacy,
+    const std::wstring &title,
     const std::wstring &description,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
@@ -75,6 +77,8 @@ void StreamingService::PostLiveVideo(
   const std::wstring &service_provider_id = *current_service_provider_id_;
   current_service_provider_->PostLiveVideo(
       user_page_id,
+      privacy,
+      title,
       description,
       on_failed,
       [on_live_video_posted, service_provider_id](

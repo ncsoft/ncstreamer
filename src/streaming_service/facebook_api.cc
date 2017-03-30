@@ -95,12 +95,23 @@ Uri FacebookApi::Graph::LiveVideos::BuildUri(
 boost::property_tree::ptree
     FacebookApi::Graph::LiveVideos::BuildPostContent(
         const std::wstring &access_token,
+        const std::wstring &privacy,
+        const std::wstring &title,
         const std::wstring &description) {
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
   boost::property_tree::ptree post_content;
   post_content.add<std::string>(
       "access_token", converter.to_bytes(access_token));
+
+  boost::property_tree::ptree privacy_tree;
+  privacy_tree.add<std::string>(
+      "value", converter.to_bytes(privacy));
+  post_content.add_child(
+      "privacy", privacy_tree);
+
+  post_content.add<std::string>(
+      "title", converter.to_bytes(title));
   post_content.add<std::string>(
       "description", converter.to_bytes(description));
   return std::move(post_content);

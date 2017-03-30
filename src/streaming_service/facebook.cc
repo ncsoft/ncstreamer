@@ -86,6 +86,8 @@ void Facebook::LogIn(
 
 void Facebook::PostLiveVideo(
     const std::wstring &user_page_id,
+    const std::wstring &privacy,
+    const std::wstring &title,
     const std::wstring &description,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
@@ -94,6 +96,8 @@ void Facebook::PostLiveVideo(
   boost::property_tree::ptree post_content{
       FacebookApi::Graph::LiveVideos::BuildPostContent(
           access_token_,
+          privacy,
+          title,
           description)};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;

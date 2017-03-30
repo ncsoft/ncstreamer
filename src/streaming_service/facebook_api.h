@@ -88,6 +88,8 @@ class FacebookApi::Graph::LiveVideos {
 
   static boost::property_tree::ptree BuildPostContent(
       const std::wstring &access_token,
+      const std::wstring &privacy,
+      const std::wstring &title,
       const std::wstring &description);
 
  private:

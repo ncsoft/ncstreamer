@@ -186,9 +186,13 @@ void ClientRequestHandler::OnCommandStreamingStart(
     CefRefPtr<CefBrowser> browser) {
   auto source_i = args.find(L"source");
   auto user_page_i = args.find(L"userPage");
+  auto privacy_i = args.find(L"privacy");
+  auto title_i = args.find(L"title");
   auto description_i = args.find(L"description");
   if (source_i == args.end() ||
       user_page_i == args.end() ||
+      privacy_i == args.end() ||
+      title_i == args.end() ||
       description_i == args.end()) {
     assert(false);
     return;
@@ -196,10 +200,14 @@ void ClientRequestHandler::OnCommandStreamingStart(
 
   const std::wstring &source = source_i->second;
   const std::wstring &user_page = user_page_i->second;
+  const std::wstring &privacy = privacy_i->second;
+  const std::wstring &title = title_i->second;
   const std::wstring &description = description_i->second;
 
   StreamingService::Get()->PostLiveVideo(
       user_page,
+      privacy,
+      title,
       description,
       [](const std::wstring &error) {
     // TODO(khpark): TBD
