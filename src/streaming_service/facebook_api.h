@@ -87,7 +87,8 @@ class FacebookApi::Graph::LiveVideos {
       const std::wstring &description);
 
  private:
-  static std::wstring BuildPath(const std::wstring &user_page_id);
+  static std::wstring BuildPath(
+      const std::wstring &user_page_id);
 };
 }  // namespace ncstreamer
 
