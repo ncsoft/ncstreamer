@@ -27,7 +27,7 @@ class HttpRequest
   using ErrorHandler = std::function<void(const boost::system::error_code &ec)>;
   using OpenHandler = std::function<void(std::size_t file_size)>;
   using ReadHandler = std::function<void(std::size_t read_size)>;
-  using CompleteHandlerAsFile = std::function<void()>;
+  using DownloadCompleteHandler = std::function<void()>;
   using CompleteHandlerAsString = std::function<void(const std::string &data)>;
 
   explicit HttpRequest(boost::asio::io_service *svc);
@@ -38,7 +38,7 @@ class HttpRequest
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,
-      const CompleteHandlerAsFile &complete_handler);
+      const DownloadCompleteHandler &complete_handler);
 
   void Request(
       const urdl::url &url,
