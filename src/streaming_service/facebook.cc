@@ -224,7 +224,7 @@ void Facebook::OnAccessToken(const std::wstring &access_token) {
 
 
 Facebook::FacebookClient::FacebookClient(
-    Facebook *owner)
+    Facebook *const owner)
     : owner_{owner} {
 }
 

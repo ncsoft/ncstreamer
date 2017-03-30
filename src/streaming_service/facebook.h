@@ -72,7 +72,7 @@ class Facebook::FacebookClient
     : public CefFitClient,
       public CefRequestHandler {
  public:
-  explicit FacebookClient(Facebook *owner);
+  explicit FacebookClient(Facebook *const owner);
   virtual ~FacebookClient();
 
  protected:
@@ -94,7 +94,7 @@ class Facebook::FacebookClient
       bool is_redirect,
       const Uri &uri);
 
-  Facebook *owner_;
+  Facebook *const owner_;
 
   IMPLEMENT_REFCOUNTING(FacebookClient);
 };
