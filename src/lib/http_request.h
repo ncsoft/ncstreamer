@@ -32,7 +32,7 @@ class HttpRequest
 
   explicit HttpRequest(boost::asio::io_service *svc);
 
-  void DownloadAsFile(
+  void Download(
       const urdl::url &url,
       const std::string &file_name,
       const ErrorHandler &err_handler,

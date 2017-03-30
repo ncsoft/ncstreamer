@@ -22,7 +22,7 @@ HttpRequest::HttpRequest(boost::asio::io_service *svc)
 }
 
 
-void HttpRequest::DownloadAsFile(
+void HttpRequest::Download(
     const urdl::url &url,
     const std::string &file_name,
     const ErrorHandler &err_handler,
