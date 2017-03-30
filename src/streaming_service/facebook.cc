@@ -132,6 +132,9 @@ void Facebook::GetMe() {
       name = converter.from_bytes(me.get<std::string>("name"));
       accounts = ExtractAccountAll(me.get_child("accounts"));
     } catch (const std::exception &/*e*/) {
+      id = L"";
+      name = L"";
+      accounts.clear();
     }
 
     if (id.empty() == true) {
