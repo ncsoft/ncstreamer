@@ -34,7 +34,7 @@
 namespace ncstreamer {
 Facebook::Facebook()
     : login_client_{},
-      http_download_service_{},
+      http_request_service_{},
       access_token_{},
       me_id_{},
       me_name_{},
@@ -102,7 +102,7 @@ void Facebook::PostLiveVideo(
       description)};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  http_download_service_.DownloadAsString(
+  http_request_service_.DownloadAsString(
       converter.to_bytes(live_video_uri.uri_string()),
       HttpRequestMethod::kPost,
       [this](const boost::system::error_code &ec) {
@@ -163,7 +163,7 @@ void Facebook::GetMe() {
        L"accounts"})};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  http_download_service_.DownloadAsString(
+  http_request_service_.DownloadAsString(
       converter.to_bytes(me_uri.uri_string()),
       HttpRequestMethod::kGet,
       [this](const boost::system::error_code &ec) {

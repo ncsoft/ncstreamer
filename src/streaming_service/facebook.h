@@ -16,7 +16,7 @@
 #include "include/cef_request_handler.h"
 
 #include "src/lib/cef_fit_client.h"
-#include "src/lib/http_download_service.h"
+#include "src/lib/http_request_service.h"
 #include "src/lib/uri.h"
 #include "src/streaming_service/streaming_service_provider.h"
 
@@ -57,7 +57,7 @@ class Facebook : public StreamingServiceProvider {
       const std::wstring &access_token);
 
   CefRefPtr<LoginClient> login_client_;
-  HttpDownloadService http_download_service_;
+  HttpRequestService http_request_service_;
 
   std::wstring access_token_;
   std::wstring me_id_;

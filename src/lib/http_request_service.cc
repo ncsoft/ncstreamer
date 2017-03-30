@@ -3,11 +3,11 @@
  */
 
 
-#include "src/lib/http_download_service.h"
+#include "src/lib/http_request_service.h"
 
 
 namespace ncstreamer {
-HttpDownloadService::HttpDownloadService()
+HttpRequestService::HttpRequestService()
     : io_service_{},
       io_service_work_{io_service_},
       io_thread_{[this]() {
@@ -17,7 +17,7 @@ HttpDownloadService::HttpDownloadService()
 }
 
 
-HttpDownloadService::~HttpDownloadService() {
+HttpRequestService::~HttpRequestService() {
   io_service_.stop();
   if (io_thread_.joinable() == true) {
     io_thread_.join();
@@ -25,7 +25,7 @@ HttpDownloadService::~HttpDownloadService() {
 }
 
 
-void HttpDownloadService::DownloadAsString(
+void HttpRequestService::DownloadAsString(
     const std::string &uri,
     const urdl::http::request_method &method,
     const HttpRequest::ErrorHandler &err_handler,
@@ -42,7 +42,7 @@ void HttpDownloadService::DownloadAsString(
 }
 
 
-void HttpDownloadService::DownloadAsString(
+void HttpRequestService::DownloadAsString(
     const std::string &uri,
     const urdl::http::request_method &method,
     const HttpRequest::ErrorHandler &err_handler,

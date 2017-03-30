@@ -3,8 +3,8 @@
  */
 
 
-#ifndef SRC_LIB_HTTP_DOWNLOAD_SERVICE_H_
-#define SRC_LIB_HTTP_DOWNLOAD_SERVICE_H_
+#ifndef SRC_LIB_HTTP_REQUEST_SERVICE_H_
+#define SRC_LIB_HTTP_REQUEST_SERVICE_H_
 
 
 #include <memory>
@@ -17,10 +17,10 @@
 
 
 namespace ncstreamer {
-class HttpDownloadService {
+class HttpRequestService {
  public:
-  HttpDownloadService();
-  virtual ~HttpDownloadService();
+  HttpRequestService();
+  virtual ~HttpRequestService();
 
   void DownloadAsString(
       const std::string &uri,
@@ -46,4 +46,4 @@ class HttpDownloadService {
 }  // namespace ncstreamer
 
 
-#endif  // SRC_LIB_HTTP_DOWNLOAD_SERVICE_H_
+#endif  // SRC_LIB_HTTP_REQUEST_SERVICE_H_
