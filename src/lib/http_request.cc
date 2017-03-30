@@ -53,7 +53,7 @@ void HttpRequest::Download(
     ofstream->close();
   };
 
-  Download(url);
+  Request(url);
 }
 
 
@@ -86,11 +86,11 @@ void HttpRequest::Request(
   static const OstreamCloseHandler kDefaultOstreamCloseHandler{[]() {}};
   ostream_close_handler_ = kDefaultOstreamCloseHandler;
 
-  Download(url);
+  Request(url);
 }
 
 
-void HttpRequest::Download(const urdl::url &url) {
+void HttpRequest::Request(const urdl::url &url) {
   auto self{shared_from_this()};
   rstream_.async_open(
       url, [this, self](const boost::system::error_code &ec) {

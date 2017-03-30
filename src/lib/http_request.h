@@ -52,7 +52,7 @@ class HttpRequest
   using CompleteHandler = std::function<void()>;
   using OstreamCloseHandler = std::function<void()>;
 
-  void Download(const urdl::url &url);
+  void Request(const urdl::url &url);
 
   void OnRead(const boost::system::error_code &ec,
               std::size_t length);
