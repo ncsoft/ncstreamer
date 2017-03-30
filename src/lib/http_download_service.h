@@ -24,6 +24,7 @@ class HttpDownloadService {
 
   void DownloadAsString(
       const std::string &uri,
+      const urdl::http::request_method &method,
       const HttpDownloader::ErrorHandler &err_handler,
       const HttpDownloader::OpenHandler &open_handler,
       const HttpDownloader::ReadHandler &read_handler,
@@ -31,6 +32,7 @@ class HttpDownloadService {
 
   void DownloadAsString(
       const std::string &uri,
+      const urdl::http::request_method &method,
       const HttpDownloader::ErrorHandler &err_handler,
       const HttpDownloader::CompleteHandlerAsString &complete_handler);
 

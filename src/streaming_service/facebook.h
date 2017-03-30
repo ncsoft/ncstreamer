@@ -31,6 +31,12 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in) override;
 
+  void PostLiveVideo(
+      const std::wstring &user_page_id,
+      const std::wstring &description,
+      const OnFailed &on_failed,
+      const OnLiveVideoPosted &on_live_video_posted) override;
+
  private:
   using AccountMap =
       std::unordered_map<std::wstring /*id*/, UserPage>;

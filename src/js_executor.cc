@@ -16,6 +16,8 @@
 #pragma warning(default: 4819)
 #endif
 
+#include "src/lib/string.h"
+
 
 namespace ncstreamer {
 void JsExecutor::Execute(
@@ -34,6 +36,17 @@ void JsExecutor::Execute(
     const int &arg_value) {
   std::stringstream js;
   js << func_name << "(" << arg_value << ")";
+
+  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+}
+
+
+void JsExecutor::Execute(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::string &arg_value) {
+  std::stringstream js;
+  js << func_name << "('" << String::EscapeSingleQuote(arg_value) << "')";
 
   browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
 }

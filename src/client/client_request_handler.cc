@@ -161,6 +161,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
       service_provider,
       browser->GetHost()->GetWindowHandle(),
       [](const std::wstring &error) {
+    // TODO(khpark): TBD
   }, [browser, cmd](
       const std::wstring &user_name,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
@@ -184,27 +185,39 @@ void ClientRequestHandler::OnCommandStreamingStart(
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
   auto source_i = args.find(L"source");
-  auto provider_i = args.find(L"serviceProvider");
-  auto url_i = args.find(L"streamUrl");
+  auto user_page_i = args.find(L"userPage");
+  auto description_i = args.find(L"description");
   if (source_i == args.end() ||
-      provider_i == args.end() ||
-      url_i == args.end()) {
+      user_page_i == args.end() ||
+      description_i == args.end()) {
     assert(false);
     return;
   }
 
   const std::wstring &source = source_i->second;
-  const std::wstring &service_provider = provider_i->second;
-  const std::wstring &stream_url = url_i->second;
+  const std::wstring &user_page = user_page_i->second;
+  const std::wstring &description = description_i->second;
 
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  Obs::Get()->StartStreaming(
-      converter.to_bytes(source),
-      converter.to_bytes(service_provider),
-      converter.to_bytes(stream_url),
-      [browser]() {
-        JsExecutor::Execute(browser, "onStreamingStarted");
-      });
+  StreamingService::Get()->PostLiveVideo(
+      user_page,
+      description,
+      [](const std::wstring &error) {
+    // TODO(khpark): TBD
+  }, [browser, cmd, source](const std::wstring &service_provider,
+                            const std::wstring &stream_url) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    Obs::Get()->StartStreaming(
+        converter.to_bytes(source),
+        converter.to_bytes(service_provider),
+        converter.to_bytes(stream_url),
+        [browser, cmd]() {
+      std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+      JsExecutor::Execute(
+          browser,
+          "cef.onResponse",
+          converter.to_bytes(cmd));
+    });
+  });
 }
 
 

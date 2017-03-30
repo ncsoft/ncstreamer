@@ -60,6 +60,7 @@ class FacebookApi::Login::Redirect {
 class FacebookApi::Graph {
  public:
   class Me;
+  class LiveVideos;
 
  private:
   static const wchar_t *kAuthority;
@@ -75,6 +76,18 @@ class FacebookApi::Graph::Me {
 
  private:
   static const std::wstring &static_path();
+};
+
+
+class FacebookApi::Graph::LiveVideos {
+ public:
+  static Uri BuildUri(
+      const std::wstring &access_token,
+      const std::wstring &user_page_id,
+      const std::wstring &description);
+
+ private:
+  static std::wstring BuildPath(const std::wstring &user_page_id);
 };
 }  // namespace ncstreamer
 
