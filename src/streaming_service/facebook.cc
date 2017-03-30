@@ -12,20 +12,13 @@
 #include <string>
 #include <unordered_map>
 
-#ifdef _MSC_VER
-#pragma warning(disable: 4819)
-#endif
-#include "boost/property_tree/json_parser.hpp"
-#ifdef _MSC_VER
-#pragma warning(default: 4819)
-#endif
-
 #include "boost/property_tree/ptree.hpp"
 #include "include/cef_browser.h"
 #include "include/wrapper/cef_helpers.h"
 
 #include "src/lib/cef_types.h"
 #include "src/lib/http_types.h"
+#include "src/lib/json_parser.h"
 #include "src/lib/uri.h"
 #include "src/lib/windows_types.h"
 #include "src/streaming_service/facebook_api.h"

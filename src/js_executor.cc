@@ -8,14 +8,7 @@
 #include <sstream>
 #include <utility>
 
-#ifdef _MSC_VER
-#pragma warning(disable: 4819)
-#endif
-#include "boost/property_tree/json_parser.hpp"
-#ifdef _MSC_VER
-#pragma warning(default: 4819)
-#endif
-
+#include "src/lib/json_parser.h"
 #include "src/lib/string.h"
 
 

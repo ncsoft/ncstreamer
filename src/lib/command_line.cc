@@ -9,18 +9,12 @@
 #include <locale>
 #include <memory>
 
-#ifdef _MSC_VER
-#pragma warning(disable: 4819)
-#endif
-#include "boost/property_tree/json_parser.hpp"
-#ifdef _MSC_VER
-#pragma warning(default: 4819)
-#endif
-
 #include "boost/property_tree/ptree.hpp"
 #include "include/cef_command_line.h"
 
 #include "Psapi.h"  // NOLINT
+
+#include "src/lib/json_parser.h"
 
 
 namespace ncstreamer {

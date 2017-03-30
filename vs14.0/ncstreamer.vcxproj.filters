@@ -224,6 +224,9 @@
     <ClInclude Include="..\src\lib\http_types.h">
       <Filter>src\lib</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\lib\json_parser.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\ncstreamer.rc">
