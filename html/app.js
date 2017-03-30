@@ -293,6 +293,8 @@ cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
     element.style.display = 'block';
   }
 
+  app.dom.providerUserName.textContent = userName;
+
   const display = app.dom.streamingManagingPageSelect.children[0];
   const contents = app.dom.streamingManagingPageSelect.children[1];
   while (contents.firstChild) {
@@ -304,8 +306,8 @@ cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
   } else {
     for (const userPage of userPages) {
       const li = document.createElement('li');
-      const node = userPage;
-      li.setAttribute('data-value', userPage);
+      const node = document.createTextNode(userPage.name);
+      li.setAttribute('data-value', userPage.id);
       li.appendChild(node);
       contents.appendChild(li);
     }
