@@ -70,7 +70,7 @@ void Facebook::LogIn(
 
   CefBrowserSettings browser_settings;
 
-    login_client_ = new LoginClient{this, parent};
+  login_client_ = new LoginClient{this, parent};
 
   SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
