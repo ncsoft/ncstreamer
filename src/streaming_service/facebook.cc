@@ -208,6 +208,9 @@ void Facebook::SetHandlers(
 }
 
 
+// placeholder
+// placeholder
+// placeholder
 void Facebook::OnLoginSuccess(const std::wstring &access_token) {
   access_token_ = access_token;
 
