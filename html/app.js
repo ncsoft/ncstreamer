@@ -266,7 +266,8 @@ function onStreamingControlButtonClicked() {
   ({
     'standby': function() {
       const source = app.dom.streamingGameSelect.children[2].value;
-      const userPage = app.dom.streamingManagingPageSelect.children[2].value;
+      const userPage = app.dom.streamingUserPageSelect.children[2].value == 2 ?
+          app.dom.streamingManagingPageSelect.children[2].value : 'me';
       const privacy = app.dom.streamingPageAccess.children[2].value;
       const description = app.dom.streamingFeedDescription.value;
       cef.streamingStart.request(
