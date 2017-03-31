@@ -58,15 +58,13 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnMeGotten &on_me_gotten);
 
-  void SetHandlers(
-      const OnFailed &on_failed,
-      const OnLoggedIn &on_logged_in);
-
   // placeholder
   // placeholder
   // placeholder
   void OnLoginSuccess(
-      const std::wstring &access_token);
+      const std::wstring &access_token,
+      const OnFailed &on_failed,
+      const OnLoggedIn &on_logged_in);
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
@@ -75,9 +73,6 @@ class Facebook : public StreamingServiceProvider {
   std::wstring me_id_;
   std::wstring me_name_;
   AccountMap me_accounts_;
-
-  OnFailed on_failed_;
-  OnLoggedIn on_logged_in_;
 };
 
 
@@ -88,7 +83,9 @@ class Facebook::LoginClient
  public:
   LoginClient(
       Facebook *const owner,
-      const HWND &base_window);
+      const HWND &base_window,
+      const OnFailed &on_failed,
+      const OnLoggedIn &on_logged_in);
   virtual ~LoginClient();
 
  protected:
@@ -117,6 +114,9 @@ class Facebook::LoginClient
 
   Facebook *const owner_;
   const HWND base_window_;
+
+  OnFailed on_failed_;
+  OnLoggedIn on_logged_in_;
 
   IMPLEMENT_REFCOUNTING(LoginClient);
 };

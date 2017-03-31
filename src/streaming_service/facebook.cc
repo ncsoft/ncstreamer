@@ -31,9 +31,7 @@ Facebook::Facebook()
       access_token_{},
       me_id_{},
       me_name_{},
-      me_accounts_{},
-      on_failed_{},
-      on_logged_in_{} {
+      me_accounts_{} {
 }
 
 
@@ -70,9 +68,9 @@ void Facebook::LogIn(
 
   CefBrowserSettings browser_settings;
 
-  login_client_ = new LoginClient{this, parent};
+  login_client_ = new LoginClient{
+      this, parent, on_failed, on_logged_in};
 
-  SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
       window_info,
       login_client_,
@@ -200,21 +198,16 @@ void Facebook::GetMe(
 }
 
 
-void Facebook::SetHandlers(
+// placeholder
+// placeholder
+// placeholder
+void Facebook::OnLoginSuccess(
+    const std::wstring &access_token,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
-  on_failed_ = on_failed;
-  on_logged_in_ = on_logged_in;
-}
-
-
-// placeholder
-// placeholder
-// placeholder
-void Facebook::OnLoginSuccess(const std::wstring &access_token) {
   access_token_ = access_token;
 
-  GetMe(on_failed_, [this](
+  GetMe(on_failed, [this, on_logged_in](
       const std::wstring &me_id,
       const std::wstring &me_name,
       const std::vector<UserPage> &me_accounts) {
@@ -229,16 +222,20 @@ void Facebook::OnLoginSuccess(const std::wstring &access_token) {
     OutputDebugString(
         (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
 
-    on_logged_in_(me_name, me_accounts);
+    on_logged_in(me_name, me_accounts);
   });
 }
 
 
 Facebook::LoginClient::LoginClient(
     Facebook *const owner,
-    const HWND &base_window)
+    const HWND &base_window,
+    const OnFailed &on_failed,
+    const OnLoggedIn &on_logged_in)
     : owner_{owner},
-      base_window_{base_window} {
+      base_window_{base_window},
+      on_failed_{on_failed},
+      on_logged_in_{on_logged_in} {
 }
 
 
@@ -310,7 +307,8 @@ bool Facebook::LoginClient::OnLoginSuccess(
     return false;  // proceed navigation.
   }
 
-  owner_->OnLoginSuccess(access_token);
+  owner_->OnLoginSuccess(
+      access_token, on_failed_, on_logged_in_);
   browser->GetHost()->CloseBrowser(false);
   return true;
 }
