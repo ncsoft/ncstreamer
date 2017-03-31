@@ -70,9 +70,7 @@ void Facebook::LogIn(
 
   CefBrowserSettings browser_settings;
 
-  if (!login_client_) {
     login_client_ = new LoginClient{this, parent};
-  }
 
   SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
@@ -280,34 +278,15 @@ bool Facebook::LoginClient::OnBeforeBrowse(
     return false;  // proceed navigation.
   }
 
-  using Handler = std::function<bool(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefFrame> frame,
-      CefRefPtr<CefRequest> request,
-      bool is_redirect,
-      const Uri &uri)>;
-
-  using Api = FacebookApi;
-  using This = Facebook::LoginClient;
-
-  static const std::unordered_map<std::wstring, Handler> kHandlers{
-      {Api::Login::Redirect::static_uri().scheme_authority_path(),
-       std::bind(&This::OnLoginSuccess, this,
-           std::placeholders::_1,
-           std::placeholders::_2,
-           std::placeholders::_3,
-           std::placeholders::_4,
-           std::placeholders::_5)}};
-
   Uri uri{request->GetURL()};
   OutputDebugString((uri.uri_string() + L"\r\n").c_str());
 
-  auto i = kHandlers.find(uri.scheme_authority_path());
-  if (i == kHandlers.end()) {
-    return false;  // proceed navigation.
+  if (uri.scheme_authority_path() ==
+      FacebookApi::Login::Redirect::static_uri().scheme_authority_path()) {
+    return OnLoginSuccess(browser, frame, request, is_redirect, uri);
   }
 
-  return i->second(browser, frame, request, is_redirect, uri);
+  return false;  // proceed navigation.
 }
 
 
