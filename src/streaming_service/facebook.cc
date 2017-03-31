@@ -90,9 +90,19 @@ void Facebook::PostLiveVideo(
     const OnLiveVideoPosted &on_live_video_posted) {
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
       user_page_id)};
+
+  const std::wstring &access_token = (user_page_id == L"me") ?
+      access_token_ : GetPageAccessToken(user_page_id);
+  if (access_token.empty() == true) {
+    std::wstringstream msg;
+    msg << L"invalid user page: " << user_page_id;
+    on_failed(msg.str());
+    return;
+  }
+
   boost::property_tree::ptree post_content{
       FacebookApi::Graph::LiveVideos::BuildPostContent(
-          access_token_,
+          access_token,
           privacy,
           title,
           description)};
@@ -224,6 +234,16 @@ void Facebook::OnLoginSuccess(
 
     on_logged_in(me_name, me_accounts);
   });
+}
+
+
+const std::wstring &Facebook::GetPageAccessToken(
+    const std::wstring &page_id) const {
+  static const std::wstring kEmptyAccessToken{L""};
+
+  auto i = me_accounts_.find(page_id);
+  return (i != me_accounts_.end()) ?
+      i->second.access_token() : kEmptyAccessToken;
 }
 
 
