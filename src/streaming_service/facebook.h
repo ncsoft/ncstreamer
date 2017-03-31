@@ -44,12 +44,19 @@ class Facebook : public StreamingServiceProvider {
   using AccountMap =
       std::unordered_map<std::wstring /*id*/, UserPage>;
 
+  using OnMeGotten = std::function<void(
+      const std::wstring &me_id,
+      const std::wstring &me_name,
+      const std::vector<UserPage> &me_accounts)>;
+
   class LoginClient;
 
   static std::vector<UserPage> ExtractAccountAll(
       const boost::property_tree::ptree &tree);
 
-  void GetMe();
+  void GetMe(
+      const OnFailed &on_failed,
+      const OnMeGotten &on_me_gotten);
 
   void SetHandlers(
       const OnFailed &on_failed,

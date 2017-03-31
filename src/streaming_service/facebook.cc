@@ -154,7 +154,9 @@ std::vector<StreamingServiceProvider::UserPage>
 }
 
 
-void Facebook::GetMe() {
+void Facebook::GetMe(
+    const OnFailed &on_failed,
+    const OnMeGotten &on_me_gotten) {
   Uri me_uri{FacebookApi::Graph::Me::BuildUri(
       access_token_,
       {L"id",
@@ -164,11 +166,11 @@ void Facebook::GetMe() {
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
   http_request_service_.Get(
       converter.to_bytes(me_uri.uri_string()),
-      [this](const boost::system::error_code &ec) {
+      [on_failed](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};
-    on_failed_(msg);
-  }, [this](const std::string &utf8) {
+    on_failed(msg);
+  }, [on_failed, on_me_gotten](const std::string &utf8) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring str = converter.from_bytes(utf8);
 
@@ -191,22 +193,11 @@ void Facebook::GetMe() {
     if (me_id.empty() == true) {
       std::wstringstream msg;
       msg << L"could not get me from: " << str;
-      on_failed_(msg.str());
+      on_failed(msg.str());
       return;
     }
 
-    me_id_ = me_id;
-    me_name_ = me_name;
-    for (const auto &account : me_accounts) {
-      me_accounts_.emplace(account.id(), account);
-    }
-
-    OutputDebugString((me_id_ + L"/id\r\n").c_str());
-    OutputDebugString((me_name_ + L"/name\r\n").c_str());
-    OutputDebugString(
-        (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
-
-    on_logged_in_(me_name, me_accounts);
+    on_me_gotten(me_id, me_name, me_accounts);
   });
 }
 
@@ -221,7 +212,24 @@ void Facebook::SetHandlers(
 
 void Facebook::OnLoginSuccess(const std::wstring &access_token) {
   access_token_ = access_token;
-  GetMe();
+
+  GetMe(on_failed_, [this](
+      const std::wstring &me_id,
+      const std::wstring &me_name,
+      const std::vector<UserPage> &me_accounts) {
+    me_id_ = me_id;
+    me_name_ = me_name;
+    for (const auto &account : me_accounts) {
+      me_accounts_.emplace(account.id(), account);
+    }
+
+    OutputDebugString((me_id_ + L"/id\r\n").c_str());
+    OutputDebugString((me_name_ + L"/name\r\n").c_str());
+    OutputDebugString(
+        (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
+
+    on_logged_in_(me_name, me_accounts);
+  });
 }
 
 
