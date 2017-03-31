@@ -284,7 +284,7 @@ bool Facebook::LoginClient::OnBeforeBrowse(
 
   static const std::unordered_map<std::wstring, Handler> kHandlers{
       {Api::Login::Redirect::static_uri().scheme_authority_path(),
-       std::bind(&This::OnAccessToken, this,
+       std::bind(&This::OnLoginSuccess, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3,
@@ -303,7 +303,7 @@ bool Facebook::LoginClient::OnBeforeBrowse(
 }
 
 
-bool Facebook::LoginClient::OnAccessToken(
+bool Facebook::LoginClient::OnLoginSuccess(
     CefRefPtr<CefBrowser> browser,
     CefRefPtr<CefFrame> /*frame*/,
     CefRefPtr<CefRequest> /*request*/,
