@@ -144,7 +144,9 @@ std::vector<StreamingServiceProvider::UserPage>
     const auto &account = elem.second;
     const auto &id = converter.from_bytes(account.get<std::string>("id"));
     const auto &name = converter.from_bytes(account.get<std::string>("name"));
-    accounts.emplace_back(id, name);
+    const auto &access_token =
+        converter.from_bytes(account.get<std::string>("access_token"));
+    accounts.emplace_back(id, name, access_token);
   }
 
   return accounts;
