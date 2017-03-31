@@ -174,30 +174,30 @@ void Facebook::GetMe() {
 
     boost::property_tree::ptree me;
     std::stringstream me_ss{utf8};
-    std::wstring id{};
-    std::wstring name{};
-    std::vector<UserPage> accounts;
+    std::wstring me_id{};
+    std::wstring me_name{};
+    std::vector<UserPage> me_accounts;
     try {
       boost::property_tree::read_json(me_ss, me);
-      id = converter.from_bytes(me.get<std::string>("id"));
-      name = converter.from_bytes(me.get<std::string>("name"));
-      accounts = ExtractAccountAll(me.get_child("accounts"));
+      me_id = converter.from_bytes(me.get<std::string>("id"));
+      me_name = converter.from_bytes(me.get<std::string>("name"));
+      me_accounts = ExtractAccountAll(me.get_child("accounts"));
     } catch (const std::exception &/*e*/) {
-      id = L"";
-      name = L"";
-      accounts.clear();
+      me_id = L"";
+      me_name = L"";
+      me_accounts.clear();
     }
 
-    if (id.empty() == true) {
+    if (me_id.empty() == true) {
       std::wstringstream msg;
       msg << L"could not get me from: " << str;
       on_failed_(msg.str());
       return;
     }
 
-    me_id_ = id;
-    me_name_ = name;
-    for (const auto &account : accounts) {
+    me_id_ = me_id;
+    me_name_ = me_name;
+    for (const auto &account : me_accounts) {
       me_accounts_.emplace(account.id(), account);
     }
 
@@ -206,7 +206,7 @@ void Facebook::GetMe() {
     OutputDebugString(
         (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
 
-    on_logged_in_(name, accounts);
+    on_logged_in_(me_name, me_accounts);
   });
 }
 
