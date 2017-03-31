@@ -27,3 +27,8 @@
 #streaming-managing-page-select {
   display: none;
 }
+
+
+#streaming-error-text {
+  display: none;
+}
