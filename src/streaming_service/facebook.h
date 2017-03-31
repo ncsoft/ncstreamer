@@ -55,7 +55,7 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 
-  void OnAccessToken(
+  void OnLoginSuccess(
       const std::wstring &access_token);
 
   CefRefPtr<LoginClient> login_client_;

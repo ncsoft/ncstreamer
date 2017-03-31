@@ -219,7 +219,7 @@ void Facebook::SetHandlers(
 }
 
 
-void Facebook::OnAccessToken(const std::wstring &access_token) {
+void Facebook::OnLoginSuccess(const std::wstring &access_token) {
   access_token_ = access_token;
   GetMe();
 }
@@ -320,7 +320,7 @@ bool Facebook::LoginClient::OnLoginSuccess(
     return false;  // proceed navigation.
   }
 
-  owner_->OnAccessToken(access_token);
+  owner_->OnLoginSuccess(access_token);
   browser->GetHost()->CloseBrowser(false);
   return true;
 }
