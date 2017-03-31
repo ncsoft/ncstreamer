@@ -104,11 +104,11 @@ void Facebook::PostLiveVideo(
   http_request_service_.Post(
       converter.to_bytes(live_video_uri.uri_string()),
       post_content,
-      [this](const boost::system::error_code &ec) {
+      [on_failed](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};
-    on_failed_(msg);
-  }, [this, on_live_video_posted](const std::string &utf8) {
+    on_failed(msg);
+  }, [on_failed, on_live_video_posted](const std::string &utf8) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring str = converter.from_bytes(utf8);
 
@@ -125,7 +125,7 @@ void Facebook::PostLiveVideo(
     if (stream_url.empty() == true) {
       std::wstringstream msg;
       msg << L"could not get stream_url from: " << str;
-      on_failed_(msg.str());
+      on_failed(msg.str());
       return;
     }
 
