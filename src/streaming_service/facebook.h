@@ -44,19 +44,24 @@ class Facebook : public StreamingServiceProvider {
   using AccountMap =
       std::unordered_map<std::wstring /*id*/, UserPage>;
 
+  using OnMeGotten = std::function<void(
+      const std::wstring &me_id,
+      const std::wstring &me_name,
+      const std::vector<UserPage> &me_accounts)>;
+
   class LoginClient;
 
   static std::vector<UserPage> ExtractAccountAll(
       const boost::property_tree::ptree &tree);
 
-  void GetMe();
+  void GetMe(
+      const OnFailed &on_failed,
+      const OnMeGotten &on_me_gotten);
 
-  void SetHandlers(
+  void OnLoginSuccess(
+      const std::wstring &access_token,
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
-
-  void OnAccessToken(
-      const std::wstring &access_token);
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
@@ -65,9 +70,6 @@ class Facebook : public StreamingServiceProvider {
   std::wstring me_id_;
   std::wstring me_name_;
   AccountMap me_accounts_;
-
-  OnFailed on_failed_;
-  OnLoggedIn on_logged_in_;
 };
 
 
@@ -78,7 +80,9 @@ class Facebook::LoginClient
  public:
   LoginClient(
       Facebook *const owner,
-      const HWND &base_window);
+      const HWND &base_window,
+      const OnFailed &on_failed,
+      const OnLoggedIn &on_logged_in);
   virtual ~LoginClient();
 
  protected:
@@ -98,7 +102,7 @@ class Facebook::LoginClient
       bool is_redirect) override;
 
  private:
-  bool OnAccessToken(
+  bool OnLoginSuccess(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefFrame> frame,
       CefRefPtr<CefRequest> request,
@@ -107,6 +111,9 @@ class Facebook::LoginClient
 
   Facebook *const owner_;
   const HWND base_window_;
+
+  OnFailed on_failed_;
+  OnLoggedIn on_logged_in_;
 
   IMPLEMENT_REFCOUNTING(LoginClient);
 };

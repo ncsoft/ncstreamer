@@ -71,22 +71,13 @@ bool CefFitClient::OnRenderProcessMessageReceived(
     CefRefPtr<CefProcessMessage> message) {
   CEF_REQUIRE_UI_THREAD();
 
-  using RenderProcessMessageHandler =
-      std::function<bool(CefRefPtr<CefBrowser> browser,
-                         CefRefPtr<CefProcessMessage> message)>;
-  static const std::unordered_map<std::wstring, RenderProcessMessageHandler>
-      kRenderProcessMessageHandlers{
-          {RenderProcessMessage::kScrollGap,
-           std::bind(&CefFitClient::OnRenderProcessScrollGap, this,
-               std::placeholders::_1, std::placeholders::_2)}};
-
   CefString msg_name = message->GetName();
-  auto i = kRenderProcessMessageHandlers.find(msg_name);
-  if (i == kRenderProcessMessageHandlers.end()) {
-    DCHECK(false);
-    return false;
+  if (msg_name == RenderProcessMessage::kScrollGap) {
+    return OnRenderProcessScrollGap(browser, message);
   }
-  return i->second(browser, message);
+
+  DCHECK(false);
+  return false;
 }
 
 

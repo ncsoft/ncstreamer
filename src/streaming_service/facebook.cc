@@ -31,9 +31,7 @@ Facebook::Facebook()
       access_token_{},
       me_id_{},
       me_name_{},
-      me_accounts_{},
-      on_failed_{},
-      on_logged_in_{} {
+      me_accounts_{} {
 }
 
 
@@ -70,11 +68,9 @@ void Facebook::LogIn(
 
   CefBrowserSettings browser_settings;
 
-  if (!login_client_) {
-    login_client_ = new LoginClient{this, parent};
-  }
+  login_client_ = new LoginClient{
+      this, parent, on_failed, on_logged_in};
 
-  SetHandlers(on_failed, on_logged_in);
   CefBrowserHost::CreateBrowser(
       window_info,
       login_client_,
@@ -104,11 +100,11 @@ void Facebook::PostLiveVideo(
   http_request_service_.Post(
       converter.to_bytes(live_video_uri.uri_string()),
       post_content,
-      [this](const boost::system::error_code &ec) {
+      [on_failed](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};
-    on_failed_(msg);
-  }, [this, on_live_video_posted](const std::string &utf8) {
+    on_failed(msg);
+  }, [on_failed, on_live_video_posted](const std::string &utf8) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring str = converter.from_bytes(utf8);
 
@@ -125,7 +121,7 @@ void Facebook::PostLiveVideo(
     if (stream_url.empty() == true) {
       std::wstringstream msg;
       msg << L"could not get stream_url from: " << str;
-      on_failed_(msg.str());
+      on_failed(msg.str());
       return;
     }
 
@@ -154,7 +150,9 @@ std::vector<StreamingServiceProvider::UserPage>
 }
 
 
-void Facebook::GetMe() {
+void Facebook::GetMe(
+    const OnFailed &on_failed,
+    const OnMeGotten &on_me_gotten) {
   Uri me_uri{FacebookApi::Graph::Me::BuildUri(
       access_token_,
       {L"id",
@@ -164,40 +162,55 @@ void Facebook::GetMe() {
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
   http_request_service_.Get(
       converter.to_bytes(me_uri.uri_string()),
-      [this](const boost::system::error_code &ec) {
+      [on_failed](const boost::system::error_code &ec) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring msg{converter.from_bytes(ec.message())};
-    on_failed_(msg);
-  }, [this](const std::string &utf8) {
+    on_failed(msg);
+  }, [on_failed, on_me_gotten](const std::string &utf8) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring str = converter.from_bytes(utf8);
 
     boost::property_tree::ptree me;
     std::stringstream me_ss{utf8};
-    std::wstring id{};
-    std::wstring name{};
-    std::vector<UserPage> accounts;
+    std::wstring me_id{};
+    std::wstring me_name{};
+    std::vector<UserPage> me_accounts;
     try {
       boost::property_tree::read_json(me_ss, me);
-      id = converter.from_bytes(me.get<std::string>("id"));
-      name = converter.from_bytes(me.get<std::string>("name"));
-      accounts = ExtractAccountAll(me.get_child("accounts"));
+      me_id = converter.from_bytes(me.get<std::string>("id"));
+      me_name = converter.from_bytes(me.get<std::string>("name"));
+      me_accounts = ExtractAccountAll(me.get_child("accounts"));
     } catch (const std::exception &/*e*/) {
-      id = L"";
-      name = L"";
-      accounts.clear();
+      me_id = L"";
+      me_name = L"";
+      me_accounts.clear();
     }
 
-    if (id.empty() == true) {
+    if (me_id.empty() == true) {
       std::wstringstream msg;
       msg << L"could not get me from: " << str;
-      on_failed_(msg.str());
+      on_failed(msg.str());
       return;
     }
 
-    me_id_ = id;
-    me_name_ = name;
-    for (const auto &account : accounts) {
+    on_me_gotten(me_id, me_name, me_accounts);
+  });
+}
+
+
+void Facebook::OnLoginSuccess(
+    const std::wstring &access_token,
+    const OnFailed &on_failed,
+    const OnLoggedIn &on_logged_in) {
+  access_token_ = access_token;
+
+  GetMe(on_failed, [this, on_logged_in](
+      const std::wstring &me_id,
+      const std::wstring &me_name,
+      const std::vector<UserPage> &me_accounts) {
+    me_id_ = me_id;
+    me_name_ = me_name;
+    for (const auto &account : me_accounts) {
       me_accounts_.emplace(account.id(), account);
     }
 
@@ -206,30 +219,20 @@ void Facebook::GetMe() {
     OutputDebugString(
         (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
 
-    on_logged_in_(name, accounts);
+    on_logged_in(me_name, me_accounts);
   });
-}
-
-
-void Facebook::SetHandlers(
-    const OnFailed &on_failed,
-    const OnLoggedIn &on_logged_in) {
-  on_failed_ = on_failed;
-  on_logged_in_ = on_logged_in;
-}
-
-
-void Facebook::OnAccessToken(const std::wstring &access_token) {
-  access_token_ = access_token;
-  GetMe();
 }
 
 
 Facebook::LoginClient::LoginClient(
     Facebook *const owner,
-    const HWND &base_window)
+    const HWND &base_window,
+    const OnFailed &on_failed,
+    const OnLoggedIn &on_logged_in)
     : owner_{owner},
-      base_window_{base_window} {
+      base_window_{base_window},
+      on_failed_{on_failed},
+      on_logged_in_{on_logged_in} {
 }
 
 
@@ -272,38 +275,19 @@ bool Facebook::LoginClient::OnBeforeBrowse(
     return false;  // proceed navigation.
   }
 
-  using Handler = std::function<bool(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefFrame> frame,
-      CefRefPtr<CefRequest> request,
-      bool is_redirect,
-      const Uri &uri)>;
-
-  using Api = FacebookApi;
-  using This = Facebook::LoginClient;
-
-  static const std::unordered_map<std::wstring, Handler> kHandlers{
-      {Api::Login::Redirect::static_uri().scheme_authority_path(),
-       std::bind(&This::OnAccessToken, this,
-           std::placeholders::_1,
-           std::placeholders::_2,
-           std::placeholders::_3,
-           std::placeholders::_4,
-           std::placeholders::_5)}};
-
   Uri uri{request->GetURL()};
   OutputDebugString((uri.uri_string() + L"\r\n").c_str());
 
-  auto i = kHandlers.find(uri.scheme_authority_path());
-  if (i == kHandlers.end()) {
-    return false;  // proceed navigation.
+  if (uri.scheme_authority_path() ==
+      FacebookApi::Login::Redirect::static_uri().scheme_authority_path()) {
+    return OnLoginSuccess(browser, frame, request, is_redirect, uri);
   }
 
-  return i->second(browser, frame, request, is_redirect, uri);
+  return false;  // proceed navigation.
 }
 
 
-bool Facebook::LoginClient::OnAccessToken(
+bool Facebook::LoginClient::OnLoginSuccess(
     CefRefPtr<CefBrowser> browser,
     CefRefPtr<CefFrame> /*frame*/,
     CefRefPtr<CefRequest> /*request*/,
@@ -320,7 +304,8 @@ bool Facebook::LoginClient::OnAccessToken(
     return false;  // proceed navigation.
   }
 
-  owner_->OnAccessToken(access_token);
+  owner_->OnLoginSuccess(
+      access_token, on_failed_, on_logged_in_);
   browser->GetHost()->CloseBrowser(false);
   return true;
 }
