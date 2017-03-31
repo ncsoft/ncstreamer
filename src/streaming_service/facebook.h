@@ -58,9 +58,6 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnMeGotten &on_me_gotten);
 
-  // placeholder
-  // placeholder
-  // placeholder
   void OnLoginSuccess(
       const std::wstring &access_token,
       const OnFailed &on_failed,

@@ -198,9 +198,6 @@ void Facebook::GetMe(
 }
 
 
-// placeholder
-// placeholder
-// placeholder
 void Facebook::OnLoginSuccess(
     const std::wstring &access_token,
     const OnFailed &on_failed,
