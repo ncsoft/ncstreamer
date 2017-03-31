@@ -57,7 +57,8 @@ void Facebook::LogIn(
       L"token",
       L"popup",
       {L"pages_show_list",
-       L"publish_actions"})};
+       L"publish_actions",
+       L"publish_pages"})};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
@@ -89,9 +90,19 @@ void Facebook::PostLiveVideo(
     const OnLiveVideoPosted &on_live_video_posted) {
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
       user_page_id)};
+
+  const std::wstring &access_token = (user_page_id == L"me") ?
+      access_token_ : GetPageAccessToken(user_page_id);
+  if (access_token.empty() == true) {
+    std::wstringstream msg;
+    msg << L"invalid user page: " << user_page_id;
+    on_failed(msg.str());
+    return;
+  }
+
   boost::property_tree::ptree post_content{
       FacebookApi::Graph::LiveVideos::BuildPostContent(
-          access_token_,
+          access_token,
           privacy,
           title,
           description)};
@@ -143,7 +154,9 @@ std::vector<StreamingServiceProvider::UserPage>
     const auto &account = elem.second;
     const auto &id = converter.from_bytes(account.get<std::string>("id"));
     const auto &name = converter.from_bytes(account.get<std::string>("name"));
-    accounts.emplace_back(id, name);
+    const auto &access_token =
+        converter.from_bytes(account.get<std::string>("access_token"));
+    accounts.emplace_back(id, name, access_token);
   }
 
   return accounts;
@@ -221,6 +234,16 @@ void Facebook::OnLoginSuccess(
 
     on_logged_in(me_name, me_accounts);
   });
+}
+
+
+const std::wstring &Facebook::GetPageAccessToken(
+    const std::wstring &page_id) const {
+  static const std::wstring kEmptyAccessToken{L""};
+
+  auto i = me_accounts_.find(page_id);
+  return (i != me_accounts_.end()) ?
+      i->second.access_token() : kEmptyAccessToken;
 }
 
 

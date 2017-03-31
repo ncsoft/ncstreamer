@@ -51,17 +51,20 @@ class StreamingServiceProvider::UserPage {
  public:
   UserPage(
       const std::wstring &id,
-      const std::wstring &name);
+      const std::wstring &name,
+      const std::wstring &access_token);
   virtual ~UserPage();
 
   const std::wstring &id() const { return id_; }
   const std::wstring &name() const { return name_; }
+  const std::wstring &access_token() const { return access_token_; }
 
   boost::property_tree::ptree ToTree() const;
 
  private:
   const std::wstring id_;
   const std::wstring name_;
+  const std::wstring access_token_;
 };
 }  // namespace ncstreamer
 

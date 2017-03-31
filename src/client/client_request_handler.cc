@@ -204,6 +204,13 @@ void ClientRequestHandler::OnCommandStreamingStart(
   const std::wstring &title = title_i->second;
   const std::wstring &description = description_i->second;
 
+  if (source.empty() == true ||
+      user_page.empty() == true ||
+      privacy.empty() == true) {
+    assert(false);
+    return;
+  }
+
   StreamingService::Get()->PostLiveVideo(
       user_page,
       privacy,
