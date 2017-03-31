@@ -57,7 +57,8 @@ void Facebook::LogIn(
       L"token",
       L"popup",
       {L"pages_show_list",
-       L"publish_actions"})};
+       L"publish_actions",
+       L"publish_pages"})};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
