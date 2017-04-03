@@ -3,12 +3,13 @@
 <title>NC Streamer</title>
 <meta http-equiv="Cache-Control" content="no-store, must-revalidate" />
 <meta http-equiv="Expires" content="0" />
-<link href="css/nc-launcher-streamer.css" rel="stylesheet" />
+<link href="css/bootstrap.css" rel="stylesheet" />
+<link href="css/nc-streamer.css" rel="stylesheet" />
 <link href="css/app.css" rel="stylesheet" />
 <script src="app/lib/jquery-3.1.0.min.js"></script>
-<script src="app/nc-launcher-streamer.js"></script>
+<script src="app/nc-streamer.js"></script>
 
-<div class="container">
+<div class="nc-streamer-container">
 <div class="header">
   <h1 class="title"><strong>방송</strong><span class="label-beta">Beta</span></h1>
   <div class="settings">
@@ -19,7 +20,7 @@
 </div>
 
 <!--login page-->
-<div class="contents login-page-panel">
+<div class="nc-streamer-contents login-page-panel">
   <section class="connect-platform">
     <header>
       <h2>플랫폼 연결</h2>
@@ -27,14 +28,14 @@
     <article>NC 스트리밍으로 게임플레이를<br />방송할 수 있습니다.<br />게시물을 등록할 페이스북 계정을 연결해 주세요.</article>
   </section>
 </div>
-<div class="footer login-page-panel">
+<div class="nc-streamer-footer login-page-panel">
   <button id="streaming-login-button" class="btn-connect">페이스북 연결</button>
 </div>
 
 <!--main page-->
-<div class="contents main-page-panel">
+<div class="nc-streamer-contents main-page-panel">
   <!-- 페이스북정보 -->
-  <section class="nc-streamer">
+  <section class="nc-streamer-setting">
     <div class="profile">
       <span id="provider-user-name" class="name fb">프로필이름열자말줄임</span>
       <!-- 방송 중 아닐때 -->
@@ -77,13 +78,13 @@
       </ul>
       <input type="hidden" readonly="" value="">
     </div>
-    <div class="tooltip">
+    <div class="nc-streamer-tooltip">
       <span class="layer-close">닫기</span>
       <p>NC TV에도 게시물을 등록하려면<br />'전체 공개'를 선택해 주세요.</p>
     </div>
   </section>
   <!-- 방송 정보 -->
-  <section class="nc-streamer">
+  <section class="nc-streamer-setting">
     <h3>방송할 게임</h3>
     <!-- 실행 중인 게임이 없는 경우 <div class="message game">방송할 게임을 실행해 주세요.</div>-->
     <!-- 1개인 경우 <div class="message">방송할 게임을 실행해 주세요.</div>-->
@@ -105,19 +106,19 @@
     </div>
   </section>
   <!-- 간편 설정 -->
-  <section class="nc-streamer">
+  <section class="nc-streamer-setting">
     <h3>간편 설정</h3>
-    <!--<div class="checkbox webcam">
+    <!--<div class="form-checkbox webcam">
       <input type="checkbox" id="chkWebcam" />
       <label for="chkWebcam">웹캠 사용</label>
     </div>-->
-    <div class="checkbox mic">
+    <div class="form-checkbox mic">
       <input type="checkbox" id="streaming-mic-checkbox"/>
       <label class="on" for="streaming-mic-checkbox">마이크 사용</label>
     </div>
   </section>
 </div>
-<div class="footer main-page-panel">
+<div class="nc-streamer-footer main-page-panel">
   <div id="streaming-error-text" class="msg status-error">일시적인 오류로 방송 서비스를 이용할 수 없습니다.<br />잠시 후 다시 시도해 주세요.</div>
   <div id="streaming-normal-text" class="msg status-ready">방송 준비 완료</div>
   <!--<button class="btn-start" disabled="disabled">방송 시작</button>-->

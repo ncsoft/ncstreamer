@@ -1,9 +1,8 @@
-/*
-  js Update : 2017-3-24 17:43:18
-*/
-/*
- js Update : 2017-3-23 10:48:26
+/**
+ * Copyright (C) 2017 NCSOFT Corporation
  */
+
+
 $(document).ready(function(){
 
 	var event = new CustomEvent("customSelectChange");
@@ -29,7 +28,8 @@ $(document).ready(function(){
 	});
 
 // tooltip
-	$(document).on('click', '.tooltip .layer-close', function(e){
-		$('.tooltip').hide();
+	$(document).on('click', '.nc-streamer-tooltip .layer-close', function(e){
+		$('.nc-streamer-tooltip').hide();
 	});
+
 });
