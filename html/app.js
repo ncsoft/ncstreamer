@@ -313,6 +313,8 @@ cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
   for (const element of app.dom.mainPagePanel) {
     element.style.display = 'block';
   }
+  app.dom.streamingSettingButton.style.display = 'inline';
+  app.dom.streamingMinimizeButton.style.display = 'inline';
 
   app.dom.providerUserName.textContent = userName;
 

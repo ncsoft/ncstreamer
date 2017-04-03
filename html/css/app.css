@@ -32,3 +32,13 @@
 #streaming-error-text {
   display: none;
 }
+
+
+#streaming-setting-button {
+  display: none;
+}
+
+
+#streaming-minimize-button {
+  display: none;
+}
