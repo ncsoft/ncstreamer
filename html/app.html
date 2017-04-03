@@ -7,13 +7,15 @@
 <link href="css/nc-streamer.css" rel="stylesheet" />
 <link href="css/app.css" rel="stylesheet" />
 <script src="app/lib/jquery-3.1.0.min.js"></script>
+<script src="app/lib/bootstrap.js"></script>
 <script src="app/nc-streamer.js"></script>
 
 <div class="nc-streamer-container">
 <div class="header">
   <h1 class="title"><strong>방송</strong><span class="label-beta">Beta</span></h1>
   <div class="settings">
-    <button id="streaming-setting-button" class="btn-setting" value="Setting"></button>
+    <button id="streaming-setting-button" class="btn-setting"
+            value="Setting" data-toggle="modal" data-target="#settingModal"></button>
     <button id="streaming-minimize-button" class="btn-minimum" value="Minimum"></button>
     <button id="streaming-close-button" class="btn-close" value="Close"></button>
   </div>
@@ -124,6 +126,37 @@
   <!--<button class="btn-start" disabled="disabled">방송 시작</button>-->
   <!--<button class="btn-start loading" disabled="disabled">방송 준비 중</button>-->
   <button id="streaming-control-button" class="btn-start">방송 시작</button>
+</div>
+
+<!--setting page-->
+<div id="settingModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header header">
+        <div class="settings">
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" value="Close"></button>
+        </div>
+        <h4 class="modal-title">설정</h4>
+      </div>
+      <div class="modal-body nc-streamer-contents">
+        <section class="nc-streamer-setting">
+          <h3>화질</h3>
+          <div id="streaming-quality-select" data-ui="custom-select">
+            <span class="opener">화질을 선택해 주세요.</span>
+            <ul>
+              <li data-value="1">{화질 상}</li>
+              <li data-value="2">{화질 중}</li>
+              <li data-value="3">{화질 하}</li>
+           </ul>
+           <input type="hidden" readonly="" value="">
+          </div>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 

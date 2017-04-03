@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-error-text',
     'streaming-normal-text',
     'streaming-control-button',
+    'streaming-quality-select',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
@@ -89,6 +90,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'change', onStreamingMicCheckboxChanged);
   app.dom.streamingControlButton.addEventListener(
       'click', onStreamingControlButtonClicked);
+  app.dom.streamingQualitySelect.addEventListener(
+      'customSelectChange', onStreamingQualitySelectChanged);
+
+  setUpSteamingQuality();
 });
 
 
@@ -178,30 +183,6 @@ function setUpStreamingSources(obj) {
 }
 
 
-function setUpSteamingQuality() {
-  for (const option of app.dom.streamingQualitySelect) {
-    option.remove();
-  }
-
-  for (const level in app.streaming.quality) {
-    if (!app.streaming.quality.hasOwnProperty(level))
-      return;
-
-    const quality = app.streaming.quality[level];
-    const option = document.createElement('option');
-    option.value = level;
-    option.text = [
-        level,
-        quality.resolution.width + '*' + quality.resolution.height,
-        'fps: ' + quality.fps,
-        'bitrate: ' + quality.bitrate].join(', ');
-
-    app.dom.streamingQualitySelect.add(option);
-  }
-  onStreamingQualityChange();
-}
-
-
 function onStreamingSettingButtonClicked() {
   console.info('click streamingSettingButton');
 }
@@ -284,8 +265,8 @@ function onStreamingControlButtonClicked() {
 }
 
 
-function onStreamingQualityChange() {
-  const curValue = app.dom.streamingQualitySelect.value;
+function onStreamingQualitySelectChanged() {
+  const curValue = app.dom.streamingQualitySelect.children[2].value;
   const curQuality = app.streaming.quality[curValue];
   console.info({ streamingQuality: curValue });
   cef.settingsVideoQualityUpdate.request(
@@ -293,6 +274,35 @@ function onStreamingQualityChange() {
       curQuality.resolution.height,
       curQuality.fps,
       curQuality.bitrate);
+}
+
+
+function setUpSteamingQuality() {
+  const display = app.dom.streamingQualitySelect.children[0];
+  const contents = app.dom.streamingQualitySelect.children[1];
+  const input = app.dom.streamingQualitySelect.children[2];
+  while (contents.firstChild) {
+    contents.removeChild(contents.firstChild);
+  }
+
+  for (const level in app.streaming.quality) {
+    if (!app.streaming.quality.hasOwnProperty(level))
+      return;
+
+    const quality = app.streaming.quality[level];
+    const li = document.createElement('li');
+    const node = document.createTextNode([
+        level,
+        quality.resolution.width + '*' + quality.resolution.height,
+        'fps: ' + quality.fps,
+        'bitrate: ' + quality.bitrate].join(', '));
+    li.setAttribute('data-value', level);
+    li.appendChild(node);
+    contents.appendChild(li);
+  }
+  input.value = contents.firstChild.getAttribute('data-value');
+  display.textContent = contents.firstChild.textContent;
+  onStreamingQualitySelectChanged();
 }
 
 
