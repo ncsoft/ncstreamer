@@ -195,6 +195,7 @@ function onStreamingMinimizeButtonClicked() {
 
 function onStreamingCloseButtonClicked() {
   console.info('click streamingCloseeButton');
+  cef.windowClose.request();
 }
 
 

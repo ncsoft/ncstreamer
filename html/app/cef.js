@@ -8,6 +8,10 @@
 
 const cef = (function() {
   const protocols = {
+    'window/close': {
+      request: [],
+      response: [],
+    },
     'service_provider/log_in': {
       request: ['serviceProvider'],
       response: ['userName', 'userPages'],
