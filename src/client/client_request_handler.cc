@@ -109,6 +109,11 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {L"window/minimize",
+       std::bind(&This::OnCommandWindowMinimize, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {L"service_provider/log_in",
        std::bind(&This::OnCommandServiceProviderLogIn, this,
            std::placeholders::_1,
@@ -155,6 +160,15 @@ void ClientRequestHandler::OnCommandWindowClose(
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
   browser->GetHost()->CloseBrowser(true);
+}
+
+
+void ClientRequestHandler::OnCommandWindowMinimize(
+    const std::wstring &/*cmd*/,
+    const CommandArgumentMap &/*args*/,
+    CefRefPtr<CefBrowser> browser) {
+  HWND wnd{browser->GetHost()->GetWindowHandle()};
+  ::ShowWindow(wnd, SW_MINIMIZE);
 }
 
 
