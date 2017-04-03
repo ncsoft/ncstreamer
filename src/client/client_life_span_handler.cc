@@ -9,6 +9,8 @@
 #include "include/wrapper/cef_helpers.h"
 
 #include "src/js_executor.h"
+#include "src/lib/window_frame_remover.h"
+#include "src/manifest.h"
 #include "src/resource.h"
 
 
@@ -37,6 +39,8 @@ void ClientLifeSpanHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 
   if (!main_browser_) {
     main_browser_ = browser;
+    WindowFrameRemover::Get()->RegisterWindow(
+        wnd, kWindowTitlebarDragRect);
   }
 
   browsers_.emplace(browser->GetIdentifier(), browser);
@@ -68,6 +72,8 @@ void ClientLifeSpanHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
   }
 
   if (browsers_.empty()) {
+    HWND wnd = browser->GetHost()->GetWindowHandle();
+    WindowFrameRemover::Get()->UnregisterWindow(wnd);
     main_browser_ = nullptr;
     ::CefQuitMessageLoop();
   }
