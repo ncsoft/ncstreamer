@@ -190,6 +190,7 @@ function onStreamingSettingButtonClicked() {
 
 function onStreamingMinimizeButtonClicked() {
   console.info('click streamingMinimizeButton');
+  cef.windowMinimize.request();
 }
 
 

@@ -12,6 +12,10 @@ const cef = (function() {
       request: [],
       response: [],
     },
+    'window/minimize': {
+      request: [],
+      response: [],
+    },
     'service_provider/log_in': {
       request: ['serviceProvider'],
       response: ['userName', 'userPages'],
