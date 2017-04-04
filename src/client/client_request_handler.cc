@@ -16,6 +16,7 @@
 #include "boost/property_tree/ptree.hpp"
 #include "include/wrapper/cef_helpers.h"
 
+#include "Shellapi.h"  // NOLINT
 #include "Shlwapi.h"  // NOLINT
 
 #include "src/js_executor.h"
@@ -114,6 +115,11 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {L"external_browser/pop_up",
+       std::bind(&This::OnCommandExternalBrowserPopUp, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {L"service_provider/log_in",
        std::bind(&This::OnCommandServiceProviderLogIn, this,
            std::placeholders::_1,
@@ -169,6 +175,21 @@ void ClientRequestHandler::OnCommandWindowMinimize(
     CefRefPtr<CefBrowser> browser) {
   HWND wnd{browser->GetHost()->GetWindowHandle()};
   ::ShowWindow(wnd, SW_MINIMIZE);
+}
+
+
+void ClientRequestHandler::OnCommandExternalBrowserPopUp(
+    const std::wstring &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  auto uri_i = args.find(L"uri");
+  if (uri_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::wstring &uri = uri_i->second;
+  ::ShellExecute(NULL, L"open", uri.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 
 
