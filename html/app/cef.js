@@ -16,6 +16,10 @@ const cef = (function() {
       request: [],
       response: [],
     },
+    'external_browser/pop_up': {
+      request: ['uri'],
+      response: [],
+    },
     'service_provider/log_in': {
       request: ['serviceProvider'],
       response: ['userName', 'userLink', 'userPages'],

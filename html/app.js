@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-close-button',
     'streaming-login-button',
     'provider-user-name',
+    'provider-page-link',
     'streaming-user-page-select',
     'streaming-managing-page-select',
     'streaming-page-access',
@@ -78,6 +79,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onStreamingCloseButtonClicked);
   app.dom.streamingLoginButton.addEventListener(
       'click', onStreamingLoginButtonClicked);
+  app.dom.providerPageLink.addEventListener(
+      'click', onProviderPageLinkClicked);
   app.dom.streamingUserPageSelect.addEventListener(
       'customSelectChange', onStreamingUserPageSelectChanged);
   app.dom.streamingManagingPageSelect.addEventListener(
@@ -206,6 +209,16 @@ function onStreamingLoginButtonClicked() {
 }
 
 
+function onProviderPageLinkClicked() {
+  console.info('click providerPageLink');
+
+  const link = (app.dom.streamingUserPageSelect.children[2].value == 2) ?
+      app.dom.streamingManagingPageSelect.children[1].firstChild.link :
+      app.dom.providerPageLink.link;
+  cef.externalBrowserPopUp.request(link);
+}
+
+
 function onStreamingUserPageSelectChanged() {
   console.info('change streamingUserPageSelect');
   const managingSelect = app.dom.streamingManagingPageSelect;
@@ -319,6 +332,7 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
   app.dom.streamingMinimizeButton.style.display = 'inline';
 
   app.dom.providerUserName.textContent = userName;
+  app.dom.providerPageLink.link = userLink;
 
   const display = app.dom.streamingManagingPageSelect.children[0];
   const contents = app.dom.streamingManagingPageSelect.children[1];
@@ -335,6 +349,7 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
       const node = document.createTextNode(userPage.name);
       li.setAttribute('data-value', userPage.id);
       li.appendChild(node);
+      li.link = userPage.link;
       contents.appendChild(li);
     }
     input.value = contents.firstChild.getAttribute('data-value');
