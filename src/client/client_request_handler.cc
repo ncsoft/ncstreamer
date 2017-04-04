@@ -191,6 +191,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     // TODO(khpark): TBD
   }, [browser, cmd](
       const std::wstring &user_name,
+      const std::wstring &user_link,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::vector<boost::property_tree::ptree> tree_pages;
@@ -202,6 +203,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
         "cef.onResponse",
         converter.to_bytes(cmd),
         std::make_pair("userName", converter.to_bytes(user_name)),
+        std::make_pair("userLink", converter.to_bytes(user_link)),
         std::make_pair("userPages", tree_pages));
   });
 }

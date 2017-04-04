@@ -75,6 +75,26 @@ void JsExecutor::Execute(
 }
 
 
+template <typename T>
+void JsExecutor::Execute(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::string &arg0,
+    const std::pair<std::string, std::string> &arg1_0,
+    const std::pair<std::string, std::string> &arg1_1,
+    const std::pair<std::string, std::vector<T>> &arg1_2) {
+  std::stringstream js;
+  boost::property_tree::ptree arg1;
+
+  arg1.add(arg1_0.first, arg1_0.second);
+  arg1.add(arg1_1.first, arg1_1.second);
+  arg1.add_child(arg1_2.first, ToPtree(arg1_2.second));
+
+  AppendFunctionCall(func_name, arg0, arg1, &js);
+  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+}
+
+
 template
 void JsExecutor::Execute<std::string>(
     CefRefPtr<CefBrowser> browser,
@@ -83,6 +103,13 @@ void JsExecutor::Execute<std::string>(
     const std::pair<std::string, std::string> &arg1_0,
     const std::pair<std::string, std::vector<std::string>> &arg1_1);
 template
+void JsExecutor::Execute<std::string>(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::string &arg0,
+    const std::pair<std::string, std::string> &arg1_1,
+    const std::pair<std::string, std::vector<std::string>> &arg1_2);
+template
 void JsExecutor::Execute<boost::property_tree::ptree>(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
@@ -90,6 +117,15 @@ void JsExecutor::Execute<boost::property_tree::ptree>(
     const std::pair<std::string, std::string> &arg1_0,
     const std::pair<std::string,
                     std::vector<boost::property_tree::ptree>> &arg1_1);
+template
+void JsExecutor::Execute<boost::property_tree::ptree>(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::string &arg0,
+    const std::pair<std::string, std::string> &arg1_0,
+    const std::pair<std::string, std::string> &arg1_1,
+    const std::pair<std::string,
+                    std::vector<boost::property_tree::ptree>> &arg1_2);
 
 
 void JsExecutor::ExecuteAngularJs(

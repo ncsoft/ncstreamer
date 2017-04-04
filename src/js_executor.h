@@ -40,6 +40,15 @@ class JsExecutor {
       const std::pair<std::string, std::string> &arg1_0,
       const std::pair<std::string, std::vector<T>> &arg1_1);
 
+  template <typename T>
+  static void Execute(
+      CefRefPtr<CefBrowser> browser,
+      const std::string &func_name,
+      const std::string &arg0,
+      const std::pair<std::string, std::string> &arg1_0,
+      const std::pair<std::string, std::string> &arg1_1,
+      const std::pair<std::string, std::vector<T>> &arg1_2);
+
   static void ExecuteAngularJs(CefRefPtr<CefBrowser> browser,
                                const std::string &controller,
                                const std::string &func_name,

@@ -47,6 +47,7 @@ class Facebook : public StreamingServiceProvider {
   using OnMeGotten = std::function<void(
       const std::wstring &me_id,
       const std::wstring &me_name,
+      const std::wstring &me_link,
       const std::vector<UserPage> &me_accounts)>;
 
   class LoginClient;
@@ -72,6 +73,7 @@ class Facebook : public StreamingServiceProvider {
   std::wstring access_token_;
   std::wstring me_id_;
   std::wstring me_name_;
+  std::wstring me_link_;
   AccountMap me_accounts_;
 };
 
