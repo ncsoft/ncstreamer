@@ -18,7 +18,7 @@ const cef = (function() {
     },
     'service_provider/log_in': {
       request: ['serviceProvider'],
-      response: ['userName', 'userPages'],
+      response: ['userName', 'userLink', 'userPages'],
     },
     'streaming/start': {
       request: ['source', 'userPage', 'privacy', 'title', 'description'],

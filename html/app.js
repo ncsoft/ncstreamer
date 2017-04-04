@@ -308,7 +308,7 @@ function setUpSteamingQuality() {
 }
 
 
-cef.serviceProviderLogIn.onResponse = function(userName, userPages) {
+cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
   for (const element of app.dom.loginPagePanel) {
     element.style.display = 'none';
   }
