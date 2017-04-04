@@ -39,6 +39,9 @@ const app = {
       },
     },
   },
+  service: {
+    user: null,
+  },
 };
 
 
@@ -322,6 +325,15 @@ function setUpSteamingQuality() {
 
 
 cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
+  app.service.user = {
+    name: userName,
+    link: userLink,
+    pages: {},
+  };
+  for (const userPage of userPages) {
+    app.service.user.pages[userPage.id] = userPage;
+  }
+
   for (const element of app.dom.loginPagePanel) {
     element.style.display = 'none';
   }
