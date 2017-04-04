@@ -267,8 +267,12 @@ void ClientRequestHandler::OnCommandStreamingStop(
     const std::wstring &cmd,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
-  Obs::Get()->StopStreaming([browser]() {
-    JsExecutor::Execute(browser, "onStreamingStopped");
+  Obs::Get()->StopStreaming([browser, cmd]() {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    JsExecutor::Execute(
+        browser,
+        "cef.onResponse",
+        converter.to_bytes(cmd));
   });
 }
 
