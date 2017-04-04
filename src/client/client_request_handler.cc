@@ -104,6 +104,16 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
   using This = ClientRequestHandler;
   static const std::unordered_map<std::wstring/*command*/,
                                   CommandHandler> kCommandHandlers{
+      {L"window/close",
+       std::bind(&This::OnCommandWindowClose, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {L"window/minimize",
+       std::bind(&This::OnCommandWindowMinimize, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {L"service_provider/log_in",
        std::bind(&This::OnCommandServiceProviderLogIn, this,
            std::placeholders::_1,
@@ -142,6 +152,23 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
   }
 
   i->second(cmd, args, browser);
+}
+
+
+void ClientRequestHandler::OnCommandWindowClose(
+    const std::wstring &/*cmd*/,
+    const CommandArgumentMap &/*args*/,
+    CefRefPtr<CefBrowser> browser) {
+  browser->GetHost()->CloseBrowser(true);
+}
+
+
+void ClientRequestHandler::OnCommandWindowMinimize(
+    const std::wstring &/*cmd*/,
+    const CommandArgumentMap &/*args*/,
+    CefRefPtr<CefBrowser> browser) {
+  HWND wnd{browser->GetHost()->GetWindowHandle()};
+  ::ShowWindow(wnd, SW_MINIMIZE);
 }
 
 

@@ -39,6 +39,14 @@ class ClientRequestHandler : public CefRequestHandler {
       const std::wstring &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser)>;
+  void OnCommandWindowClose(
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandWindowMinimize(
+      const std::wstring &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandServiceProviderLogIn(
       const std::wstring &cmd,
       const CommandArgumentMap &args,
