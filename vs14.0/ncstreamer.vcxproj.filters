@@ -123,6 +123,9 @@
     <ClCompile Include="..\src\lib\http_types.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\lib\window_frame_remover.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -225,6 +228,9 @@
       <Filter>src\lib</Filter>
     </ClInclude>
     <ClInclude Include="..\src\lib\json_parser.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lib\window_frame_remover.h">
       <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>

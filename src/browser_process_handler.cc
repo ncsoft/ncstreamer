@@ -11,6 +11,7 @@
 
 #include "src/client.h"
 #include "src/lib/display.h"
+#include "src/lib/window_frame_remover.h"
 #include "src/manifest.h"
 
 
@@ -33,8 +34,7 @@ void BrowserProcessHandler::OnContextInitialized() {
   CEF_REQUIRE_UI_THREAD();
 
   CefWindowInfo window_info;
-  window_info.style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS |
-                      WS_VISIBLE;
+  window_info.style = WindowFrameRemover::kWindowStyleBeforeInitialization;
   window_info.x = CW_USEDEFAULT;
   window_info.y = CW_USEDEFAULT;
   window_info.width = Display::Scale(kWindowMinimumSize.width());

@@ -9,6 +9,7 @@
 
 #include "src/browser_app.h"
 #include "src/lib/command_line.h"
+#include "src/lib/window_frame_remover.h"
 #include "src/obs.h"
 #include "src/render_app.h"
 #include "src/streaming_service.h"
@@ -38,6 +39,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
   settings.no_sandbox = true;
 
   ::CefInitialize(main_args, settings, app, nullptr);
+  ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
 
@@ -45,6 +47,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
 
   ncstreamer::StreamingService::ShutDown();
   ncstreamer::Obs::ShutDown();
+  ncstreamer::WindowFrameRemover::ShutDown();
   ::CefShutdown();
 
   return 0;
