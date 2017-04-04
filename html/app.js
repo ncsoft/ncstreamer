@@ -362,7 +362,6 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
       const node = document.createTextNode(userPage.name);
       li.setAttribute('data-value', userPage.id);
       li.appendChild(node);
-      li.link = userPage.link;
       contents.appendChild(li);
     }
     input.value = contents.firstChild.getAttribute('data-value');
