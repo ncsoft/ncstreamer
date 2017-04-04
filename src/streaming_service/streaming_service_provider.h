@@ -25,6 +25,7 @@ class StreamingServiceProvider {
       std::function<void(const std::wstring &fail)>;
   using OnLoggedIn =
       std::function<void(const std::wstring &user_name,
+                         const std::wstring &user_link,
                          const std::vector<UserPage> &user_pages)>;
   using OnLiveVideoPosted =
       std::function<void(const std::wstring &stream_url)>;
@@ -52,11 +53,13 @@ class StreamingServiceProvider::UserPage {
   UserPage(
       const std::wstring &id,
       const std::wstring &name,
+      const std::wstring &link,
       const std::wstring &access_token);
   virtual ~UserPage();
 
   const std::wstring &id() const { return id_; }
   const std::wstring &name() const { return name_; }
+  const std::wstring &link() const { return link_; }
   const std::wstring &access_token() const { return access_token_; }
 
   boost::property_tree::ptree ToTree() const;
@@ -64,6 +67,7 @@ class StreamingServiceProvider::UserPage {
  private:
   const std::wstring id_;
   const std::wstring name_;
+  const std::wstring link_;
   const std::wstring access_token_;
 };
 }  // namespace ncstreamer
