@@ -216,7 +216,8 @@ function onProviderPageLinkClicked() {
   console.info('click providerPageLink');
 
   const link = (app.dom.streamingUserPageSelect.children[2].value == 2) ?
-      app.dom.streamingManagingPageSelect.children[1].firstChild.link :
+      app.service.user.pages[
+          app.dom.streamingManagingPageSelect.children[2].value].link :
       app.dom.providerPageLink.link;
   cef.externalBrowserPopUp.request(link);
 }
