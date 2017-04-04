@@ -170,7 +170,7 @@ void Facebook::GetMe(
       access_token_,
       {L"id",
        L"name",
-       L"accounts"})};
+       L"accounts{id,name,access_token}"})};
 
   static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
   http_request_service_.Get(
