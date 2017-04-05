@@ -90,7 +90,7 @@ std::wstring ClientRequestHandler::DecodeUri(const std::wstring &enc_string) {
   wchar_t buf[kMaxSize];
   std::wcsncpy(buf, enc_string.c_str(), enc_string.size() + 1);
 
-  HRESULT result = ::UrlUnescapeInPlace(buf, 0);
+  HRESULT result = ::UrlUnescape(buf, NULL, NULL, URL_UNESCAPE_INPLACE);
   if (result != S_OK) {
     return enc_string;
   }
