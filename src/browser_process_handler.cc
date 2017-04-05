@@ -46,7 +46,10 @@ void BrowserProcessHandler::OnContextInitialized() {
       sources_}};
 
   std::wstring uri{
-      CefCommandLine::GetGlobalCommandLine()->GetSwitchValue(L"url")};
+      CefCommandLine::GetGlobalCommandLine()->GetSwitchValue(L"ui-uri")};
+  if (uri.empty() == true) {
+    uri = kDefaultUiUri;
+  }
 
   CefBrowserSettings browser_settings;
 
