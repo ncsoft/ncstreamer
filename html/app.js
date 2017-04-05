@@ -345,7 +345,6 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
   app.dom.streamingMinimizeButton.style.display = 'inline';
 
   app.dom.providerUserName.textContent = userName;
-  app.dom.providerPageLink.link = userLink;
 
   const display = app.dom.streamingManagingPageSelect.children[0];
   const contents = app.dom.streamingManagingPageSelect.children[1];
