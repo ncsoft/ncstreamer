@@ -6,9 +6,7 @@
 #include "src/streaming_service/facebook.h"
 
 #include <cassert>
-#include <codecvt>
 #include <functional>
-#include <locale>
 #include <string>
 #include <unordered_map>
 
@@ -43,28 +41,28 @@ void Facebook::LogIn(
     HWND parent,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
-  static const wchar_t *kNcStreamerAppId{[]() {
-    static const wchar_t *kProduction{
-        L"1789696898019802"};
-    static const wchar_t *kAlpha{
-        L"1795379417451550"};
+  static const char *kNcStreamerAppId{[]() {
+    static const char *kProduction{
+        "1789696898019802"};
+    static const char *kAlpha{
+        "1795379417451550"};
     return kAlpha;
   }()};
 
   static const Uri kLoginUri{FacebookApi::Login::Oauth::BuildUri(
       kNcStreamerAppId,
       FacebookApi::Login::Redirect::static_uri(),
-      L"token",
-      L"popup",
-      {L"pages_show_list",
-       L"publish_actions",
-       L"publish_pages"})};
+      "token",
+      "popup",
+      {"pages_show_list",
+       "publish_actions",
+       "publish_pages"})};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
   const Rectangle &popup_rect = parent_rect.Center(429, 402);
 
   CefWindowInfo window_info;
-  window_info.SetAsPopup(parent, L"Facebook Login");
+  window_info.SetAsPopup(parent, "Facebook Login");
   CefWindowRectangle::Reset(popup_rect, &window_info);
 
   CefBrowserSettings browser_settings;
@@ -82,20 +80,20 @@ void Facebook::LogIn(
 
 
 void Facebook::PostLiveVideo(
-    const std::wstring &user_page_id,
-    const std::wstring &privacy,
-    const std::wstring &title,
-    const std::wstring &description,
+    const std::string &user_page_id,
+    const std::string &privacy,
+    const std::string &title,
+    const std::string &description,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
       user_page_id)};
 
-  const std::wstring &access_token = (user_page_id == L"me") ?
+  const std::string &access_token = (user_page_id == "me") ?
       access_token_ : GetPageAccessToken(user_page_id);
   if (access_token.empty() == true) {
-    std::wstringstream msg;
-    msg << L"invalid user page: " << user_page_id;
+    std::stringstream msg;
+    msg << "invalid user page: " << user_page_id;
     on_failed(msg.str());
     return;
   }
@@ -107,36 +105,31 @@ void Facebook::PostLiveVideo(
           title,
           description)};
 
-  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
   http_request_service_.Post(
-      converter.to_bytes(live_video_uri.uri_string()),
+      live_video_uri.uri_string(),
       post_content,
       [on_failed](const boost::system::error_code &ec) {
-    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring msg{converter.from_bytes(ec.message())};
+    std::string msg{ec.message()};
     on_failed(msg);
-  }, [on_failed, on_live_video_posted](const std::string &utf8) {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring str = converter.from_bytes(utf8);
-
+  }, [on_failed, on_live_video_posted](const std::string &str) {
     boost::property_tree::ptree tree;
-    std::stringstream ss{utf8};
-    std::wstring stream_url{};
+    std::stringstream ss{str};
+    std::string stream_url{};
     try {
       boost::property_tree::read_json(ss, tree);
-      stream_url = converter.from_bytes(tree.get<std::string>("stream_url"));
+      stream_url = tree.get<std::string>("stream_url");
     } catch (const std::exception &/*e*/) {
-      stream_url = L"";
+      stream_url = "";
     }
 
     if (stream_url.empty() == true) {
-      std::wstringstream msg;
-      msg << L"could not get stream_url from: " << str;
+      std::stringstream msg;
+      msg << "could not get stream_url from: " << str;
       on_failed(msg.str());
       return;
     }
 
-    OutputDebugString((stream_url + L"/stream_url\r\n").c_str());
+    OutputDebugStringA((stream_url + "/stream_url\r\n").c_str());
 
     on_live_video_posted(stream_url);
   });
@@ -147,16 +140,14 @@ std::vector<StreamingServiceProvider::UserPage>
     Facebook::ExtractAccountAll(
         const boost::property_tree::ptree &tree) {
   std::vector<UserPage> accounts;
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
   const auto &arr = tree.get_child("data");
   for (const auto &elem : arr) {
     const auto &account = elem.second;
-    const auto &id = converter.from_bytes(account.get<std::string>("id"));
-    const auto &name = converter.from_bytes(account.get<std::string>("name"));
-    const auto &link = converter.from_bytes(account.get<std::string>("link"));
-    const auto &access_token =
-        converter.from_bytes(account.get<std::string>("access_token"));
+    const auto &id = account.get<std::string>("id");
+    const auto &name = account.get<std::string>("name");
+    const auto &link = account.get<std::string>("link");
+    const auto &access_token = account.get<std::string>("access_token");
     accounts.emplace_back(id, name, link, access_token);
   }
 
@@ -169,44 +160,39 @@ void Facebook::GetMe(
     const OnMeGotten &on_me_gotten) {
   Uri me_uri{FacebookApi::Graph::Me::BuildUri(
       access_token_,
-      {L"id",
-       L"name",
-       L"link",
-       L"accounts{id,name,link,access_token}"})};
+      {"id",
+       "name",
+       "link",
+       "accounts{id,name,link,access_token}"})};
 
-  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
   http_request_service_.Get(
-      converter.to_bytes(me_uri.uri_string()),
+      me_uri.uri_string(),
       [on_failed](const boost::system::error_code &ec) {
-    static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring msg{converter.from_bytes(ec.message())};
+    std::string msg{ec.message()};
     on_failed(msg);
-  }, [on_failed, on_me_gotten](const std::string &utf8) {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring str = converter.from_bytes(utf8);
-
+  }, [on_failed, on_me_gotten](const std::string &str) {
     boost::property_tree::ptree me;
-    std::stringstream me_ss{utf8};
-    std::wstring me_id{};
-    std::wstring me_name{};
-    std::wstring me_link{};
+    std::stringstream me_ss{str};
+    std::string me_id{};
+    std::string me_name{};
+    std::string me_link{};
     std::vector<UserPage> me_accounts;
     try {
       boost::property_tree::read_json(me_ss, me);
-      me_id = converter.from_bytes(me.get<std::string>("id"));
-      me_name = converter.from_bytes(me.get<std::string>("name"));
-      me_link = converter.from_bytes(me.get<std::string>("link"));
+      me_id = me.get<std::string>("id");
+      me_name = me.get<std::string>("name");
+      me_link = me.get<std::string>("link");
       me_accounts = ExtractAccountAll(me.get_child("accounts"));
     } catch (const std::exception &/*e*/) {
-      me_id = L"";
-      me_name = L"";
-      me_link = L"";
+      me_id = "";
+      me_name = "";
+      me_link = "";
       me_accounts.clear();
     }
 
     if (me_id.empty() == true) {
-      std::wstringstream msg;
-      msg << L"could not get me from: " << str;
+      std::stringstream msg;
+      msg << "could not get me from: " << str;
       on_failed(msg.str());
       return;
     }
@@ -217,15 +203,15 @@ void Facebook::GetMe(
 
 
 void Facebook::OnLoginSuccess(
-    const std::wstring &access_token,
+    const std::string &access_token,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
   access_token_ = access_token;
 
   GetMe(on_failed, [this, on_logged_in](
-      const std::wstring &me_id,
-      const std::wstring &me_name,
-      const std::wstring &me_link,
+      const std::string &me_id,
+      const std::string &me_name,
+      const std::string &me_link,
       const std::vector<UserPage> &me_accounts) {
     me_id_ = me_id;
     me_name_ = me_name;
@@ -234,20 +220,20 @@ void Facebook::OnLoginSuccess(
       me_accounts_.emplace(account.id(), account);
     }
 
-    OutputDebugString((me_id_ + L"/id\r\n").c_str());
-    OutputDebugString((me_name_ + L"/name\r\n").c_str());
-    OutputDebugString((me_link_ + L"/link\r\n").c_str());
-    OutputDebugString(
-        (std::to_wstring(me_accounts_.size()) + L"/accounts\r\n").c_str());
+    OutputDebugStringA((me_id_ + "/id\r\n").c_str());
+    OutputDebugStringA((me_name_ + "/name\r\n").c_str());
+    OutputDebugStringA((me_link_ + "/link\r\n").c_str());
+    OutputDebugStringA(
+        (std::to_string(me_accounts_.size()) + "/accounts\r\n").c_str());
 
     on_logged_in(me_name, me_link, me_accounts);
   });
 }
 
 
-const std::wstring &Facebook::GetPageAccessToken(
-    const std::wstring &page_id) const {
-  static const std::wstring kEmptyAccessToken{L""};
+const std::string &Facebook::GetPageAccessToken(
+    const std::string &page_id) const {
+  static const std::string kEmptyAccessToken{""};
 
   auto i = me_accounts_.find(page_id);
   return (i != me_accounts_.end()) ?
@@ -307,7 +293,7 @@ bool Facebook::LoginClient::OnBeforeBrowse(
   }
 
   Uri uri{request->GetURL()};
-  OutputDebugString((uri.uri_string() + L"\r\n").c_str());
+  OutputDebugStringA((uri.uri_string() + "\r\n").c_str());
 
   if (uri.scheme_authority_path() ==
       FacebookApi::Login::Redirect::static_uri().scheme_authority_path()) {
@@ -326,7 +312,7 @@ bool Facebook::LoginClient::OnLoginSuccess(
     const Uri &uri) {
   CEF_REQUIRE_UI_THREAD();
 
-  const std::wstring &access_token =
+  const std::string &access_token =
       FacebookApi::Login::Redirect::ExtractAccessToken(
           Uri::Query{uri.fragment()});
 

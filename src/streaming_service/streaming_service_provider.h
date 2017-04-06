@@ -22,13 +22,13 @@ class StreamingServiceProvider {
   class UserPage;
 
   using OnFailed =
-      std::function<void(const std::wstring &fail)>;
+      std::function<void(const std::string &fail)>;
   using OnLoggedIn =
-      std::function<void(const std::wstring &user_name,
-                         const std::wstring &user_link,
+      std::function<void(const std::string &user_name,
+                         const std::string &user_link,
                          const std::vector<UserPage> &user_pages)>;
   using OnLiveVideoPosted =
-      std::function<void(const std::wstring &stream_url)>;
+      std::function<void(const std::string &stream_url)>;
 
   StreamingServiceProvider();
   virtual ~StreamingServiceProvider() = 0;
@@ -39,10 +39,10 @@ class StreamingServiceProvider {
       const OnLoggedIn &on_logged_in) = 0;
 
   virtual void PostLiveVideo(
-      const std::wstring &user_page_id,
-      const std::wstring &privacy,
-      const std::wstring &title,
-      const std::wstring &description,
+      const std::string &user_page_id,
+      const std::string &privacy,
+      const std::string &title,
+      const std::string &description,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted) = 0;
 };
@@ -51,24 +51,24 @@ class StreamingServiceProvider {
 class StreamingServiceProvider::UserPage {
  public:
   UserPage(
-      const std::wstring &id,
-      const std::wstring &name,
-      const std::wstring &link,
-      const std::wstring &access_token);
+      const std::string &id,
+      const std::string &name,
+      const std::string &link,
+      const std::string &access_token);
   virtual ~UserPage();
 
-  const std::wstring &id() const { return id_; }
-  const std::wstring &name() const { return name_; }
-  const std::wstring &link() const { return link_; }
-  const std::wstring &access_token() const { return access_token_; }
+  const std::string &id() const { return id_; }
+  const std::string &name() const { return name_; }
+  const std::string &link() const { return link_; }
+  const std::string &access_token() const { return access_token_; }
 
   boost::property_tree::ptree ToTree() const;
 
  private:
-  const std::wstring id_;
-  const std::wstring name_;
-  const std::wstring link_;
-  const std::wstring access_token_;
+  const std::string id_;
+  const std::string name_;
+  const std::string link_;
+  const std::string access_token_;
 };
 }  // namespace ncstreamer
 

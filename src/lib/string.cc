@@ -9,14 +9,14 @@
 
 
 namespace ncstreamer {
-std::wstring String::Join(
-    const std::vector<std::wstring> &elems,
-    const std::wstring &separator) {
+std::string String::Join(
+    const std::vector<std::string> &elems,
+    const std::string &separator) {
   if (elems.empty() == true) {
-    return L"";
+    return "";
   }
 
-  std::wstringstream ss;
+  std::stringstream ss;
   auto i = elems.begin();
   ss << *i;
   for (++i; i != elems.end(); ++i) {

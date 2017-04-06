@@ -22,8 +22,8 @@ class FacebookApi {
   class Graph;
 
  private:
-  static const wchar_t *kScheme;
-  static const wchar_t *kVersion;
+  static const char *kScheme;
+  static const char *kVersion;
 };
 
 
@@ -33,21 +33,21 @@ class FacebookApi::Login {
   class Redirect;
 
  private:
-  static const wchar_t *kAuthority;
+  static const char *kAuthority;
 };
 
 
 class FacebookApi::Login::Oauth {
  public:
   static Uri BuildUri(
-      const std::wstring &client_id,
+      const std::string &client_id,
       const Uri &redirect_uri,
-      const std::wstring &response_type,
-      const std::wstring &display,
-      const std::vector<std::wstring> &scope);
+      const std::string &response_type,
+      const std::string &display,
+      const std::vector<std::string> &scope);
 
  private:
-  static const std::wstring &static_path();
+  static const std::string &static_path();
 };
 
 
@@ -55,7 +55,7 @@ class FacebookApi::Login::Redirect {
  public:
   static const Uri &static_uri();
 
-  static std::wstring ExtractAccessToken(const Uri::Query &query);
+  static std::string ExtractAccessToken(const Uri::Query &query);
 };
 
 
@@ -65,7 +65,7 @@ class FacebookApi::Graph {
   class LiveVideos;
 
  private:
-  static const wchar_t *kAuthority;
+  static const char *kAuthority;
 };
 
 
@@ -73,28 +73,28 @@ class FacebookApi::Graph::Me {
  public:
   static const Uri &static_uri();
   static Uri BuildUri(
-      const std::wstring &access_token,
-      const std::vector<std::wstring> &fields);
+      const std::string &access_token,
+      const std::vector<std::string> &fields);
 
  private:
-  static const std::wstring &static_path();
+  static const std::string &static_path();
 };
 
 
 class FacebookApi::Graph::LiveVideos {
  public:
   static Uri BuildUri(
-      const std::wstring &user_page_id);
+      const std::string &user_page_id);
 
   static boost::property_tree::ptree BuildPostContent(
-      const std::wstring &access_token,
-      const std::wstring &privacy,
-      const std::wstring &title,
-      const std::wstring &description);
+      const std::string &access_token,
+      const std::string &privacy,
+      const std::string &title,
+      const std::string &description);
 
  private:
-  static std::wstring BuildPath(
-      const std::wstring &user_page_id);
+  static std::string BuildPath(
+      const std::string &user_page_id);
 };
 }  // namespace ncstreamer
 

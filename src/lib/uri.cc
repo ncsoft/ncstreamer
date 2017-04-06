@@ -21,17 +21,17 @@ Uri::Query::Query(const ParamVector &params)
 }
 
 
-Uri::Query::Query(const std::wstring &query_string)
+Uri::Query::Query(const std::string &query_string)
     : query_string_{query_string},
       params_{} {
-  static const std::wregex kParamPattern{LR"(([\w+%]+)=([^&]*))"};
+  static const std::regex kParamPattern{R"(([\w+%]+)=([^&]*))"};
 
-  for (std::wsregex_iterator i{
+  for (std::sregex_iterator i{
       query_string.begin(), query_string.end(), kParamPattern};
-      i != std::wsregex_iterator{}; ++i) {
+      i != std::sregex_iterator{}; ++i) {
     const auto &elem = *i;
-    const std::wstring &key = elem[1].str();
-    const std::wstring &value = elem[2].str();
+    const std::string &key = elem[1].str();
+    const std::string &value = elem[2].str();
     params_.emplace(key, value);
   }
 }
@@ -47,91 +47,91 @@ Uri::Query::~Query() {
 }
 
 
-std::wstring Uri::Query::ToString(const ParamVector &query) {
+std::string Uri::Query::ToString(const ParamVector &query) {
   if (query.empty() == true) {
-    return L"";
+    return "";
   }
 
   static const auto to_string = [](const ParamVector::const_iterator &i) {
-    std::wstringstream ss;
-    ss << i->first << L"=" << Encode(i->second);
+    std::stringstream ss;
+    ss << i->first << "=" << Encode(i->second);
     return ss.str();
   };
 
-  std::wstringstream ss;
+  std::stringstream ss;
   auto i = query.begin();
   ss << to_string(i);
   for (++i; i != query.end(); ++i) {
-    ss << L"&" << to_string(i);
+    ss << "&" << to_string(i);
   }
   return ss.str();
 }
 
 
-const std::wstring &Uri::Query::GetParameter(const std::wstring &key) const {
-  static const std::wstring kEmpty{};
+const std::string &Uri::Query::GetParameter(const std::string &key) const {
+  static const std::string kEmpty{};
 
   auto i = params_.find(key);
   return (i != params_.end()) ? i->second : kEmpty;
 }
 
 
-std::wstring Uri::Query::Encode(const std::wstring &raw) {
-  return ::CefURIEncode(raw, false).c_str();
+std::string Uri::Query::Encode(const std::string &raw) {
+  return std::string{::CefURIEncode(raw, false)};
 }
 
 
 std::size_t Uri::Hasher::operator()(const Uri &uri) const {
-  return std::hash<std::wstring>()(uri.uri_string());
+  return std::hash<std::string>()(uri.uri_string());
 }
 
 
 Uri::Uri(
-    const std::wstring &scheme,
-    const std::wstring &authority,
-    const std::wstring &path,
+    const std::string &scheme,
+    const std::string &authority,
+    const std::string &path,
     const Query &query,
-    const std::wstring &fragment)
+    const std::string &fragment)
     : scheme_{scheme},
       authority_{authority},
       path_{path},
       query_{query},
       fragment_{fragment},
-      scheme_authority_path_{ToString(scheme, authority, path, {}, L"")},
+      scheme_authority_path_{ToString(scheme, authority, path, {}, "")},
       uri_string_{ToString(scheme_authority_path_, query, fragment)} {
 }
 
 
 Uri::Uri(
-    const std::wstring &scheme,
-    const std::wstring &authority,
-    const std::wstring &path,
+    const std::string &scheme,
+    const std::string &authority,
+    const std::string &path,
     const Query &query)
     : scheme_{scheme},
       authority_{authority},
       path_{path},
       query_{query},
       fragment_{},
-      scheme_authority_path_{ToString(scheme, authority, path, {}, L"")},
-      uri_string_{ToString(scheme_authority_path_, query, L"")} {
+      scheme_authority_path_{ToString(scheme, authority, path, {}, "")},
+      uri_string_{ToString(scheme_authority_path_, query, "")} {
 }
 
 
 Uri::Uri(
-    const std::wstring &scheme,
-    const std::wstring &authority,
-    const std::wstring &path)
+    const std::string &scheme,
+    const std::string &authority,
+    const std::string &path)
     : scheme_{scheme},
       authority_{authority},
       path_{path},
       query_{},
       fragment_{},
-      scheme_authority_path_{ToString(scheme, authority, path, {}, L"")},
+      scheme_authority_path_{ToString(scheme, authority, path, {}, "")},
       uri_string_{scheme_authority_path_} {
 }
 
 
-Uri::Uri(const std::wstring &uri_string)
+Uri::Uri(const std::string &uri_string)
     : scheme_{},
       authority_{},
       path_{},
@@ -140,10 +140,10 @@ Uri::Uri(const std::wstring &uri_string)
       scheme_authority_path_{},
       uri_string_{uri_string} {
   // from https://tools.ietf.org/html/rfc3986#appendix-B
-  static const std::wregex kUriPattern{
-      LR"(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)"};
+  static const std::regex kUriPattern{
+      R"(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)"};
 
-  std::wsmatch matches;
+  std::smatch matches;
   bool found = std::regex_search(uri_string, matches, kUriPattern);
   if (found) {
     scheme_ = matches[2];
@@ -152,7 +152,7 @@ Uri::Uri(const std::wstring &uri_string)
     query_ = Query{matches[7]};
     fragment_ = matches[9];
   }
-  scheme_authority_path_ = ToString(scheme_, authority_, path_, {}, L"");
+  scheme_authority_path_ = ToString(scheme_, authority_, path_, {}, "");
 }
 
 
@@ -160,30 +160,30 @@ Uri::~Uri() {
 }
 
 
-std::wstring Uri::ToString(
-    const std::wstring &scheme_authority_path,
+std::string Uri::ToString(
+    const std::string &scheme_authority_path,
     const Query &query,
-    const std::wstring &fragment) {
-  std::wstringstream ss;
+    const std::string &fragment) {
+  std::stringstream ss;
   ss << scheme_authority_path;
   if (query.query_string().empty() == false) {
-    ss << L"?" << query.query_string();
+    ss << "?" << query.query_string();
   }
   if (fragment.empty() == false) {
-    ss << L"#" << fragment;
+    ss << "#" << fragment;
   }
   return ss.str();
 }
 
 
-std::wstring Uri::ToString(
-    const std::wstring &scheme,
-    const std::wstring &authority,
-    const std::wstring &path,
+std::string Uri::ToString(
+    const std::string &scheme,
+    const std::string &authority,
+    const std::string &path,
     const Query &query,
-    const std::wstring &fragment) {
-  std::wstringstream ss;
-  ss << scheme << L"://";
+    const std::string &fragment) {
+  std::stringstream ss;
+  ss << scheme << "://";
   ss << authority;
   if (path.empty() == false) {
     ss << path;

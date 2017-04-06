@@ -5,8 +5,6 @@
 
 #include "src/streaming_service/facebook_api.h"
 
-#include <codecvt>
-#include <locale>
 #include <sstream>
 #include <utility>
 
@@ -14,32 +12,32 @@
 
 
 namespace ncstreamer {
-const wchar_t *FacebookApi::kScheme{L"https"};
-const wchar_t *FacebookApi::kVersion{L"v2.8"};
+const char *FacebookApi::kScheme{"https"};
+const char *FacebookApi::kVersion{"v2.8"};
 
 
-const wchar_t *FacebookApi::Login::kAuthority{L"www.facebook.com"};
+const char *FacebookApi::Login::kAuthority{"www.facebook.com"};
 
 
 Uri FacebookApi::Login::Oauth::BuildUri(
-    const std::wstring &client_id,
+    const std::string &client_id,
     const Uri &redirect_uri,
-    const std::wstring &response_type,
-    const std::wstring &display,
-    const std::vector<std::wstring> &scope) {
+    const std::string &response_type,
+    const std::string &display,
+    const std::vector<std::string> &scope) {
   return {kScheme, kAuthority, static_path(), Uri::Query{{
-      {L"client_id", client_id},
-      {L"redirect_uri", redirect_uri.uri_string()},
-      {L"response_type", response_type},
-      {L"display", display},
-      {L"scope", String::Join(scope, L",")}}}};
+      {"client_id", client_id},
+      {"redirect_uri", redirect_uri.uri_string()},
+      {"response_type", response_type},
+      {"display", display},
+      {"scope", String::Join(scope, ",")}}}};
 }
 
 
-const std::wstring &FacebookApi::Login::Oauth::static_path() {
-  static const std::wstring kPath{[]() {
-    std::wstringstream ss;
-    ss << L"/" << kVersion << L"/dialog/oauth";
+const std::string &FacebookApi::Login::Oauth::static_path() {
+  static const std::string kPath{[]() {
+    std::stringstream ss;
+    ss << "/" << kVersion << "/dialog/oauth";
     return ss.str();
   }()};
   return kPath;
@@ -47,18 +45,18 @@ const std::wstring &FacebookApi::Login::Oauth::static_path() {
 
 
 const Uri &FacebookApi::Login::Redirect::static_uri() {
-  static const Uri kUri{kScheme, kAuthority, L"/connect/login_success.html"};
+  static const Uri kUri{kScheme, kAuthority, "/connect/login_success.html"};
   return kUri;
 }
 
 
-std::wstring FacebookApi::Login::Redirect::ExtractAccessToken(
+std::string FacebookApi::Login::Redirect::ExtractAccessToken(
     const Uri::Query &query) {
-  return query.GetParameter(L"access_token");
+  return query.GetParameter("access_token");
 }
 
 
-const wchar_t *FacebookApi::Graph::kAuthority{L"graph.facebook.com"};
+const char *FacebookApi::Graph::kAuthority{"graph.facebook.com"};
 
 
 const Uri &FacebookApi::Graph::Me::static_uri() {
@@ -68,18 +66,18 @@ const Uri &FacebookApi::Graph::Me::static_uri() {
 
 
 Uri FacebookApi::Graph::Me::BuildUri(
-    const std::wstring &access_token,
-    const std::vector<std::wstring> &fields) {
+    const std::string &access_token,
+    const std::vector<std::string> &fields) {
   return {kScheme, kAuthority, static_path(), Uri::Query{{
-      {L"access_token", access_token},
-      {L"fields", String::Join(fields, L",")}}}};
+      {"access_token", access_token},
+      {"fields", String::Join(fields, ",")}}}};
 }
 
 
-const std::wstring &FacebookApi::Graph::Me::static_path() {
-  static const std::wstring kPath{[]() {
-    std::wstringstream ss;
-    ss << L"/" << kVersion << L"/me";
+const std::string &FacebookApi::Graph::Me::static_path() {
+  static const std::string kPath{[]() {
+    std::stringstream ss;
+    ss << "/" << kVersion << "/me";
     return ss.str();
   }()};
   return kPath;
@@ -87,41 +85,39 @@ const std::wstring &FacebookApi::Graph::Me::static_path() {
 
 
 Uri FacebookApi::Graph::LiveVideos::BuildUri(
-    const std::wstring &user_page_id) {
+    const std::string &user_page_id) {
   return {kScheme, kAuthority, BuildPath(user_page_id)};
 }
 
 
 boost::property_tree::ptree
     FacebookApi::Graph::LiveVideos::BuildPostContent(
-        const std::wstring &access_token,
-        const std::wstring &privacy,
-        const std::wstring &title,
-        const std::wstring &description) {
-  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-
+        const std::string &access_token,
+        const std::string &privacy,
+        const std::string &title,
+        const std::string &description) {
   boost::property_tree::ptree post_content;
   post_content.add<std::string>(
-      "access_token", converter.to_bytes(access_token));
+      "access_token", access_token);
 
   boost::property_tree::ptree privacy_tree;
   privacy_tree.add<std::string>(
-      "value", converter.to_bytes(privacy));
+      "value", privacy);
   post_content.add_child(
       "privacy", privacy_tree);
 
   post_content.add<std::string>(
-      "title", converter.to_bytes(title));
+      "title", title);
   post_content.add<std::string>(
-      "description", converter.to_bytes(description));
+      "description", description);
   return std::move(post_content);
 }
 
 
-std::wstring FacebookApi::Graph::LiveVideos::BuildPath(
-    const std::wstring &user_page_id) {
-  std::wstringstream ss;
-  ss << L"/" << user_page_id << L"/live_videos";
+std::string FacebookApi::Graph::LiveVideos::BuildPath(
+    const std::string &user_page_id) {
+  std::stringstream ss;
+  ss << "/" << user_page_id << "/live_videos";
   return ss.str();
 }
 }  // namespace ncstreamer

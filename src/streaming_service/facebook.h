@@ -33,21 +33,21 @@ class Facebook : public StreamingServiceProvider {
       const OnLoggedIn &on_logged_in) override;
 
   void PostLiveVideo(
-      const std::wstring &user_page_id,
-      const std::wstring &privacy,
-      const std::wstring &title,
-      const std::wstring &description,
+      const std::string &user_page_id,
+      const std::string &privacy,
+      const std::string &title,
+      const std::string &description,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted) override;
 
  private:
   using AccountMap =
-      std::unordered_map<std::wstring /*id*/, UserPage>;
+      std::unordered_map<std::string /*id*/, UserPage>;
 
   using OnMeGotten = std::function<void(
-      const std::wstring &me_id,
-      const std::wstring &me_name,
-      const std::wstring &me_link,
+      const std::string &me_id,
+      const std::string &me_name,
+      const std::string &me_link,
       const std::vector<UserPage> &me_accounts)>;
 
   class LoginClient;
@@ -60,20 +60,20 @@ class Facebook : public StreamingServiceProvider {
       const OnMeGotten &on_me_gotten);
 
   void OnLoginSuccess(
-      const std::wstring &access_token,
+      const std::string &access_token,
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 
-  const std::wstring &GetPageAccessToken(
-      const std::wstring &page_id) const;
+  const std::string &GetPageAccessToken(
+      const std::string &page_id) const;
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
 
-  std::wstring access_token_;
-  std::wstring me_id_;
-  std::wstring me_name_;
-  std::wstring me_link_;
+  std::string access_token_;
+  std::string me_id_;
+  std::string me_name_;
+  std::string me_link_;
   AccountMap me_accounts_;
 };
 
