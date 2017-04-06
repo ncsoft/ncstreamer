@@ -7,6 +7,9 @@
 #define SRC_LIB_RECTANGLE_H_
 
 
+#include "src/lib/dimension.h"
+
+
 namespace ncstreamer {
 class Rectangle {
  public:
@@ -24,6 +27,7 @@ class Rectangle {
   void set_height(int height) { height_ = height; }
 
   Rectangle Center(int width, int height) const;
+  Rectangle Center(const Dimension<int> &dimension) const;
 
  private:
   int x_;

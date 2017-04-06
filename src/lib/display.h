@@ -7,11 +7,14 @@
 #define SRC_LIB_DISPLAY_H_
 
 
+#include "src/lib/dimension.h"
+
+
 namespace ncstreamer {
 class Display {
  public:
   /// @return Scaled size from the given base size.
-  static int Scale(int base_size);
+  static Dimension<int> Scale(const Dimension<int> &base_size);
 };
 }  // namespace ncstreamer
 

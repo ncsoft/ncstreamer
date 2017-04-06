@@ -33,12 +33,14 @@ BrowserProcessHandler::~BrowserProcessHandler() {
 void BrowserProcessHandler::OnContextInitialized() {
   CEF_REQUIRE_UI_THREAD();
 
+  Dimension<int> window_size{Display::Scale(kWindowMinimumSize)};
+
   CefWindowInfo window_info;
   window_info.style = WindowFrameRemover::kWindowStyleBeforeInitialization;
   window_info.x = CW_USEDEFAULT;
   window_info.y = CW_USEDEFAULT;
-  window_info.width = Display::Scale(kWindowMinimumSize.width());
-  window_info.height = Display::Scale(kWindowMinimumSize.height());
+  window_info.width = window_size.width();
+  window_info.height = window_size.height();
 
   CefRefPtr<Client> client{new Client{
       instance_,

@@ -15,6 +15,7 @@
 #include "include/wrapper/cef_helpers.h"
 
 #include "src/lib/cef_types.h"
+#include "src/lib/display.h"
 #include "src/lib/http_types.h"
 #include "src/lib/json_parser.h"
 #include "src/lib/uri.h"
@@ -58,8 +59,11 @@ void Facebook::LogIn(
        "publish_actions",
        "publish_pages"})};
 
+  static const Dimension<int> kPopupDimension{429, 402};
+
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
-  const Rectangle &popup_rect = parent_rect.Center(429, 402);
+  const Rectangle &popup_rect = parent_rect.Center(
+      Display::Scale(kPopupDimension));
 
   CefWindowInfo window_info;
   window_info.SetAsPopup(parent, "Facebook Login");

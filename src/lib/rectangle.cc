@@ -14,4 +14,9 @@ Rectangle Rectangle::Center(int width, int height) const {
       width,
       height};
 }
+
+
+Rectangle Rectangle::Center(const Dimension<int> &dimension) const {
+  return Center(dimension.width(), dimension.height());
+}
 }  // namespace ncstreamer
