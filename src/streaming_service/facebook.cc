@@ -61,7 +61,8 @@ void Facebook::LogIn(
   static const Dimension<int> kPopupDimension{429, 402};
 
   const Rectangle &parent_rect = Windows::GetWindowRectangle(parent);
-  const Rectangle &popup_rect = parent_rect.Center(kPopupDimension);
+  const Rectangle &popup_rect = parent_rect.Center(
+      kPopupDimension);
 
   CefWindowInfo window_info;
   window_info.SetAsPopup(parent, "Facebook Login");
