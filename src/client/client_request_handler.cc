@@ -6,8 +6,6 @@
 #include "src/client/client_request_handler.h"
 
 #include <cassert>
-#include <codecvt>
-#include <locale>
 #include <regex>  // NOLINT
 #include <unordered_map>
 #include <utility>
@@ -39,20 +37,20 @@ bool ClientRequestHandler::OnBeforeBrowse(CefRefPtr<CefBrowser> browser,
                                           bool /*is_redirect*/) {
   CEF_REQUIRE_UI_THREAD();
 
-  std::wstring uri{request->GetURL()};
+  std::string uri{request->GetURL()};
 
   // from https://tools.ietf.org/html/rfc3986#appendix-B
-  static const std::wregex kUriPattern{
-      LR"(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)"};
+  static const std::regex kUriPattern{
+      R"(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)"};
 
-  std::wsmatch matches;
+  std::smatch matches;
   bool found = std::regex_search(uri, matches, kUriPattern);
   if (found) {
-    std::wstring scheme{matches[2]};
-    std::wstring host{matches[4]};
-    std::wstring path{matches[5]};
-    std::wstring query{matches[7]};
-    if (scheme == L"cef") {
+    std::string scheme{matches[2]};
+    std::string host{matches[4]};
+    std::string path{matches[5]};
+    std::string query{matches[7]};
+    if (scheme == "cef") {
       OnCommand(host + path, ParseQuery(query), browser);
     } else {
       return false;  // proceed navigation.
@@ -64,14 +62,14 @@ bool ClientRequestHandler::OnBeforeBrowse(CefRefPtr<CefBrowser> browser,
 
 
 ClientRequestHandler::CommandArgumentMap
-    ClientRequestHandler::ParseQuery(const std::wstring &query) {
+    ClientRequestHandler::ParseQuery(const std::string &query) {
   CommandArgumentMap args;
-  static const std::wregex kQueryPattern{LR"(([\w+%]+)=([^&]*))"};
+  static const std::regex kQueryPattern{R"(([\w+%]+)=([^&]*))"};
 
-  auto begin = std::wsregex_iterator(query.begin(), query.end(), kQueryPattern);
-  auto end = std::wsregex_iterator();
+  auto begin = std::sregex_iterator(query.begin(), query.end(), kQueryPattern);
+  auto end = std::sregex_iterator();
 
-  for (std::wsregex_iterator i = begin; i != end; ++i) {
+  for (std::sregex_iterator i = begin; i != end; ++i) {
     const auto &matches = *i;
     args.emplace(matches[1], DecodeUri(matches[2]));
   }
@@ -80,72 +78,72 @@ ClientRequestHandler::CommandArgumentMap
 }
 
 
-std::wstring ClientRequestHandler::DecodeUri(const std::wstring &enc_string) {
+std::string ClientRequestHandler::DecodeUri(const std::string &enc_string) {
   static const std::size_t kMaxSize{2048};
 
   if (enc_string.size() >= kMaxSize - 1) {
     return enc_string;
   }
 
-  wchar_t buf[kMaxSize];
-  std::wcsncpy(buf, enc_string.c_str(), enc_string.size() + 1);
+  char buf[kMaxSize];
+  std::strncpy(buf, enc_string.c_str(), enc_string.size() + 1);
 
-  HRESULT result = ::UrlUnescapeInPlace(buf, 0);
+  HRESULT result = ::UrlUnescapeA(buf, NULL, NULL, URL_UNESCAPE_INPLACE);
   if (result != S_OK) {
     return enc_string;
   }
 
-  return std::move(std::wstring{buf});
+  return std::move(std::string{buf});
 }
 
 
-void ClientRequestHandler::OnCommand(const std::wstring &cmd,
+void ClientRequestHandler::OnCommand(const std::string &cmd,
                                      const CommandArgumentMap &args,
                                      CefRefPtr<CefBrowser> browser) {
   using This = ClientRequestHandler;
-  static const std::unordered_map<std::wstring/*command*/,
+  static const std::unordered_map<std::string/*command*/,
                                   CommandHandler> kCommandHandlers{
-      {L"window/close",
+      {"window/close",
        std::bind(&This::OnCommandWindowClose, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
-      {L"window/minimize",
+      {"window/minimize",
        std::bind(&This::OnCommandWindowMinimize, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
-      {L"external_browser/pop_up",
+      {"external_browser/pop_up",
        std::bind(&This::OnCommandExternalBrowserPopUp, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
-      {L"service_provider/log_in",
+      {"service_provider/log_in",
        std::bind(&This::OnCommandServiceProviderLogIn, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
-      {L"streaming/start",
+      {"streaming/start",
        std::bind(&This::OnCommandStreamingStart, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
-      {L"streaming/stop",
+      {"streaming/stop",
        std::bind(&This::OnCommandStreamingStop, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
-      {L"settings/mic/on",
+      {"settings/mic/on",
            std::bind(&This::OnCommandSettingsMicOn, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
-      {L"settings/mic/off",
+      {"settings/mic/off",
            std::bind(&This::OnCommandSettingsMicOff, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
-      {L"settings/video_quality/update",
+      {"settings/video_quality/update",
        std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
            std::placeholders::_1,
            std::placeholders::_2,
@@ -162,7 +160,7 @@ void ClientRequestHandler::OnCommand(const std::wstring &cmd,
 
 
 void ClientRequestHandler::OnCommandWindowClose(
-    const std::wstring &/*cmd*/,
+    const std::string &/*cmd*/,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
   browser->GetHost()->CloseBrowser(true);
@@ -170,7 +168,7 @@ void ClientRequestHandler::OnCommandWindowClose(
 
 
 void ClientRequestHandler::OnCommandWindowMinimize(
-    const std::wstring &/*cmd*/,
+    const std::string &/*cmd*/,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
   HWND wnd{browser->GetHost()->GetWindowHandle()};
@@ -179,42 +177,41 @@ void ClientRequestHandler::OnCommandWindowMinimize(
 
 
 void ClientRequestHandler::OnCommandExternalBrowserPopUp(
-    const std::wstring &cmd,
+    const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
-  auto uri_i = args.find(L"uri");
+  auto uri_i = args.find("uri");
   if (uri_i == args.end()) {
     assert(false);
     return;
   }
 
-  const std::wstring &uri = uri_i->second;
-  ::ShellExecute(NULL, L"open", uri.c_str(), NULL, NULL, SW_SHOWNORMAL);
+  const std::string &uri = uri_i->second;
+  ::ShellExecuteA(NULL, "open", uri.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 
 
 void ClientRequestHandler::OnCommandServiceProviderLogIn(
-    const std::wstring &cmd,
+    const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
-  auto provider_i = args.find(L"serviceProvider");
+  auto provider_i = args.find("serviceProvider");
   if (provider_i == args.end()) {
     assert(false);
     return;
   }
 
-  const std::wstring &service_provider = provider_i->second;
+  const std::string &service_provider = provider_i->second;
 
   StreamingService::Get()->LogIn(
       service_provider,
       browser->GetHost()->GetWindowHandle(),
-      [](const std::wstring &error) {
+      [](const std::string &error) {
     // TODO(khpark): TBD
   }, [browser, cmd](
-      const std::wstring &user_name,
-      const std::wstring &user_link,
+      const std::string &user_name,
+      const std::string &user_link,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::vector<boost::property_tree::ptree> tree_pages;
     for (const auto &page : user_pages) {
       tree_pages.emplace_back(page.ToTree());
@@ -222,23 +219,23 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     JsExecutor::Execute<boost::property_tree::ptree>(
         browser,
         "cef.onResponse",
-        converter.to_bytes(cmd),
-        std::make_pair("userName", converter.to_bytes(user_name)),
-        std::make_pair("userLink", converter.to_bytes(user_link)),
+        cmd,
+        std::make_pair("userName", user_name),
+        std::make_pair("userLink", user_link),
         std::make_pair("userPages", tree_pages));
   });
 }
 
 
 void ClientRequestHandler::OnCommandStreamingStart(
-    const std::wstring &cmd,
+    const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
-  auto source_i = args.find(L"source");
-  auto user_page_i = args.find(L"userPage");
-  auto privacy_i = args.find(L"privacy");
-  auto title_i = args.find(L"title");
-  auto description_i = args.find(L"description");
+  auto source_i = args.find("source");
+  auto user_page_i = args.find("userPage");
+  auto privacy_i = args.find("privacy");
+  auto title_i = args.find("title");
+  auto description_i = args.find("description");
   if (source_i == args.end() ||
       user_page_i == args.end() ||
       privacy_i == args.end() ||
@@ -248,11 +245,11 @@ void ClientRequestHandler::OnCommandStreamingStart(
     return;
   }
 
-  const std::wstring &source = source_i->second;
-  const std::wstring &user_page = user_page_i->second;
-  const std::wstring &privacy = privacy_i->second;
-  const std::wstring &title = title_i->second;
-  const std::wstring &description = description_i->second;
+  const std::string &source = source_i->second;
+  const std::string &user_page = user_page_i->second;
+  const std::string &privacy = privacy_i->second;
+  const std::string &title = title_i->second;
+  const std::string &description = description_i->second;
 
   if (source.empty() == true ||
       user_page.empty() == true ||
@@ -266,42 +263,39 @@ void ClientRequestHandler::OnCommandStreamingStart(
       privacy,
       title,
       description,
-      [](const std::wstring &error) {
+      [](const std::string &error) {
     // TODO(khpark): TBD
-  }, [browser, cmd, source](const std::wstring &service_provider,
-                            const std::wstring &stream_url) {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  }, [browser, cmd, source](const std::string &service_provider,
+                            const std::string &stream_url) {
     Obs::Get()->StartStreaming(
-        converter.to_bytes(source),
-        converter.to_bytes(service_provider),
-        converter.to_bytes(stream_url),
+        source,
+        service_provider,
+        stream_url,
         [browser, cmd]() {
-      std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
       JsExecutor::Execute(
           browser,
           "cef.onResponse",
-          converter.to_bytes(cmd));
+          cmd);
     });
   });
 }
 
 
 void ClientRequestHandler::OnCommandStreamingStop(
-    const std::wstring &cmd,
+    const std::string &cmd,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
   Obs::Get()->StopStreaming([browser, cmd]() {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     JsExecutor::Execute(
         browser,
         "cef.onResponse",
-        converter.to_bytes(cmd));
+        cmd);
   });
 }
 
 
 void ClientRequestHandler::OnCommandSettingsMicOn(
-    const std::wstring &cmd,
+    const std::string &cmd,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> /*browser*/) {
   Obs::Get()->TurnOnMic();
@@ -309,7 +303,7 @@ void ClientRequestHandler::OnCommandSettingsMicOn(
 
 
 void ClientRequestHandler::OnCommandSettingsMicOff(
-    const std::wstring &cmd,
+    const std::string &cmd,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> /*browser*/) {
   Obs::Get()->TurnOffMic();
@@ -317,13 +311,13 @@ void ClientRequestHandler::OnCommandSettingsMicOff(
 
 
 void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
-    const std::wstring &cmd,
+    const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
-  auto width_i = args.find(L"width");
-  auto height_i = args.find(L"height");
-  auto fps_i = args.find(L"fps");
-  auto bitrate_i = args.find(L"bitrate");
+  auto width_i = args.find("width");
+  auto height_i = args.find("height");
+  auto fps_i = args.find("fps");
+  auto bitrate_i = args.find("bitrate");
   if (width_i == args.end() ||
       height_i == args.end() ||
       fps_i == args.end() ||

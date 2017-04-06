@@ -14,9 +14,9 @@
 namespace ncstreamer {
 class String {
  public:
-  static std::wstring Join(
-      const std::vector<std::wstring> &elems,
-      const std::wstring &separator);
+  static std::string Join(
+      const std::vector<std::string> &elems,
+      const std::string &separator);
 
   static std::string EscapeSingleQuote(
       const std::string &origin);
