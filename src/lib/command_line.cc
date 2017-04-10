@@ -20,7 +20,7 @@
 namespace ncstreamer {
 CommandLine::CommandLine(const std::wstring &cmd_line)
     : is_renderer_{false},
-      needs_to_find_sources_{false},
+      shows_sources_all_{false},
       sources_{} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
@@ -30,12 +30,12 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       cef_cmd_line->GetSwitchValue(L"type");
   is_renderer_ = (process_type == L"renderer");
 
-  static std::wstring kNeedsToFindSources{L"needs_to_find_sources"};
-  if (cef_cmd_line->HasSwitch(kNeedsToFindSources) == true) {
-    const std::wstring &needs_to_find_sources =
-        cef_cmd_line->GetSwitchValue(kNeedsToFindSources);
-    needs_to_find_sources_ = (needs_to_find_sources == L"") ||
-                             (needs_to_find_sources == L"true");
+  static std::wstring kShowsSourcesAll{L"shows_sources_all"};
+  if (cef_cmd_line->HasSwitch(kShowsSourcesAll) == true) {
+    const std::wstring &shows_sources_all =
+        cef_cmd_line->GetSwitchValue(kShowsSourcesAll);
+    shows_sources_all_ = (shows_sources_all == L"") ||
+                         (shows_sources_all == L"true");
   }
 
   const std::wstring &sources_arg =

@@ -20,7 +20,7 @@ class CommandLine {
   virtual ~CommandLine();
 
   bool is_renderer() const { return is_renderer_; }
-  bool needs_to_find_sources() const { return needs_to_find_sources_; }
+  bool shows_sources_all() const { return shows_sources_all_; }
   const std::vector<std::string> &sources() const { return sources_; }
 
  private:
@@ -32,7 +32,7 @@ class CommandLine {
   static std::string GetExeName(DWORD process_id);
 
   bool is_renderer_;
-  bool needs_to_find_sources_;
+  bool shows_sources_all_;
   std::vector<std::string> sources_;
 };
 }  // namespace ncstreamer

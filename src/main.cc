@@ -27,7 +27,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
       CefRefPtr<CefApp>{new ncstreamer::RenderApp{}} :
       CefRefPtr<CefApp>{new ncstreamer::BrowserApp{
           hInstance,
-          cmd_line.needs_to_find_sources(),
+          cmd_line.shows_sources_all(),
           cmd_line.sources()}};
 
   int exit_code = ::CefExecuteProcess(main_args, app, nullptr);

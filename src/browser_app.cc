@@ -8,11 +8,11 @@
 
 namespace ncstreamer {
 BrowserApp::BrowserApp(HINSTANCE instance,
-                       bool needs_to_find_sources,
+                       bool shows_sources_all,
                        const std::vector<std::string> &sources)
     : browser_process_handler_{new BrowserProcessHandler{
           instance,
-          needs_to_find_sources,
+          shows_sources_all,
           sources}} {
 }
 
