@@ -74,9 +74,9 @@ void ClientLoadHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 
 void ClientLoadHandler::OnMainBrowserCreated(
     CefRefPtr<CefBrowser> browser) {
+  const auto &all = Obs::Get()->FindAllWindowsOnDesktop();
   const auto &sources = (shows_sources_all_ == true) ?
-      Obs::Get()->FindAllWindowsOnDesktop() :
-      sources_;
+      all : sources_;
   JsExecutor::Execute(browser, "setUpStreamingSources", "sources", sources);
 }
 }  // namespace ncstreamer
