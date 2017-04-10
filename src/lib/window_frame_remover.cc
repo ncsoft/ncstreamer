@@ -81,7 +81,7 @@ LRESULT WindowFrameRemover::Window::OnMouseHook(
       if (::PtInRect(&drag_wnd_rect, pt) == TRUE) {
         ::SetCapture(window_);
         prev_mouse_point_ = pt;
-        return NULL;
+        return 1;  // stop chaining action.
       }
       break;
     }
@@ -104,7 +104,7 @@ LRESULT WindowFrameRemover::Window::OnMouseHook(
                        TRUE);
 
           prev_mouse_point_ = pt;
-          return NULL;
+          return 1;  // stop chaining action.
         }
       }
       break;
@@ -112,7 +112,7 @@ LRESULT WindowFrameRemover::Window::OnMouseHook(
     case WM_LBUTTONUP: {
       if (::GetCapture() == window_) {
         ::ReleaseCapture();
-        return NULL;
+        return 1;  // stop chaining action.
       }
       break;
     }
