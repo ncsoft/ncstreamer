@@ -21,8 +21,7 @@ Dimension<int> Display::Scale(const Dimension<int> &base_size) {
   int dpi_y = ::GetDeviceCaps(screen, LOGPIXELSY);
   ::ReleaseDC(NULL, screen);
 
-  return Dimension<int>(
-      static_cast<int>(std::round(base_size.width() * dpi_x / 96)),
-      static_cast<int>(std::round(base_size.height() * dpi_y / 96)));
+  return {static_cast<int>(std::round(base_size.width() * dpi_x / 96)),
+          static_cast<int>(std::round(base_size.height() * dpi_y / 96))};
 }
 }  // namespace ncstreamer
