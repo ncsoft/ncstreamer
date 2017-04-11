@@ -7,22 +7,19 @@
 
 #include <cmath>
 
-#include "ShellScalingApi.h"  // NOLINT
-#include "VersionHelpers.h"  // NOLINT
+#include "src/lib/windows_types.h"
 
 
 namespace ncstreamer {
 Dimension<int> Display::Scale(const Dimension<int> &base_size) {
-  if (::IsWindows8Point1OrGreater() == false) {
+  HDC screen = ::GetDC(NULL);
+  if (!screen) {
     return base_size;
   }
 
-  HMONITOR monitor = ::MonitorFromWindow(
-    ::GetActiveWindow(), MONITOR_DEFAULTTONEAREST);
-
-  UINT dpi_x{0};
-  UINT dpi_y{0};
-  ::GetDpiForMonitor(monitor, MDT_EFFECTIVE_DPI, &dpi_x, &dpi_y);
+  int dpi_x = ::GetDeviceCaps(screen, LOGPIXELSX);
+  int dpi_y = ::GetDeviceCaps(screen, LOGPIXELSY);
+  ::ReleaseDC(NULL, screen);
 
   return Dimension<int>(
       static_cast<int>(std::round(base_size.width() * dpi_x / 96)),
