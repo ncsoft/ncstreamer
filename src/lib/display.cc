@@ -7,12 +7,23 @@
 
 #include <cmath>
 
-#include "src/lib/windows_types.h"
-
 
 namespace ncstreamer {
 Dimension<int> Display::Scale(const Dimension<int> &base_size) {
   return Scale(base_size, GetDpi());
+}
+
+
+RECT Display::Scale(const RECT &base_size) {
+  const auto &dpi = GetDpi();
+
+  const auto &left_top = Scale(dpi, {base_size.left, base_size.top});
+  const auto &right_bottom = Scale(dpi, {base_size.right, base_size.bottom});
+
+  return {left_top.width(),
+          left_top.height(),
+          right_bottom.width(),
+          right_bottom.height()};
 }
 
 

@@ -8,6 +8,7 @@
 
 
 #include "src/lib/dimension.h"
+#include "src/lib/windows_types.h"
 
 
 namespace ncstreamer {
@@ -15,6 +16,7 @@ class Display {
  public:
   /// @return Scaled size from the given base size.
   static Dimension<int> Scale(const Dimension<int> &base_size);
+  static RECT Scale(const RECT &base_size);
 
  private:
   static Dimension<int> GetDpi();
