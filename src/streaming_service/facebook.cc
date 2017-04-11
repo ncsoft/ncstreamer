@@ -180,18 +180,15 @@ void Facebook::GetMe(
     std::string me_id{};
     std::string me_name{};
     std::string me_link{};
-    std::vector<UserPage> me_accounts;
     try {
       boost::property_tree::read_json(me_ss, me);
       me_id = me.get<std::string>("id");
       me_name = me.get<std::string>("name");
       me_link = me.get<std::string>("link");
-      me_accounts = ExtractAccountAll(me.get_child("accounts"));
     } catch (const std::exception &/*e*/) {
       me_id = "";
       me_name = "";
       me_link = "";
-      me_accounts.clear();
     }
 
     if (me_id.empty() == true) {
@@ -199,6 +196,12 @@ void Facebook::GetMe(
       msg << "could not get me from: " << str;
       on_failed(msg.str());
       return;
+    }
+
+    std::vector<UserPage> me_accounts;
+    try {
+      me_accounts = ExtractAccountAll(me.get_child("accounts"));
+    } catch (...) {
     }
 
     on_me_gotten(me_id, me_name, me_link, me_accounts);
