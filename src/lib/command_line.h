@@ -10,8 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "windows.h"  // NOLINT
-
 
 namespace ncstreamer {
 class CommandLine {
@@ -26,10 +24,6 @@ class CommandLine {
  private:
   static std::vector<std::string>
       ParseSourcesArgument(const std::wstring &arg);
-
-  static std::string GetWindowTitle(HWND wnd);
-  static std::string GetWindowClass(HWND wnd);
-  static std::string GetExeName(DWORD process_id);
 
   bool is_renderer_;
   bool shows_sources_all_;

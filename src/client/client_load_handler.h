@@ -39,6 +39,10 @@ class ClientLoadHandler : public CefLoadHandler {
                             bool canGoForward) override;
 
  private:
+  static std::vector<std::string> FilterSources(
+      const std::vector<std::string> &all,
+      const std::vector<std::string> &filter);
+
   void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
 
   const bool shows_sources_all_;

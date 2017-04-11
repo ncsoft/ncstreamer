@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..;$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);$(OPENSSL_ROOT)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=_WIN32_WINNT_WINBLUE;WIN32_LEAN_AND_MEAN;URDL_HEADER_ONLY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=_WIN32_WINNT_WINBLUE;WIN32_LEAN_AND_MEAN;URDL_HEADER_ONLY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4503</DisableSpecificWarnings>
@@ -78,7 +78,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..;$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);$(OPENSSL_ROOT)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=_WIN32_WINNT_WINBLUE;WIN32_LEAN_AND_MEAN;URDL_HEADER_ONLY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=_WIN32_WINNT_WINBLUE;WIN32_LEAN_AND_MEAN;URDL_HEADER_ONLY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4503</DisableSpecificWarnings>
@@ -120,6 +120,7 @@
     <ClCompile Include="..\src\main.cc" />
     <ClCompile Include="..\src\obs.cc" />
     <ClCompile Include="..\src\obs\obs_output.cc" />
+    <ClCompile Include="..\src\obs\obs_source_info.cc" />
     <ClCompile Include="..\src\render_app.cc" />
     <ClCompile Include="..\src\render_process\render_load_handler.cc" />
     <ClCompile Include="..\src\render_process_handler.cc" />
@@ -156,6 +157,7 @@
     <ClInclude Include="..\src\manifest.h" />
     <ClInclude Include="..\src\obs.h" />
     <ClInclude Include="..\src\obs\obs_output.h" />
+    <ClInclude Include="..\src\obs\obs_source_info.h" />
     <ClInclude Include="..\src\render_app.h" />
     <ClInclude Include="..\src\render_process\render_load_handler.h" />
     <ClInclude Include="..\src\render_process_handler.h" />

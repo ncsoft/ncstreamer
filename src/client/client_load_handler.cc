@@ -5,12 +5,15 @@
 
 #include "src/client/client_load_handler.h"
 
+#include <cassert>
 #include <sstream>
+#include <unordered_map>
 
 #include "include/wrapper/cef_helpers.h"
 
 #include "src/js_executor.h"
 #include "src/obs.h"
+#include "src/obs/obs_source_info.h"
 
 
 namespace ncstreamer {
@@ -72,11 +75,46 @@ void ClientLoadHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 }
 
 
+std::vector<std::string> ClientLoadHandler::FilterSources(
+    const std::vector<std::string> &all,
+    const std::vector<std::string> &filter) {
+  std::unordered_map<std::string /*title*/,
+                     std::vector<std::string /*source*/>> workspace;
+  for (const auto &title : filter) {
+    static const std::vector<std::string> kEmptySources{};
+    workspace.emplace(title, kEmptySources);
+  }
+
+  for (const auto &source : all) {
+    ObsSourceInfo source_info{source};
+    const auto &title = source_info.title();
+
+    auto i = workspace.find(title);
+    if (i == workspace.end()) {
+      continue;
+    }
+    auto *sources = &(i->second);
+    sources->emplace_back(source);
+  }
+
+  std::vector<std::string> filtered_sources;
+  for (const auto &title : filter) {
+    auto i = workspace.find(title);
+    assert(i != workspace.end());
+    const auto &sources = i->second;
+    for (const auto &source : sources) {
+      filtered_sources.emplace_back(source);
+    }
+  }
+  return filtered_sources;
+}
+
+
 void ClientLoadHandler::OnMainBrowserCreated(
     CefRefPtr<CefBrowser> browser) {
   const auto &all = Obs::Get()->FindAllWindowsOnDesktop();
   const auto &sources = (shows_sources_all_ == true) ?
-      all : sources_;
+      all : FilterSources(all, sources_);
   JsExecutor::Execute(browser, "setUpStreamingSources", "sources", sources);
 }
 }  // namespace ncstreamer
