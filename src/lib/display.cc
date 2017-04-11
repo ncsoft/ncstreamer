@@ -12,16 +12,27 @@
 
 namespace ncstreamer {
 Dimension<int> Display::Scale(const Dimension<int> &base_size) {
+  return Scale(base_size, GetDpi());
+}
+
+
+Dimension<int> Display::GetDpi() {
   HDC screen = ::GetDC(NULL);
   if (!screen) {
-    return base_size;
+    return {96, 96};
   }
 
   int dpi_x = ::GetDeviceCaps(screen, LOGPIXELSX);
   int dpi_y = ::GetDeviceCaps(screen, LOGPIXELSY);
   ::ReleaseDC(NULL, screen);
+  return {dpi_x, dpi_y};
+}
 
-  return {::MulDiv(base_size.width(), dpi_x, 96),
-          ::MulDiv(base_size.height(), dpi_y, 96)};
+
+Dimension<int> Display::Scale(
+    const Dimension<int> &base_size,
+    const Dimension<int> &dpi) {
+  return {::MulDiv(base_size.width(), dpi.width(), 96),
+          ::MulDiv(base_size.height(), dpi.height(), 96)};
 }
 }  // namespace ncstreamer
