@@ -23,7 +23,9 @@
 
 
 namespace ncstreamer {
-ClientRequestHandler::ClientRequestHandler() {
+ClientRequestHandler::ClientRequestHandler(
+    const std::wstring &locale)
+    : locale_{locale} {
 }
 
 
