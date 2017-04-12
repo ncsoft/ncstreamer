@@ -19,10 +19,12 @@ namespace ncstreamer {
 BrowserProcessHandler::BrowserProcessHandler(
     HINSTANCE instance,
     bool shows_sources_all,
-    const std::vector<std::string> &sources)
+    const std::vector<std::string> &sources,
+    const std::wstring &locale)
     : instance_{instance},
       shows_sources_all_{shows_sources_all},
-      sources_{sources} {
+      sources_{sources},
+      locale_{locale} {
 }
 
 
@@ -45,7 +47,8 @@ void BrowserProcessHandler::OnContextInitialized() {
   CefRefPtr<Client> client{new Client{
       instance_,
       shows_sources_all_,
-      sources_}};
+      sources_,
+      locale_}};
 
   std::wstring uri{
       CefCommandLine::GetGlobalCommandLine()->GetSwitchValue(L"ui-uri")};

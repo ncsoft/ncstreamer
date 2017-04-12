@@ -32,6 +32,7 @@ class StreamingService {
   void LogIn(
       const std::string &service_provider_id,
       HWND parent,
+      const std::wstring &locale,
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 

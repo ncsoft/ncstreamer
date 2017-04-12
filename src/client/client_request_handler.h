@@ -16,7 +16,9 @@
 namespace ncstreamer {
 class ClientRequestHandler : public CefRequestHandler {
  public:
-  ClientRequestHandler();
+  explicit ClientRequestHandler(
+      const std::wstring &locale);
+
   virtual ~ClientRequestHandler();
 
   bool OnBeforeBrowse(CefRefPtr<CefBrowser> browser,
@@ -75,6 +77,8 @@ class ClientRequestHandler : public CefRequestHandler {
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
+
+  std::wstring locale_;
 
   IMPLEMENT_REFCOUNTING(ClientRequestHandler);
 };

@@ -22,9 +22,12 @@
 namespace ncstreamer {
 class Client : public CefClient {
  public:
-  Client(HINSTANCE instance,
-         bool shows_sources_all,
-         const std::vector<std::string> &sources);
+  Client(
+      HINSTANCE instance,
+      bool shows_sources_all,
+      const std::vector<std::string> &sources,
+      const std::wstring &locale);
+
   virtual ~Client();
 
   CefRefPtr<CefDisplayHandler> GetDisplayHandler() override;
