@@ -20,6 +20,7 @@ class CommandLine {
   bool is_renderer() const { return is_renderer_; }
   bool shows_sources_all() const { return shows_sources_all_; }
   const std::vector<std::string> &sources() const { return sources_; }
+  const std::wstring &locale() const { return locale_; }
 
  private:
   static std::vector<std::string>
@@ -28,6 +29,7 @@ class CommandLine {
   bool is_renderer_;
   bool shows_sources_all_;
   std::vector<std::string> sources_;
+  std::wstring locale_;
 };
 }  // namespace ncstreamer
 

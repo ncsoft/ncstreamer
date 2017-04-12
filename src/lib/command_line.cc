@@ -19,7 +19,8 @@ namespace ncstreamer {
 CommandLine::CommandLine(const std::wstring &cmd_line)
     : is_renderer_{false},
       shows_sources_all_{false},
-      sources_{} {
+      sources_{},
+      locale_{} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
   cef_cmd_line->InitFromString(cmd_line);
@@ -41,6 +42,8 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
   if (sources_arg.empty() == false) {
     sources_ = ParseSourcesArgument(sources_arg);
   }
+
+  locale_ = cef_cmd_line->GetSwitchValue(L"locale");
 }
 
 
