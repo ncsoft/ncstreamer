@@ -7,9 +7,10 @@
 
 
 namespace ncstreamer {
-Client::Client(HINSTANCE instance,
-               bool shows_sources_all,
-               const std::vector<std::string> &sources)
+Client::Client(
+    HINSTANCE instance,
+    bool shows_sources_all,
+    const std::vector<std::string> &sources)
     : display_handler_{new ClientDisplayHandler{}},
       life_span_handler_{new ClientLifeSpanHandler{instance}},
       load_handler_{new ClientLoadHandler{shows_sources_all,
