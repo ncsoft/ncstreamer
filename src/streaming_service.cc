@@ -45,6 +45,7 @@ StreamingService::~StreamingService() {
 void StreamingService::LogIn(
     const std::string &service_provider_id,
     HWND parent,
+    const std::wstring &locale,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
   auto i = service_providers_.find(service_provider_id);
@@ -57,6 +58,7 @@ void StreamingService::LogIn(
 
   current_service_provider_->LogIn(
       parent,
+      locale,
       on_failed,
       on_logged_in);
 }

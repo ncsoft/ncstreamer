@@ -40,6 +40,7 @@ Facebook::~Facebook() {
 
 void Facebook::LogIn(
     HWND parent,
+    const std::wstring &locale,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
   static const char *kNcStreamerAppId{[]() {
@@ -70,6 +71,7 @@ void Facebook::LogIn(
   CefWindowRectangle::Reset(popup_rect, &window_info);
 
   CefBrowserSettings browser_settings;
+  CefString(&browser_settings.accept_language_list) = locale;
 
   login_client_ = new LoginClient{
       this, parent, on_failed, on_logged_in};

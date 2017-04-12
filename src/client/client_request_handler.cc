@@ -208,6 +208,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
   StreamingService::Get()->LogIn(
       service_provider,
       browser->GetHost()->GetWindowHandle(),
+      locale_,
       [](const std::string &error) {
     // TODO(khpark): TBD
   }, [browser, cmd](
