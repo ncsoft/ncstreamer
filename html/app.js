@@ -270,6 +270,9 @@ function onStreamingControlButtonClicked() {
           app.dom.streamingManagingPageSelect.children[2].value : 'me';
       const privacy = app.dom.streamingPageAccess.children[2].value;
       const description = app.dom.streamingFeedDescription.value;
+      if (source == '' || userPage == '' || privacy == '')
+        return;
+
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description);
       updateStreamingStatus('starting');
