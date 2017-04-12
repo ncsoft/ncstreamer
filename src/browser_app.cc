@@ -7,9 +7,10 @@
 
 
 namespace ncstreamer {
-BrowserApp::BrowserApp(HINSTANCE instance,
-                       bool shows_sources_all,
-                       const std::vector<std::string> &sources)
+BrowserApp::BrowserApp(
+    HINSTANCE instance,
+    bool shows_sources_all,
+    const std::vector<std::string> &sources)
     : browser_process_handler_{new BrowserProcessHandler{
           instance,
           shows_sources_all,
