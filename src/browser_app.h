@@ -20,7 +20,7 @@ namespace ncstreamer {
 class BrowserApp : public CefApp {
  public:
   BrowserApp(HINSTANCE instance,
-             bool needs_to_find_sources,
+             bool shows_sources_all,
              const std::vector<std::string> &sources);
   virtual ~BrowserApp();
 

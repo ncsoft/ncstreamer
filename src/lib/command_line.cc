@@ -12,15 +12,13 @@
 #include "boost/property_tree/ptree.hpp"
 #include "include/cef_command_line.h"
 
-#include "Psapi.h"  // NOLINT
-
 #include "src/lib/json_parser.h"
 
 
 namespace ncstreamer {
 CommandLine::CommandLine(const std::wstring &cmd_line)
     : is_renderer_{false},
-      needs_to_find_sources_{false},
+      shows_sources_all_{false},
       sources_{} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
@@ -30,12 +28,12 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       cef_cmd_line->GetSwitchValue(L"type");
   is_renderer_ = (process_type == L"renderer");
 
-  static std::wstring kNeedsToFindSources{L"needs_to_find_sources"};
-  if (cef_cmd_line->HasSwitch(kNeedsToFindSources) == true) {
-    const std::wstring &needs_to_find_sources =
-        cef_cmd_line->GetSwitchValue(kNeedsToFindSources);
-    needs_to_find_sources_ = (needs_to_find_sources == L"") ||
-                             (needs_to_find_sources == L"true");
+  static std::wstring kShowsSourcesAll{L"shows_sources_all"};
+  if (cef_cmd_line->HasSwitch(kShowsSourcesAll) == true) {
+    const std::wstring &shows_sources_all =
+        cef_cmd_line->GetSwitchValue(kShowsSourcesAll);
+    shows_sources_all_ = (shows_sources_all == L"") ||
+                         (shows_sources_all == L"true");
   }
 
   const std::wstring &sources_arg =
@@ -63,53 +61,12 @@ std::vector<std::string>
     const auto &arr = root.get_child("sources", {});
     for (const auto &elem : arr) {
       const boost::property_tree::ptree &obj = elem.second;
-      DWORD process_id =
-          std::stoul(obj.get<std::string>("processId"));
-      HWND window = reinterpret_cast<HWND>(
-          std::stoull(obj.get<std::string>("window")));
-
-      const auto &title = GetWindowTitle(window);
-      const auto &clazz = GetWindowClass(window);
-      const auto &exe = GetExeName(process_id);
-
-      std::stringstream source;
-      source << title << ":" << clazz << ":" << exe;
-      sources.emplace_back(source.str());
+      const auto &source = obj.get<std::string>("title");
+      sources.emplace_back(source);
     }
   } catch (const std::exception &/*e*/) {
     sources.clear();
   }
   return sources;
-}
-
-
-std::string CommandLine::GetWindowTitle(HWND wnd) {
-  int len = ::GetWindowTextLength(wnd);
-  std::unique_ptr<wchar_t> buf{new wchar_t[len + 1]};
-  ::GetWindowText(wnd, buf.get(), len + 1);
-
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  return converter.to_bytes(buf.get());
-}
-
-
-std::string CommandLine::GetWindowClass(HWND wnd) {
-  static const std::size_t kBufSize{256 + 1};
-  wchar_t buf[kBufSize];
-  ::GetClassName(wnd, buf, kBufSize);
-
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  return converter.to_bytes(buf);
-}
-
-std::string CommandLine::GetExeName(DWORD process_id) {
-  static const std::size_t kBufSize{MAX_PATH};
-  wchar_t buf[kBufSize];
-  HANDLE process = ::OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, process_id);
-  ::GetProcessImageFileName(process, buf, kBufSize);
-  ::CloseHandle(process);
-
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  return converter.to_bytes(buf);
 }
 }  // namespace ncstreamer

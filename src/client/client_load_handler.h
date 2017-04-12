@@ -16,7 +16,7 @@
 namespace ncstreamer {
 class ClientLoadHandler : public CefLoadHandler {
  public:
-  ClientLoadHandler(bool needs_to_find_sources,
+  ClientLoadHandler(bool shows_sources_all,
                     const std::vector<std::string> &sources);
   virtual ~ClientLoadHandler();
 
@@ -39,9 +39,13 @@ class ClientLoadHandler : public CefLoadHandler {
                             bool canGoForward) override;
 
  private:
+  static std::vector<std::string> FilterSources(
+      const std::vector<std::string> &all,
+      const std::vector<std::string> &filter);
+
   void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
 
-  const bool needs_to_find_sources_;
+  const bool shows_sources_all_;
   const std::vector<std::string> sources_;
 
   bool main_browser_created_;

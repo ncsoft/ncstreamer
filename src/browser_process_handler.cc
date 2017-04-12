@@ -18,10 +18,10 @@
 namespace ncstreamer {
 BrowserProcessHandler::BrowserProcessHandler(
     HINSTANCE instance,
-    bool needs_to_find_sources,
+    bool shows_sources_all,
     const std::vector<std::string> &sources)
     : instance_{instance},
-      needs_to_find_sources_{needs_to_find_sources},
+      shows_sources_all_{shows_sources_all},
       sources_{sources} {
 }
 
@@ -44,7 +44,7 @@ void BrowserProcessHandler::OnContextInitialized() {
 
   CefRefPtr<Client> client{new Client{
       instance_,
-      needs_to_find_sources_,
+      shows_sources_all_,
       sources_}};
 
   std::wstring uri{

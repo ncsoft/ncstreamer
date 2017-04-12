@@ -126,6 +126,9 @@
     <ClCompile Include="..\src\lib\window_frame_remover.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\obs\obs_source_info.cc">
+      <Filter>src\obs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\browser_process_handler.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="..\src\lib\window_frame_remover.h">
       <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\obs\obs_source_info.h">
+      <Filter>src\obs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
