@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-user-page-select',
     'streaming-managing-page-select',
     'streaming-page-access',
+    'streaming-nctv-tooltip',
     'streaming-game-select',
     'streaming-feed-description',
     'streaming-mic-checkbox',
@@ -241,6 +242,12 @@ function onStreamingManagingPageSelectChanged() {
 
 function onStreamingPageAccessChanged() {
   console.info('change streamingPageAccess');
+  const input = app.dom.streamingPageAccess.children[2].value;
+  if (input == 'EVERYONE') {
+    app.dom.streamingNctvTooltip.style.display = 'none';
+  } else {
+    app.dom.streamingNctvTooltip.style.display = 'block';
+  }
 }
 
 
