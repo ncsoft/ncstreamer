@@ -17,9 +17,10 @@
 namespace ncstreamer {
 class BrowserProcessHandler : public CefBrowserProcessHandler {
  public:
-  BrowserProcessHandler(HINSTANCE instance,
-                        bool shows_sources_all,
-                        const std::vector<std::string> &sources);
+  BrowserProcessHandler(
+      HINSTANCE instance,
+      bool shows_sources_all,
+      const std::vector<std::string> &sources);
   virtual ~BrowserProcessHandler();
 
   // override CefBrowserProcessHandler
