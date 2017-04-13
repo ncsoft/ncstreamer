@@ -2,7 +2,8 @@
 echo cpplint starts.
 setlocal EnableDelayedExpansion
 
-set TargetDir=%1
+set CppLintDir=%1
+set TargetDir=%2
 
 set FilesAll=
 for /r %TargetDir% %%f in (*.h *.cc) do (
@@ -10,7 +11,7 @@ for /r %TargetDir% %%f in (*.h *.cc) do (
 )
 
 pushd "%~dp0"
-call python.exe cpplint.py %FilesAll%
+call python.exe "%CppLintDir%/cpplint.py" %FilesAll%
 if %errorlevel% neq 0 (
   echo Error: cpplint
   exit /b %errorlevel%
