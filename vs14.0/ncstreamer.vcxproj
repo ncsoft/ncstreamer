@@ -66,9 +66,6 @@
     <Link>
       <AdditionalDependencies>Shlwapi.lib;dwmapi.lib;$(CEF3_2704_PATH)$(Configuration)\libcef.lib;$(CEF3_2704_PATH)vs$(VisualStudioVersion)\libcef_dll_wrapper\$(Configuration)\libcef_dll_wrapper.lib;$(OBS_STUDIO_PATH)vs$(VisualStudioVersion)\libobs\$(Configuration)\obs.lib;$(OPENSSL_ROOT)\lib\libeay32.lib;$(OPENSSL_ROOT)\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>$(ProjectDir)$(ProjectName).exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -91,9 +88,6 @@
     <PreBuildEvent>
       <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../src</Command>
     </PreBuildEvent>
-    <Manifest>
-      <AdditionalManifestFiles>$(ProjectDir)$(ProjectName).exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\browser_app.cc" />
