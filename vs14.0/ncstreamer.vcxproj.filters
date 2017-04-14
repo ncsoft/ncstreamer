@@ -27,226 +27,226 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\browser_process_handler.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\browser_process_handler.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\client.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\client_display_handler.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\client\client_display_handler.cc">
       <Filter>src\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\client_life_span_handler.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\client\client_life_span_handler.cc">
       <Filter>src\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\client_load_handler.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\client\client_load_handler.cc">
       <Filter>src\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\client_request_handler.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\client\client_request_handler.cc">
       <Filter>src\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\main.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\main.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\obs.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\obs.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\js_executor.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\js_executor.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src_imported\from_obs_studio_ui\obs-app.cpp">
+    <ClCompile Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.cpp">
       <Filter>src_imported\from_obs_studio_ui</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\obs\obs_output.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\obs\obs_output.cc">
       <Filter>src\obs</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\browser_app.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\browser_app.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\render_app.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\render_app.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\render_process_handler.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\render_process_handler.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\render_process\render_load_handler.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\render_process\render_load_handler.cc">
       <Filter>src\render_process</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\dimension.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\dimension.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\command_line.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\command_line.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\render_process_message_types.cpp">
+    <ClCompile Include="..\ncstreamer_cef\src\render_process_message_types.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\rectangle.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\rectangle.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\display.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\display.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\streaming_service\streaming_service_provider.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\streaming_service_provider.cc">
       <Filter>src\streaming_service</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\streaming_service.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\streaming_service\facebook.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\facebook.cc">
       <Filter>src\streaming_service</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\uri.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\uri.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\cef_fit_client.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\cef_fit_client.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\cef_types.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\cef_types.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\windows_types.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\windows_types.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\streaming_service\facebook_api.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\facebook_api.cc">
       <Filter>src\streaming_service</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\string.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\string.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\http_request.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\http_request.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\http_request_service.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\http_request_service.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\http_types.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\http_types.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lib\window_frame_remover.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\lib\window_frame_remover.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\obs\obs_source_info.cc">
+    <ClCompile Include="..\ncstreamer_cef\src\obs\obs_source_info.cc">
       <Filter>src\obs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\browser_process_handler.h">
+    <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client.h">
+    <ClInclude Include="..\ncstreamer_cef\src\client.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\manifest.h">
+    <ClInclude Include="..\ncstreamer_cef\src\manifest.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\client_display_handler.h">
+    <ClInclude Include="..\ncstreamer_cef\src\client\client_display_handler.h">
       <Filter>src\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\client_life_span_handler.h">
+    <ClInclude Include="..\ncstreamer_cef\src\client\client_life_span_handler.h">
       <Filter>src\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\client_load_handler.h">
+    <ClInclude Include="..\ncstreamer_cef\src\client\client_load_handler.h">
       <Filter>src\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\client_request_handler.h">
+    <ClInclude Include="..\ncstreamer_cef\src\client\client_request_handler.h">
       <Filter>src\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\resource.h">
+    <ClInclude Include="..\ncstreamer_cef\src\resource.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\obs.h">
+    <ClInclude Include="..\ncstreamer_cef\src\obs.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\js_executor.h">
+    <ClInclude Include="..\ncstreamer_cef\src\js_executor.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src_imported\from_obs_studio_ui\obs-app.hpp">
+    <ClInclude Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.hpp">
       <Filter>src_imported\from_obs_studio_ui</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\obs\obs_output.h">
+    <ClInclude Include="..\ncstreamer_cef\src\obs\obs_output.h">
       <Filter>src\obs</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\browser_app.h">
+    <ClInclude Include="..\ncstreamer_cef\src\browser_app.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\render_app.h">
+    <ClInclude Include="..\ncstreamer_cef\src\render_app.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\render_process_handler.h">
+    <ClInclude Include="..\ncstreamer_cef\src\render_process_handler.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\render_process\render_load_handler.h">
+    <ClInclude Include="..\ncstreamer_cef\src\render_process\render_load_handler.h">
       <Filter>src\render_process</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\dimension.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\dimension.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\command_line.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\command_line.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\render_process_message_types.h">
+    <ClInclude Include="..\ncstreamer_cef\src\render_process_message_types.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\rectangle.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\rectangle.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\display.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\display.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\streaming_service\streaming_service_provider.h">
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_provider.h">
       <Filter>src\streaming_service</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\streaming_service.h">
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\streaming_service\facebook.h">
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\facebook.h">
       <Filter>src\streaming_service</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\uri.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\uri.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\cef_fit_client.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\cef_fit_client.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\cef_types.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\cef_types.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\windows_types.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\windows_types.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\streaming_service\facebook_api.h">
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\facebook_api.h">
       <Filter>src\streaming_service</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\string.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\string.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\http_request.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\http_request.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\http_request_service.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\http_request_service.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\http_types.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\http_types.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\json_parser.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\json_parser.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\lib\window_frame_remover.h">
+    <ClInclude Include="..\ncstreamer_cef\src\lib\window_frame_remover.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\obs\obs_source_info.h">
+    <ClInclude Include="..\ncstreamer_cef\src\obs\obs_source_info.h">
       <Filter>src\obs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\src\ncstreamer.rc">
+    <ResourceCompile Include="..\ncstreamer_cef\src\ncstreamer.rc">
       <Filter>src</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\src_imported\readme.md">
+    <None Include="..\ncstreamer_cef\src_imported\readme.md">
       <Filter>src_imported</Filter>
     </None>
   </ItemGroup>

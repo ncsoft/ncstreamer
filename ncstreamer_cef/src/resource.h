@@ -1,0 +1,13 @@
+/**
+ * Copyright (C) 2017 NCSOFT Corporation
+ */
+
+
+#ifndef NCSTREAMER_CEF_SRC_RESOURCE_H_
+#define NCSTREAMER_CEF_SRC_RESOURCE_H_
+
+
+#define IDI_NCSTREAMER_256PX 101
+
+
+#endif  // NCSTREAMER_CEF_SRC_RESOURCE_H_
