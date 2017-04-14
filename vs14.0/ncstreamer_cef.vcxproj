@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{37AC29D7-06C5-42B3-A30F-D568A9649DA8}</ProjectGuid>
-    <RootNamespace>ncstreamer</RootNamespace>
+    <RootNamespace>ncstreamer_cef</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
