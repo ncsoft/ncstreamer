@@ -5,3 +5,6 @@ Source locations:
 
 * Bootstrap
 ** https://github.com/twbs/bootstrap/releases/download/v3.3.7/bootstrap-3.3.7-dist.zip
+
+* Ncsoft
+** Ncsoft private
