@@ -44,10 +44,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)build\$(Configuration)\bin\$(PlatformArchitecture)bit\</OutDir>
     <IntDir>$(ProjectDir)build\intdir\$(Configuration)\bin\$(PlatformArchitecture)bit\</IntDir>
+    <TargetName>ncstreamer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)build\$(Configuration)\bin\$(PlatformArchitecture)bit\</OutDir>
     <IntDir>$(ProjectDir)build\intdir\$(Configuration)\bin\$(PlatformArchitecture)bit\</IntDir>
+    <TargetName>ncstreamer</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
