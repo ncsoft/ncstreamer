@@ -11,7 +11,7 @@ for /r %TargetDir% %%f in (*.h *.cc) do (
 )
 
 pushd "%~dp0"
-call python.exe "%CppLintDir%/cpplint.py" %FilesAll%
+call python.exe "%CppLintDir%/cpplint.py" --output=vs7 %FilesAll%
 if %errorlevel% neq 0 (
   echo Error: cpplint
   exit /b %errorlevel%
