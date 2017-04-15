@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>NC 스트리밍</title>
+<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="lib/ncsoft/nc-streamer.css" rel="stylesheet">
+<link href="app.css" rel="stylesheet">
+
+<div class="nc-streamer-container">
+  <!-- titlebar -->
+  <div class="header">
+    <h1 class="title">방송<span class="label-beta">Beta</span></h1>
+    <div class="settings">
+      <button id="streaming-setting-button"
+              class="btn-setting"
+              value="Setting"
+              data-toggle="modal"
+              data-target="#settingModal"></button>
+      <button id="streaming-minimize-button"
+              class="btn-minimum"
+              value="Minimum"></button>
+      <button id="streaming-close-button"
+              class="btn-close"
+              value="Close"></button>
+    </div>
+  </div>
+
+  <!-- login page -->
+  <div class="nc-streamer-contents login-page-panel">
+    <section class="connect-platform">
+      <header>
+        <h2>플랫폼 연결</h2>
+      </header>
+      <article>NC 스트리밍으로 게임플레이를<br>
+               방송할 수 있습니다.<br>
+               게시물을 등록할 페이스북 계정을 연결해 주세요.</article>
+    </section>
+  </div>
+  <div class="nc-streamer-footer login-page-panel">
+    <button id="streaming-login-button"
+            class="btn-connect">페이스북 연결</button>
+  </div>
+
+  <!-- main page -->
+  <div class="nc-streamer-contents main-page-panel">
+    <!-- facebook user -->
+    <section class="nc-streamer-setting">
+      <div class="profile">
+        <span id="provider-user-name"
+              class="name fb">프로필이름열자말줄임</span>
+        <a id="provider-page-link"
+           href="#"
+           class="btn-view-streaming live">방송 보기</a>
+      </div>
+      <div id="streaming-user-page-select"
+           data-ui="custom-select">
+        <span class="opener">게시물 등록 장소</span>
+        <ul>
+          <li data-value="1">내 타임라인에 공유</li>
+          <li data-value="2">관리 중인 페이지에 공유</li>
+        </ul>
+        <input type="hidden"
+               readonly=""
+               value="">
+      </div>
+
+      <!-- feed to page -->
+      <div id="streaming-managing-page-select"
+           data-ui="custom-select">
+        <span class="opener">{관리 중인 페이지1}</span>
+        <ul>
+          <li data-value="1">{관리 중인 페이지1}</li>
+          <li data-value="2">{관리 중인 페이지2}</li>
+        </ul>
+        <input type="hidden"
+               readonly=""
+               value="">
+      </div>
+
+      <!-- feed to user's timeline -->
+      <div id="streaming-page-access"
+           data-ui="custom-select">
+        <span class="opener">게시물 공개 범위</span>
+        <ul>
+          <li data-value="EVERYONE">전체 공개</li>
+          <li data-value="FRIENDS_OF_FRIENDS">친구의 친구 공개</li>
+          <li data-value="ALL_FRIENDS">친구만 보기</li>
+          <li data-value="SELF">나만 보기</li>
+        </ul>
+        <input type="hidden"
+               readonly=""
+               value="">
+      </div>
+      <div id="streaming-nctv-tooltip"
+           class="nc-streamer-tooltip">
+        <span class="layer-close">닫기</span>
+        <p>NC TV에도 게시물을 등록하려면<br>
+           '전체 공개'를 선택해 주세요.</p>
+      </div>
+    </section>
+
+    <!-- streaming sources -->
+    <section class="nc-streamer-setting">
+      <h3>방송할 게임</h3>
+      <div id="streaming-game-select"
+           data-ui="custom-select">
+        <span class="opener">{실행 중인 게임 1}</span>
+        <ul>
+          <li data-value="1">{실행 중인 게임 1}</li>
+          <li data-value="2">{실행 중인 게임 2}</li>
+        </ul>
+        <input type="hidden"
+               readonly=""
+               value="">
+      </div>
+      <div class="streaming-title">
+        <h3>방송 제목</h3>
+        <div class="broadcast-title">
+          <textarea id="streaming-feed-description"
+                    rows="2"
+                    placeholder="최대 100자까지 입력할 수 있습니다."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- quick settings -->
+    <section class="nc-streamer-setting">
+      <h3>간편 설정</h3>
+      <div class="form-checkbox mic">
+        <input type="checkbox"
+               id="streaming-mic-checkbox">
+        <label class="on"
+               for="streaming-mic-checkbox">마이크 사용</label>
+      </div>
+    </section>
+  </div>
+
+  <div class="nc-streamer-footer main-page-panel">
+    <div id="streaming-error-text"
+         class="msg status-error">
+      일시적인 오류로 방송 서비스를 이용할 수 없습니다.<br>
+      잠시 후 다시 시도해 주세요.</div>
+    <div id="streaming-normal-text"
+         class="msg status-ready">방송 준비 완료</div>
+    <button id="streaming-control-button"
+            class="btn-start">방송 시작</button>
+  </div>
+
+  <!-- setting page -->
+  <div id="settingModal"
+       class="modal fade"
+       tabindex="-1"
+       role="dialog">
+    <div class="modal-dialog"
+         role="document">
+      <div class="modal-content">
+        <div class="modal-header header">
+          <div class="settings">
+            <button type="button"
+                    class="btn-close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    value="Close"></button>
+          </div>
+          <h4 class="modal-title">설정</h4>
+        </div>
+        <div class="modal-body nc-streamer-contents">
+          <section class="nc-streamer-setting">
+            <h3>화질</h3>
+            <div id="streaming-quality-select"
+                 data-ui="custom-select">
+              <span class="opener">화질을 선택해 주세요.</span>
+              <ul>
+                <li data-value="1">{화질 상}</li>
+                <li data-value="2">{화질 중}</li>
+                <li data-value="3">{화질 하}</li>
+            </ul>
+            <input type="hidden"
+                   readonly=""
+                   value="">
+            </div>
+          </section>
+        </div>
+        <div class="modal-footer">
+          <button type="button"
+                  class="btn btn-primary"
+                  data-dismiss="modal">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- libraries -->
+<script src="lib/jquery.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.js"></script>
+
+<!-- scripts -->
+<script src="app/cef.js"></script>
+<script src="app/custom_style.js"></script>
+<script src="app.js"></script>

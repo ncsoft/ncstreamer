@@ -1,0 +1,58 @@
+div {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  cursor: default;
+}
+
+
+.main-page-panel {
+  display: none;
+}
+
+
+.modal-header{
+  background-color: #292e38;
+  color: #ffffff;
+  border-color: #494d56;
+}
+
+
+.modal-body{
+  background-color: #292e38;
+  color: #ffffff;
+  border-color: #494d56;
+}
+
+
+.modal-footer{
+  background-color: #292e38;
+  color: #ffffff;
+  border-color: #494d56;
+}
+
+
+#streaming-nctv-tooltip{
+  display: none;
+}
+
+#streaming-managing-page-select {
+  display: none;
+}
+
+
+#streaming-error-text {
+  display: none;
+}
+
+
+#streaming-setting-button {
+  display: none;
+}
+
+
+#streaming-minimize-button {
+  display: none;
+}

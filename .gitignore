@@ -4,3 +4,6 @@ vs14.0/*.VC.opendb
 vs14.0/*.vcxproj.user
 vs14.0/.vs/
 vs14.0/build/
+
+# VS Code
+.vscode/
