@@ -112,7 +112,7 @@ function toCamel(str) {
 
 
 function addClass(element, className) {
-  element.className += ' loading';
+  element.className += ' ' + className;
 }
 
 
