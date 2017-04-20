@@ -111,13 +111,13 @@ function toCamel(str) {
 }
 
 
-function addClass(element, className) {
-  element.className += ' loading';
+function addClass(element, name) {
+  element.className += ' ' + name;
 }
 
 
-function removeClass(element, className) {
-  const check = new RegExp('(\\s|^)' + className + '(\\s|$)');
+function removeClass(element, name) {
+  const check = new RegExp('(\\s|^)' + name + '(\\s|$)');
   element.className = element.className.replace(check, ' ').trim();
 }
 
