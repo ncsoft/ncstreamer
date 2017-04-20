@@ -1,6 +1,6 @@
 @echo off
 
-set SrcRoot=../../html
+set SrcRoot=../../../ncstreamer_ui
 
 call gjslint.exe -nojsdoc %SrcRoot%/app.js
 call gjslint.exe -nojsdoc %SrcRoot%/app/cef.js
