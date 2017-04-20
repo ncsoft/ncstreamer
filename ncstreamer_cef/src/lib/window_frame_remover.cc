@@ -70,6 +70,8 @@ LRESULT WindowFrameRemover::Window::OnMouseHook(
 
   switch (event_type) {
     case WM_LBUTTONDOWN: {
+      ::SetForegroundWindow(window_);
+
       RECT wnd_rect;
       ::GetWindowRect(window_, &wnd_rect);
 
