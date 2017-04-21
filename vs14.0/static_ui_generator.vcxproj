@@ -55,6 +55,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <PreBuildEvent>
+      <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../static_ui_generator/src</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -68,6 +71,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../static_ui_generator/src</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\static_ui_generator\src\main.cc" />
