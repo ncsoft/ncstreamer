@@ -4,6 +4,8 @@
 set ProjectDir=%~1
 set Configuration=%~2
 
+robocopy %ProjectDir%..\ncstreamer_ui\static\ %ProjectDir%build\ncstreamer_ui\static_ui\static\ /e
+
 set Generator=%ProjectDir%build\static_ui_generator\%Configuration%\static_ui_generator.exe
 set Texts=%ProjectDir%..\ncstreamer_ui\localized_texts.json
 set TemplateDir=%ProjectDir%..\ncstreamer_ui\template
