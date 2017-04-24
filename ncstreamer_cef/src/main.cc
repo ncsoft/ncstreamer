@@ -29,7 +29,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
           hInstance,
           cmd_line.shows_sources_all(),
           cmd_line.sources(),
-          cmd_line.locale()}};
+          cmd_line.locale(),
+          cmd_line.ui_uri()}};
 
   int exit_code = ::CefExecuteProcess(main_args, app, nullptr);
   if (exit_code >= 0) {

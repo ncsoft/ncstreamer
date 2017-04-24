@@ -21,7 +21,8 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
       HINSTANCE instance,
       bool shows_sources_all,
       const std::vector<std::string> &sources,
-      const std::wstring &locale);
+      const std::wstring &locale,
+      const std::wstring &ui_uri);
   virtual ~BrowserProcessHandler();
 
   // override CefBrowserProcessHandler
@@ -32,6 +33,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const bool shows_sources_all_;
   const std::vector<std::string> sources_;
   const std::wstring locale_;
+  const std::wstring ui_uri_;
 
   IMPLEMENT_REFCOUNTING(BrowserProcessHandler);
 };
