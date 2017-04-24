@@ -8,7 +8,7 @@
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/browser_app.h"
-#include "ncstreamer_cef/src/lib/command_line.h"
+#include "ncstreamer_cef/src/command_line.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
 #include "ncstreamer_cef/src/obs.h"
 #include "ncstreamer_cef/src/render_app.h"

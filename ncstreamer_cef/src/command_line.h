@@ -3,8 +3,8 @@
  */
 
 
-#ifndef NCSTREAMER_CEF_SRC_LIB_COMMAND_LINE_H_
-#define NCSTREAMER_CEF_SRC_LIB_COMMAND_LINE_H_
+#ifndef NCSTREAMER_CEF_SRC_COMMAND_LINE_H_
+#define NCSTREAMER_CEF_SRC_COMMAND_LINE_H_
 
 
 #include <string>
@@ -34,4 +34,4 @@ class CommandLine {
 }  // namespace ncstreamer
 
 
-#endif  // NCSTREAMER_CEF_SRC_LIB_COMMAND_LINE_H_
+#endif  // NCSTREAMER_CEF_SRC_COMMAND_LINE_H_

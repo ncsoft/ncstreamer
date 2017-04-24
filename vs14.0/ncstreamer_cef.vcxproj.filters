@@ -75,8 +75,8 @@
     <ClCompile Include="..\ncstreamer_cef\src\lib\dimension.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\ncstreamer_cef\src\lib\command_line.cc">
-      <Filter>src\lib</Filter>
+    <ClCompile Include="..\ncstreamer_cef\src\command_line.cc">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\ncstreamer_cef\src\render_process_message_types.cpp">
       <Filter>src</Filter>
@@ -182,8 +182,8 @@
     <ClInclude Include="..\ncstreamer_cef\src\lib\dimension.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\ncstreamer_cef\src\lib\command_line.h">
-      <Filter>src\lib</Filter>
+    <ClInclude Include="..\ncstreamer_cef\src\command_line.h">
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\render_process_message_types.h">
       <Filter>src</Filter>

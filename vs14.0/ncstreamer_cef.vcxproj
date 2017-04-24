@@ -104,7 +104,7 @@
     <ClCompile Include="..\ncstreamer_cef\src\js_executor.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\cef_fit_client.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\cef_types.cc" />
-    <ClCompile Include="..\ncstreamer_cef\src\lib\command_line.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\command_line.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\dimension.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\display.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\window_frame_remover.cc" />
@@ -140,7 +140,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\js_executor.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\cef_fit_client.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\cef_types.h" />
-    <ClInclude Include="..\ncstreamer_cef\src\lib\command_line.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\command_line.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\dimension.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\display.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\window_frame_remover.h" />
