@@ -147,7 +147,6 @@
     <ClInclude Include="..\ncstreamer_cef\src\lib\http_request.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\http_request_service.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\http_types.h" />
-    <ClInclude Include="..\ncstreamer_cef\src\lib\json_parser.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\rectangle.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\string.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\uri.h" />

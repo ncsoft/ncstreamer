@@ -9,10 +9,9 @@
 #include <locale>
 #include <memory>
 
+#include "boost/property_tree/json_parser.hpp"
 #include "boost/property_tree/ptree.hpp"
 #include "include/cef_command_line.h"
-
-#include "ncstreamer_cef/src/lib/json_parser.h"
 
 
 namespace ncstreamer {

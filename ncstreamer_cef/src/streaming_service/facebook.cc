@@ -10,6 +10,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "boost/property_tree/json_parser.hpp"
 #include "boost/property_tree/ptree.hpp"
 #include "include/cef_browser.h"
 #include "include/wrapper/cef_helpers.h"
@@ -17,7 +18,6 @@
 #include "ncstreamer_cef/src/lib/cef_types.h"
 #include "ncstreamer_cef/src/lib/display.h"
 #include "ncstreamer_cef/src/lib/http_types.h"
-#include "ncstreamer_cef/src/lib/json_parser.h"
 #include "ncstreamer_cef/src/lib/uri.h"
 #include "ncstreamer_cef/src/lib/windows_types.h"
 #include "ncstreamer_cef/src/streaming_service/facebook_api.h"
