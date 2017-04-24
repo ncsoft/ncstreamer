@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="template">
+      <UniqueIdentifier>{073216e5-f21a-4180-98ea-80e3fdc9a89b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="template\app">
+      <UniqueIdentifier>{d7134c7d-4067-4717-9c1c-1593c0de1687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="template\lib">
+      <UniqueIdentifier>{98c7e69d-c470-4296-aaf2-e6460c992bba}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ncstreamer_ui\template\app.css">
+      <Filter>template</Filter>
+    </None>
+    <None Include="..\ncstreamer_ui\template\app.html">
+      <Filter>template</Filter>
+    </None>
+    <None Include="..\ncstreamer_ui\template\app.js">
+      <Filter>template</Filter>
+    </None>
+    <None Include="..\ncstreamer_ui\template\app\cef.js">
+      <Filter>template\app</Filter>
+    </None>
+    <None Include="..\ncstreamer_ui\template\app\custom_style.js">
+      <Filter>template\app</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\ncstreamer_ui\template\lib\README.txt">
+      <Filter>template\lib</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
