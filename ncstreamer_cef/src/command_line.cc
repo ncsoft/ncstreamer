@@ -28,7 +28,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       cef_cmd_line->GetSwitchValue(L"type");
   is_renderer_ = (process_type == L"renderer");
 
-  static std::wstring kShowsSourcesAll{L"shows_sources_all"};
+  static std::wstring kShowsSourcesAll{L"shows-sources-all"};
   if (cef_cmd_line->HasSwitch(kShowsSourcesAll) == true) {
     const std::wstring &shows_sources_all =
         cef_cmd_line->GetSwitchValue(kShowsSourcesAll);
