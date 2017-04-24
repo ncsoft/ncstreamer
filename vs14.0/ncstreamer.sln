@@ -5,26 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ncstreamer_cef", "ncstreamer_cef.vcxproj", "{37AC29D7-06C5-42B3-A30F-D568A9649DA8}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ncstreamer_ui", "..\ncstreamer_ui\", "{CCBA3F74-B862-4282-A8CE-D312905CB275}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_51451"
-		Debug.AspNetCompiler.PhysicalPath = "..\ncstreamer_ui\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51451\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_51451"
-		Release.AspNetCompiler.PhysicalPath = "..\ncstreamer_ui\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51451\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "51451"
-		SlnRelativePath = "..\ncstreamer_ui\"
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ncstreamer_ui", "ncstreamer_ui.vcxproj", "{4A1CF43E-2E4D-4868-957D-621587CFCC41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,10 +17,10 @@ Global
 		{37AC29D7-06C5-42B3-A30F-D568A9649DA8}.Debug|x86.Build.0 = Debug|Win32
 		{37AC29D7-06C5-42B3-A30F-D568A9649DA8}.Release|x86.ActiveCfg = Release|Win32
 		{37AC29D7-06C5-42B3-A30F-D568A9649DA8}.Release|x86.Build.0 = Release|Win32
-		{CCBA3F74-B862-4282-A8CE-D312905CB275}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CCBA3F74-B862-4282-A8CE-D312905CB275}.Debug|x86.Build.0 = Debug|Any CPU
-		{CCBA3F74-B862-4282-A8CE-D312905CB275}.Release|x86.ActiveCfg = Debug|Any CPU
-		{CCBA3F74-B862-4282-A8CE-D312905CB275}.Release|x86.Build.0 = Debug|Any CPU
+		{4A1CF43E-2E4D-4868-957D-621587CFCC41}.Debug|x86.ActiveCfg = Debug|Win32
+		{4A1CF43E-2E4D-4868-957D-621587CFCC41}.Debug|x86.Build.0 = Debug|Win32
+		{4A1CF43E-2E4D-4868-957D-621587CFCC41}.Release|x86.ActiveCfg = Release|Win32
+		{4A1CF43E-2E4D-4868-957D-621587CFCC41}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
