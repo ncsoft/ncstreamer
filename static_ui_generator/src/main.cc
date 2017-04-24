@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
             boost::filesystem::path{output_dir} /  // NOLINT
             boost::filesystem::path{locale}};      // NOLINT
         if (boost::filesystem::exists(dir) ||
-            boost::filesystem::create_directory(dir)) {
+            boost::filesystem::create_directories(dir)) {
           const boost::filesystem::path file_name =
               dir / i->path().filename().c_str();
           boost::filesystem::ofstream ofs{file_name};
