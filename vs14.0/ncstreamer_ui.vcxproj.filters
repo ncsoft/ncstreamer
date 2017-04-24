@@ -18,29 +18,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\ncstreamer_ui\static\app.css">
+    <ClInclude Include="..\ncstreamer_ui\static\app.css">
       <Filter>static</Filter>
-    </None>
-    <None Include="..\ncstreamer_ui\template\app.html">
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_ui\template\app.html">
       <Filter>template</Filter>
-    </None>
-    <None Include="..\ncstreamer_ui\template\app.js">
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_ui\template\app.js">
       <Filter>template</Filter>
-    </None>
-    <None Include="..\ncstreamer_ui\static\app\cef.js">
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_ui\static\app\cef.js">
       <Filter>static\app</Filter>
-    </None>
-    <None Include="..\ncstreamer_ui\static\app\custom_style.js">
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_ui\static\app\custom_style.js">
       <Filter>static\app</Filter>
-    </None>
-    <None Include="..\ncstreamer_ui\localized_texts.json" />
-    <None Include="..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat">
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_ui\localized_texts.json" />
+    <ClInclude Include="..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat">
       <Filter>build_tools</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\ncstreamer_ui\static\lib\README.txt">
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_ui\static\lib\README.txt">
       <Filter>static\lib</Filter>
-    </Text>
+    </ClInclude>
   </ItemGroup>
 </Project>
