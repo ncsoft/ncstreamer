@@ -230,9 +230,6 @@
     <ClInclude Include="..\ncstreamer_cef\src\lib\http_types.h">
       <Filter>src\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\ncstreamer_cef\src\lib\json_parser.h">
-      <Filter>src\lib</Filter>
-    </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\lib\window_frame_remover.h">
       <Filter>src\lib</Filter>
     </ClInclude>

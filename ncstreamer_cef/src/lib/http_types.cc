@@ -7,7 +7,7 @@
 
 #include <sstream>
 
-#include "ncstreamer_cef/src/lib/json_parser.h"
+#include "boost/property_tree/json_parser.hpp"
 
 
 namespace ncstreamer {
