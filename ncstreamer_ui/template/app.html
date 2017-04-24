@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>NC 스트리밍</title>
+<title>%NCSTREAMING%</title>
 <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
 <link href="lib/ncsoft/nc-streamer.css" rel="stylesheet">
 <link href="app.css" rel="stylesheet">
@@ -8,7 +8,7 @@
 <div class="nc-streamer-container">
   <!-- titlebar -->
   <div class="header">
-    <h1 class="title">방송<span class="label-beta">Beta</span></h1>
+    <h1 class="title">%BROADCASTING%<span class="label-beta">Beta</span></h1>
     <div class="settings">
       <button id="streaming-setting-button"
               class="btn-setting"
@@ -28,16 +28,16 @@
   <div class="nc-streamer-contents login-page-panel">
     <section class="connect-platform">
       <header>
-        <h2>플랫폼 연결</h2>
+        <h2>%CONNECT_PLATFORM%</h2>
       </header>
-      <article>NC 스트리밍으로 게임플레이를<br>
-               방송할 수 있습니다.<br>
-               게시물을 등록할 페이스북 계정을 연결해 주세요.</article>
+      <article>%LOGIN_GUIDE1%<br>
+               %LOGIN_GUIDE2%<br>
+               %LOGIN_GUIDE3%</article>
     </section>
   </div>
   <div class="nc-streamer-footer login-page-panel">
     <button id="streaming-login-button"
-            class="btn-connect">페이스북 연결</button>
+            class="btn-connect">%CONNECT_FACEBOOK%</button>
   </div>
 
   <!-- main page -->
@@ -46,17 +46,17 @@
     <section class="nc-streamer-setting">
       <div class="profile">
         <span id="provider-user-name"
-              class="name fb">프로필이름열자말줄임</span>
+              class="name fb"></span>
         <a id="provider-page-link"
            href="#"
-           class="btn-view-streaming live">방송 보기</a>
+           class="btn-view-streaming live">%WATCH_BROADCASTING%</a>
       </div>
       <div id="streaming-user-page-select"
            data-ui="custom-select">
-        <span class="opener">게시물 등록 장소</span>
+        <span class="opener">%REGISTER_PAGE%</span>
         <ul>
-          <li data-value="1">내 타임라인에 공유</li>
-          <li data-value="2">관리 중인 페이지에 공유</li>
+          <li data-value="1">%REGISTER_TIMELINE%</li>
+          <li data-value="2">%REGISTER_MANAGING_PAGE%</li>
         </ul>
         <input type="hidden"
                readonly=""
@@ -79,12 +79,12 @@
       <!-- feed to user's timeline -->
       <div id="streaming-page-access"
            data-ui="custom-select">
-        <span class="opener">게시물 공개 범위</span>
+        <span class="opener">%POST_PRIVACY_BOUND%</span>
         <ul>
-          <li data-value="EVERYONE">전체 공개</li>
-          <li data-value="FRIENDS_OF_FRIENDS">친구의 친구 공개</li>
-          <li data-value="ALL_FRIENDS">친구만 보기</li>
-          <li data-value="SELF">나만 보기</li>
+          <li data-value="EVERYONE">%PUBLIC_ACCESS%</li>
+          <li data-value="FRIENDS_OF_FRIENDS">%FRIENDS_OF_FRIENDS_ACCESS%</li>
+          <li data-value="ALL_FRIENDS">%FRIENDS_ACCESS%</li>
+          <li data-value="SELF">%PRIVATE_ACCESS%</li>
         </ul>
         <input type="hidden"
                readonly=""
@@ -92,15 +92,14 @@
       </div>
       <div id="streaming-nctv-tooltip"
            class="nc-streamer-tooltip">
-        <span class="layer-close">닫기</span>
-        <p>NC TV에도 게시물을 등록하려면<br>
-           '전체 공개'를 선택해 주세요.</p>
+        <span class="layer-close">%CLOSE%</span>
+        <p>%NCTV_PUBLIC_TOOLTIP1%<br>%NCTV_PUBLIC_TOOLTIP2%</p>
       </div>
     </section>
 
     <!-- streaming sources -->
     <section class="nc-streamer-setting">
-      <h3>방송할 게임</h3>
+      <h3>%BROADCASTING_GAME%</h3>
       <div id="streaming-game-select"
            data-ui="custom-select">
         <span class="opener">{실행 중인 게임 1}</span>
@@ -113,23 +112,23 @@
                value="">
       </div>
       <div class="streaming-title">
-        <h3>방송 제목</h3>
+        <h3>%BROADCASTING_TITLE%</h3>
         <div class="broadcast-title">
           <textarea id="streaming-feed-description"
                     rows="2"
-                    placeholder="최대 100자까지 입력할 수 있습니다."></textarea>
+                    placeholder="%LETTER_LIMIT_MESSAGE%"></textarea>
         </div>
       </div>
     </section>
 
     <!-- quick settings -->
     <section class="nc-streamer-setting">
-      <h3>간편 설정</h3>
+      <h3>%EASY_SETTING%</h3>
       <div class="form-checkbox mic">
         <input type="checkbox"
                id="streaming-mic-checkbox">
         <label class="on"
-               for="streaming-mic-checkbox">마이크 사용</label>
+               for="streaming-mic-checkbox">%USE_MIC%</label>
       </div>
     </section>
   </div>
@@ -137,12 +136,12 @@
   <div class="nc-streamer-footer main-page-panel">
     <div id="streaming-error-text"
          class="msg status-error">
-      일시적인 오류로 방송 서비스를 이용할 수 없습니다.<br>
-      잠시 후 다시 시도해 주세요.</div>
+      %ERROR_MESSAGE1%<br>%ERROR_MESSAGE2%
+    </div>
     <div id="streaming-normal-text"
-         class="msg status-ready">방송 준비 완료</div>
+         class="msg status-ready">%READY_BROADCASTING%</div>
     <button id="streaming-control-button"
-            class="btn-start">방송 시작</button>
+            class="btn-start">%START_BROADCASTING%</button>
   </div>
 
   <!-- setting page -->
@@ -161,14 +160,14 @@
                     aria-label="Close"
                     value="Close"></button>
           </div>
-          <h4 class="modal-title">설정</h4>
+          <h4 class="modal-title">%SETTING%</h4>
         </div>
         <div class="modal-body nc-streamer-contents">
           <section class="nc-streamer-setting">
-            <h3>화질</h3>
+            <h3>%QUALITY%</h3>
             <div id="streaming-quality-select"
                  data-ui="custom-select">
-              <span class="opener">화질을 선택해 주세요.</span>
+              <span class="opener">%SELECT_QUALITY%</span>
               <ul>
                 <li data-value="1">{화질 상}</li>
                 <li data-value="2">{화질 중}</li>
@@ -183,7 +182,7 @@
         <div class="modal-footer">
           <button type="button"
                   class="btn btn-primary"
-                  data-dismiss="modal">확인</button>
+                  data-dismiss="modal">%CONFIRM%</button>
         </div>
       </div>
     </div>

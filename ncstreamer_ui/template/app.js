@@ -131,32 +131,32 @@ function updateStreamingStatus(status) {
   switch (status) {
     case 'standby':
       removeClass(button, 'loading');
-      message.textContent = '방송 준비 완료';
-      button.textContent = '방송 시작';
+      message.textContent = '%READY_BROADCASTING%';
+      button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
       break;
     case 'setup':
       removeClass(button, 'loading');
-      message.textContent = '방송 생성 중';
-      button.textContent = '방송 시작';
+      message.textContent = '%MAKING_BROADCASTING%';
+      button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       break;
     case 'starting':
       addClass(button, 'loading');
-      message.textContent = '방송 시작 중';
-      button.textContent = '방송 시작';
+      message.textContent = '%STARTING_BROADCASTING%';
+      button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       break;
     case 'onAir':
       removeClass(button, 'loading');
-      message.textContent = '방송 중';
-      button.textContent = '방송 종료';
+      message.textContent = '%ONAIR%';
+      button.textContent = '%END_BROADCASTING%';
       button.disabled = false;
       break;
     case 'stopping':
       addClass(button, 'loading');
-      message.textContent = '방송 종료 중';
-      button.textContent = '방송 종료';
+      message.textContent = '%ENDING_BROADCASTING%';
+      button.textContent = '%END_BROADCASTING%';
       button.disabled = true;
       break;
   }
@@ -175,7 +175,7 @@ function setUpStreamingSources(obj) {
   }
 
   if (obj.sources.length == 0) {
-    display.textContent = '실행 중인 게임이 없습니다.';
+    display.textContent = '%NO_PLAYING_GAME%';
   } else {
     for (const source of obj.sources) {
       const li = document.createElement('li');
@@ -364,7 +364,7 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
   }
 
   if (userPages.length == 0) {
-    display.textContent = '관리 중인 페이지가 없습니다.';
+    display.textContent = '%NO_MANAGING_PAGE%';
   } else {
     for (const userPage of userPages) {
       const li = document.createElement('li');
