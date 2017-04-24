@@ -27,6 +27,7 @@
     <None Include="..\ncstreamer_ui\template\app\custom_style.js">
       <Filter>template\app</Filter>
     </None>
+    <None Include="..\ncstreamer_ui\localized_texts.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\ncstreamer_ui\template\lib\README.txt">

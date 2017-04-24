@@ -70,6 +70,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\ncstreamer_ui\localized_texts.json" />
     <None Include="..\ncstreamer_ui\template\app.css" />
     <None Include="..\ncstreamer_ui\template\app.html" />
     <None Include="..\ncstreamer_ui\template\app.js" />
