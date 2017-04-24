@@ -5,6 +5,7 @@
 
 #include "ncstreamer_cef/src/browser_process_handler.h"
 
+#include "boost/algorithm/string/replace.hpp"
 #include "include/cef_browser.h"
 #include "include/cef_command_line.h"
 #include "include/wrapper/cef_helpers.h"
@@ -54,7 +55,8 @@ void BrowserProcessHandler::OnContextInitialized() {
 
   std::wstring uri{ui_uri_};
   if (uri.empty() == true) {
-    uri = kDefaultUiUri;
+    uri = boost::replace_all_copy(
+        kDefaultUiUri, kDefaultUiUriLocaleTemplate, locale_);
   }
 
   CefBrowserSettings browser_settings;
