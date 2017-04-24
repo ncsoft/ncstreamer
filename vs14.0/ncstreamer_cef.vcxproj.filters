@@ -25,6 +25,9 @@
     <Filter Include="src\streaming_service">
       <UniqueIdentifier>{5d98a8e6-1741-4276-b9ba-287cce27e2f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="build_tools">
+      <UniqueIdentifier>{c06f7e87-1ebe-487d-9dc7-0a8968597561}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ncstreamer_cef\src\browser_process_handler.cc">
@@ -245,6 +248,9 @@
   <ItemGroup>
     <None Include="..\ncstreamer_cef\src_imported\readme.md">
       <Filter>src_imported</Filter>
+    </None>
+    <None Include="..\ncstreamer_cef\build_tools\import_ui.bat">
+      <Filter>build_tools</Filter>
     </None>
   </ItemGroup>
 </Project>
