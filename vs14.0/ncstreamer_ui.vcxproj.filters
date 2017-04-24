@@ -4,10 +4,13 @@
     <Filter Include="template">
       <UniqueIdentifier>{073216e5-f21a-4180-98ea-80e3fdc9a89b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="template\app">
+    <Filter Include="static">
+      <UniqueIdentifier>{493ebb1b-c305-4537-8ad7-98e8d5ebd8f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="static\app">
       <UniqueIdentifier>{d7134c7d-4067-4717-9c1c-1593c0de1687}</UniqueIdentifier>
     </Filter>
-    <Filter Include="template\lib">
+    <Filter Include="static\lib">
       <UniqueIdentifier>{98c7e69d-c470-4296-aaf2-e6460c992bba}</UniqueIdentifier>
     </Filter>
     <Filter Include="build_tools">
@@ -15,8 +18,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\ncstreamer_ui\template\app.css">
-      <Filter>template</Filter>
+    <None Include="..\ncstreamer_ui\static\app.css">
+      <Filter>static</Filter>
     </None>
     <None Include="..\ncstreamer_ui\template\app.html">
       <Filter>template</Filter>
@@ -24,11 +27,11 @@
     <None Include="..\ncstreamer_ui\template\app.js">
       <Filter>template</Filter>
     </None>
-    <None Include="..\ncstreamer_ui\template\app\cef.js">
-      <Filter>template\app</Filter>
+    <None Include="..\ncstreamer_ui\static\app\cef.js">
+      <Filter>static\app</Filter>
     </None>
-    <None Include="..\ncstreamer_ui\template\app\custom_style.js">
-      <Filter>template\app</Filter>
+    <None Include="..\ncstreamer_ui\static\app\custom_style.js">
+      <Filter>static\app</Filter>
     </None>
     <None Include="..\ncstreamer_ui\localized_texts.json" />
     <None Include="..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat">
@@ -36,8 +39,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\ncstreamer_ui\template\lib\README.txt">
-      <Filter>template\lib</Filter>
+    <Text Include="..\ncstreamer_ui\static\lib\README.txt">
+      <Filter>static\lib</Filter>
     </Text>
   </ItemGroup>
 </Project>
