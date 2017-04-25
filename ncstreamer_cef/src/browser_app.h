@@ -23,7 +23,8 @@ class BrowserApp : public CefApp {
       HINSTANCE instance,
       bool shows_sources_all,
       const std::vector<std::string> &sources,
-      const std::wstring &locale);
+      const std::wstring &locale,
+      const std::wstring &ui_uri);
   virtual ~BrowserApp();
 
   CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override;

@@ -8,7 +8,7 @@
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/browser_app.h"
-#include "ncstreamer_cef/src/lib/command_line.h"
+#include "ncstreamer_cef/src/command_line.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
 #include "ncstreamer_cef/src/obs.h"
 #include "ncstreamer_cef/src/render_app.h"
@@ -29,7 +29,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
           hInstance,
           cmd_line.shows_sources_all(),
           cmd_line.sources(),
-          cmd_line.locale()}};
+          cmd_line.locale(),
+          cmd_line.ui_uri()}};
 
   int exit_code = ::CefExecuteProcess(main_args, app, nullptr);
   if (exit_code >= 0) {

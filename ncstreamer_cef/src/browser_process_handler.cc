@@ -5,6 +5,7 @@
 
 #include "ncstreamer_cef/src/browser_process_handler.h"
 
+#include "boost/algorithm/string/replace.hpp"
 #include "include/cef_browser.h"
 #include "include/cef_command_line.h"
 #include "include/wrapper/cef_helpers.h"
@@ -20,11 +21,13 @@ BrowserProcessHandler::BrowserProcessHandler(
     HINSTANCE instance,
     bool shows_sources_all,
     const std::vector<std::string> &sources,
-    const std::wstring &locale)
+    const std::wstring &locale,
+    const std::wstring &ui_uri)
     : instance_{instance},
       shows_sources_all_{shows_sources_all},
       sources_{sources},
-      locale_{locale} {
+      locale_{locale},
+      ui_uri_{ui_uri} {
 }
 
 
@@ -50,10 +53,10 @@ void BrowserProcessHandler::OnContextInitialized() {
       sources_,
       locale_}};
 
-  std::wstring uri{
-      CefCommandLine::GetGlobalCommandLine()->GetSwitchValue(L"ui-uri")};
+  std::wstring uri{ui_uri_};
   if (uri.empty() == true) {
-    uri = kDefaultUiUri;
+    uri = boost::replace_all_copy(
+        kDefaultUiUri, kDefaultUiUriLocaleTemplate, locale_);
   }
 
   CefBrowserSettings browser_settings;

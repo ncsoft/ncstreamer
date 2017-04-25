@@ -3,7 +3,7 @@
  */
 
 
-#include "ncstreamer_cef/src/lib/command_line.h"
+#include "ncstreamer_cef/src/command_line.h"
 
 #include <codecvt>
 #include <locale>
@@ -19,7 +19,8 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
     : is_renderer_{false},
       shows_sources_all_{false},
       sources_{},
-      locale_{} {
+      locale_{},
+      ui_uri_{} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
   cef_cmd_line->InitFromString(cmd_line);
@@ -28,7 +29,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       cef_cmd_line->GetSwitchValue(L"type");
   is_renderer_ = (process_type == L"renderer");
 
-  static std::wstring kShowsSourcesAll{L"shows_sources_all"};
+  static std::wstring kShowsSourcesAll{L"shows-sources-all"};
   if (cef_cmd_line->HasSwitch(kShowsSourcesAll) == true) {
     const std::wstring &shows_sources_all =
         cef_cmd_line->GetSwitchValue(kShowsSourcesAll);
@@ -43,6 +44,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
   }
 
   locale_ = cef_cmd_line->GetSwitchValue(L"locale");
+  ui_uri_ = cef_cmd_line->GetSwitchValue(L"ui-uri");
 }
 
 

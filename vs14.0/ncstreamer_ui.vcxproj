@@ -42,12 +42,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(ProjectDir)build\$(ProjectName)\$(Configuration)\bin\$(PlatformArchitecture)bit\</OutDir>
-    <IntDir>$(ProjectDir)build\$(ProjectName)\intdir\$(Configuration)\bin\$(PlatformArchitecture)bit\</IntDir>
+    <OutDir>$(ProjectDir)build\$(ProjectName)\</OutDir>
+    <IntDir>$(ProjectDir)build\$(ProjectName)\intdir\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ProjectDir)build\$(ProjectName)\$(Configuration)\bin\$(PlatformArchitecture)bit\</OutDir>
-    <IntDir>$(ProjectDir)build\$(ProjectName)\intdir\$(Configuration)\bin\$(PlatformArchitecture)bit\</IntDir>
+    <OutDir>$(ProjectDir)build\$(ProjectName)\</OutDir>
+    <IntDir>$(ProjectDir)build\$(ProjectName)\intdir\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -55,6 +55,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>"$(ProjectDir)..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat" "$(ProjectDir)" "$(Configuration)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -68,16 +71,19 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>"$(ProjectDir)..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat" "$(ProjectDir)" "$(Configuration)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\ncstreamer_ui\template\app.css" />
-    <None Include="..\ncstreamer_ui\template\app.html" />
-    <None Include="..\ncstreamer_ui\template\app.js" />
-    <None Include="..\ncstreamer_ui\template\app\cef.js" />
-    <None Include="..\ncstreamer_ui\template\app\custom_style.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\ncstreamer_ui\template\lib\README.txt" />
+    <ClInclude Include="..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat" />
+    <ClInclude Include="..\ncstreamer_ui\localized_texts.json" />
+    <ClInclude Include="..\ncstreamer_ui\static\app.css" />
+    <ClInclude Include="..\ncstreamer_ui\template\app.html" />
+    <ClInclude Include="..\ncstreamer_ui\template\app.js" />
+    <ClInclude Include="..\ncstreamer_ui\static\app\cef.js" />
+    <ClInclude Include="..\ncstreamer_ui\static\app\custom_style.js" />
+    <ClInclude Include="..\ncstreamer_ui\static\lib\README.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

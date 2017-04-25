@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ncstreamer_cef", "ncstreamer_cef.vcxproj", "{37AC29D7-06C5-42B3-A30F-D568A9649DA8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4A1CF43E-2E4D-4868-957D-621587CFCC41} = {4A1CF43E-2E4D-4868-957D-621587CFCC41}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ncstreamer_ui", "ncstreamer_ui.vcxproj", "{4A1CF43E-2E4D-4868-957D-621587CFCC41}"
+	ProjectSection(ProjectDependencies) = postProject
+		{35F245A9-3881-454F-9E8C-6973AF72AA57} = {35F245A9-3881-454F-9E8C-6973AF72AA57}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "static_ui_generator", "static_ui_generator.vcxproj", "{35F245A9-3881-454F-9E8C-6973AF72AA57}"
 EndProject

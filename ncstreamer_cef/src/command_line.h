@@ -3,8 +3,8 @@
  */
 
 
-#ifndef NCSTREAMER_CEF_SRC_LIB_COMMAND_LINE_H_
-#define NCSTREAMER_CEF_SRC_LIB_COMMAND_LINE_H_
+#ifndef NCSTREAMER_CEF_SRC_COMMAND_LINE_H_
+#define NCSTREAMER_CEF_SRC_COMMAND_LINE_H_
 
 
 #include <string>
@@ -21,6 +21,7 @@ class CommandLine {
   bool shows_sources_all() const { return shows_sources_all_; }
   const std::vector<std::string> &sources() const { return sources_; }
   const std::wstring &locale() const { return locale_; }
+  const std::wstring &ui_uri() const { return ui_uri_; }
 
  private:
   static std::vector<std::string>
@@ -30,8 +31,9 @@ class CommandLine {
   bool shows_sources_all_;
   std::vector<std::string> sources_;
   std::wstring locale_;
+  std::wstring ui_uri_;
 };
 }  // namespace ncstreamer
 
 
-#endif  // NCSTREAMER_CEF_SRC_LIB_COMMAND_LINE_H_
+#endif  // NCSTREAMER_CEF_SRC_COMMAND_LINE_H_
