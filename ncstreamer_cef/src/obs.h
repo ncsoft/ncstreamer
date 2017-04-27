@@ -77,6 +77,8 @@ class Obs {
   std::unique_ptr<ObsOutput> stream_output_;
 
   obs_service_t *current_service_;
+  int audio_bitrate_;
+  int video_bitrate_;
 };
 }  // namespace ncstreamer
 
