@@ -99,6 +99,7 @@ void Obs::UpdateVideoQuality(
     uint32_t fps,
     uint32_t bitrate) {
   ResetVideo(output_size, fps);
+  obs_encoder_set_video(video_encoder_, obs_get_video());
   UpdateCurrentServiceEncoders(160, bitrate);
 }
 
