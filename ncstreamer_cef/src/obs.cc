@@ -125,7 +125,7 @@ void Obs::UpdateCurrentServiceEncoders(
   }
 
   obs_encoder_update(video_encoder_, video_settings);
-  obs_encoder_update(audio_encoder_,  audio_settings);
+  obs_encoder_update(audio_encoder_, audio_settings);
 
   obs_data_release(audio_settings);
   obs_data_release(video_settings);
