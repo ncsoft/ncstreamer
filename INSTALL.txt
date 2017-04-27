@@ -1,0 +1,147 @@
+NC Streaming development environment
+
+
+h1. Prerequisite
+
+* Visual Studio 2015
+ ** To build obs-studio dlls, libcef_dll_wrapper.lib, ncstreamer.exe .
+* Boost library
+ ** Create OS environment variable 'BOOST_PATH' with Boost library path on the local dev machine.
+  *** Ex: BOOST_PATH=D:\dev\lib\boost_1_64_0\
+* URDL library
+ ** Create OS environment variable 'URDL_PATH' with URDL library path on the local dev machine.
+  *** Ex: URDL_PATH=D:\dev\lib\urdl-ssl\
+* Python 2.7.x
+ ** To execute cpplint.py .
+
+
+h1. Source code repositories
+
+* GitHub
+ ** OBS Studio: https://github.com/jp9000/obs-studio
+ ** Google Style Guide: https://github.com/google/styleguide
+* CEF 3 builds
+ ** https://cefbuilds.com/ or,
+ ** http://opensource.spotify.com/cefbuilds/index.html
+
+ 
+h1. Steps for setup
+
+
+h2. Development environment
+
+* Install Google Style Guide.
+ ** Clone Google Style Guide into any arbitrary directory on the local machine.
+  ** From https://github.com/google/styleguide
+ ** Create OS environment variable 'GOOGLE_STYLEGUIDE_PATH'.
+
+
+h2. Steps to build ncstreamer.exe
+
+# Clone all source files into local dev machine.
+ ** Clone obs-studio repository into local machine.
+  *** Target: tags/1.8.01
+  *** Ex: D:\dev\obs-studio\
+ ** Clone ncstreamer repository into local machine.
+  *** Ex: D:\dev\ncstreamer\
+
+# Set up CEF dev environment.
+ ## Download CEF3 2704 32 bit build.
+  *** Click 'Branch 2704' -> 'Windows 32bit' -> CEF 3.2704.1434.gec3e9e (119MB).
+ ## Extract this build into any arbitrary directory.
+  *** Ex: D:\dev\lib\cef_binary_3.2704.1434.gec3e9ed_windows32
+
+ ## Create OS env variable 'CEF3_2704_PATH'.
+  *** Ex: CEF3_2704_PATH=D:\dev\lib\cef_binary_3.2704.1434.gec3e9ed_windows32\
+
+ ## Build CEF.
+  ### It may not be necessary to build CEF itself because it's been prebuilt already,
+   **** But libcef_dll_wrapper.lib is not prebuilt.
+   **** Path of prebuilt CEF DLLs and resources
+    ***** Debug: $(CEF3_2704_PATH)Debug
+    ***** Release: $(CEF3_2704_PATH)Release
+    ***** Resources(for both of Debug and Release): $(CEF3_2704_PATH)Resources
+  ### Create VS 2015 32 bit solution and project files with CMake, and,
+   **** Build solution: Build both of Debug and Release.
+   **** Caution: In CMake UI, The path of "where to build the binaries" should be:
+    ***** $(CEF3_2704_PATH)\vs$(VisualStudioVersion)\
+     ****** Ex: D:\dev\lib\cef_binary_3.2704.1434.gec3e9ed_windows32\vs14.0\
+    ***** Because the library path is configured like this in ncstreamer.vcxproj..
+  ### Verify the build results.
+   **** Debug Ex: $(CEF3_2704_PATH)vs14.0\libcef_dll_wrapper\Debug\libcef_dll_wrapper.lib
+   **** Release Ex: $(CEF3_2704_PATH)vs14.0\libcef_dll_wrapper\Release\libcef_dll_wrapper.lib
+
+# Create OS env variable 'OBS_STUDIO_PATH'.
+ ** Ex: OBS_STUDIO_PATH=D:\dev\obs-sudio\
+ ** This path is configured as one of 'Include directories' in ncstreamer.vcxproj.
+
+# Build OBS Studio without Qt UI.
+ ** Refer to: https://github.com/jp9000/obs-studio/wiki/Install-Instructions
+ ** Caution: In CMake UI, The path of "where to build the binaries" should be:
+  *** $(OBS_STUDIO_PATH)\vs$(VisualStudioVersion)\
+   **** Ex: D:\dev\obs-studio\vs14.0\
+  *** Because the library path is configured like this in ncstreamer.vcxproj..
+ ** Verify the build results(lib, dll files).
+  *** Ex: Release build results of libobs project
+   **** D:\dev\obs-studio\vs14.0\libobs\Release
+
+# Set up OpenSSL dev environment.
+ ## Obtain OpenSSL 1.0.2 version 32 bit build.
+  *** Build it yourself:
+   **** Official source location: https://github.com/openssl/openssl/tree/OpenSSL_1_0_2-stable
+   **** Warning: The build steps may differ by versions.
+  *** Or, download unofficial prebuilt build(not recommended):
+   **** unofficial build: http://p-nand-q.com/programming/windows/openssl-1.0.2j-32bit-release-dll-vs2015.7z
+  *** Warning: DO NOT download 1.1.0 version, because it may not be compatible with recent Boost libraries(e.g., 1.64.0).
+ ## Locate the build in any arbitrary directory.
+  *** Ex: D:\dev\lib\openssl-1.0.2j-32bit-release-DLL-VS2015
+ ## Create OS env variable 'OPENSSL_ROOT'.
+  *** OPENSSL_ROOT=D:\dev\lib\openssl-1.0.2j-32bit-release-DLL-VS2015
+  *** It would be referred by URDL library.
+
+# Set up URDL dev environment.
+ ## Clone URDL ssl branch from GitHub.
+  *** URI: https://github.com/maskit/urdl/tree/ssl
+  *** Warning
+   **** It MUST be 'ssl' branch(DO NOT clone 'master' branch).
+   **** This repository is unofficial(currently on 'Pull Request' stage), so check later if it would be merged into the official repository.
+ ## Create OS env variable 'URDL_PATH'.
+  *** Ex: URDL_PATH=D:\dev\lib\urdl-ssl\
+
+
+h2. Steps to execute ncstreamer.exe
+
+* Copy CEF DLLs and resource files into the build directory of ncstreamer project.
+ ** Ex: in case of vs14.0 Release
+  *** From
+   **** $(CEF3_2704_PATH)Release directory: *.dll, *.bin (exclude *.lib)
+   **** $(CEF3_2704_PATH)Resources directory: all files and sub-directories.
+  *** To: D:\dev\ncstreamer\vs14.0\build\ncstreamer_cef\Release\bin\32bit\
+
+* Copy obs-studio build results(dll files and resources in 'rundir' directory) into the build directory of ncstreamer project.
+ ** Ex: in case of vs14.0 Release
+  *** Directories to be copied
+   **** From: D:\dev\obs-studio\vs14.0\rundir\Release\
+   **** To: D:\dev\ncstreamer\vs14.0\build\ncstreamer_cef\Release\
+  *** Files to be copied(maintain the directory path as same)
+   **** bin\32bit\*.dll
+    ***** Exclude Qt DLLs(e.g., Qt5*.dll).
+   **** whole 'data' directory
+   **** whole 'obs-plugins' directory
+ ** Warning: DO NOT copy any files duplicated with those copied from CEF3_2704_PATH.
+
+* Copy OpenSSL buid results(dll files in 'bin' directory) into the build directory of ncstreamer project.
+ ** Ex: in case of vs14.0 Release
+  *** Directories to be copied
+   **** From: D:\dev\lib\openssl-1.0.2j-32bit-release-DLL-VS2015\bin\
+   **** To: D:\dev\ncstreamer\vs14.0\build\ncstreamer_cef\Release\bin\32bit\
+
+* This certificate file may be necessary to use HTTPS protocol in URDL with OpenSSL:
+ ** https://curl.haxx.se/ca/cacert.pem 
+ ** Copy this file into the build directory of ncstreamer project(ex. ncstreamer\vs14.0\build\ncstreamer_cef\Release\bin\32bit).
+ ** TODO(kyeongho): check if it is already embedded in OS(Windows) by default.
+
+* Configure like this in Visual Studio for debugging:
+ ** ncstreamer Project Settings -> Configuration Properties -> Debugging -> Working Directory: $(OutDir)
+ ** To access DLL files in obs-plugins directory from ncstreamer.exe .
+ ** TODO(kyeongho): any better way?
