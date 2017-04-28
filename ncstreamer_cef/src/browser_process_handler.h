@@ -30,6 +30,8 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   // override CefBrowserProcessHandler
   void OnContextInitialized() override;
 
+  const CefRefPtr<CefBrowser> &GetMainBrowser() const;
+
  private:
   const HINSTANCE instance_;
   const bool shows_sources_all_;

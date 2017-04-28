@@ -29,6 +29,8 @@ class BrowserApp : public CefApp {
 
   CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override;
 
+  const CefRefPtr<CefBrowser> &GetMainBrowser() const;
+
  private:
   CefRefPtr<BrowserProcessHandler> browser_process_handler_;
 

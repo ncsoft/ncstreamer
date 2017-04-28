@@ -22,6 +22,8 @@ class ClientLifeSpanHandler : public CefLifeSpanHandler {
   bool DoClose(CefRefPtr<CefBrowser> browser) override;
   void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
 
+  const CefRefPtr<CefBrowser> &main_browser() const;
+
  private:
   HICON icon_;
 

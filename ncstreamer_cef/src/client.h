@@ -35,6 +35,8 @@ class Client : public CefClient {
   CefRefPtr<CefLoadHandler> GetLoadHandler() override;
   CefRefPtr<CefRequestHandler> GetRequestHandler() override;
 
+  const CefRefPtr<CefBrowser> &GetMainBrowser() const;
+
  private:
   CefRefPtr<ClientDisplayHandler> display_handler_;
   CefRefPtr<ClientLifeSpanHandler> life_span_handler_;

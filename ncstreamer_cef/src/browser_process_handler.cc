@@ -64,4 +64,10 @@ void BrowserProcessHandler::OnContextInitialized() {
   CefBrowserHost::CreateBrowser(
       window_info, client_, uri, browser_settings, NULL);
 }
+
+
+const CefRefPtr<CefBrowser> &BrowserProcessHandler::GetMainBrowser() const {
+  static const CefRefPtr<CefBrowser> kNullBrowser{};
+  return client_ ? client_->GetMainBrowser() : kNullBrowser;
+}
 }  // namespace ncstreamer

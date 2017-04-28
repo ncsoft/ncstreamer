@@ -79,4 +79,9 @@ void ClientLifeSpanHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
     ::CefQuitMessageLoop();
   }
 }
+
+
+const CefRefPtr<CefBrowser> &ClientLifeSpanHandler::main_browser() const {
+  return main_browser_;
+}
 }  // namespace ncstreamer
