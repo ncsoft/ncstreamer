@@ -15,18 +15,18 @@
 #include "ncstreamer_cef/src/streaming_service.h"
 
 
-int APIENTRY wWinMain(HINSTANCE hInstance,
-                      HINSTANCE /*hPrevInstance*/,
-                      LPTSTR /*lpCmdLine*/,
-                      int /*nCmdShow*/) {
+int APIENTRY wWinMain(HINSTANCE instance,
+                      HINSTANCE /*prev_instance*/,
+                      LPTSTR /*cmd_line_str*/,
+                      int /*cmd_show*/) {
   ::CefEnableHighDPISupport();
-  CefMainArgs main_args{hInstance};
+  CefMainArgs main_args{instance};
   ncstreamer::CommandLine cmd_line{::GetCommandLine()};
 
   auto app = cmd_line.is_renderer() ?
       CefRefPtr<CefApp>{new ncstreamer::RenderApp{}} :
       CefRefPtr<CefApp>{new ncstreamer::BrowserApp{
-          hInstance,
+          instance,
           cmd_line.shows_sources_all(),
           cmd_line.sources(),
           cmd_line.locale(),
