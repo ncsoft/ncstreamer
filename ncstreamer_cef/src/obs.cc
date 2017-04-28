@@ -61,9 +61,7 @@ bool Obs::StartStreaming(
   std::string stream_key;
   std::tie(stream_server, stream_key) = SplitStreamUrl(stream_url);
   UpdateCurrentService(service_provider, stream_server, stream_key);
-  UpdateCurrentServiceEncoders(
-      /*audio_bitrate*/ 160,
-      /*video_bitrate*/ 2500);
+  UpdateCurrentServiceEncoders(audio_bitrate_, video_bitrate_);
 
   return stream_output_->Start(
       audio_encoder_, video_encoder_, current_service_, on_streaming_started);
@@ -99,7 +97,8 @@ void Obs::UpdateVideoQuality(
     uint32_t fps,
     uint32_t bitrate) {
   ResetVideo(output_size, fps);
-  UpdateCurrentServiceEncoders(160, bitrate);
+  obs_encoder_set_video(video_encoder_, obs_get_video());
+  video_bitrate_ = bitrate;
 }
 
 
@@ -125,7 +124,7 @@ void Obs::UpdateCurrentServiceEncoders(
   }
 
   obs_encoder_update(video_encoder_, video_settings);
-  obs_encoder_update(audio_encoder_,  audio_settings);
+  obs_encoder_update(audio_encoder_, audio_settings);
 
   obs_data_release(audio_settings);
   obs_data_release(video_settings);
@@ -137,7 +136,9 @@ Obs::Obs()
       audio_encoder_{nullptr},
       video_encoder_{nullptr},
       stream_output_{},
-      current_service_{nullptr} {
+      current_service_{nullptr},
+      audio_bitrate_{160},
+      video_bitrate_{2500} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
