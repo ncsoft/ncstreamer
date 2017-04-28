@@ -13,6 +13,8 @@
 #include "include/cef_browser_process_handler.h"
 #include "windows.h"  // NOLINT
 
+#include "ncstreamer_cef/src/client.h"
+
 
 namespace ncstreamer {
 class BrowserProcessHandler : public CefBrowserProcessHandler {
@@ -34,6 +36,8 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const std::vector<std::string> sources_;
   const std::wstring locale_;
   const std::wstring ui_uri_;
+
+  CefRefPtr<Client> client_;
 
   IMPLEMENT_REFCOUNTING(BrowserProcessHandler);
 };

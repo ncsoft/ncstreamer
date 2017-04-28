@@ -10,7 +10,6 @@
 #include "include/cef_command_line.h"
 #include "include/wrapper/cef_helpers.h"
 
-#include "ncstreamer_cef/src/client.h"
 #include "ncstreamer_cef/src/lib/display.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
 #include "ncstreamer_cef/src/manifest.h"
@@ -27,7 +26,8 @@ BrowserProcessHandler::BrowserProcessHandler(
       shows_sources_all_{shows_sources_all},
       sources_{sources},
       locale_{locale},
-      ui_uri_{ui_uri} {
+      ui_uri_{ui_uri},
+      client_{} {
 }
 
 
@@ -47,11 +47,11 @@ void BrowserProcessHandler::OnContextInitialized() {
   window_info.width = window_size.width();
   window_info.height = window_size.height();
 
-  CefRefPtr<Client> client{new Client{
+  client_ = new Client{
       instance_,
       shows_sources_all_,
       sources_,
-      locale_}};
+      locale_};
 
   std::wstring uri{ui_uri_};
   if (uri.empty() == true) {
@@ -62,6 +62,6 @@ void BrowserProcessHandler::OnContextInitialized() {
   CefBrowserSettings browser_settings;
 
   CefBrowserHost::CreateBrowser(
-      window_info, client, uri, browser_settings, NULL);
+      window_info, client_, uri, browser_settings, NULL);
 }
 }  // namespace ncstreamer
