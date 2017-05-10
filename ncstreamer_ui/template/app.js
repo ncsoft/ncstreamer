@@ -227,10 +227,13 @@ function onProviderPageLinkClicked() {
 function onStreamingUserPageSelectChanged() {
   console.info('change streamingUserPageSelect');
   const managingSelect = app.dom.streamingManagingPageSelect;
+  const privacySelect = app.dom.streamingPageAccess;
   if (app.dom.streamingUserPageSelect.children[2].value == 2) {
     managingSelect.style.display = 'block';
+    privacySelect.style.display = 'none';
   } else {
     managingSelect.style.display = 'none';
+    privacySelect.style.display = 'block';
   }
 }
 
