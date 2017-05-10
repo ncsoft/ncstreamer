@@ -55,6 +55,11 @@ bool Obs::StartStreaming(
     const std::string &service_provider,
     const std::string &stream_url,
     const ObsOutput::OnStarted &on_streaming_started) {
+  ResetAudio();
+  ResetVideo();
+  obs_encoder_set_audio(audio_encoder_, obs_get_audio());
+  obs_encoder_set_video(video_encoder_, obs_get_video());
+
   UpdateCurrentSource(source_info);
 
   std::string stream_server;
@@ -98,8 +103,6 @@ void Obs::UpdateVideoQuality(
     uint32_t bitrate) {
   output_size_ = output_size;
   fps_ = fps;
-  ResetVideo();
-  obs_encoder_set_video(video_encoder_, obs_get_video());
   video_bitrate_ = bitrate;
 }
 
@@ -149,13 +152,8 @@ Obs::Obs()
   obs_load_all_modules();
   obs_log_loaded_modules();
 
-  ResetAudio();
-  ResetVideo();
-
   audio_encoder_ = CreateAudioEncoder();
   video_encoder_ = CreateVideoEncoder();
-  obs_encoder_set_audio(audio_encoder_,  obs_get_audio());
-  obs_encoder_set_video(video_encoder_, obs_get_video());
 
   stream_output_.reset(new ObsOutput{});
 }
