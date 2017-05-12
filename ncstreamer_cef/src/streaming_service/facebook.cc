@@ -48,7 +48,7 @@ void Facebook::LogIn(
         "1789696898019802"};
     static const char *kAlpha{
         "1795379417451550"};
-    return kAlpha;
+    return kProduction;
   }()};
 
   static const Uri kLoginUri{FacebookApi::Login::Oauth::BuildUri(
