@@ -68,6 +68,7 @@ class Obs {
       const std::string &stream_server,
       const std::string &stream_key);
   void ReleaseCurrentService();
+  void UpdateBaseResolution(const std::string &source_info);
 
   static Obs *static_instance;
 
