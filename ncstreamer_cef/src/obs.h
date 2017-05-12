@@ -56,7 +56,7 @@ class Obs {
 
   bool SetUpLog();
   void ResetAudio();
-  void ResetVideo(const Dimension<uint32_t> &output_size, uint32_t fps);
+  void ResetVideo();
   obs_encoder_t *CreateAudioEncoder();
   obs_encoder_t *CreateVideoEncoder();
   void ClearSceneData();
@@ -68,6 +68,7 @@ class Obs {
       const std::string &stream_server,
       const std::string &stream_key);
   void ReleaseCurrentService();
+  void UpdateBaseResolution(const std::string &source_info);
 
   static Obs *static_instance;
 
@@ -79,6 +80,9 @@ class Obs {
   obs_service_t *current_service_;
   int audio_bitrate_;
   int video_bitrate_;
+  Dimension<uint32_t> base_size_;
+  Dimension<uint32_t> output_size_;
+  uint32_t fps_;
 };
 }  // namespace ncstreamer
 

@@ -6,6 +6,9 @@
 #include "ncstreamer_cef/src/obs.h"
 
 #include <cassert>
+#include <codecvt>
+
+#include "windows.h"  //NOLINT
 
 #include "ncstreamer_cef/src_imported/from_obs_studio_ui/obs-app.hpp"
 
@@ -55,6 +58,13 @@ bool Obs::StartStreaming(
     const std::string &service_provider,
     const std::string &stream_url,
     const ObsOutput::OnStarted &on_streaming_started) {
+  UpdateBaseResolution(source_info);
+
+  ResetAudio();
+  ResetVideo();
+  obs_encoder_set_audio(audio_encoder_, obs_get_audio());
+  obs_encoder_set_video(video_encoder_, obs_get_video());
+
   UpdateCurrentSource(source_info);
 
   std::string stream_server;
@@ -96,8 +106,8 @@ void Obs::UpdateVideoQuality(
     const Dimension<uint32_t> &output_size,
     uint32_t fps,
     uint32_t bitrate) {
-  ResetVideo(output_size, fps);
-  obs_encoder_set_video(video_encoder_, obs_get_video());
+  output_size_ = output_size;
+  fps_ = fps;
   video_bitrate_ = bitrate;
 }
 
@@ -138,19 +148,17 @@ Obs::Obs()
       stream_output_{},
       current_service_{nullptr},
       audio_bitrate_{160},
-      video_bitrate_{2500} {
+      video_bitrate_{2500},
+      base_size_{1920, 1080},
+      output_size_{1280, 720},
+      fps_{30} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
   obs_log_loaded_modules();
 
-  ResetAudio();
-  ResetVideo({1280, 720}, 30);
-
   audio_encoder_ = CreateAudioEncoder();
   video_encoder_ = CreateVideoEncoder();
-  obs_encoder_set_audio(audio_encoder_,  obs_get_audio());
-  obs_encoder_set_video(video_encoder_, obs_get_video());
 
   stream_output_.reset(new ObsOutput{});
 }
@@ -196,15 +204,15 @@ void Obs::ResetAudio() {
 }
 
 
-void Obs::ResetVideo(const Dimension<uint32_t> &output_size, uint32_t fps) {
+void Obs::ResetVideo() {
   struct obs_video_info ovi;
-  ovi.fps_num = fps;
+  ovi.fps_num = fps_;
   ovi.fps_den = 1;
   ovi.graphics_module = "libobs-d3d11.dll";
-  ovi.base_width = 1920;
-  ovi.base_height = 1080;
-  ovi.output_width = output_size.width();
-  ovi.output_height = output_size.height();
+  ovi.base_width = base_size_.width();
+  ovi.base_height = base_size_.height();
+  ovi.output_width = output_size_.width();
+  ovi.output_height = output_size_.height();
   ovi.output_format = VIDEO_FORMAT_NV12;
   ovi.colorspace = VIDEO_CS_601;
   ovi.range = VIDEO_RANGE_PARTIAL;
@@ -288,6 +296,27 @@ void Obs::ReleaseCurrentService() {
   }
   obs_service_release(current_service_);
   current_service_ = nullptr;
+}
+
+
+void Obs::UpdateBaseResolution(const std::string &source_info) {
+  std::string title_class = source_info.substr(
+    0, source_info.find_last_of(":"));
+  std::string class_name = title_class.substr(
+    title_class.find_last_of(":") + 1, title_class.length());
+  std::string title = title_class.substr(0, title_class.find_last_of(":"));
+
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  std::wstring w_class_name = converter.from_bytes(class_name);
+  std::wstring w_title = converter.from_bytes(title);
+
+  HWND handle = ::FindWindowExW(
+    nullptr, nullptr, w_class_name.c_str(), w_title.c_str());
+  RECT rect;
+  GetClientRect(handle, &rect);
+  uint32_t width = rect.right - rect.left;
+  uint32_t height = rect.bottom - rect.top;
+  base_size_ = {width, height};
 }
 
 
