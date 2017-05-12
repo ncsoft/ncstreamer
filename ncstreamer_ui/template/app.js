@@ -19,23 +19,23 @@ const app = {
           height: 720,
         },
         fps: 30,
-        bitrate: 2500,
+        bitrate: 4000,
       },
       medium: {
+        resolution: {
+          width: 1280,
+          height: 720,
+        },
+        fps: 30,
+        bitrate: 3000,
+      },
+      low: {
         resolution: {
           width: 854,
           height: 480,
         },
-        fps: 25,
-        bitrate: 2000,
-      },
-      low: {
-        resolution: {
-          width: 640,
-          height: 360,
-        },
-        fps: 20,
-        bitrate: 1500,
+        fps: 30,
+        bitrate: 1000,
       },
     },
   },
