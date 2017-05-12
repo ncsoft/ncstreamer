@@ -91,6 +91,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'customSelectChange', onStreamingManagingPageSelectChanged);
   app.dom.streamingPageAccess.addEventListener(
       'customSelectChange', onStreamingPageAccessChanged);
+  app.dom.streamingNctvTooltip.addEventListener(
+      'click', onStreamingNctvTooltipClosed);
   app.dom.streamingGameSelect.addEventListener(
       'customSelectChange', onStreamingGameSelectChanged);
   app.dom.streamingMicCheckbox.addEventListener(
@@ -246,11 +248,18 @@ function onStreamingManagingPageSelectChanged() {
 function onStreamingPageAccessChanged() {
   console.info('change streamingPageAccess');
   const input = app.dom.streamingPageAccess.children[2].value;
-  if (input == 'EVERYONE') {
-    app.dom.streamingNctvTooltip.style.display = 'none';
+  const tooltip = app.dom.streamingNctvTooltip;
+  if (input == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
+    tooltip.style.display = 'none';
   } else {
-    app.dom.streamingNctvTooltip.style.display = 'block';
+    tooltip.style.display = 'block';
   }
+}
+
+
+function onStreamingNctvTooltipClosed() {
+  console.info('close streamingNctvTooltip');
+  Object.defineProperty(app.dom.streamingNctvTooltip, 'show-once', {});
 }
 
 
