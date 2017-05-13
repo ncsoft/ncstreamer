@@ -3,6 +3,7 @@
  */
 
 
+#include <cassert>
 #include <memory>
 
 #include "windows.h"  // NOLINT
@@ -11,6 +12,7 @@
 #include "ncstreamer_cef/src/command_line.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
 #include "ncstreamer_cef/src/obs.h"
+#include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/render_app.h"
 #include "ncstreamer_cef/src/streaming_service.h"
 
@@ -37,6 +39,12 @@ int APIENTRY wWinMain(HINSTANCE instance,
     return exit_code;
   }
 
+  const auto *browser_app = dynamic_cast<ncstreamer::BrowserApp *>(app.get());
+  if (!browser_app) {
+    assert(false);
+    return -1;
+  }
+
   CefSettings settings;
   settings.no_sandbox = true;
 
@@ -44,9 +52,13 @@ int APIENTRY wWinMain(HINSTANCE instance,
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
+  ncstreamer::RemoteServer::SetUp(
+      browser_app,
+      cmd_line.remote_port());
 
   ::CefRunMessageLoop();
 
+  ncstreamer::RemoteServer::ShutDown();
   ncstreamer::StreamingService::ShutDown();
   ncstreamer::Obs::ShutDown();
   ncstreamer::WindowFrameRemover::ShutDown();

@@ -132,6 +132,9 @@
     <ClCompile Include="..\ncstreamer_cef\src\obs\obs_source_info.cc">
       <Filter>src\obs</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\remote_server.cc">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\obs\obs_source_info.h">
       <Filter>src\obs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\remote_server.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
