@@ -18,6 +18,7 @@
 #include "Shlwapi.h"  // NOLINT
 
 #include "ncstreamer_cef/src/js_executor.h"
+#include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/obs.h"
 #include "ncstreamer_cef/src/streaming_service.h"
 
@@ -147,6 +148,11 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
            std::placeholders::_3)},
       {"settings/video_quality/update",
        std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {"remote/status",
+       std::bind(&This::OnCommandRemoteStatus, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)}};
@@ -350,5 +356,45 @@ void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
   }
 
   Obs::Get()->UpdateVideoQuality({width, height}, fps, bitrate);
+}
+
+
+void ClientRequestHandler::OnCommandRemoteStatus(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> /*browser*/) {
+  auto request_key_i = args.find("request_key");
+  auto status_i = args.find("status");
+  auto source_title_i = args.find("source_title");
+  if (request_key_i == args.end() ||
+      status_i == args.end() ||
+      source_title_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  int request_key{0};
+  try {
+    request_key = std::stoi(request_key_i->second);
+  } catch (...) {
+  }
+
+  if (request_key == 0) {
+    assert(false);
+    return;
+  }
+
+  const std::string &status = status_i->second;
+  const std::string &source_title = source_title_i->second;
+
+  if (status.empty() == true) {
+    assert(false);
+    return;
+  }
+
+  RemoteServer::Get()->RespondStreamingStatus(
+      request_key,
+      status,
+      source_title);
 }
 }  // namespace ncstreamer

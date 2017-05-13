@@ -9,6 +9,7 @@
 
 #include <fstream>
 #include <mutex>  // NOLINT
+#include <string>
 #include <thread>  // NOLINT
 #include <vector>
 #include <unordered_map>
@@ -33,6 +34,11 @@ class RemoteServer {
 
   static void ShutDown();
   static RemoteServer *Get();
+
+  void RespondStreamingStatus(
+      int request_key,
+      const std::string &status,
+      const std::string &source_title);
 
  private:
   using Asio = ws::config::asio;
@@ -62,6 +68,10 @@ class RemoteServer {
   void OnClose(ws::connection_hdl connection);
   void OnMessage(ws::connection_hdl connection,
                  ws::connection<Asio>::message_ptr msg);
+
+  void OnStreamingStatusRequest(
+      const ws::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
 
   static RemoteServer *static_instance;
 

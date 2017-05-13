@@ -44,6 +44,10 @@ const cef = (function() {
       request: [],
       response: [],
     },
+    'remote/status': {
+      request: ['request_key', 'status', 'source_title'],
+      response: [],
+    },
   };
 
   const exports = {};
@@ -98,3 +102,12 @@ const cef = (function() {
     location.href = uri;
   }
 })();
+
+
+const remote = {
+  onStreamingStatusRequest: function(request_key) {
+    const status = app.streaming.status;
+    const source_title = app.dom.streamingGameSelect.children[0].textContent;
+    cef.remoteStatus.request(request_key, status, source_title);
+  },
+};

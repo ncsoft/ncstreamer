@@ -12,6 +12,8 @@ class RemoteMessage {
  public:
   enum class MessageType {
     kUndefined = 0,
+    kStreamingStatusRequest,
+    kStreamingStatusResponse,
   };
 };
 }  // namespace ncstreamer

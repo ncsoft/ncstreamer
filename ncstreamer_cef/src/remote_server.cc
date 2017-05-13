@@ -11,6 +11,7 @@
 
 #include "boost/property_tree/json_parser.hpp"
 
+#include "ncstreamer_cef/src/js_executor.h"
 #include "ncstreamer_cef/src/remote_message_types.h"
 
 
@@ -40,6 +41,35 @@ void RemoteServer::ShutDown() {
 RemoteServer *RemoteServer::Get() {
   assert(static_instance);
   return static_instance;
+}
+
+
+void RemoteServer::RespondStreamingStatus(
+    int request_key,
+    const std::string &status,
+    const std::string &source_title) {
+  ws::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    // TODO(khpark): log warning.
+    return;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kStreamingStatusResponse));
+    tree.put("status", status);
+    tree.put("source_title", source_title);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  ws::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    // TODO(khpark): log error.
+    return;
+  }
 }
 
 
@@ -171,7 +201,10 @@ void RemoteServer::OnMessage(ws::connection_hdl connection,
       const ws::connection_hdl &,
       const boost::property_tree::ptree &/*msg*/)>;
   static const std::unordered_map<RemoteMessage::MessageType,
-                                  MessageHandler> kMessageHandlers{};
+                                  MessageHandler> kMessageHandlers{
+      {RemoteMessage::MessageType::kStreamingStatusRequest,
+       std::bind(&RemoteServer::OnStreamingStatusRequest,
+           this, std::placeholders::_1, std::placeholders::_2)}};
 
   auto i = kMessageHandlers.find(msg_type);
   if (i == kMessageHandlers.end()) {
@@ -180,6 +213,18 @@ void RemoteServer::OnMessage(ws::connection_hdl connection,
     return;
   }
   i->second(connection, msg_tree);
+}
+
+
+void RemoteServer::OnStreamingStatusRequest(
+    const ws::connection_hdl &connection,
+    const boost::property_tree::ptree &/*tree*/) {
+  int request_key = request_cache_.CheckIn(connection);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onStreamingStatusRequest",
+      request_key);
 }
 
 
