@@ -245,6 +245,9 @@
     <ClInclude Include="..\ncstreamer_cef\src\remote_server.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\remote_message_types.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\ncstreamer_cef\src\ncstreamer.rc">

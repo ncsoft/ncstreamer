@@ -6,6 +6,12 @@
 #include "ncstreamer_cef/src/remote_server.h"
 
 #include <cassert>
+#include <functional>
+#include <unordered_map>
+
+#include "boost/property_tree/json_parser.hpp"
+
+#include "ncstreamer_cef/src/remote_message_types.h"
 
 
 namespace {
@@ -149,6 +155,31 @@ void RemoteServer::OnClose(ws::connection_hdl connection) {
 
 void RemoteServer::OnMessage(ws::connection_hdl connection,
                              ws::connection<Asio>::message_ptr msg) {
+  boost::property_tree::ptree msg_tree;
+  auto msg_type{RemoteMessage::MessageType::kUndefined};
+
+  std::stringstream ss{msg->get_payload()};
+  try {
+    boost::property_tree::read_json(ss, msg_tree);
+    msg_type = static_cast<RemoteMessage::MessageType>(
+        msg_tree.get<int>("type"));
+  } catch (const std::exception &/*e*/) {
+    msg_type = RemoteMessage::MessageType::kUndefined;
+  }
+
+  using MessageHandler = std::function<void(
+      const ws::connection_hdl &,
+      const boost::property_tree::ptree &/*msg*/)>;
+  static const std::unordered_map<RemoteMessage::MessageType,
+                                  MessageHandler> kMessageHandlers{};
+
+  auto i = kMessageHandlers.find(msg_type);
+  if (i == kMessageHandlers.end()) {
+    // TBD
+    assert(false);
+    return;
+  }
+  i->second(connection, msg_tree);
 }
 
 

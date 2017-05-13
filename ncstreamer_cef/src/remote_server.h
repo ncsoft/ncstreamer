@@ -14,6 +14,7 @@
 #include <unordered_map>
 
 #include "boost/asio/io_service.hpp"
+#include "boost/property_tree/ptree.hpp"
 #include "websocketpp/config/asio_no_tls.hpp"
 #include "websocketpp/server.hpp"
 

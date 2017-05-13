@@ -162,6 +162,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\obs.h" />
     <ClInclude Include="..\ncstreamer_cef\src\obs\obs_output.h" />
     <ClInclude Include="..\ncstreamer_cef\src\obs\obs_source_info.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\remote_message_types.h" />
     <ClInclude Include="..\ncstreamer_cef\src\remote_server.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_app.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process\render_load_handler.h" />
