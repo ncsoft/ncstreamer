@@ -37,6 +37,47 @@ RemoteServer *RemoteServer::Get() {
 }
 
 
+RemoteServer::RequestCache::RequestCache()
+    : mutex_{},
+      cache_{},
+      last_key_{0} {
+}
+
+
+RemoteServer::RequestCache::~RequestCache() {
+}
+
+
+int RemoteServer::RequestCache::CheckIn(
+    ws::connection_hdl connection) {
+  int last_key{0};
+  {
+    std::lock_guard<std::mutex> lock{mutex_};
+
+    ++last_key_;
+    cache_.emplace(last_key_, connection);
+    last_key = last_key_;
+  }
+  return last_key;
+}
+
+
+ws::connection_hdl RemoteServer::RequestCache::CheckOut(
+    int key) {
+  ws::connection_hdl connection{};
+  {
+    std::lock_guard<std::mutex> lock{mutex_};
+
+    auto i = cache_.find(key);
+    if (i != cache_.end()) {
+      connection = i->second;
+      cache_.erase(i);
+    }
+  }
+  return connection;
+}
+
+
 RemoteServer::RemoteServer(
     const BrowserApp *browser_app,
     uint16_t port)
@@ -45,7 +86,8 @@ RemoteServer::RemoteServer(
       io_service_work_{io_service_},
       server_{},
       server_threads_{},
-      server_log_{} {
+      server_log_{},
+      request_cache_{} {
   server_log_.open("remote_server.log");
   server_.set_access_channels(ws::log::alevel::all);
   server_.set_access_channels(ws::log::elevel::all);

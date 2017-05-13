@@ -8,8 +8,10 @@
 
 
 #include <fstream>
+#include <mutex>  // NOLINT
 #include <thread>  // NOLINT
 #include <vector>
+#include <unordered_map>
 
 #include "boost/asio/io_service.hpp"
 #include "websocketpp/config/asio_no_tls.hpp"
@@ -34,6 +36,20 @@ class RemoteServer {
  private:
   using Asio = ws::config::asio;
 
+  class RequestCache {
+   public:
+    RequestCache();
+    virtual ~RequestCache();
+
+    int CheckIn(ws::connection_hdl connection);
+    ws::connection_hdl CheckOut(int key);
+
+   private:
+    mutable std::mutex mutex_;
+    std::unordered_map<int /*key*/, ws::connection_hdl> cache_;
+    int last_key_;
+  };
+
   RemoteServer(
       const BrowserApp *browser_app,
       uint16_t port);
@@ -55,6 +71,8 @@ class RemoteServer {
   ws::server<Asio> server_;
   std::vector<std::thread> server_threads_;
   std::ofstream server_log_;
+
+  RequestCache request_cache_;
 };
 }  // namespace ncstreamer
 
