@@ -77,6 +77,10 @@ class ClientRequestHandler : public CefRequestHandler {
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
+  void OnCommandRemoteStatus(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
 
   std::wstring locale_;
 

@@ -29,4 +29,9 @@ BrowserApp::~BrowserApp() {
 CefRefPtr<CefBrowserProcessHandler> BrowserApp::GetBrowserProcessHandler() {
   return browser_process_handler_;
 }
+
+
+const CefRefPtr<CefBrowser> &BrowserApp::GetMainBrowser() const {
+  return browser_process_handler_->GetMainBrowser();
+}
 }  // namespace ncstreamer

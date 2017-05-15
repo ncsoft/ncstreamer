@@ -20,7 +20,8 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       shows_sources_all_{false},
       sources_{},
       locale_{},
-      ui_uri_{} {
+      ui_uri_{},
+      remote_port_{0} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
   cef_cmd_line->InitFromString(cmd_line);
@@ -45,6 +46,14 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
 
   locale_ = cef_cmd_line->GetSwitchValue(L"locale");
   ui_uri_ = cef_cmd_line->GetSwitchValue(L"ui-uri");
+
+  const std::wstring &remote_port =
+      cef_cmd_line->GetSwitchValue(L"remote-port");
+  try {
+    remote_port_ = static_cast<uint16_t>(std::stoi(remote_port));
+  } catch (...) {
+    remote_port_ = 9002;
+  }
 }
 
 

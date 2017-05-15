@@ -42,4 +42,9 @@ CefRefPtr<CefLoadHandler> Client::GetLoadHandler() {
 CefRefPtr<CefRequestHandler> Client::GetRequestHandler() {
   return request_handler_;
 }
+
+
+const CefRefPtr<CefBrowser> &Client::GetMainBrowser() const {
+  return life_span_handler_->main_browser();
+}
 }  // namespace ncstreamer

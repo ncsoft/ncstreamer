@@ -56,7 +56,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);$(URDL_PATH);$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);$(OPENSSL_ROOT)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);$(URDL_PATH);$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);$(OPENSSL_ROOT)\include;$(WEBSOCKETPP_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=_WIN32_WINNT_WIN7;WIN32_LEAN_AND_MEAN;URDL_HEADER_ONLY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -80,7 +80,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);$(URDL_PATH);$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);$(OPENSSL_ROOT)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);$(URDL_PATH);$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);$(OPENSSL_ROOT)\include;$(WEBSOCKETPP_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=_WIN32_WINNT_WIN7;WIN32_LEAN_AND_MEAN;URDL_HEADER_ONLY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -125,6 +125,7 @@
     <ClCompile Include="..\ncstreamer_cef\src\obs.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\obs\obs_output.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\obs\obs_source_info.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\remote_server.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_app.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_process\render_load_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_process_handler.cc" />
@@ -161,6 +162,8 @@
     <ClInclude Include="..\ncstreamer_cef\src\obs.h" />
     <ClInclude Include="..\ncstreamer_cef\src\obs\obs_output.h" />
     <ClInclude Include="..\ncstreamer_cef\src\obs\obs_source_info.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\remote_message_types.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\remote_server.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_app.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process\render_load_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process_handler.h" />
