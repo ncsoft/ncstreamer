@@ -135,6 +135,9 @@
     <ClCompile Include="..\ncstreamer_cef\src\remote_server.cc">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\local_storage.cc">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -246,6 +249,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\remote_message_types.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\local_storage.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

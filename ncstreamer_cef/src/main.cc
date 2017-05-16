@@ -11,6 +11,7 @@
 #include "ncstreamer_cef/src/browser_app.h"
 #include "ncstreamer_cef/src/command_line.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
+#include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/obs.h"
 #include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/render_app.h"
@@ -50,6 +51,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
   settings.no_sandbox = true;
 
   ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
+  ncstreamer::LocalStorage::SetUp(
+      L"local_storage.json");
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
@@ -63,6 +66,7 @@ int APIENTRY wWinMain(HINSTANCE instance,
   ncstreamer::StreamingService::ShutDown();
   ncstreamer::Obs::ShutDown();
   ncstreamer::WindowFrameRemover::ShutDown();
+  ncstreamer::LocalStorage::ShutDown();
   ::CefShutdown();
 
   return 0;
