@@ -38,6 +38,7 @@ class Obs {
 
   bool TurnOnMic();
   bool TurnOffMic();
+  bool UpdateMicVolume(float volume);
   void UpdateVideoQuality(
       const Dimension<uint32_t> &output_size,
       uint32_t fps,

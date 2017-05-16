@@ -755,3 +755,8 @@ cef.settingsMicOff.onResponse = function(error) {
   }
   app.streaming.mic.use = false;
 };
+
+
+cef.settingsMicVolumeUpdate.onResponse = function(error, volume) {
+  console.info('mic volume response');
+};

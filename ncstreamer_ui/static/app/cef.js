@@ -48,6 +48,10 @@ const cef = (function() {
       request: [],
       response: ['error'],
     },
+    'settings/mic/volume/update': {
+      request: ['volume'],
+      response: ['error', 'volume'],
+    },
     'storage/user_page/update': {
       request: ['userPage'],
       response: [],

@@ -155,6 +155,11 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"settings/mic/volume/update",
+       std::bind(&This::OnCommandSettingsMicVolumeUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"settings/video_quality/update",
        std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
            std::placeholders::_1,
@@ -401,6 +406,35 @@ void ClientRequestHandler::OnCommandSettingsMicOff(
   }
   JsExecutor::Execute(browser, "cef.onResponse", cmd,
       JsExecutor::StringPairVector{{"error", error}});
+}
+
+
+void ClientRequestHandler::OnCommandSettingsMicVolumeUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  auto volume_i = args.find("volume");
+  if (volume_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  float volume{0.0};
+  try {
+    volume = std::stof(volume_i->second);
+  }
+  catch (...) {
+    assert(false);
+    return;
+  }
+  std::string error{};
+  bool result = Obs::Get()->UpdateMicVolume(volume);
+  if (!result) {
+    error = "update volume after turn on mic";
+  }
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", error},
+                                   {"volume", volume_i->second}});
 }
 
 
