@@ -177,7 +177,9 @@ function setUpStreamingSources(obj) {
 
   if (obj.sources.length == 0) {
     display.innerHTML = '%NO_PLAYING_GAME%' + '<span class="caret"></span>';
+    display.disabled = true;
   } else {
+    display.disabled = false;
     for (const source of obj.sources) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
@@ -233,9 +235,11 @@ function onStreamingUserPageSelectChanged() {
   if (app.dom.streamingUserPageSelect.children[0].value == 2) {
     managingSelect.style.display = 'block';
     privacySelect.style.display = 'none';
+    privacySelect.children[0].disabled = true;
   } else {
     managingSelect.style.display = 'none';
     privacySelect.style.display = 'block';
+    privacySelect.children[0].disabled = false;
   }
 }
 
@@ -377,7 +381,9 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
 
   if (userPages.length == 0) {
     display.textContent = '%NO_MANAGING_PAGE%' + '<span class="caret"></span>';
+    display.disabled = true;
   } else {
+    display.disabled = false;
     for (const userPage of userPages) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
