@@ -171,23 +171,24 @@ function setUpStreamingSources(obj) {
 
   const display = app.dom.streamingGameSelect.children[0];
   const contents = app.dom.streamingGameSelect.children[1];
-  const input = app.dom.streamingGameSelect.children[2];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
 
   if (obj.sources.length == 0) {
-    display.textContent = '%NO_PLAYING_GAME%';
+    display.innerHTML = '%NO_PLAYING_GAME%' + '<span class="caret"></span>';
   } else {
     for (const source of obj.sources) {
       const li = document.createElement('li');
-      const node = document.createTextNode(source.split(':')[0]);
+      const aTag = document.createElement('a');
+      aTag.textContent = source.split(':')[0];
       li.setAttribute('data-value', source);
-      li.appendChild(node);
+      li.appendChild(aTag);
       contents.appendChild(li);
     }
-    input.value = contents.firstChild.getAttribute('data-value');
-    display.textContent = contents.firstChild.textContent;
+    display.value = contents.firstChild.getAttribute('data-value');
+    display.innerHTML = contents.firstChild.firstChild.textContent +
+                        '<span class="caret"></span>';
   }
 }
 
@@ -217,10 +218,9 @@ function onStreamingLoginButtonClicked() {
 
 function onProviderPageLinkClicked() {
   console.info('click providerPageLink');
-
-  const link = (app.dom.streamingUserPageSelect.children[2].value == 2) ?
+  const link = (app.dom.streamingUserPageSelect.children[0].value == 2) ?
       app.service.user.pages[
-          app.dom.streamingManagingPageSelect.children[2].value].link :
+          app.dom.streamingManagingPageSelect.children[0].value].link :
       app.service.user.link;
   cef.externalBrowserPopUp.request(link);
 }
@@ -230,7 +230,7 @@ function onStreamingUserPageSelectChanged() {
   console.info('change streamingUserPageSelect');
   const managingSelect = app.dom.streamingManagingPageSelect;
   const privacySelect = app.dom.streamingPageAccess;
-  if (app.dom.streamingUserPageSelect.children[2].value == 2) {
+  if (app.dom.streamingUserPageSelect.children[0].value == 2) {
     managingSelect.style.display = 'block';
     privacySelect.style.display = 'none';
   } else {
@@ -247,7 +247,7 @@ function onStreamingManagingPageSelectChanged() {
 
 function onStreamingPageAccessChanged() {
   console.info('change streamingPageAccess');
-  const input = app.dom.streamingPageAccess.children[2].value;
+  const input = app.dom.streamingPageAccess.children[0].value;
   const tooltip = app.dom.streamingNctvTooltip;
   if (input == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
     tooltip.style.display = 'none';
@@ -284,10 +284,10 @@ function onStreamingControlButtonClicked() {
   console.info('change streamingControlButton');
   ({
     'standby': function() {
-      const source = app.dom.streamingGameSelect.children[2].value;
-      const userPage = app.dom.streamingUserPageSelect.children[2].value == 2 ?
-          app.dom.streamingManagingPageSelect.children[2].value : 'me';
-      const privacy = app.dom.streamingPageAccess.children[2].value;
+      const source = app.dom.streamingGameSelect.children[0].value;
+      const userPage = app.dom.streamingUserPageSelect.children[0].value == 2 ?
+          app.dom.streamingManagingPageSelect.children[0].value : 'me';
+      const privacy = app.dom.streamingPageAccess.children[0].value;
       const description = app.dom.streamingFeedDescription.value;
       if (source == '' || userPage == '' || privacy == '')
         return;
@@ -307,7 +307,7 @@ function onStreamingControlButtonClicked() {
 
 
 function onStreamingQualitySelectChanged() {
-  const curValue = app.dom.streamingQualitySelect.children[2].value;
+  const curValue = app.dom.streamingQualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
   console.info({ streamingQuality: curValue });
   cef.settingsVideoQualityUpdate.request(
@@ -321,7 +321,6 @@ function onStreamingQualitySelectChanged() {
 function setUpSteamingQuality() {
   const display = app.dom.streamingQualitySelect.children[0];
   const contents = app.dom.streamingQualitySelect.children[1];
-  const input = app.dom.streamingQualitySelect.children[2];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
@@ -332,17 +331,19 @@ function setUpSteamingQuality() {
 
     const quality = app.streaming.quality[level];
     const li = document.createElement('li');
-    const node = document.createTextNode([
+    const aTag = document.createElement('a');
+    aTag.textContent = [
         level,
         quality.resolution.width + '*' + quality.resolution.height,
         'fps: ' + quality.fps,
-        'bitrate: ' + quality.bitrate].join(', '));
+        'bitrate: ' + quality.bitrate].join(', ');
     li.setAttribute('data-value', level);
-    li.appendChild(node);
+    li.appendChild(aTag);
     contents.appendChild(li);
   }
-  input.value = contents.firstChild.getAttribute('data-value');
-  display.textContent = contents.firstChild.textContent;
+  display.value = contents.firstChild.getAttribute('data-value');
+  display.innerHTML = contents.firstChild.firstChild.textContent +
+                      '<span class="caret"></span>';
   onStreamingQualitySelectChanged();
 }
 
@@ -370,23 +371,24 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
 
   const display = app.dom.streamingManagingPageSelect.children[0];
   const contents = app.dom.streamingManagingPageSelect.children[1];
-  const input = app.dom.streamingManagingPageSelect.children[2];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
 
   if (userPages.length == 0) {
-    display.textContent = '%NO_MANAGING_PAGE%';
+    display.textContent = '%NO_MANAGING_PAGE%' + '<span class="caret"></span>';
   } else {
     for (const userPage of userPages) {
       const li = document.createElement('li');
-      const node = document.createTextNode(userPage.name);
+      const aTag = document.createElement('a');
+      aTag.textContent = userPage.name;
       li.setAttribute('data-value', userPage.id);
-      li.appendChild(node);
+      li.appendChild(aTag);
       contents.appendChild(li);
     }
-    input.value = contents.firstChild.getAttribute('data-value');
-    display.textContent = contents.firstChild.textContent;
+    display.value = contents.firstChild.getAttribute('data-value');
+    display.innerHTML = contents.firstChild.firstChild.textContent +
+                        '<span class="caret"></span>';
   }
 };
 
