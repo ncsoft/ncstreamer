@@ -45,6 +45,7 @@ div {
 
 #streaming-error-text {
   display: none;
+  white-space: pre;
 }
 
 

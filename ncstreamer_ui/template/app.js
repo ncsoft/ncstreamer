@@ -9,7 +9,7 @@
 const app = {
   dom: {},
   streaming: {
-    // ['standby', 'setup', 'starting', 'onAir', 'stopping']
+    // ['standby', 'setup', 'starting', 'onAir', 'stopping', 'error']
     status: 'standby',
     popupBrowserId: 0,
     quality: {
@@ -135,6 +135,9 @@ function updateStreamingStatus(status) {
   app.streaming.status = status;
   const message = app.dom.streamingNormalText;
   const button = app.dom.streamingControlButton;
+  const error = app.dom.streamingErrorText;
+  error.style.display = 'none';
+  message.style.display = 'block';
   switch (status) {
     case 'standby':
       removeClass(button, 'loading');
@@ -165,6 +168,14 @@ function updateStreamingStatus(status) {
       message.textContent = '%ENDING_BROADCASTING%';
       button.textContent = '%END_BROADCASTING%';
       button.disabled = true;
+      break;
+    case 'error':
+      removeClass(button, 'loading');
+      error.textContent = '%ERROR_MESSAGE%';
+      error.style.display = 'block';
+      message.style.display = 'none';
+      button.textContent = '%START_BROADCASTING%';
+      button.disabled = false;
       break;
   }
 }
@@ -407,7 +418,11 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
 
 cef.streamingStart.onResponse = function(error) {
   console.info(error);
-  updateStreamingStatus('onAir');
+  if (error != "") {
+    updateStreamingStatus('error');
+  } else {
+    updateStreamingStatus('onAir');
+  }
 };
 
 
