@@ -85,6 +85,10 @@ void Obs::StopStreaming(
 
 
 void Obs::TurnOnMic() {
+  obs_source_t *video_source = obs_get_output_source(0);
+  if (!video_source)
+    return;
+
   obs_data_t *settings = obs_data_create();
   obs_data_set_string(settings, "device_id", "default");
 
