@@ -298,11 +298,12 @@ function onStreamingControlButtonClicked() {
           app.dom.streamingManagingPageSelect.children[0].value : 'me';
       const privacy = app.dom.streamingPageAccess.children[0].value;
       const description = app.dom.streamingFeedDescription.value;
+      const mic = app.dom.streamingMicCheckbox.checked;
       if (source == '' || userPage == '' || privacy == '')
         return;
 
       cef.streamingStart.request(
-          source, userPage, privacy, '' /* title */, description);
+          source, userPage, privacy, '' /* title */, description, mic);
       updateStreamingStatus('starting');
     },
     'starting': function() {},

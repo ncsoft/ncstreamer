@@ -245,11 +245,13 @@ void ClientRequestHandler::OnCommandStreamingStart(
   auto privacy_i = args.find("privacy");
   auto title_i = args.find("title");
   auto description_i = args.find("description");
+  auto mic_i = args.find("mic");
   if (source_i == args.end() ||
       user_page_i == args.end() ||
       privacy_i == args.end() ||
       title_i == args.end() ||
-      description_i == args.end()) {
+      description_i == args.end() ||
+      mic_i == args.end()) {
     assert(false);
     return;
   }
@@ -259,14 +261,17 @@ void ClientRequestHandler::OnCommandStreamingStart(
   const std::string &privacy = privacy_i->second;
   const std::string &title = title_i->second;
   const std::string &description = description_i->second;
+  const std::string &mic = mic_i->second;
 
   if (source.empty() == true ||
       user_page.empty() == true ||
-      privacy.empty() == true) {
+      privacy.empty() == true ||
+      mic.empty() == true) {
     assert(false);
     return;
   }
 
+  const bool &mic_flag = (mic == "true");
   StreamingService::Get()->PostLiveVideo(
       user_page,
       privacy,
@@ -274,12 +279,13 @@ void ClientRequestHandler::OnCommandStreamingStart(
       description,
       [](const std::string &error) {
     // TODO(khpark): TBD
-  }, [browser, cmd, source](const std::string &service_provider,
+  }, [browser, cmd, source, mic_flag](const std::string &service_provider,
                             const std::string &stream_url) {
     Obs::Get()->StartStreaming(
         source,
         service_provider,
         stream_url,
+        mic_flag,
         [browser, cmd]() {
       JsExecutor::Execute(
           browser,
