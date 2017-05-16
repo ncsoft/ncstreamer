@@ -45,6 +45,11 @@ const app = {
 };
 
 
+document.addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+});
+
+
 document.addEventListener('DOMContentLoaded', function(event) {
   [
     'login-page-panel',
