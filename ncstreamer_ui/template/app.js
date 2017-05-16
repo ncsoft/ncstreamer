@@ -235,9 +235,11 @@ function onStreamingUserPageSelectChanged() {
   if (app.dom.streamingUserPageSelect.children[0].value == 2) {
     managingSelect.style.display = 'block';
     privacySelect.style.display = 'none';
+    privacySelect.children[0].disabled = true;
   } else {
     managingSelect.style.display = 'none';
     privacySelect.style.display = 'block';
+    privacySelect.children[0].disabled = false;
   }
 }
 
