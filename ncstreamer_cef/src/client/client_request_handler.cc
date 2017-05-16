@@ -277,8 +277,12 @@ void ClientRequestHandler::OnCommandStreamingStart(
       privacy,
       title,
       description,
-      [](const std::string &error) {
-    // TODO(khpark): TBD
+      [browser, cmd](const std::string &error) {
+    JsExecutor::Execute(
+        browser,
+        "cef.onResponse",
+        cmd,
+        std::make_pair("error", error));
   }, [browser, cmd, source, mic_flag](const std::string &service_provider,
                             const std::string &stream_url) {
     Obs::Get()->StartStreaming(
@@ -290,7 +294,8 @@ void ClientRequestHandler::OnCommandStreamingStart(
       JsExecutor::Execute(
           browser,
           "cef.onResponse",
-          cmd);
+          cmd,
+          std::make_pair("error", ""));
     });
   });
 }

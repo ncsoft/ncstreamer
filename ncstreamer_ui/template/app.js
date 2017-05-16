@@ -405,7 +405,8 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
 };
 
 
-cef.streamingStart.onResponse = function() {
+cef.streamingStart.onResponse = function(error) {
+  console.info(error);
   updateStreamingStatus('onAir');
 };
 
