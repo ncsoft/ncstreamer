@@ -25,7 +25,8 @@ const cef = (function() {
       response: ['userName', 'userLink', 'userPages'],
     },
     'streaming/start': {
-      request: ['source', 'userPage', 'privacy', 'title', 'description'],
+      request: ['source', 'userPage', 'privacy', 'title', 'description',
+                'mic'],
       response: [],
     },
     'streaming/stop': {

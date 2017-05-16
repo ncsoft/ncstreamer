@@ -57,6 +57,7 @@ bool Obs::StartStreaming(
     const std::string &source_info,
     const std::string &service_provider,
     const std::string &stream_url,
+    const bool &mic,
     const ObsOutput::OnStarted &on_streaming_started) {
   UpdateBaseResolution(source_info);
 
@@ -65,7 +66,7 @@ bool Obs::StartStreaming(
   obs_encoder_set_audio(audio_encoder_, obs_get_audio());
   obs_encoder_set_video(video_encoder_, obs_get_video());
 
-  UpdateCurrentSource(source_info);
+  UpdateCurrentSource(source_info, mic);
 
   std::string stream_server;
   std::string stream_key;
@@ -247,7 +248,8 @@ void Obs::ClearSceneData() {
 }
 
 
-void Obs::UpdateCurrentSource(const std::string &source_info) {
+void Obs::UpdateCurrentSource(const std::string &source_info,
+                              const bool &mic) {
   // video
   {
     obs_data_t *settings = obs_data_create();
@@ -272,6 +274,11 @@ void Obs::UpdateCurrentSource(const std::string &source_info) {
 
     obs_set_output_source(1, source);
     obs_source_release(source);
+  }
+
+  // mic
+  if (mic) {
+    TurnOnMic();
   }
 }
 
