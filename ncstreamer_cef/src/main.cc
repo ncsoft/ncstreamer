@@ -17,6 +17,17 @@
 #include "ncstreamer_cef/src/streaming_service.h"
 
 
+namespace {
+int ExecuteRenderProcess(HINSTANCE instance) {
+  CefRefPtr<ncstreamer::RenderApp> render_app{new ncstreamer::RenderApp{}};
+  int exit_code = ::CefExecuteProcess(
+      CefMainArgs{instance}, render_app, nullptr);
+  assert(exit_code >= 0);
+  return exit_code;
+}
+}  // unnamed namespace
+
+
 int APIENTRY wWinMain(HINSTANCE instance,
                       HINSTANCE /*prev_instance*/,
                       LPTSTR /*cmd_line_str*/,
@@ -25,11 +36,7 @@ int APIENTRY wWinMain(HINSTANCE instance,
   ncstreamer::CommandLine cmd_line{::GetCommandLine()};
 
   if (cmd_line.is_renderer()) {
-    CefRefPtr<ncstreamer::RenderApp> render_app{new ncstreamer::RenderApp{}};
-    int exit_code = ::CefExecuteProcess(
-        CefMainArgs{instance}, render_app, nullptr);
-    assert(exit_code >= 0);
-    return exit_code;
+    return ExecuteRenderProcess(instance);
   }
 
   CefRefPtr<ncstreamer::BrowserApp> browser_app{new ncstreamer::BrowserApp{
