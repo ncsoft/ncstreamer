@@ -9,6 +9,8 @@
 #include <sstream>
 #include <unordered_map>
 
+#include "include/base/cef_bind.h"
+#include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
 
 #include "ncstreamer_cef/src/js_executor.h"
@@ -22,6 +24,7 @@ ClientLoadHandler::ClientLoadHandler(
     const std::vector<std::string> &sources)
     : shows_sources_all_{shows_sources_all},
       white_sources_{sources},
+      prev_sources_{},
       main_browser_created_{false} {
 }
 
@@ -115,6 +118,35 @@ void ClientLoadHandler::OnMainBrowserCreated(
   const auto &all = Obs::Get()->FindAllWindowsOnDesktop();
   const auto &sources = (shows_sources_all_ == true) ?
       all : FilterSources(all, white_sources_);
+
   JsExecutor::Execute(browser, "setUpStreamingSources", "sources", sources);
+  prev_sources_ = sources;
+
+  int64_t millisec{1000};
+  ::CefPostDelayedTask(
+      TID_UI,
+      base::Bind(&ClientLoadHandler::UpdateSourcesPeriodically, this,
+          browser, millisec),
+      millisec);
+}
+
+
+void ClientLoadHandler::UpdateSourcesPeriodically(
+    CefRefPtr<CefBrowser> browser,
+    int64_t millisec) {
+  const auto &all = Obs::Get()->FindAllWindowsOnDesktop();
+  const auto &sources = (shows_sources_all_ == true) ?
+      all : FilterSources(all, white_sources_);
+
+  if (sources != prev_sources_) {
+    JsExecutor::Execute(browser, "setUpStreamingSources", "sources", sources);
+    prev_sources_ = sources;
+  }
+
+  ::CefPostDelayedTask(
+      TID_UI,
+      base::Bind(&ClientLoadHandler::UpdateSourcesPeriodically, this,
+          browser, millisec),
+      millisec);
 }
 }  // namespace ncstreamer
