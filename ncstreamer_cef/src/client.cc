@@ -14,7 +14,8 @@ Client::Client(
     const std::wstring &locale)
     : display_handler_{new ClientDisplayHandler{}},
       life_span_handler_{new ClientLifeSpanHandler{instance}},
-      load_handler_{new ClientLoadHandler{shows_sources_all,
+      load_handler_{new ClientLoadHandler{life_span_handler_,
+                                          shows_sources_all,
                                           sources}},
       request_handler_{new ClientRequestHandler{locale}} {
 }

@@ -12,11 +12,14 @@
 
 #include "include/cef_load_handler.h"
 
+#include "ncstreamer_cef/src/client/client_life_span_handler.h"
+
 
 namespace ncstreamer {
 class ClientLoadHandler : public CefLoadHandler {
  public:
-  ClientLoadHandler(bool shows_sources_all,
+  ClientLoadHandler(const ClientLifeSpanHandler *const life_span_handler,
+                    bool shows_sources_all,
                     const std::vector<std::string> &sources);
   virtual ~ClientLoadHandler();
 
@@ -45,8 +48,14 @@ class ClientLoadHandler : public CefLoadHandler {
 
   void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
 
+  void UpdateSourcesPeriodically(
+      int64_t millisec);
+
+  const ClientLifeSpanHandler *const life_span_handler_;
+
   const bool shows_sources_all_;
   const std::vector<std::string> white_sources_;
+  std::vector<std::string> prev_sources_;
 
   bool main_browser_created_;
 
