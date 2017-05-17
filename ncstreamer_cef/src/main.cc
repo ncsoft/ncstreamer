@@ -25,30 +25,24 @@ int APIENTRY wWinMain(HINSTANCE instance,
   CefMainArgs main_args{instance};
   ncstreamer::CommandLine cmd_line{::GetCommandLine()};
 
-  auto app = cmd_line.is_renderer() ?
-      CefRefPtr<CefApp>{new ncstreamer::RenderApp{}} :
-      CefRefPtr<CefApp>{new ncstreamer::BrowserApp{
+  if (cmd_line.is_renderer()) {
+    CefRefPtr<ncstreamer::RenderApp> render_app{new ncstreamer::RenderApp{}};
+    int exit_code = ::CefExecuteProcess(main_args, render_app, nullptr);
+    assert(exit_code >= 0);
+    return exit_code;
+  }
+
+  CefRefPtr<ncstreamer::BrowserApp> browser_app{new ncstreamer::BrowserApp{
           instance,
           cmd_line.shows_sources_all(),
           cmd_line.sources(),
           cmd_line.locale(),
           cmd_line.ui_uri()}};
 
-  int exit_code = ::CefExecuteProcess(main_args, app, nullptr);
-  if (exit_code >= 0) {
-    return exit_code;
-  }
-
-  const auto *browser_app = dynamic_cast<ncstreamer::BrowserApp *>(app.get());
-  if (!browser_app) {
-    assert(false);
-    return -1;
-  }
-
   CefSettings settings;
   settings.no_sandbox = true;
 
-  ::CefInitialize(main_args, settings, app, nullptr);
+  ::CefInitialize(main_args, settings, browser_app, nullptr);
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
