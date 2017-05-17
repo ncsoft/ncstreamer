@@ -73,6 +73,10 @@ class RemoteServer {
       const ws::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void OnNcStreamerExitRequest(
+      const ws::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
   static RemoteServer *static_instance;
 
   const BrowserApp *const browser_app_;

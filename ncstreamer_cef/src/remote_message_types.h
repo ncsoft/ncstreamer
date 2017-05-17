@@ -14,6 +14,8 @@ class RemoteMessage {
     kUndefined = 0,
     kStreamingStatusRequest,
     kStreamingStatusResponse,
+    kNcStreamerExitRequest,
+    kNcStreamerExitResponse,  // not used.
   };
 };
 }  // namespace ncstreamer
