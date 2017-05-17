@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-feed-description',
     'streaming-mic-checkbox',
     'streaming-error-text',
+    'streaming-caution-text',
     'streaming-control-button',
     'streaming-quality-select',
   ].forEach(function(domId) {
@@ -132,6 +133,7 @@ function updateStreamingStatus(status) {
   console.info({ status: status });
 
   app.streaming.status = status;
+  app.dom.streamingCautionText.style.display = 'none';
   const button = app.dom.streamingControlButton;
   const error = app.dom.streamingErrorText;
   error.style.display = 'none';
@@ -146,11 +148,13 @@ function updateStreamingStatus(status) {
       removeClass(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
+      app.dom.streamingCautionText.style.display = 'block';
       break;
     case 'starting':
       addClass(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
+      app.dom.streamingCautionText.style.display = 'block';
       break;
     case 'onAir':
       removeClass(button, 'loading');
