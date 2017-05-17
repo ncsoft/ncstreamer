@@ -22,12 +22,12 @@ int APIENTRY wWinMain(HINSTANCE instance,
                       LPTSTR /*cmd_line_str*/,
                       int /*cmd_show*/) {
   ::CefEnableHighDPISupport();
-  CefMainArgs main_args{instance};
   ncstreamer::CommandLine cmd_line{::GetCommandLine()};
 
   if (cmd_line.is_renderer()) {
     CefRefPtr<ncstreamer::RenderApp> render_app{new ncstreamer::RenderApp{}};
-    int exit_code = ::CefExecuteProcess(main_args, render_app, nullptr);
+    int exit_code = ::CefExecuteProcess(
+        CefMainArgs{instance}, render_app, nullptr);
     assert(exit_code >= 0);
     return exit_code;
   }
@@ -42,7 +42,7 @@ int APIENTRY wWinMain(HINSTANCE instance,
   CefSettings settings;
   settings.no_sandbox = true;
 
-  ::CefInitialize(main_args, settings, browser_app, nullptr);
+  ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
