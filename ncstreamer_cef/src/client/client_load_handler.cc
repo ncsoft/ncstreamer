@@ -21,7 +21,7 @@ ClientLoadHandler::ClientLoadHandler(
     bool shows_sources_all,
     const std::vector<std::string> &sources)
     : shows_sources_all_{shows_sources_all},
-      sources_{sources},
+      white_sources_{sources},
       main_browser_created_{false} {
 }
 
@@ -114,7 +114,7 @@ void ClientLoadHandler::OnMainBrowserCreated(
     CefRefPtr<CefBrowser> browser) {
   const auto &all = Obs::Get()->FindAllWindowsOnDesktop();
   const auto &sources = (shows_sources_all_ == true) ?
-      all : FilterSources(all, sources_);
+      all : FilterSources(all, white_sources_);
   JsExecutor::Execute(browser, "updateStreamingSources", "sources", sources);
 }
 }  // namespace ncstreamer

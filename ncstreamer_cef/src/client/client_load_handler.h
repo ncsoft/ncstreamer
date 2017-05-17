@@ -46,7 +46,7 @@ class ClientLoadHandler : public CefLoadHandler {
   void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
 
   const bool shows_sources_all_;
-  const std::vector<std::string> sources_;
+  const std::vector<std::string> white_sources_;
 
   bool main_browser_created_;
 
