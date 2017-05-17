@@ -23,3 +23,10 @@ $(document).ready(function() {
     $('.nc-streamer-tooltip').hide();
   });
 });
+
+// show bootstrap modal
+const customStyle = {
+  showModal: function(elementId) {
+    $(elementId).modal('show');
+  },
+};
