@@ -192,6 +192,12 @@ function updateStreamingStatus(status) {
 }
 
 
+function getCurrentUserPage() {
+  return (app.dom.streamingUserPageSelect.children[0].value == 2) ?
+      app.dom.streamingManagingPageSelect.children[0].value : 'me';
+}
+
+
 function updateStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources')) {
     return;
@@ -318,8 +324,7 @@ function onStreamingControlButtonClicked() {
   ({
     'standby': function() {
       const source = app.dom.streamingGameSelect.children[0].value;
-      const userPage = app.dom.streamingUserPageSelect.children[0].value == 2 ?
-          app.dom.streamingManagingPageSelect.children[0].value : 'me';
+      const userPage = getCurrentUserPage();
       const privacy = app.dom.streamingPageAccess.children[0].value;
       const description = app.dom.streamingFeedDescription.value;
       const mic = app.dom.streamingMicCheckbox.checked;
