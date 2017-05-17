@@ -220,7 +220,8 @@
   </div>
 
   <!-- close check modal -->
-  <div class="modal nc-streamer-modal"
+  <div id="close-check-modal"
+       class="modal nc-streamer-modal"
        tabindex="-1"
        role="dialog"
        aria-labelledby="confirmModal">
@@ -237,11 +238,10 @@
           <p>%CLOSE_CHECK_MESSAGE1%<br/>%CLOSE_CHECK_MESSAGE2%</p>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-dismiss="modal">
+          <button id="modal-close-button" class="btn btn-primary">
             %YES%
           </button>
-          <button id="modal-close-button"
-                  class="btn btn-default">
+          <button class="btn btn-default" data-dismiss="modal">
             %NO%
           </button>
         </div>
