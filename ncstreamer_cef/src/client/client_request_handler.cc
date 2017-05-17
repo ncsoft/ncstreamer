@@ -236,13 +236,17 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     for (const auto &page : user_pages) {
       tree_pages.emplace_back(page.ToTree());
     }
-    JsExecutor::Execute<boost::property_tree::ptree>(
+
+    boost::property_tree::ptree arg;
+    arg.add("userName", user_name);
+    arg.add("userLink", user_link);
+    arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
+
+    JsExecutor::Execute(
         browser,
         "cef.onResponse",
         cmd,
-        std::make_pair("userName", user_name),
-        std::make_pair("userLink", user_link),
-        std::make_pair("userPages", tree_pages));
+        arg);
   });
 }
 
