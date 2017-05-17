@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-feed-description',
     'streaming-mic-checkbox',
     'streaming-error-text',
-    'streaming-normal-text',
     'streaming-control-button',
     'streaming-quality-select',
   ].forEach(function(domId) {
@@ -133,7 +132,6 @@ function updateStreamingStatus(status) {
   console.info({ status: status });
 
   app.streaming.status = status;
-  const message = app.dom.streamingNormalText;
   const button = app.dom.streamingControlButton;
   const error = app.dom.streamingErrorText;
   error.style.display = 'none';
@@ -141,31 +139,26 @@ function updateStreamingStatus(status) {
   switch (status) {
     case 'standby':
       removeClass(button, 'loading');
-      message.textContent = '%READY_BROADCASTING%';
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
       break;
     case 'setup':
       removeClass(button, 'loading');
-      message.textContent = '%MAKING_BROADCASTING%';
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       break;
     case 'starting':
       addClass(button, 'loading');
-      message.textContent = '%STARTING_BROADCASTING%';
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       break;
     case 'onAir':
       removeClass(button, 'loading');
-      message.textContent = '%ONAIR%';
       button.textContent = '%END_BROADCASTING%';
       button.disabled = false;
       break;
     case 'stopping':
       addClass(button, 'loading');
-      message.textContent = '%ENDING_BROADCASTING%';
       button.textContent = '%END_BROADCASTING%';
       button.disabled = true;
       break;
