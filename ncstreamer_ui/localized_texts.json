@@ -33,7 +33,9 @@
     "CONFIRM": "Confirm",
     "NO_PLAYING_GAME": "Start the game you want to stream.",
     "NO_MANAGING_PAGE": "You have no Pages.",
-    "USER_INFO_CAUTION_MESSAGE": "Make sure to not share personal information when streaming."
+    "USER_INFO_CAUTION_MESSAGE": "Make sure to not share personal information when streaming.",
+    "CLOSE_CHECK_MESSGAE1": "Closing the Streaming System will end the game stream.",
+    "CLOSE_CHECK_MESSGAE2": "Keep the Streaming System on?"
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -69,7 +71,9 @@
     "CONFIRM": "확인",
     "NO_PLAYING_GAME": "방송할 게임을 실행해 주세요.",
     "NO_MANAGING_PAGE": "관리 중인 페이지가 없습니다.",
-    "USER_INFO_CAUTION_MESSAGE": "방송 중 고객님의 개인정보가 유출되지 않도록 주의해 주세요."
+    "USER_INFO_CAUTION_MESSAGE": "방송 중 고객님의 개인정보가 유출되지 않도록 주의해 주세요.",
+    "CLOSE_CHECK_MESSGAE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
+    "CLOSE_CHECK_MESSGAE2": "방송 시스템을 유지하겠습니까?"
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -105,7 +109,9 @@
     "CONFIRM": "Bestätigen",
     "NO_PLAYING_GAME": "Wenn du streamen möchtest, starte das Spiel.",
     "NO_MANAGING_PAGE": "Du hast keine Seiten.",
-    "USER_INFO_CAUTION_MESSAGE": "Achte darauf, dass du beim Streamen keine persönlichen Informationen preisgibst."
+    "USER_INFO_CAUTION_MESSAGE": "Achte darauf, dass du beim Streamen keine persönlichen Informationen preisgibst.",
+    "CLOSE_CHECK_MESSGAE1": "Wenn du das Streamingsystem schließt, endet der Spielstream.",
+    "CLOSE_CHECK_MESSGAE2": "Streamingsystem weiter verwenden?"
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -141,7 +147,9 @@
     "CONFIRM": "Confirmer",
     "NO_PLAYING_GAME": "방Lancez la partie à diffuser.",
     "NO_MANAGING_PAGE": "Vous n'avez pas de Pages.",
-    "USER_INFO_CAUTION_MESSAGE": "Évitez de partager des informations personnelles pendant la diffusion."
+    "USER_INFO_CAUTION_MESSAGE": "Évitez de partager des informations personnelles pendant la diffusion.",
+    "CLOSE_CHECK_MESSGAE1": "La fermeture du lanceur arrêtera la diffusion.",
+    "CLOSE_CHECK_MESSGAE2": "Garder le lanceur ouvert ?"
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -177,7 +185,9 @@
     "CONFIRM": "Confirmar",
     "NO_PLAYING_GAME": "Inicia la partida que deseas transmitir.",
     "NO_MANAGING_PAGE": "No tienes páginas.",
-    "USER_INFO_CAUTION_MESSAGE": "Asegúrate de no compartir información personal durante la transmisión."
+    "USER_INFO_CAUTION_MESSAGE": "Asegúrate de no compartir información personal durante la transmisión.",
+    "CLOSE_CHECK_MESSGAE1": "Si cierras el sistema de transmisión, finalizará la transmisión de la partida.",
+    "CLOSE_CHECK_MESSGAE2": "¿Deseas mantenerlo activado?"
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -213,7 +223,9 @@
     "CONFIRM": "Conferma",
     "NO_PLAYING_GAME": "Avvia il gioco per iniziare lo streaming.",
     "NO_MANAGING_PAGE": "Nessuna Pagina.",
-    "USER_INFO_CAUTION_MESSAGE": "Assicurati di non condividere informazioni personali durante lo streaming."
+    "USER_INFO_CAUTION_MESSAGE": "Assicurati di non condividere informazioni personali durante lo streaming.",
+    "CLOSE_CHECK_MESSGAE1": "Chiudendo il sistema di streaming lo streaming verrà terminato.",
+    "CLOSE_CHECK_MESSGAE2": "Vuoi mantenere aperto il sistema di streaming?"
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -249,7 +261,9 @@
     "CONFIRM": "Potwierdź",
     "NO_PLAYING_GAME": "Uruchom grę, którą chcesz transmitować.",
     "NO_MANAGING_PAGE": "Nie masz żadnej strony.",
-    "USER_INFO_CAUTION_MESSAGE": "Pamiętaj, aby podczas transmisji nie udostępniać żadnych danych osobowych."
+    "USER_INFO_CAUTION_MESSAGE": "Pamiętaj, aby podczas transmisji nie udostępniać żadnych danych osobowych.",
+    "CLOSE_CHECK_MESSGAE1": "Zamknięcie systemu transmisyjnego spowoduje przerwanie transmisji gry.",
+    "CLOSE_CHECK_MESSGAE2": "Utrzymać działanie systemu transmisyjnego?"
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -285,7 +299,9 @@
     "CONFIRM": "Confirmar",
     "NO_PLAYING_GAME": "Inicie o jogo que deseja transmitir.",
     "NO_MANAGING_PAGE": "Você não tem Páginas.",
-    "USER_INFO_CAUTION_MESSAGE": "Não compartilhe informações pessoais durante a transmissão."
+    "USER_INFO_CAUTION_MESSAGE": "Não compartilhe informações pessoais durante a transmissão.",
+    "CLOSE_CHECK_MESSGAE1": "Fechar o Sistema de transmissão encerrará a transmissão do jogo.",
+    "CLOSE_CHECK_MESSGAE2": "Manter o Sistema aberto?"
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -321,6 +337,8 @@
     "CONFIRM": "Doğrula",
     "NO_PLAYING_GAME": "Yayınlamak istediğiniz oyunu başlatın.",
     "NO_MANAGING_PAGE": "Herhangi bir Sayfanız yok.",
-    "USER_INFO_CAUTION_MESSAGE": "Yayın yaparken kişisel bilgilerinizi paylaşmamaya dikkat edin."
+    "USER_INFO_CAUTION_MESSAGE": "Yayın yaparken kişisel bilgilerinizi paylaşmamaya dikkat edin.",
+    "CLOSE_CHECK_MESSGAE1": "Yayın Sistemini kapatırsanız oyun yayını sona erer.",
+    "CLOSE_CHECK_MESSGAE2": "Yayın Sistemi açık bırakılsın mı?"
   }
 }
