@@ -246,7 +246,11 @@ function onMinimizeButtonClicked() {
 
 function onCloseButtonClicked() {
   console.info('click closeeButton');
-  cef.windowClose.request();
+  if (app.streaming.status == 'onAir') {
+    customStyle.showModal('#close-check-modal');
+  } else {
+    cef.windowClose.request();
+  }
 }
 
 
@@ -373,6 +377,12 @@ function onQualitySelectChanged() {
       curQuality.resolution.height,
       curQuality.fps,
       curQuality.bitrate);
+}
+
+
+function onStreamingModalCloseButtonClicked() {
+  console.info('click streamingModalCloseButton');
+  cef.windowClose.request();
 }
 
 
