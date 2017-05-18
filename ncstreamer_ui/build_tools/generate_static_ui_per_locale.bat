@@ -12,4 +12,4 @@ set TemplateDir=%ProjectDir%..\ncstreamer_ui\template
 set OutputDir=%ProjectDir%build\ncstreamer_ui\static_ui
 
 call "%Generator%" --texts="%Texts%" --input-dir="%TemplateDir%" --output-dir="%OutputDir%"
-@echo Generating static UI per locale ends.
+@echo Generating static UI per locale ends: %ERRORLEVEL%
