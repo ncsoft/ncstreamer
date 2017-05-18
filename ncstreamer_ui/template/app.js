@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   app.dom.streamingQualitySelect.addEventListener(
       'customSelectChange', onStreamingQualitySelectChanged);
 
+  disableSelect(app.dom.streamingPageAccess);
   setUpSteamingQuality();
 });
 
@@ -126,6 +127,18 @@ function addClass(element, name) {
 function removeClass(element, name) {
   const check = new RegExp('(\\s|^)' + name + '(\\s|$)');
   element.className = element.className.replace(check, ' ').trim();
+}
+
+
+function enableSelect(element) {
+  element.children[0].style.display = 'block';
+  element.children[2].style.display = 'none';
+}
+
+
+function disableSelect(element) {
+  element.children[0].style.display = 'none';
+  element.children[2].style.display = 'block';
 }
 
 
@@ -182,17 +195,17 @@ function setUpStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources'))
     return;
 
-  const display = app.dom.streamingGameSelect.children[0];
-  const contents = app.dom.streamingGameSelect.children[1];
+  const gameSelect = app.dom.streamingGameSelect;
+  const display = gameSelect.children[0];
+  const contents = gameSelect.children[1];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
 
   if (obj.sources.length == 0) {
-    display.innerHTML = '%NO_PLAYING_GAME%' + '<span class="caret"></span>';
-    display.disabled = true;
+    disableSelect(gameSelect);
   } else {
-    display.disabled = false;
+    enableSelect(gameSelect);
     for (const source of obj.sources) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
@@ -248,11 +261,11 @@ function onStreamingUserPageSelectChanged() {
   if (app.dom.streamingUserPageSelect.children[0].value == 2) {
     managingSelect.style.display = 'block';
     privacySelect.style.display = 'none';
-    privacySelect.children[0].disabled = true;
+    disableSelect(privacySelect);
   } else {
     managingSelect.style.display = 'none';
     privacySelect.style.display = 'block';
-    privacySelect.children[0].disabled = false;
+    enableSelect(privacySelect);
   }
 }
 
@@ -387,17 +400,17 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
 
   app.dom.providerUserName.textContent = userName;
 
-  const display = app.dom.streamingManagingPageSelect.children[0];
-  const contents = app.dom.streamingManagingPageSelect.children[1];
+  const managingPageSelect = app.dom.streamingManagingPageSelect;
+  const display = managingPageSelect.children[0];
+  const contents = managingPageSelect.children[1];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
 
   if (userPages.length == 0) {
-    display.textContent = '%NO_MANAGING_PAGE%' + '<span class="caret"></span>';
-    display.disabled = true;
+    disableSelect(managingPageSelect);
   } else {
-    display.disabled = false;
+    enableSelect(managingPageSelect);
     for (const userPage of userPages) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
