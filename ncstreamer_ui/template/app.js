@@ -130,7 +130,7 @@ function removeClass(element, name) {
 
 
 function updateStreamingStatus(status) {
-  console.info({ status: status });
+  console.info({status: status});
 
   app.streaming.status = status;
   app.dom.streamingCautionText.style.display = 'none';
