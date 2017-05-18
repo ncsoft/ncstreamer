@@ -27,7 +27,7 @@ const cef = (function() {
     'streaming/start': {
       request: ['source', 'userPage', 'privacy', 'title', 'description',
                 'mic'],
-      response: [],
+      response: ['error'],
     },
     'streaming/stop': {
       request: [],

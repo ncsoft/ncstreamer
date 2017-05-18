@@ -58,6 +58,21 @@ void JsExecutor::Execute(
 }
 
 
+void JsExecutor::Execute(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const std::string &arg0,
+    const std::pair<std::string, std::string> &arg1_0) {
+  std::stringstream js;
+  boost::property_tree::ptree arg1;
+
+  arg1.add(arg1_0.first, arg1_0.second);
+
+  AppendFunctionCall(func_name, arg0, arg1, &js);
+  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+}
+
+
 template <typename T>
 void JsExecutor::Execute(
     CefRefPtr<CefBrowser> browser,

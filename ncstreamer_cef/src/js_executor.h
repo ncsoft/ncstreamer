@@ -31,6 +31,10 @@ class JsExecutor {
                       const std::string &func_name,
                       const std::string &arg_name,
                       const std::vector<std::string> &arg_value);
+  static void Execute(CefRefPtr<CefBrowser> browser,
+                      const std::string &func_name,
+                      const std::string &arg0,
+                      const std::pair<std::string, std::string> &arg1_0);
 
   template <typename T>
   static void Execute(
