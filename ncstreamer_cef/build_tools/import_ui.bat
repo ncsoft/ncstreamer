@@ -6,7 +6,7 @@ set Configuration=%~2
 
 set FromDir=%ProjectDir%build\ncstreamer_ui\static_ui\
 if not exist "%FromDir%" (
-  echo From-directory doesn't exist: "%From-directory%"
+  echo FromDir doesn't exist: %FromDir%
   exit /b 1
 )
 
