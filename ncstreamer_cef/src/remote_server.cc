@@ -204,6 +204,9 @@ void RemoteServer::OnMessage(ws::connection_hdl connection,
                                   MessageHandler> kMessageHandlers{
       {RemoteMessage::MessageType::kStreamingStatusRequest,
        std::bind(&RemoteServer::OnStreamingStatusRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kNcStreamerExitRequest,
+       std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
 
   auto i = kMessageHandlers.find(msg_type);
@@ -225,6 +228,14 @@ void RemoteServer::OnStreamingStatusRequest(
       browser_app_->GetMainBrowser(),
       "remote.onStreamingStatusRequest",
       request_key);
+}
+
+
+void RemoteServer::OnNcStreamerExitRequest(
+    const ws::connection_hdl &/*connection*/,
+    const boost::property_tree::ptree &/*tree*/) {
+  HWND wnd = browser_app_->GetMainBrowser()->GetHost()->GetWindowHandle();
+  ::PostMessage(wnd, WM_CLOSE, NULL, NULL);
 }
 
 
