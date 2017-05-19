@@ -150,7 +150,6 @@ function updateStreamingStatus(status) {
   const button = app.dom.streamingControlButton;
   const error = app.dom.streamingErrorText;
   error.style.display = 'none';
-  message.style.display = 'block';
   switch (status) {
     case 'standby':
       removeClass(button, 'loading');
@@ -183,7 +182,6 @@ function updateStreamingStatus(status) {
       removeClass(button, 'loading');
       error.textContent = '%ERROR_MESSAGE%';
       error.style.display = 'block';
-      message.style.display = 'none';
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
       break;
