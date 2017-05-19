@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
     boost::property_tree::read_json(texts_file, props);
 
     // locale loop
+    std::cout << "Target locales: " << props.size() << std::endl;
     for (const boost::property_tree::ptree::value_type &prop : props) {
       auto locale = prop.first;
       auto texts = prop.second;
@@ -102,6 +103,8 @@ int main(int argc, char *argv[]) {
           ofs.close();
         }
       }
+
+      std::cout << "Done: " << locale << std::endl;
     }
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
