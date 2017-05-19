@@ -7,6 +7,7 @@
 #define NCSTREAMER_CEF_SRC_LIB_WINDOWS_TYPES_H_
 
 
+#include <string>
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/lib/rectangle.h"
@@ -16,6 +17,7 @@ namespace ncstreamer {
 class Windows {
  public:
   static Rectangle GetWindowRectangle(HWND wnd);
+  static std::wstring GetUserLocalAppDataPath();
 };
 }  // namespace ncstreamer
 

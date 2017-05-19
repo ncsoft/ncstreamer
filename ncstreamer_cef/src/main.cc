@@ -6,12 +6,15 @@
 #include <cassert>
 #include <memory>
 
+#include "boost/filesystem.hpp"
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/browser_app.h"
 #include "ncstreamer_cef/src/command_line.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
+#include "ncstreamer_cef/src/lib/windows_types.h"
 #include "ncstreamer_cef/src/local_storage.h"
+#include "ncstreamer_cef/src/manifest.h"
 #include "ncstreamer_cef/src/obs.h"
 #include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/render_app.h"
@@ -25,6 +28,17 @@ int ExecuteRenderProcess(HINSTANCE instance) {
       CefMainArgs{instance}, render_app, nullptr);
   assert(exit_code >= 0);
   return exit_code;
+}
+
+
+boost::filesystem::path CreateUserLocalAppDirectory() {
+  boost::filesystem::path user_data_path{
+      ncstreamer::Windows::GetUserLocalAppDataPath()};
+  boost::filesystem::path app_data_path{
+      user_data_path / ncstreamer::kAppName};
+
+  boost::filesystem::create_directories(app_data_path);
+  return app_data_path;
 }
 }  // unnamed namespace
 
@@ -51,8 +65,11 @@ int APIENTRY wWinMain(HINSTANCE instance,
   settings.no_sandbox = true;
 
   ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
-  ncstreamer::LocalStorage::SetUp(
-      L"local_storage.json");
+
+  auto app_data_path = CreateUserLocalAppDirectory();
+  auto storage_path = app_data_path / L"local_storage.json";
+
+  ncstreamer::LocalStorage::SetUp(storage_path.c_str());
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
