@@ -15,3 +15,4 @@ set ToDir=%ProjectDir%build\ncstreamer_cef\%Configuration%\bin\32bit\ui
 robocopy "%FromDir%" "%ToDir%" /e
 
 @echo Importing UI ends: %ERRORLEVEL%
+exit /b %ERRORLEVEL%
