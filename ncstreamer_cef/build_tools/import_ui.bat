@@ -13,6 +13,11 @@ if not exist "%FromDir%" (
 set ToDir=%ProjectDir%build\ncstreamer_cef\%Configuration%\bin\32bit\ui
 
 robocopy "%FromDir%" "%ToDir%" /e
+echo ROBOCOPY RESULT: %ERRORLEVEL%
+if %ERRORLEVEL% GTR 1 (
+  exit /b 1
+)
+set ERRORLEVEL=0
 
 @echo Importing UI ends: %ERRORLEVEL%
 exit /b %ERRORLEVEL%
