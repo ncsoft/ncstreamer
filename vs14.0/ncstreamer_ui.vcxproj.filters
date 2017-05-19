@@ -41,4 +41,9 @@
       <Filter>static\lib</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ncstreamer_ui\build_tools\post_build_event.bat">
+      <Filter>build_tools</Filter>
+    </None>
+  </ItemGroup>
 </Project>

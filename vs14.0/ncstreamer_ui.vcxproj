@@ -56,7 +56,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <PostBuildEvent>
-      <Command>"$(ProjectDir)..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat" "$(ProjectDir)" "$(Configuration)"</Command>
+      <Command>$(ProjectDir)..\ncstreamer_ui\build_tools\post_build_event.bat $(ProjectDir) $(Configuration)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -72,7 +72,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>"$(ProjectDir)..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat" "$(ProjectDir)" "$(Configuration)"</Command>
+      <Command>$(ProjectDir)..\ncstreamer_ui\build_tools\post_build_event.bat $(ProjectDir) $(Configuration)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -84,6 +84,9 @@
     <ClInclude Include="..\ncstreamer_ui\static\app\cef.js" />
     <ClInclude Include="..\ncstreamer_ui\static\app\custom_style.js" />
     <ClInclude Include="..\ncstreamer_ui\static\lib\README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ncstreamer_ui\build_tools\post_build_event.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
