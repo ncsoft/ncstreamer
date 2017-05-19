@@ -54,6 +54,11 @@ div {
 }
 
 
+#streaming-live-image {
+  display: none;
+}
+
+
 #streaming-error-text {
   display: none;
   white-space: pre;
