@@ -38,6 +38,7 @@
     "SELECT_QUALITY": "화질을 선택해 주세요.",
     "CONFIRM": "확인",
     "NO_PLAYING_GAME": "실행 중인 게임이 없습니다.",
-    "NO_MANAGING_PAGE": "관리 중인 페이지가 없습니다."
+    "NO_MANAGING_PAGE": "관리 중인 페이지가 없습니다.",
+    "USER_INFO_CAUTION_MESSAGE": "방송 중 고객님의 개인정보가 유출되지 않도록 주의해 주세요."
   }
 }

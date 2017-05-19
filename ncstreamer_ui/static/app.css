@@ -43,6 +43,11 @@ div {
 }
 
 
+#streaming-caution-text {
+  display: none;
+}
+
+
 #streaming-error-text {
   display: none;
   white-space: pre;
