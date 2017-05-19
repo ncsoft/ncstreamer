@@ -34,9 +34,15 @@ div {
 }
 
 
+.dropdown > .message, .admin {
+  display: none;
+}
+
+
 #streaming-nctv-tooltip{
   display: none;
 }
+
 
 #streaming-managing-page-select {
   display: none;
