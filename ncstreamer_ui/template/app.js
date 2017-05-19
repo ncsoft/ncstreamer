@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'me-page-select',
     'own-page-select',
     'privacy-select',
-    'nctv-tooltip',
     'game-select',
     'feed-description',
     'mic-checkbox',
@@ -102,8 +101,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'ncsoftSelectChange', onOwnPageSelectChanged);
   app.dom.privacySelect.addEventListener(
       'ncsoftSelectChange', onPrivacySelectChanged);
-  app.dom.nctvTooltip.addEventListener(
-      'click', onNctvTooltipClosed);
   app.dom.gameSelect.addEventListener(
       'ncsoftSelectChange', onGameSelectChanged);
   app.dom.micCheckbox.addEventListener(
@@ -201,8 +198,6 @@ function setUpUserPage(userPage) {
 
 function setUpPrivacy(privacy) {
   ncsoft.select.setByValue(app.dom.privacySelect, privacy);
-  // TODO(khpark): confirm if tooltip should be shown or not.
-  // updateNctvTooltip(privacy);
 }
 
 
@@ -314,25 +309,7 @@ function onPrivacySelectChanged() {
   console.info('change privacySelect');
   const privacy = app.dom.privacySelect.children[0].value;
 
-  updateNctvTooltip(privacy);
-
   cef.storagePrivacyUpdate.request(privacy);
-}
-
-
-function updateNctvTooltip(privacy) {
-  const tooltip = app.dom.nctvTooltip;
-  if (privacy == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
-    tooltip.style.display = 'none';
-  } else {
-    tooltip.style.display = 'block';
-  }
-}
-
-
-function onNctvTooltipClosed() {
-  console.info('close nctvTooltip');
-  Object.defineProperty(app.dom.nctvTooltip, 'show-once', {});
 }
 
 
