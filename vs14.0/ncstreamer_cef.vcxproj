@@ -69,9 +69,6 @@
       <AdditionalDependencies>Shlwapi.lib;dwmapi.lib;$(CEF3_2704_PATH)$(Configuration)\libcef.lib;$(CEF3_2704_PATH)vs$(VisualStudioVersion)\libcef_dll_wrapper\$(Configuration)\libcef_dll_wrapper.lib;$(OBS_STUDIO_PATH)vs$(VisualStudioVersion)\libobs\$(Configuration)\obs.lib;$(OPENSSL_ROOT)\lib\libeay32.lib;$(OPENSSL_ROOT)\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(BOOST_PATH)lib32-msvc-14.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>$(ProjectDir)..\ncstreamer_cef\build_tools\import_ui.bat "$(ProjectDir)" "$(Configuration)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -95,9 +92,6 @@
     <PreBuildEvent>
       <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../ncstreamer_cef/src</Command>
     </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>$(ProjectDir)..\ncstreamer_cef\build_tools\import_ui.bat "$(ProjectDir)" "$(Configuration)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\ncstreamer_cef\src\browser_app.cc" />
