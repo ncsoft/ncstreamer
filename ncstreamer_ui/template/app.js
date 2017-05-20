@@ -190,8 +190,9 @@ function updateStreamingStatus(status) {
 
 
 function updateStreamingSources(obj) {
-  if (!obj.hasOwnProperty('sources'))
+  if (!obj.hasOwnProperty('sources')) {
     return;
+  }
 
   const gameSelect = app.dom.streamingGameSelect;
   const display = gameSelect.children[0];
