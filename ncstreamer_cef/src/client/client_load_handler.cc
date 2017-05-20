@@ -134,7 +134,7 @@ void ClientLoadHandler::UpdateSourcesPeriodically(
       all : FilterSources(all, white_sources_);
 
   if (sources != prev_sources_) {
-  JsExecutor::Execute(browser, "updateStreamingSources", "sources", sources);
+    JsExecutor::Execute(browser, "updateStreamingSources", "sources", sources);
     prev_sources_ = sources;
   }
 
