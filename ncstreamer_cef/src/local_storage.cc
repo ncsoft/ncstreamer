@@ -31,6 +31,26 @@ LocalStorage *LocalStorage::Get() {
 }
 
 
+std::string LocalStorage::GetUserPage() const {
+  return storage_.get(kUserPage, "");
+}
+
+
+std::string LocalStorage::GetPrivacy() const {
+  return storage_.get(kPrivacy, "");
+}
+
+
+void LocalStorage::SetUserPage(const std::string &user_page) {
+  SetValue(kUserPage, user_page);
+}
+
+
+void LocalStorage::SetPrivacy(const std::string &privacy) {
+  SetValue(kPrivacy, privacy);
+}
+
+
 LocalStorage::LocalStorage(const std::wstring &storage_path)
     : storage_path_{storage_path},
       storage_{LoadFromFile(storage_path)} {
@@ -78,6 +98,10 @@ void LocalStorage::SetValue<int>(
 template
 void LocalStorage::SetValue<bool>(
     const std::string &key, const bool &value);
+
+
+const char *LocalStorage::kUserPage{"userPage"};
+const char *LocalStorage::kPrivacy{"privacy"};
 
 
 LocalStorage *LocalStorage::static_instance{nullptr};

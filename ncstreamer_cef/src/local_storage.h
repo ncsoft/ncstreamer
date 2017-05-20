@@ -19,6 +19,12 @@ class LocalStorage {
   static void ShutDown();
   static LocalStorage *Get();
 
+  std::string GetUserPage() const;
+  std::string GetPrivacy() const;
+
+  void SetUserPage(const std::string &user_page);
+  void SetPrivacy(const std::string &privacy);
+
  private:
   explicit LocalStorage(const std::wstring &storage_path);
   virtual ~LocalStorage();
@@ -32,6 +38,9 @@ class LocalStorage {
 
   template<typename T>
       void SetValue(const std::string &key, const T &value);
+
+  static const char *kUserPage;
+  static const char *kPrivacy;
 
   static LocalStorage *static_instance;
 
