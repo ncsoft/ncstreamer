@@ -45,6 +45,14 @@ const cef = (function() {
       request: [],
       response: [],
     },
+    'storage/user_page/update': {
+      request: ['userPage'],
+      response: [],
+    },
+    'storage/privacy/update': {
+      request: ['privacy'],
+      response: [],
+    },
     'remote/status': {
       request: ['request_key', 'status', 'source_title'],
       response: [],

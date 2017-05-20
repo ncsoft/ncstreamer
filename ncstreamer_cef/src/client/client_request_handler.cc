@@ -18,6 +18,7 @@
 #include "Shlwapi.h"  // NOLINT
 
 #include "ncstreamer_cef/src/js_executor.h"
+#include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/obs.h"
 #include "ncstreamer_cef/src/streaming_service.h"
@@ -148,6 +149,16 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
            std::placeholders::_3)},
       {"settings/video_quality/update",
        std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {"storage/user_page/update",
+       std::bind(&This::OnCommandStorageUserPageUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {"storage/privacy/update",
+       std::bind(&This::OnCommandStoragePrivacyUpdate, this,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
@@ -367,6 +378,48 @@ void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
   }
 
   Obs::Get()->UpdateVideoQuality({width, height}, fps, bitrate);
+}
+
+
+void ClientRequestHandler::OnCommandStorageUserPageUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> /*browser*/) {
+  auto user_page_i = args.find("userPage");
+  if (user_page_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::string &user_page = user_page_i->second;
+
+  if (user_page.empty() == true) {
+    assert(false);
+    return;
+  }
+
+  LocalStorage::Get()->SetUserPage(user_page);
+}
+
+
+void ClientRequestHandler::OnCommandStoragePrivacyUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> /*browser*/) {
+  auto privacy_i = args.find("privacy");
+  if (privacy_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::string &privacy = privacy_i->second;
+
+  if (privacy.empty() == true) {
+    assert(false);
+    return;
+  }
+
+  LocalStorage::Get()->SetPrivacy(privacy);
 }
 
 

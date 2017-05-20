@@ -276,11 +276,17 @@ function onStreamingUserPageSelectChanged() {
     privacySelect.style.display = 'block';
     enableSelect(privacySelect);
   }
+
+  const userPage = getCurrentUserPage();
+  cef.storageUserPageUpdate.request(userPage);
 }
 
 
 function onStreamingManagingPageSelectChanged() {
   console.info('change streamingManagingPageSelect');
+
+  const userPage = getCurrentUserPage();
+  cef.storageUserPageUpdate.request(userPage);
 }
 
 
@@ -293,6 +299,8 @@ function onStreamingPageAccessChanged() {
   } else {
     tooltip.style.display = 'block';
   }
+
+  cef.storagePrivacyUpdate.request(input);
 }
 
 

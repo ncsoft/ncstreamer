@@ -77,6 +77,14 @@ class ClientRequestHandler : public CefRequestHandler {
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
+  void OnCommandStorageUserPageUpdate(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandStoragePrivacyUpdate(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandRemoteStatus(
       const std::string &cmd,
       const CommandArgumentMap &args,
