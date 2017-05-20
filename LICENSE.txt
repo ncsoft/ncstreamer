@@ -11,3 +11,7 @@ Copyright (C) 2017 NCSOFT Corporation. All rights reserved.
 * OpenSSL
 ** license_files/open_ssl/license.txt
 *** from: https://www.openssl.org/source/license.txt
+
+* WebSocket++
+** license_files/websocketpp/COPYING
+*** from: https://raw.githubusercontent.com/zaphoyd/websocketpp/0.7.0/COPYING
