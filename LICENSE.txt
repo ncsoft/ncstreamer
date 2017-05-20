@@ -1,6 +1,8 @@
+Copyright (C) 2017 NCSOFT Corporation. All rights reserved.
+
 * OBS Studio
 ** license_files/obs_studio/COPYING
-*** from: https://raw.githubusercontent.com/jp9000/obs-studio/8421051831b7f3bb5c1254dc6c21d3706ca96bea/COPYING
+*** from: https://raw.githubusercontent.com/jp9000/obs-studio/18.0.2/COPYING
 
 * Chromium Embedded Framework(CEF)
 ** license_files/cef/LICENSE.txt
@@ -9,3 +11,7 @@
 * OpenSSL
 ** license_files/open_ssl/license.txt
 *** from: https://www.openssl.org/source/license.txt
+
+* WebSocket++
+** license_files/websocketpp/COPYING
+*** from: https://raw.githubusercontent.com/zaphoyd/websocketpp/0.7.0/COPYING
