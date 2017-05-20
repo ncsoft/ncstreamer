@@ -189,7 +189,7 @@ function updateStreamingStatus(status) {
 }
 
 
-function setUpStreamingSources(obj) {
+function updateStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources'))
     return;
 

@@ -115,6 +115,6 @@ void ClientLoadHandler::OnMainBrowserCreated(
   const auto &all = Obs::Get()->FindAllWindowsOnDesktop();
   const auto &sources = (shows_sources_all_ == true) ?
       all : FilterSources(all, sources_);
-  JsExecutor::Execute(browser, "setUpStreamingSources", "sources", sources);
+  JsExecutor::Execute(browser, "updateStreamingSources", "sources", sources);
 }
 }  // namespace ncstreamer
