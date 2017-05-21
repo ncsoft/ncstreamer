@@ -158,6 +158,17 @@ void JsExecutor::ExecuteAngularJs(
 }
 
 
+template <typename T>
+boost::property_tree::ptree
+    JsExecutor::ToPtree(const std::vector<T> &values) {
+  boost::property_tree::ptree arr;
+  for (const T &value : values) {
+    arr.push_back({"", BuildTree(value)});
+  }
+  return std::move(arr);
+}
+
+
 void JsExecutor::AppendFunctionCall(
     const std::string &func_name,
     const std::string &arg_name,
@@ -189,17 +200,6 @@ void JsExecutor::AppendFunctionCall(
   *out << "'" << arg0 << "',";
   boost::property_tree::write_json(*out, arg1, false);
   *out << ")";
-}
-
-
-template <typename T>
-boost::property_tree::ptree
-    JsExecutor::ToPtree(const std::vector<T> &values) {
-  boost::property_tree::ptree arr;
-  for (const T &value : values) {
-    arr.push_back({"", BuildTree(value)});
-  }
-  return std::move(arr);
 }
 
 
