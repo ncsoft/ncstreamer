@@ -272,14 +272,20 @@ function onOwnPageSelectChanged() {
 function onPrivacySelectChanged() {
   console.info('change privacySelect');
   const privacy = app.dom.privacySelect.children[0].value;
+
+  updateNctvTooltip(privacy);
+
+  cef.storagePrivacyUpdate.request(privacy);
+}
+
+
+function updateNctvTooltip(privacy) {
   const tooltip = app.dom.nctvTooltip;
   if (privacy == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
     tooltip.style.display = 'none';
   } else {
     tooltip.style.display = 'block';
   }
-
-  cef.storagePrivacyUpdate.request(privacy);
 }
 
 
