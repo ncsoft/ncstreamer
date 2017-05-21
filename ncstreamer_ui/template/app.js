@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'login-button',
     'provider-user-name',
     'provider-page-link',
-    'user-page-select',
+    'me-page-select',
     'managing-page-select',
     'privacy-select',
     'nctv-tooltip',
@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onLoginButtonClicked);
   app.dom.providerPageLink.addEventListener(
       'click', onProviderPageLinkClicked);
-  app.dom.userPageSelect.addEventListener(
-      'customSelectChange', onUserPageSelectChanged);
+  app.dom.mePageSelect.addEventListener(
+      'customSelectChange', onMePageSelectChanged);
   app.dom.managingPageSelect.addEventListener(
       'customSelectChange', onManagingPageSelectChanged);
   app.dom.privacySelect.addEventListener(
@@ -193,7 +193,7 @@ function updateStreamingStatus(status) {
 
 
 function getCurrentUserPage() {
-  return (app.dom.userPageSelect.children[0].value == 2) ?
+  return (app.dom.mePageSelect.children[0].value == 2) ?
       app.dom.managingPageSelect.children[0].value : 'me';
 }
 
@@ -255,7 +255,7 @@ function onLoginButtonClicked() {
 
 function onProviderPageLinkClicked() {
   console.info('click providerPageLink');
-  const link = (app.dom.userPageSelect.children[0].value == 2) ?
+  const link = (app.dom.mePageSelect.children[0].value == 2) ?
       app.service.user.pages[
           app.dom.managingPageSelect.children[0].value].link :
       app.service.user.link;
@@ -263,11 +263,11 @@ function onProviderPageLinkClicked() {
 }
 
 
-function onUserPageSelectChanged() {
-  console.info('change userPageSelect');
+function onMePageSelectChanged() {
+  console.info('change mePageSelect');
   const managingSelect = app.dom.managingPageSelect;
   const privacySelect = app.dom.privacySelect;
-  if (app.dom.userPageSelect.children[0].value == 2) {
+  if (app.dom.mePageSelect.children[0].value == 2) {
     managingSelect.style.display = 'block';
     privacySelect.style.display = 'none';
     disableSelect(privacySelect);
