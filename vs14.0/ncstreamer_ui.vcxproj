@@ -83,8 +83,8 @@
     <ClInclude Include="..\ncstreamer_ui\template\app.html" />
     <ClInclude Include="..\ncstreamer_ui\template\app.js" />
     <ClInclude Include="..\ncstreamer_ui\static\app\cef.js" />
-    <ClInclude Include="..\ncstreamer_ui\static\app\custom_style.js" />
     <ClInclude Include="..\ncstreamer_ui\static\lib\README.txt" />
+    <ClInclude Include="..\ncstreamer_ui\static\lib\ncsoft\ncsoft.js" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
