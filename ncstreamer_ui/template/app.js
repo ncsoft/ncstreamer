@@ -59,56 +59,56 @@ document.addEventListener('DOMContentLoaded', function(event) {
   });
 
   [
-    'streaming-setting-button',
-    'streaming-minimize-button',
-    'streaming-close-button',
-    'streaming-login-button',
+    'setting-button',
+    'minimize-button',
+    'close-button',
+    'login-button',
     'provider-user-name',
     'provider-page-link',
-    'streaming-user-page-select',
-    'streaming-managing-page-select',
-    'streaming-privacy',
-    'streaming-nctv-tooltip',
-    'streaming-game-select',
-    'streaming-feed-description',
-    'streaming-mic-checkbox',
-    'streaming-error-text',
-    'streaming-caution-text',
-    'streaming-live-image',
-    'streaming-control-button',
-    'streaming-quality-select',
+    'user-page-select',
+    'managing-page-select',
+    'privacy',
+    'nctv-tooltip',
+    'game-select',
+    'feed-description',
+    'mic-checkbox',
+    'error-text',
+    'caution-text',
+    'live-image',
+    'control-button',
+    'quality-select',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
-  app.dom.streamingSettingButton.addEventListener(
-      'click', onStreamingSettingButtonClicked);
-  app.dom.streamingMinimizeButton.addEventListener(
-      'click', onStreamingMinimizeButtonClicked);
-  app.dom.streamingCloseButton.addEventListener(
-      'click', onStreamingCloseButtonClicked);
-  app.dom.streamingLoginButton.addEventListener(
-      'click', onStreamingLoginButtonClicked);
+  app.dom.settingButton.addEventListener(
+      'click', onSettingButtonClicked);
+  app.dom.minimizeButton.addEventListener(
+      'click', onMinimizeButtonClicked);
+  app.dom.closeButton.addEventListener(
+      'click', onCloseButtonClicked);
+  app.dom.loginButton.addEventListener(
+      'click', onLoginButtonClicked);
   app.dom.providerPageLink.addEventListener(
       'click', onProviderPageLinkClicked);
-  app.dom.streamingUserPageSelect.addEventListener(
-      'customSelectChange', onStreamingUserPageSelectChanged);
-  app.dom.streamingManagingPageSelect.addEventListener(
-      'customSelectChange', onStreamingManagingPageSelectChanged);
-  app.dom.streamingPrivacy.addEventListener(
-      'customSelectChange', onStreamingPrivacyChanged);
-  app.dom.streamingNctvTooltip.addEventListener(
-      'click', onStreamingNctvTooltipClosed);
-  app.dom.streamingGameSelect.addEventListener(
-      'customSelectChange', onStreamingGameSelectChanged);
-  app.dom.streamingMicCheckbox.addEventListener(
-      'change', onStreamingMicCheckboxChanged);
-  app.dom.streamingControlButton.addEventListener(
-      'click', onStreamingControlButtonClicked);
-  app.dom.streamingQualitySelect.addEventListener(
-      'customSelectChange', onStreamingQualitySelectChanged);
+  app.dom.userPageSelect.addEventListener(
+      'customSelectChange', onUserPageSelectChanged);
+  app.dom.managingPageSelect.addEventListener(
+      'customSelectChange', onManagingPageSelectChanged);
+  app.dom.privacy.addEventListener(
+      'customSelectChange', onPrivacyChanged);
+  app.dom.nctvTooltip.addEventListener(
+      'click', onNctvTooltipClosed);
+  app.dom.gameSelect.addEventListener(
+      'customSelectChange', onGameSelectChanged);
+  app.dom.micCheckbox.addEventListener(
+      'change', onMicCheckboxChanged);
+  app.dom.controlButton.addEventListener(
+      'click', onControlButtonClicked);
+  app.dom.qualitySelect.addEventListener(
+      'customSelectChange', onQualitySelectChanged);
 
-  disableSelect(app.dom.streamingPrivacy);
+  disableSelect(app.dom.privacy);
   setUpSteamingQuality();
 });
 
@@ -147,10 +147,10 @@ function updateStreamingStatus(status) {
   console.info({status: status});
 
   app.streaming.status = status;
-  app.dom.streamingCautionText.style.display = 'none';
-  app.dom.streamingLiveImage.style.display = 'none';
-  const button = app.dom.streamingControlButton;
-  const error = app.dom.streamingErrorText;
+  app.dom.cautionText.style.display = 'none';
+  app.dom.liveImage.style.display = 'none';
+  const button = app.dom.controlButton;
+  const error = app.dom.errorText;
   error.style.display = 'none';
   switch (status) {
     case 'standby':
@@ -162,19 +162,19 @@ function updateStreamingStatus(status) {
       removeClass(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
-      app.dom.streamingCautionText.style.display = 'block';
+      app.dom.cautionText.style.display = 'block';
       break;
     case 'starting':
       addClass(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
-      app.dom.streamingCautionText.style.display = 'block';
+      app.dom.cautionText.style.display = 'block';
       break;
     case 'onAir':
       removeClass(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
       button.disabled = false;
-      app.dom.streamingLiveImage.style.display = 'block';
+      app.dom.liveImage.style.display = 'block';
       break;
     case 'stopping':
       addClass(button, 'loading');
@@ -193,8 +193,8 @@ function updateStreamingStatus(status) {
 
 
 function getCurrentUserPage() {
-  return (app.dom.streamingUserPageSelect.children[0].value == 2) ?
-      app.dom.streamingManagingPageSelect.children[0].value : 'me';
+  return (app.dom.userPageSelect.children[0].value == 2) ?
+      app.dom.managingPageSelect.children[0].value : 'me';
 }
 
 
@@ -204,7 +204,7 @@ function updateStreamingSources(obj) {
   }
   const sources = obj.sources;
 
-  const gameSelect = app.dom.streamingGameSelect;
+  const gameSelect = app.dom.gameSelect;
   const display = gameSelect.children[0];
   const contents = gameSelect.children[1];
   while (contents.firstChild) {
@@ -230,44 +230,44 @@ function updateStreamingSources(obj) {
 }
 
 
-function onStreamingSettingButtonClicked() {
-  console.info('click streamingSettingButton');
+function onSettingButtonClicked() {
+  console.info('click settingButton');
 }
 
 
-function onStreamingMinimizeButtonClicked() {
-  console.info('click streamingMinimizeButton');
+function onMinimizeButtonClicked() {
+  console.info('click minimizeButton');
   cef.windowMinimize.request();
 }
 
 
-function onStreamingCloseButtonClicked() {
-  console.info('click streamingCloseeButton');
+function onCloseButtonClicked() {
+  console.info('click closeeButton');
   cef.windowClose.request();
 }
 
 
-function onStreamingLoginButtonClicked() {
-  console.info('click streamingLoginButton');
+function onLoginButtonClicked() {
+  console.info('click loginButton');
   cef.serviceProviderLogIn.request('Facebook Live');
 }
 
 
 function onProviderPageLinkClicked() {
   console.info('click providerPageLink');
-  const link = (app.dom.streamingUserPageSelect.children[0].value == 2) ?
+  const link = (app.dom.userPageSelect.children[0].value == 2) ?
       app.service.user.pages[
-          app.dom.streamingManagingPageSelect.children[0].value].link :
+          app.dom.managingPageSelect.children[0].value].link :
       app.service.user.link;
   cef.externalBrowserPopUp.request(link);
 }
 
 
-function onStreamingUserPageSelectChanged() {
-  console.info('change streamingUserPageSelect');
-  const managingSelect = app.dom.streamingManagingPageSelect;
-  const privacySelect = app.dom.streamingPrivacy;
-  if (app.dom.streamingUserPageSelect.children[0].value == 2) {
+function onUserPageSelectChanged() {
+  console.info('change userPageSelect');
+  const managingSelect = app.dom.managingPageSelect;
+  const privacySelect = app.dom.privacy;
+  if (app.dom.userPageSelect.children[0].value == 2) {
     managingSelect.style.display = 'block';
     privacySelect.style.display = 'none';
     disableSelect(privacySelect);
@@ -282,18 +282,18 @@ function onStreamingUserPageSelectChanged() {
 }
 
 
-function onStreamingManagingPageSelectChanged() {
-  console.info('change streamingManagingPageSelect');
+function onManagingPageSelectChanged() {
+  console.info('change managingPageSelect');
 
   const userPage = getCurrentUserPage();
   cef.storageUserPageUpdate.request(userPage);
 }
 
 
-function onStreamingPrivacyChanged() {
-  console.info('change streamingPrivacy');
-  const input = app.dom.streamingPrivacy.children[0].value;
-  const tooltip = app.dom.streamingNctvTooltip;
+function onPrivacyChanged() {
+  console.info('change privacy');
+  const input = app.dom.privacy.children[0].value;
+  const tooltip = app.dom.nctvTooltip;
   if (input == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
     tooltip.style.display = 'none';
   } else {
@@ -304,20 +304,20 @@ function onStreamingPrivacyChanged() {
 }
 
 
-function onStreamingNctvTooltipClosed() {
-  console.info('close streamingNctvTooltip');
-  Object.defineProperty(app.dom.streamingNctvTooltip, 'show-once', {});
+function onNctvTooltipClosed() {
+  console.info('close nctvTooltip');
+  Object.defineProperty(app.dom.nctvTooltip, 'show-once', {});
 }
 
 
-function onStreamingGameSelectChanged() {
-  console.info('change streamingGameSelect');
+function onGameSelectChanged() {
+  console.info('change gameSelect');
 }
 
 
-function onStreamingMicCheckboxChanged() {
-  console.info('change streamingMicCheckbox');
-  if (app.dom.streamingMicCheckbox.checked) {
+function onMicCheckboxChanged() {
+  console.info('change micCheckbox');
+  if (app.dom.micCheckbox.checked) {
     console.info('mic on');
     cef.settingsMicOn.request();
   } else {
@@ -327,15 +327,15 @@ function onStreamingMicCheckboxChanged() {
 }
 
 
-function onStreamingControlButtonClicked() {
-  console.info('change streamingControlButton');
+function onControlButtonClicked() {
+  console.info('change controlButton');
   ({
     'standby': function() {
-      const source = app.dom.streamingGameSelect.children[0].value;
+      const source = app.dom.gameSelect.children[0].value;
       const userPage = getCurrentUserPage();
-      const privacy = app.dom.streamingPrivacy.children[0].value;
-      const description = app.dom.streamingFeedDescription.value;
-      const mic = app.dom.streamingMicCheckbox.checked;
+      const privacy = app.dom.privacy.children[0].value;
+      const description = app.dom.feedDescription.value;
+      const mic = app.dom.micCheckbox.checked;
       if (source == '' || userPage == '' || privacy == '')
         return;
 
@@ -353,8 +353,8 @@ function onStreamingControlButtonClicked() {
 }
 
 
-function onStreamingQualitySelectChanged() {
-  const curValue = app.dom.streamingQualitySelect.children[0].value;
+function onQualitySelectChanged() {
+  const curValue = app.dom.qualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
   console.info({ streamingQuality: curValue });
   cef.settingsVideoQualityUpdate.request(
@@ -366,8 +366,8 @@ function onStreamingQualitySelectChanged() {
 
 
 function setUpSteamingQuality() {
-  const display = app.dom.streamingQualitySelect.children[0];
-  const contents = app.dom.streamingQualitySelect.children[1];
+  const display = app.dom.qualitySelect.children[0];
+  const contents = app.dom.qualitySelect.children[1];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
@@ -391,7 +391,7 @@ function setUpSteamingQuality() {
   display.value = contents.firstChild.getAttribute('data-value');
   display.innerHTML = contents.firstChild.firstChild.textContent +
                       '<span class="caret"></span>';
-  onStreamingQualitySelectChanged();
+  onQualitySelectChanged();
 }
 
 
@@ -411,12 +411,12 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
   for (const element of app.dom.mainPagePanel) {
     element.style.display = 'block';
   }
-  app.dom.streamingSettingButton.style.display = 'inline';
-  app.dom.streamingMinimizeButton.style.display = 'inline';
+  app.dom.settingButton.style.display = 'inline';
+  app.dom.minimizeButton.style.display = 'inline';
 
   app.dom.providerUserName.textContent = userName;
 
-  const managingPageSelect = app.dom.streamingManagingPageSelect;
+  const managingPageSelect = app.dom.managingPageSelect;
   const display = managingPageSelect.children[0];
   const contents = managingPageSelect.children[1];
   while (contents.firstChild) {
