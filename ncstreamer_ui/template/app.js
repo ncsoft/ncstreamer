@@ -92,21 +92,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
   app.dom.providerPageLink.addEventListener(
       'click', onProviderPageLinkClicked);
   app.dom.mePageSelect.addEventListener(
-      'customSelectChange', onMePageSelectChanged);
+      'ncsoftSelectChange', onMePageSelectChanged);
   app.dom.managingPageSelect.addEventListener(
-      'customSelectChange', onManagingPageSelectChanged);
+      'ncsoftSelectChange', onManagingPageSelectChanged);
   app.dom.privacySelect.addEventListener(
-      'customSelectChange', onPrivacySelectChanged);
+      'ncsoftSelectChange', onPrivacySelectChanged);
   app.dom.nctvTooltip.addEventListener(
       'click', onNctvTooltipClosed);
   app.dom.gameSelect.addEventListener(
-      'customSelectChange', onGameSelectChanged);
+      'ncsoftSelectChange', onGameSelectChanged);
   app.dom.micCheckbox.addEventListener(
       'change', onMicCheckboxChanged);
   app.dom.controlButton.addEventListener(
       'click', onControlButtonClicked);
   app.dom.qualitySelect.addEventListener(
-      'customSelectChange', onQualitySelectChanged);
+      'ncsoftSelectChange', onQualitySelectChanged);
 
   disableSelect(app.dom.privacySelect);
   setUpSteamingQuality();

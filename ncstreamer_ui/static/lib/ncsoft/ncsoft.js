@@ -4,7 +4,7 @@
 
 
 $(document).ready(function() {
-  var event = new CustomEvent('customSelectChange');
+  var event = new CustomEvent('ncsoftSelectChange');
 
   // custom select
   $(document).on('click', '.dropdown-menu li a', function(e) {
