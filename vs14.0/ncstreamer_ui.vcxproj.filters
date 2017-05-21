@@ -37,13 +37,11 @@
     <ClInclude Include="..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat">
       <Filter>build_tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\ncstreamer_ui\build_tools\post_build_event.bat">
+      <Filter>build_tools</Filter>
+    </ClInclude>
     <ClInclude Include="..\ncstreamer_ui\static\lib\README.txt">
       <Filter>static\lib</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\ncstreamer_ui\build_tools\post_build_event.bat">
-      <Filter>build_tools</Filter>
-    </None>
   </ItemGroup>
 </Project>
