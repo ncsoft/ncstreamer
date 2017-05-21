@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'provider-user-name',
     'provider-page-link',
     'me-page-select',
-    'managing-page-select',
+    'own-page-select',
     'privacy-select',
     'nctv-tooltip',
     'game-select',
@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onProviderPageLinkClicked);
   app.dom.mePageSelect.addEventListener(
       'ncsoftSelectChange', onMePageSelectChanged);
-  app.dom.managingPageSelect.addEventListener(
-      'ncsoftSelectChange', onManagingPageSelectChanged);
+  app.dom.ownPageSelect.addEventListener(
+      'ncsoftSelectChange', onOwnPageSelectChanged);
   app.dom.privacySelect.addEventListener(
       'ncsoftSelectChange', onPrivacySelectChanged);
   app.dom.nctvTooltip.addEventListener(
@@ -196,7 +196,7 @@ function updateStreamingStatus(status) {
 
 function getCurrentUserPage() {
   return (app.dom.mePageSelect.children[0].value == 2) ?
-      app.dom.managingPageSelect.children[0].value : 'me';
+      app.dom.ownPageSelect.children[0].value : 'me';
 }
 
 
@@ -259,7 +259,7 @@ function onProviderPageLinkClicked() {
   console.info('click providerPageLink');
   const link = (app.dom.mePageSelect.children[0].value == 2) ?
       app.service.user.pages[
-          app.dom.managingPageSelect.children[0].value].link :
+          app.dom.ownPageSelect.children[0].value].link :
       app.service.user.link;
   cef.externalBrowserPopUp.request(link);
 }
@@ -267,14 +267,14 @@ function onProviderPageLinkClicked() {
 
 function onMePageSelectChanged() {
   console.info('change mePageSelect');
-  const managingSelect = app.dom.managingPageSelect;
+  const ownSelect = app.dom.ownPageSelect;
   const privacySelect = app.dom.privacySelect;
   if (app.dom.mePageSelect.children[0].value == 2) {
-    managingSelect.style.display = 'block';
+    ownSelect.style.display = 'block';
     privacySelect.style.display = 'none';
     disableSelect(privacySelect);
   } else {
-    managingSelect.style.display = 'none';
+    ownSelect.style.display = 'none';
     privacySelect.style.display = 'block';
     enableSelect(privacySelect);
   }
@@ -284,8 +284,8 @@ function onMePageSelectChanged() {
 }
 
 
-function onManagingPageSelectChanged() {
-  console.info('change managingPageSelect');
+function onOwnPageSelectChanged() {
+  console.info('change ownPageSelect');
 
   const userPage = getCurrentUserPage();
   cef.storageUserPageUpdate.request(userPage);
@@ -418,17 +418,17 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
 
   app.dom.providerUserName.textContent = userName;
 
-  const managingPageSelect = app.dom.managingPageSelect;
-  const display = managingPageSelect.children[0];
-  const contents = managingPageSelect.children[1];
+  const ownPageSelect = app.dom.ownPageSelect;
+  const display = ownPageSelect.children[0];
+  const contents = ownPageSelect.children[1];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
 
   if (userPages.length == 0) {
-    disableSelect(managingPageSelect);
+    disableSelect(ownPageSelect);
   } else {
-    enableSelect(managingPageSelect);
+    enableSelect(ownPageSelect);
     for (const userPage of userPages) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
