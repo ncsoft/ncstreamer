@@ -52,3 +52,42 @@ ncsoft.select.disable = function(element) {
   element.children[0].style.display = 'none';
   element.children[2].style.display = 'block';
 };
+
+
+ncsoft.select.setByIndex = function(select, index) {
+  const display = select.children[0];
+  const contents = select.children[1];
+  const child = contents.children[index];
+
+  display.value = child.getAttribute('data-value');
+  display.innerHTML = child.textContent +
+                      '<span class="caret"></span>';
+};
+
+
+ncsoft.select.setByValue = function(select, value) {
+  const display = select.children[0];
+  const contents = select.children[1];
+
+  for (let index = 0; index < contents.children.length; ++index) {
+    const content = contents.children[index];
+    if (content.getAttribute('data-value') == value) {
+      ncsoft.select.setByIndex(select, index);
+      return;
+    }
+  }
+};
+
+
+ncsoft.select.setByText = function(select, text) {
+  const display = select.children[0];
+  const contents = select.children[1];
+
+  for (let index = 0; index < contents.children.length; ++index) {
+    const content = contents.children[index];
+    if (content.textContent == text) {
+      ncsoft.select.setByIndex(select, index);
+      return;
+    }
+  }
+};

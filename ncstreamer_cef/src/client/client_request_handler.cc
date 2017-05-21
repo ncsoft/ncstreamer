@@ -241,6 +241,8 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     arg.add("userName", user_name);
     arg.add("userLink", user_link);
     arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
+    arg.add("userPage", LocalStorage::Get()->GetUserPage());
+    arg.add("privacy", LocalStorage::Get()->GetPrivacy());
 
     JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
   });

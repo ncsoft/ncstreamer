@@ -177,6 +177,30 @@ function getCurrentUserPage() {
 }
 
 
+function setUpUserPage(userPage) {
+  if (!userPage) {
+    return;
+  }
+
+  if (userPage == 'me') {
+    ncsoft.select.setByIndex(app.dom.mePageSelect, 0);
+    updateDependentsOnMePageSelect();
+  } else {
+    ncsoft.select.setByIndex(app.dom.mePageSelect, 1);
+    updateDependentsOnMePageSelect();
+
+    ncsoft.select.setByValue(app.dom.ownPageSelect, userPage);
+  }
+}
+
+
+function setUpPrivacy(privacy) {
+  ncsoft.select.setByValue(app.dom.privacySelect, privacy);
+  // TODO(khpark): confirm if tooltip should be shown or not.
+  // updateNctvTooltip(privacy);
+}
+
+
 function updateStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources')) {
     return;
@@ -386,7 +410,8 @@ function setUpSteamingQuality() {
 }
 
 
-cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
+cef.serviceProviderLogIn.onResponse = function(
+    userName, userLink, userPages, userPage, privacy) {
   app.service.user = {
     name: userName,
     link: userLink,
@@ -430,6 +455,9 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
     display.innerHTML = contents.firstChild.firstChild.textContent +
                         '<span class="caret"></span>';
   }
+
+  setUpUserPage(userPage);
+  setUpPrivacy(privacy);
 };
 
 
