@@ -244,6 +244,15 @@ function onProviderPageLinkClicked() {
 
 function onMePageSelectChanged() {
   console.info('change mePageSelect');
+
+  updateDependentsOnMePageSelect();
+
+  const userPage = getCurrentUserPage();
+  cef.storageUserPageUpdate.request(userPage);
+}
+
+
+function updateDependentsOnMePageSelect() {
   const ownSelect = app.dom.ownPageSelect;
   const privacySelect = app.dom.privacySelect;
   if (app.dom.mePageSelect.children[0].value == 2) {
@@ -255,9 +264,6 @@ function onMePageSelectChanged() {
     privacySelect.style.display = 'block';
     ncsoft.select.enable(privacySelect);
   }
-
-  const userPage = getCurrentUserPage();
-  cef.storageUserPageUpdate.request(userPage);
 }
 
 
