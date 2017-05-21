@@ -4,9 +4,9 @@
 set ProjectDir=%~1
 set Configuration=%~2
 
-robocopy "%ProjectDir%..\ncstreamer_ui\static" "%ProjectDir%build\ncstreamer_ui\static_ui\static" /e
+robocopy /mir "%ProjectDir%..\ncstreamer_ui\static" "%ProjectDir%build\ncstreamer_ui\static_ui\static"
 echo ROBOCOPY RESULT: %ERRORLEVEL%
-if %ERRORLEVEL% GTR 1 (
+if %ERRORLEVEL% GEQ 8 (
   exit /b 1
 )
 set ERRORLEVEL=0
