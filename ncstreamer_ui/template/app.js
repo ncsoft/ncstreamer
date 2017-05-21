@@ -51,6 +51,8 @@ document.addEventListener('contextmenu', function(event) {
 
 
 document.addEventListener('DOMContentLoaded', function(event) {
+  ncsoft.onDOMContentLoaded();
+
   [
     'login-page-panel',
     'main-page-panel',

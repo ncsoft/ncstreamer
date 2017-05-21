@@ -3,7 +3,10 @@
  */
 
 
-$(document).ready(function() {
+const ncsoft = {};
+
+
+ncsoft.onDOMContentLoaded = function() {
   var event = new CustomEvent('ncsoftSelectChange');
 
   // custom select
@@ -22,4 +25,4 @@ $(document).ready(function() {
   $(document).on('click', '.nc-streamer-tooltip .layer-close', function(e) {
     $('.nc-streamer-tooltip').hide();
   });
-});
+};
