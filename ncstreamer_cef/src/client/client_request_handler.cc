@@ -242,11 +242,7 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     arg.add("userLink", user_link);
     arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
 
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
-        arg);
+    JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
   });
 }
 
