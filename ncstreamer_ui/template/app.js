@@ -271,15 +271,15 @@ function onOwnPageSelectChanged() {
 
 function onPrivacySelectChanged() {
   console.info('change privacySelect');
-  const input = app.dom.privacySelect.children[0].value;
+  const privacy = app.dom.privacySelect.children[0].value;
   const tooltip = app.dom.nctvTooltip;
-  if (input == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
+  if (privacy == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
     tooltip.style.display = 'none';
   } else {
     tooltip.style.display = 'block';
   }
 
-  cef.storagePrivacyUpdate.request(input);
+  cef.storagePrivacyUpdate.request(privacy);
 }
 
 
