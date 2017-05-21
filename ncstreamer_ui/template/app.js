@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'provider-page-link',
     'streaming-user-page-select',
     'streaming-managing-page-select',
-    'streaming-page-access',
+    'streaming-privacy',
     'streaming-nctv-tooltip',
     'streaming-game-select',
     'streaming-feed-description',
@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'customSelectChange', onStreamingUserPageSelectChanged);
   app.dom.streamingManagingPageSelect.addEventListener(
       'customSelectChange', onStreamingManagingPageSelectChanged);
-  app.dom.streamingPageAccess.addEventListener(
-      'customSelectChange', onStreamingPageAccessChanged);
+  app.dom.streamingPrivacy.addEventListener(
+      'customSelectChange', onStreamingPrivacyChanged);
   app.dom.streamingNctvTooltip.addEventListener(
       'click', onStreamingNctvTooltipClosed);
   app.dom.streamingGameSelect.addEventListener(
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   app.dom.streamingQualitySelect.addEventListener(
       'customSelectChange', onStreamingQualitySelectChanged);
 
-  disableSelect(app.dom.streamingPageAccess);
+  disableSelect(app.dom.streamingPrivacy);
   setUpSteamingQuality();
 });
 
@@ -266,7 +266,7 @@ function onProviderPageLinkClicked() {
 function onStreamingUserPageSelectChanged() {
   console.info('change streamingUserPageSelect');
   const managingSelect = app.dom.streamingManagingPageSelect;
-  const privacySelect = app.dom.streamingPageAccess;
+  const privacySelect = app.dom.streamingPrivacy;
   if (app.dom.streamingUserPageSelect.children[0].value == 2) {
     managingSelect.style.display = 'block';
     privacySelect.style.display = 'none';
@@ -290,9 +290,9 @@ function onStreamingManagingPageSelectChanged() {
 }
 
 
-function onStreamingPageAccessChanged() {
-  console.info('change streamingPageAccess');
-  const input = app.dom.streamingPageAccess.children[0].value;
+function onStreamingPrivacyChanged() {
+  console.info('change streamingPrivacy');
+  const input = app.dom.streamingPrivacy.children[0].value;
   const tooltip = app.dom.streamingNctvTooltip;
   if (input == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
     tooltip.style.display = 'none';
@@ -333,7 +333,7 @@ function onStreamingControlButtonClicked() {
     'standby': function() {
       const source = app.dom.streamingGameSelect.children[0].value;
       const userPage = getCurrentUserPage();
-      const privacy = app.dom.streamingPageAccess.children[0].value;
+      const privacy = app.dom.streamingPrivacy.children[0].value;
       const description = app.dom.streamingFeedDescription.value;
       const mic = app.dom.streamingMicCheckbox.checked;
       if (source == '' || userPage == '' || privacy == '')
