@@ -3,7 +3,10 @@
  */
 
 
-const ncsoft = {};
+const ncsoft = {
+  klass: {},
+  select: {},
+};
 
 
 ncsoft.onDOMContentLoaded = function() {
@@ -25,4 +28,27 @@ ncsoft.onDOMContentLoaded = function() {
   $(document).on('click', '.nc-streamer-tooltip .layer-close', function(e) {
     $('.nc-streamer-tooltip').hide();
   });
+};
+
+
+ncsoft.klass.add = function(element, name) {
+  element.className += ' ' + name;
+};
+
+
+ncsoft.klass.remove = function(element, name) {
+  const check = new RegExp('(\\s|^)' + name + '(\\s|$)');
+  element.className = element.className.replace(check, ' ').trim();
+};
+
+
+ncsoft.select.enable = function(element) {
+  element.children[0].style.display = 'block';
+  element.children[2].style.display = 'none';
+};
+
+
+ncsoft.select.disable = function(element) {
+  element.children[0].style.display = 'none';
+  element.children[2].style.display = 'block';
 };

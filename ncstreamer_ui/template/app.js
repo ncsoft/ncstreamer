@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   app.dom.qualitySelect.addEventListener(
       'ncsoftSelectChange', onQualitySelectChanged);
 
-  disableSelect(app.dom.privacySelect);
+  ncsoft.select.disable(app.dom.privacySelect);
   setUpSteamingQuality();
 });
 
@@ -119,29 +119,6 @@ function toCamel(str) {
   return str.replace(/(\-[a-z])/g, function(match) {
     return match.toUpperCase().replace('-', '');
   });
-}
-
-
-function addClass(element, name) {
-  element.className += ' ' + name;
-}
-
-
-function removeClass(element, name) {
-  const check = new RegExp('(\\s|^)' + name + '(\\s|$)');
-  element.className = element.className.replace(check, ' ').trim();
-}
-
-
-function enableSelect(element) {
-  element.children[0].style.display = 'block';
-  element.children[2].style.display = 'none';
-}
-
-
-function disableSelect(element) {
-  element.children[0].style.display = 'none';
-  element.children[2].style.display = 'block';
 }
 
 
@@ -156,35 +133,35 @@ function updateStreamingStatus(status) {
   error.style.display = 'none';
   switch (status) {
     case 'standby':
-      removeClass(button, 'loading');
+      ncsoft.klass.remove(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
       break;
     case 'setup':
-      removeClass(button, 'loading');
+      ncsoft.klass.remove(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       app.dom.cautionText.style.display = 'block';
       break;
     case 'starting':
-      addClass(button, 'loading');
+      ncsoft.klass.add(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       app.dom.cautionText.style.display = 'block';
       break;
     case 'onAir':
-      removeClass(button, 'loading');
+      ncsoft.klass.remove(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
       button.disabled = false;
       app.dom.liveImage.style.display = 'block';
       break;
     case 'stopping':
-      addClass(button, 'loading');
+      ncsoft.klass.add(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
       button.disabled = true;
       break;
     case 'error':
-      removeClass(button, 'loading');
+      ncsoft.klass.remove(button, 'loading');
       error.textContent = '%ERROR_MESSAGE%';
       error.style.display = 'block';
       button.textContent = '%START_BROADCASTING%';
@@ -214,9 +191,9 @@ function updateStreamingSources(obj) {
   }
 
   if (sources.length == 0) {
-    disableSelect(gameSelect);
+    ncsoft.select.disable(gameSelect);
   } else {
-    enableSelect(gameSelect);
+    ncsoft.select.enable(gameSelect);
     for (const source of sources) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
@@ -272,11 +249,11 @@ function onMePageSelectChanged() {
   if (app.dom.mePageSelect.children[0].value == 2) {
     ownSelect.style.display = 'block';
     privacySelect.style.display = 'none';
-    disableSelect(privacySelect);
+    ncsoft.select.disable(privacySelect);
   } else {
     ownSelect.style.display = 'none';
     privacySelect.style.display = 'block';
-    enableSelect(privacySelect);
+    ncsoft.select.enable(privacySelect);
   }
 
   const userPage = getCurrentUserPage();
@@ -426,9 +403,9 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
   }
 
   if (userPages.length == 0) {
-    disableSelect(ownPageSelect);
+    ncsoft.select.disable(ownPageSelect);
   } else {
-    enableSelect(ownPageSelect);
+    ncsoft.select.enable(ownPageSelect);
     for (const userPage of userPages) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
