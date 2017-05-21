@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'provider-page-link',
     'user-page-select',
     'managing-page-select',
-    'privacy',
+    'privacy-select',
     'nctv-tooltip',
     'game-select',
     'feed-description',
@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'customSelectChange', onUserPageSelectChanged);
   app.dom.managingPageSelect.addEventListener(
       'customSelectChange', onManagingPageSelectChanged);
-  app.dom.privacy.addEventListener(
-      'customSelectChange', onPrivacyChanged);
+  app.dom.privacySelect.addEventListener(
+      'customSelectChange', onPrivacySelectChanged);
   app.dom.nctvTooltip.addEventListener(
       'click', onNctvTooltipClosed);
   app.dom.gameSelect.addEventListener(
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   app.dom.qualitySelect.addEventListener(
       'customSelectChange', onQualitySelectChanged);
 
-  disableSelect(app.dom.privacy);
+  disableSelect(app.dom.privacySelect);
   setUpSteamingQuality();
 });
 
@@ -266,7 +266,7 @@ function onProviderPageLinkClicked() {
 function onUserPageSelectChanged() {
   console.info('change userPageSelect');
   const managingSelect = app.dom.managingPageSelect;
-  const privacySelect = app.dom.privacy;
+  const privacySelect = app.dom.privacySelect;
   if (app.dom.userPageSelect.children[0].value == 2) {
     managingSelect.style.display = 'block';
     privacySelect.style.display = 'none';
@@ -290,9 +290,9 @@ function onManagingPageSelectChanged() {
 }
 
 
-function onPrivacyChanged() {
-  console.info('change privacy');
-  const input = app.dom.privacy.children[0].value;
+function onPrivacySelectChanged() {
+  console.info('change privacySelect');
+  const input = app.dom.privacySelect.children[0].value;
   const tooltip = app.dom.nctvTooltip;
   if (input == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
     tooltip.style.display = 'none';
@@ -333,7 +333,7 @@ function onControlButtonClicked() {
     'standby': function() {
       const source = app.dom.gameSelect.children[0].value;
       const userPage = getCurrentUserPage();
-      const privacy = app.dom.privacy.children[0].value;
+      const privacy = app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
       const mic = app.dom.micCheckbox.checked;
       if (source == '' || userPage == '' || privacy == '')
