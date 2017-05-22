@@ -44,7 +44,10 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
     sources_ = ParseSourcesArgument(sources_arg);
   }
 
-  locale_ = cef_cmd_line->GetSwitchValue(L"locale");
+  const std::wstring &locale =
+      cef_cmd_line->GetSwitchValue(L"locale");
+  locale_ = locale.empty() ? L"en-US" : locale;
+
   ui_uri_ = cef_cmd_line->GetSwitchValue(L"ui-uri");
 
   const std::wstring &remote_port =
