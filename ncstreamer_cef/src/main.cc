@@ -54,6 +54,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
     return ExecuteRenderProcess(instance);
   }
 
+  auto app_data_path = CreateUserLocalAppDirectory();
+
   CefRefPtr<ncstreamer::BrowserApp> browser_app{new ncstreamer::BrowserApp{
       instance,
       cmd_line.shows_sources_all(),
@@ -66,7 +68,6 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
 
-  auto app_data_path = CreateUserLocalAppDirectory();
   auto storage_path = app_data_path / L"local_storage.json";
 
   ncstreamer::LocalStorage::SetUp(storage_path.c_str());
