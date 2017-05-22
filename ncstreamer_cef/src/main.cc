@@ -65,6 +65,7 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   CefSettings settings;
   settings.no_sandbox = true;
+  CefString(&settings.cache_path) = (app_data_path / L"cef_cache").c_str();
 
   ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
 
