@@ -64,6 +64,24 @@ void StreamingService::LogIn(
 }
 
 
+void StreamingService::LogOut(
+    const std::string &service_provider_id,
+    const OnFailed &on_failed,
+    const OnLoggedOut &on_logged_out) {
+  auto i = service_providers_.find(service_provider_id);
+  if (i == service_providers_.end()) {
+    on_failed(FailMessage::ToUnknownServiceProvider(service_provider_id));
+    return;
+  }
+  current_service_provider_id_ = &(i->first);
+  current_service_provider_ = i->second;
+
+  current_service_provider_->LogOut(
+      on_failed,
+      on_logged_out);
+}
+
+
 void StreamingService::PostLiveVideo(
     const std::string &user_page_id,
     const std::string &privacy,

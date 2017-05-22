@@ -33,6 +33,10 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in) override;
 
+  void LogOut(
+      const OnFailed &on_failed,
+      const OnLoggedOut &on_logged_out) override;
+
   void PostLiveVideo(
       const std::string &user_page_id,
       const std::string &privacy,
