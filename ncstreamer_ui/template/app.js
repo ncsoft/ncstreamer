@@ -418,11 +418,11 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
     ncsoft.select.disable(ownPageSelect);
   } else {
     ncsoft.select.enable(ownPageSelect);
-    for (const userPage of userPages) {
+    for (const ownPage of userPages) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
-      aTag.textContent = userPage.name;
-      li.setAttribute('data-value', userPage.id);
+      aTag.textContent = ownPage.name;
+      li.setAttribute('data-value', ownPage.id);
       li.appendChild(aTag);
       contents.appendChild(li);
     }
