@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'streaming-caution-text',
     'streaming-control-button',
     'streaming-quality-select',
+    'streaming-modal-close-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
@@ -106,6 +107,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onStreamingControlButtonClicked);
   app.dom.streamingQualitySelect.addEventListener(
       'customSelectChange', onStreamingQualitySelectChanged);
+  app.dom.streamingModalCloseButton.addEventListener(
+      'click', onStreamingModalCloseButtonClicked);
 
   disableSelect(app.dom.streamingPageAccess);
   setUpSteamingQuality();
@@ -232,7 +235,11 @@ function onStreamingMinimizeButtonClicked() {
 
 function onStreamingCloseButtonClicked() {
   console.info('click streamingCloseeButton');
-  cef.windowClose.request();
+  if (app.streaming.status == 'onAir') {
+    customStyle.showModal('#streaming-close-check');
+  } else {
+    cef.windowClose.request();
+  }
 }
 
 
@@ -344,6 +351,12 @@ function onStreamingQualitySelectChanged() {
       curQuality.resolution.height,
       curQuality.fps,
       curQuality.bitrate);
+}
+
+
+function onStreamingModalCloseButtonClicked() {
+  console.info('click streamingModalCloseButton');
+  cef.windowClose.request();
 }
 
 

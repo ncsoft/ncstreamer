@@ -211,6 +211,37 @@
       </div>
     </div>
   </div>
+
+  <!-- close check modal -->
+  <div id="streaming-close-check"
+       class="modal nc-streamer-modal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="confirmModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>%CLOSE_CHECK_MESSGAE1%<br/>%CLOSE_CHECK_MESSGAE2%</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-dismiss="modal">
+            %CONFIRM%
+          </button>
+          <button id="streaming-modal-close-button"
+                  class="btn btn-default">
+            %END_BROADCASTING%
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- libraries -->
