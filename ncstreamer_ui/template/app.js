@@ -277,6 +277,9 @@ function onMePageSelectChanged() {
   updateDependentsOnMePageSelect();
 
   const userPage = getCurrentUserPage();
+  if (!userPage) {
+    return;
+  }
   cef.storageUserPageUpdate.request(userPage);
 }
 
@@ -300,6 +303,9 @@ function onOwnPageSelectChanged() {
   console.info('change ownPageSelect');
 
   const userPage = getCurrentUserPage();
+  if (!userPage) {
+    return;
+  }
   cef.storageUserPageUpdate.request(userPage);
 }
 
