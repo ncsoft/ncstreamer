@@ -192,9 +192,11 @@ function updateStreamingStatus(status) {
 }
 
 
-function setUpStreamingSources(obj) {
-  if (!obj.hasOwnProperty('sources'))
+function updateStreamingSources(obj) {
+  if (!obj.hasOwnProperty('sources')) {
     return;
+  }
+  const sources = obj.sources;
 
   const gameSelect = app.dom.streamingGameSelect;
   const display = gameSelect.children[0];
@@ -203,11 +205,11 @@ function setUpStreamingSources(obj) {
     contents.removeChild(contents.firstChild);
   }
 
-  if (obj.sources.length == 0) {
+  if (sources.length == 0) {
     disableSelect(gameSelect);
   } else {
     enableSelect(gameSelect);
-    for (const source of obj.sources) {
+    for (const source of sources) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
       aTag.textContent = source.split(':')[0];
