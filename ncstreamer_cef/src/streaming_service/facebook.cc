@@ -12,7 +12,10 @@
 
 #include "boost/property_tree/json_parser.hpp"
 #include "boost/property_tree/ptree.hpp"
+#include "include/base/cef_bind.h"
+#include "include/cef_cookie.h"
 #include "include/cef_browser.h"
+#include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
 
 #include "ncstreamer_cef/src/lib/cef_types.h"
@@ -82,6 +85,47 @@ void Facebook::LogIn(
       kLoginUri.uri_string(),
       browser_settings,
       NULL);
+}
+
+
+void Facebook::LogOut(
+    const OnFailed &on_failed,
+    const OnLoggedOut &on_logged_out) {
+  if (::CefCurrentlyOn(TID_IO) == false) {
+    ::CefPostTask(TID_IO,
+        base::Bind(&Facebook::LogOut, base::Unretained(this),
+            on_failed, on_logged_out));
+    return;
+  }
+
+  class LogoutCallback : public CefDeleteCookiesCallback {
+   public:
+    LogoutCallback(
+        const OnFailed &on_failed,
+        const OnLoggedOut &on_logged_out)
+        : CefDeleteCookiesCallback{},
+          on_failed_{on_failed},
+          on_logged_out_{on_logged_out} {}
+
+    virtual ~LogoutCallback() {}
+
+    void OnComplete(int /*num_deleted*/) override {
+      on_logged_out_();
+    }
+
+   private:
+    OnFailed on_failed_;
+    OnLoggedOut on_logged_out_;
+
+    IMPLEMENT_REFCOUNTING(LogoutCallback);
+  };
+
+  CefRefPtr<LogoutCallback> logout_callback{
+      new LogoutCallback{on_failed, on_logged_out}};
+  CefCookieManager::GetGlobalManager(NULL)->DeleteCookies(
+      L"",
+      L"",
+      logout_callback);
 }
 
 

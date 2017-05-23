@@ -21,6 +21,7 @@ class StreamingService {
  public:
   using OnFailed = StreamingServiceProvider::OnFailed;
   using OnLoggedIn = StreamingServiceProvider::OnLoggedIn;
+  using OnLoggedOut = StreamingServiceProvider::OnLoggedOut;
   using OnLiveVideoPosted =
       std::function<void(const std::string &service_provider,
                          const std::string &stream_url)>;
@@ -35,6 +36,11 @@ class StreamingService {
       const std::wstring &locale,
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
+
+  void LogOut(
+      const std::string &service_provider_id,
+      const OnFailed &on_failed,
+      const OnLoggedOut &on_logged_out);
 
   void PostLiveVideo(
       const std::string &user_page_id,

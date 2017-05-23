@@ -127,6 +127,11 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"service_provider/log_out",
+       std::bind(&This::OnCommandServiceProviderLogOut, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"streaming/start",
        std::bind(&This::OnCommandStreamingStart, this,
            std::placeholders::_1,
@@ -245,6 +250,36 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
     arg.add("privacy", LocalStorage::Get()->GetPrivacy());
 
     JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
+  });
+}
+
+
+void ClientRequestHandler::OnCommandServiceProviderLogOut(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  auto provider_i = args.find("serviceProvider");
+  if (provider_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::string &service_provider = provider_i->second;
+
+  StreamingService::Get()->LogOut(
+      service_provider,
+      [browser, cmd](const std::string &error) {
+    JsExecutor::Execute(
+        browser,
+        "cef.onResponse",
+        cmd,
+        std::make_pair("error", error));
+  }, [browser, cmd]() {
+    JsExecutor::Execute(
+        browser,
+        "cef.onResponse",
+        cmd,
+        std::make_pair("error", ""));
   });
 }
 

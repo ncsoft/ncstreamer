@@ -27,6 +27,8 @@ class StreamingServiceProvider {
       std::function<void(const std::string &user_name,
                          const std::string &user_link,
                          const std::vector<UserPage> &user_pages)>;
+  using OnLoggedOut =
+      std::function<void()>;
   using OnLiveVideoPosted =
       std::function<void(const std::string &stream_url)>;
 
@@ -38,6 +40,10 @@ class StreamingServiceProvider {
       const std::wstring &locale,
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in) = 0;
+
+  virtual void LogOut(
+      const OnFailed &on_failed,
+      const OnLoggedOut &on_logged_out) = 0;
 
   virtual void PostLiveVideo(
       const std::string &user_page_id,

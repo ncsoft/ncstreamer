@@ -78,7 +78,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'caution-text',
     'live-image',
     'control-button',
+    'provider-user-name-in-settings',
+    'provider-user-disconnect-in-settings',
     'quality-select',
+    'settings-confirm-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
@@ -107,6 +110,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'change', onMicCheckboxChanged);
   app.dom.controlButton.addEventListener(
       'click', onControlButtonClicked);
+  app.dom.providerUserDisconnectInSettings.addEventListener(
+      'click', onProviderUserDisconnectInSettingsClicked);
   app.dom.qualitySelect.addEventListener(
       'ncsoftSelectChange', onQualitySelectChanged);
 
@@ -368,6 +373,14 @@ function onControlButtonClicked() {
 }
 
 
+function onProviderUserDisconnectInSettingsClicked() {
+  console.info('click providerUserDisconnectInSettings');
+
+  app.dom.settingsConfirmButton.click();
+  cef.serviceProviderLogOut.request('Facebook Live');
+}
+
+
 function onQualitySelectChanged() {
   const curValue = app.dom.qualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
@@ -431,6 +444,7 @@ cef.serviceProviderLogIn.onResponse = function(
   app.dom.minimizeButton.style.display = 'inline';
 
   app.dom.providerUserName.textContent = userName;
+  app.dom.providerUserNameInSettings.textContent = userName;
 
   const ownPageSelect = app.dom.ownPageSelect;
   const display = ownPageSelect.children[0];
@@ -458,6 +472,40 @@ cef.serviceProviderLogIn.onResponse = function(
 
   setUpUserPage(userPage);
   setUpPrivacy(privacy);
+};
+
+
+cef.serviceProviderLogOut.onResponse = function(error) {
+  if (error) {
+    // TODO(khpark): TBD
+    alert('Logout failed: ' + error);
+    return;
+  }
+
+  app.service.user = {
+    name: '',
+    link: '',
+    pages: {},
+  };
+
+  for (const element of app.dom.loginPagePanel) {
+    element.style.display = 'block';
+  }
+  for (const element of app.dom.mainPagePanel) {
+    element.style.display = 'none';
+  }
+
+  app.dom.providerUserName.textContent = '';
+  app.dom.providerUserNameInSettings.textContent = '';
+
+  const ownPages = app.dom.ownPageSelect.children[1];
+  while (ownPages.firstChild) {
+    ownPages.removeChild(ownPages.firstChild);
+  }
+  ncsoft.select.disable(ownPageSelect);
+
+  setUpUserPage('me');
+  setUpPrivacy('SELF');
 };
 
 
