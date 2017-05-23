@@ -39,32 +39,32 @@ div {
 }
 
 
-#streaming-managing-page-select {
+#own-page-select {
   display: none;
 }
 
 
-#streaming-caution-text {
+#caution-text {
   display: none;
 }
 
 
-#streaming-live-image {
+#live-image {
   display: none;
 }
 
 
-#streaming-error-text {
+#error-text {
   display: none;
   white-space: pre;
 }
 
 
-#streaming-setting-button {
+#setting-button {
   display: none;
 }
 
 
-#streaming-minimize-button {
+#minimize-button {
   display: none;
 }
