@@ -12,9 +12,9 @@ if not exist "%FromDir%" (
 
 set ToDir=%ProjectDir%build\ncstreamer_cef\%Configuration%\bin\32bit\ui
 
-robocopy "%FromDir%" "%ToDir%" /e
+robocopy /mir "%FromDir%" "%ToDir%"
 echo ROBOCOPY RESULT: %ERRORLEVEL%
-if %ERRORLEVEL% GTR 1 (
+if %ERRORLEVEL% GEQ 8 (
   exit /b 1
 )
 set ERRORLEVEL=0

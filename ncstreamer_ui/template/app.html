@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <title>%NCSTREAMING%</title>
 <link href="../static/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-<link href="../static/lib/ncsoft/nc-streamer.css" rel="stylesheet">
+<link href="../static/lib/ncsoft/ncsoft.css" rel="stylesheet">
 <link href="../static/app.css" rel="stylesheet">
 
 <div class="nc-streamer-container">
@@ -10,15 +10,15 @@
   <div class="header">
     <h1 class="title">%BROADCASTING%<span class="label-beta">Beta</span></h1>
     <div class="settings">
-      <button id="streaming-setting-button"
+      <button id="setting-button"
               class="btn-setting"
               value="Setting"
               data-toggle="modal"
               data-target="#settingModal"></button>
-      <button id="streaming-minimize-button"
+      <button id="minimize-button"
               class="btn-minimum"
               value="Minimum"></button>
-      <button id="streaming-close-button"
+      <button id="close-button"
               class="btn-close"
               value="Close"></button>
     </div>
@@ -36,7 +36,7 @@
     </section>
   </div>
   <div class="nc-streamer-footer login-page-panel">
-    <button id="streaming-login-button"
+    <button id="login-button"
             class="btn-connect">%CONNECT_FACEBOOK%</button>
   </div>
 
@@ -51,7 +51,7 @@
            href="#"
            class="btn-view-streaming live">%WATCH_BROADCASTING%</a>
       </div>
-      <div id="streaming-user-page-select"
+      <div id="me-page-select"
            class="dropdown">
         <button class="btn dropdown-toggle"
                 type="button"
@@ -68,25 +68,25 @@
       </div>
 
       <!-- feed to page -->
-      <div id="streaming-managing-page-select"
+      <div id="own-page-select"
            class="dropdown">
         <button class="btn dropdown-toggle"
                 type="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="true">
-          {관리 중인 페이지1}
+          <!--page 1-->
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><a>{관리 중인 페이지1}</a></li>
-          <li><a>{관리 중인 페이지2}</a></li>
+          <!--<li><a>page 1</a></li>-->
+          <!--<li><a>page 2</a></li>-->
         </ul>
         <div class="message admin">%NO_MANAGING_PAGE%</div>
       </div>
 
       <!-- feed to user's timeline -->
-      <div id="streaming-page-access"
+      <div id="privacy-select"
            class="dropdown">
         <button class="btn dropdown-toggle"
                 type="button"
@@ -97,15 +97,17 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li data-value="EVERYONE"><a>%PUBLIC_ACCESS%</a></li>
-          <li data-value="FRIENDS_OF_FRIENDS"><a>%FRIENDS_OF_FRIENDS_ACCESS%</a></li>
-          <li data-value="ALL_FRIENDS"><a>%FRIENDS_ACCESS%</a></li>
-          <li data-value="SELF"><a>%PRIVATE_ACCESS%</a></li>
+          <li data-value="EVERYONE"><a>%PUBLIC_PRIVACY%</a></li>
+          <li data-value="FRIENDS_OF_FRIENDS">
+            <a>%FRIENDS_OF_FRIENDS_PRIVACY%</a>
+          </li>
+          <li data-value="ALL_FRIENDS"><a>%FRIENDS_PRIVACY%</a></li>
+          <li data-value="SELF"><a>%PRIVATE_PRIVACY%</a></li>
         </ul>
         <div class="message admin">%POST_PRIVACY_BOUND%</div>
       </div>
 
-      <div id="streaming-nctv-tooltip"
+      <div id="nctv-tooltip"
            class="nc-streamer-tooltip">
         <span class="layer-close"></span>
         <p>%NCTV_PUBLIC_TOOLTIP1%<br>%NCTV_PUBLIC_TOOLTIP2%</p>
@@ -115,26 +117,26 @@
     <!-- streaming sources -->
     <section class="nc-streamer-setting">
       <h3>%BROADCASTING_GAME%</h3>
-      <div id="streaming-game-select"
+      <div id="game-select"
            class="dropdown">
         <button class="btn dropdown-toggle"
                 type="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="true">
-          {실행 중인 게임 1}
+          <!--running game 1-->
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><a>{실행 중인 게임 1}</a></li>
-          <li><a>{실행 중인 게임 2}</a></li>
+          <!--<li><a>running game 1</a></li>-->
+          <!--<li><a>running game 2</a></li>-->
         </ul>
         <div class="message admin">%NO_PLAYING_GAME%</div>
       </div>
       <div class="streaming-title">
         <h3>%BROADCASTING_TITLE%</h3>
         <div class="broadcast-title">
-          <textarea id="streaming-feed-description"
+          <textarea id="feed-description"
                     rows="2"
                     maxlength="100"
                     placeholder="%LETTER_LIMIT_MESSAGE%"></textarea>
@@ -147,22 +149,22 @@
       <h3>%EASY_SETTING%</h3>
       <div class="form-checkbox mic">
         <input type="checkbox"
-               id="streaming-mic-checkbox">
+               id="mic-checkbox">
         <label class="on"
-               for="streaming-mic-checkbox">%USE_MIC%</label>
+               for="mic-checkbox">%USE_MIC%</label>
       </div>
     </section>
   </div>
 
   <div class="nc-streamer-footer main-page-panel">
-    <div id="streaming-error-text"
+    <div id="error-text"
          class="msg status-error">
     </div>
-    <div id="streaming-caution-text"
+    <div id="caution-text"
          class="msg status-ready">%USER_INFO_CAUTION_MESSAGE%</div>
-    <div id="streaming-live-image"
+    <div id="live-image"
          class="msg status-live">LIVE</div>
-    <button id="streaming-control-button"
+    <button id="control-button"
             class="btn-start">%START_BROADCASTING%</button>
   </div>
 
@@ -187,7 +189,7 @@
         <div class="modal-body nc-streamer-contents">
           <section class="nc-streamer-setting">
             <h3>%QUALITY%</h3>
-            <div id="streaming-quality-select"
+            <div id="quality-select"
                  class="dropdown">
               <button class="btn dropdown-toggle"
                       type="button"
@@ -198,9 +200,8 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
-                <li data-value="1"><a>{화질 상}</a></li>
-                <li data-value="2"><a>{화질 중}</a></li>
-                <li data-value="3"><a>{화질 하}</a></li>
+                <!--<li data-value="1"><a>quality option 1</a></li>-->
+                <!--<li data-value="1"><a>quality option 2</a></li>-->
               </ul>
             </div>
           </section>
@@ -218,8 +219,8 @@
 <!-- libraries -->
 <script src="../static/lib/jquery.min.js"></script>
 <script src="../static/lib/bootstrap/js/bootstrap.js"></script>
+<script src="../static/lib/ncsoft/ncsoft.js"></script>
 
 <!-- scripts -->
 <script src="../static/app/cef.js"></script>
-<script src="../static/app/custom_style.js"></script>
 <script src="app.js"></script>

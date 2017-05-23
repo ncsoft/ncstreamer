@@ -35,6 +35,10 @@ class JsExecutor {
                       const std::string &func_name,
                       const std::string &arg0,
                       const std::pair<std::string, std::string> &arg1_0);
+  static void Execute(CefRefPtr<CefBrowser> browser,
+                      const std::string &func_name,
+                      const std::string &arg0,
+                      const boost::property_tree::ptree &arg1);
 
   template <typename T>
   static void Execute(
@@ -44,20 +48,15 @@ class JsExecutor {
       const std::pair<std::string, std::string> &arg1_0,
       const std::pair<std::string, std::vector<T>> &arg1_1);
 
-  template <typename T>
-  static void Execute(
-      CefRefPtr<CefBrowser> browser,
-      const std::string &func_name,
-      const std::string &arg0,
-      const std::pair<std::string, std::string> &arg1_0,
-      const std::pair<std::string, std::string> &arg1_1,
-      const std::pair<std::string, std::vector<T>> &arg1_2);
-
   static void ExecuteAngularJs(CefRefPtr<CefBrowser> browser,
                                const std::string &controller,
                                const std::string &func_name,
                                const std::string &arg_name,
                                const std::vector<std::string> &arg_value);
+
+  template <typename T>
+  static boost::property_tree::ptree
+      ToPtree(const std::vector<T> &values);
 
  private:
   static void AppendFunctionCall(const std::string &func_name,
@@ -71,10 +70,6 @@ class JsExecutor {
                                  const std::string &arg0,
                                  const boost::property_tree::ptree &arg1,
                                  std::ostream *out);
-
-  template <typename T>
-  static boost::property_tree::ptree
-      ToPtree(const std::vector<T> &values);
 
   static boost::property_tree::ptree BuildTree(
       const std::string &value);

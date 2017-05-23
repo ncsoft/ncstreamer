@@ -77,16 +77,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat" />
+    <ClInclude Include="..\ncstreamer_ui\build_tools\post_build_event.bat" />
     <ClInclude Include="..\ncstreamer_ui\localized_texts.json" />
     <ClInclude Include="..\ncstreamer_ui\static\app.css" />
     <ClInclude Include="..\ncstreamer_ui\template\app.html" />
     <ClInclude Include="..\ncstreamer_ui\template\app.js" />
     <ClInclude Include="..\ncstreamer_ui\static\app\cef.js" />
-    <ClInclude Include="..\ncstreamer_ui\static\app\custom_style.js" />
     <ClInclude Include="..\ncstreamer_ui\static\lib\README.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\ncstreamer_ui\build_tools\post_build_event.bat" />
+    <ClInclude Include="..\ncstreamer_ui\static\lib\ncsoft\ncsoft.js" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

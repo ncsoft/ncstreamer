@@ -51,6 +51,8 @@ document.addEventListener('contextmenu', function(event) {
 
 
 document.addEventListener('DOMContentLoaded', function(event) {
+  ncsoft.onDOMContentLoaded();
+
   [
     'login-page-panel',
     'main-page-panel',
@@ -59,56 +61,56 @@ document.addEventListener('DOMContentLoaded', function(event) {
   });
 
   [
-    'streaming-setting-button',
-    'streaming-minimize-button',
-    'streaming-close-button',
-    'streaming-login-button',
+    'setting-button',
+    'minimize-button',
+    'close-button',
+    'login-button',
     'provider-user-name',
     'provider-page-link',
-    'streaming-user-page-select',
-    'streaming-managing-page-select',
-    'streaming-page-access',
-    'streaming-nctv-tooltip',
-    'streaming-game-select',
-    'streaming-feed-description',
-    'streaming-mic-checkbox',
-    'streaming-error-text',
-    'streaming-caution-text',
-    'streaming-live-image',
-    'streaming-control-button',
-    'streaming-quality-select',
+    'me-page-select',
+    'own-page-select',
+    'privacy-select',
+    'nctv-tooltip',
+    'game-select',
+    'feed-description',
+    'mic-checkbox',
+    'error-text',
+    'caution-text',
+    'live-image',
+    'control-button',
+    'quality-select',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
-  app.dom.streamingSettingButton.addEventListener(
-      'click', onStreamingSettingButtonClicked);
-  app.dom.streamingMinimizeButton.addEventListener(
-      'click', onStreamingMinimizeButtonClicked);
-  app.dom.streamingCloseButton.addEventListener(
-      'click', onStreamingCloseButtonClicked);
-  app.dom.streamingLoginButton.addEventListener(
-      'click', onStreamingLoginButtonClicked);
+  app.dom.settingButton.addEventListener(
+      'click', onSettingButtonClicked);
+  app.dom.minimizeButton.addEventListener(
+      'click', onMinimizeButtonClicked);
+  app.dom.closeButton.addEventListener(
+      'click', onCloseButtonClicked);
+  app.dom.loginButton.addEventListener(
+      'click', onLoginButtonClicked);
   app.dom.providerPageLink.addEventListener(
       'click', onProviderPageLinkClicked);
-  app.dom.streamingUserPageSelect.addEventListener(
-      'customSelectChange', onStreamingUserPageSelectChanged);
-  app.dom.streamingManagingPageSelect.addEventListener(
-      'customSelectChange', onStreamingManagingPageSelectChanged);
-  app.dom.streamingPageAccess.addEventListener(
-      'customSelectChange', onStreamingPageAccessChanged);
-  app.dom.streamingNctvTooltip.addEventListener(
-      'click', onStreamingNctvTooltipClosed);
-  app.dom.streamingGameSelect.addEventListener(
-      'customSelectChange', onStreamingGameSelectChanged);
-  app.dom.streamingMicCheckbox.addEventListener(
-      'change', onStreamingMicCheckboxChanged);
-  app.dom.streamingControlButton.addEventListener(
-      'click', onStreamingControlButtonClicked);
-  app.dom.streamingQualitySelect.addEventListener(
-      'customSelectChange', onStreamingQualitySelectChanged);
+  app.dom.mePageSelect.addEventListener(
+      'ncsoftSelectChange', onMePageSelectChanged);
+  app.dom.ownPageSelect.addEventListener(
+      'ncsoftSelectChange', onOwnPageSelectChanged);
+  app.dom.privacySelect.addEventListener(
+      'ncsoftSelectChange', onPrivacySelectChanged);
+  app.dom.nctvTooltip.addEventListener(
+      'click', onNctvTooltipClosed);
+  app.dom.gameSelect.addEventListener(
+      'ncsoftSelectChange', onGameSelectChanged);
+  app.dom.micCheckbox.addEventListener(
+      'change', onMicCheckboxChanged);
+  app.dom.controlButton.addEventListener(
+      'click', onControlButtonClicked);
+  app.dom.qualitySelect.addEventListener(
+      'ncsoftSelectChange', onQualitySelectChanged);
 
-  disableSelect(app.dom.streamingPageAccess);
+  ncsoft.select.disable(app.dom.privacySelect);
   setUpSteamingQuality();
 });
 
@@ -120,69 +122,46 @@ function toCamel(str) {
 }
 
 
-function addClass(element, name) {
-  element.className += ' ' + name;
-}
-
-
-function removeClass(element, name) {
-  const check = new RegExp('(\\s|^)' + name + '(\\s|$)');
-  element.className = element.className.replace(check, ' ').trim();
-}
-
-
-function enableSelect(element) {
-  element.children[0].style.display = 'block';
-  element.children[2].style.display = 'none';
-}
-
-
-function disableSelect(element) {
-  element.children[0].style.display = 'none';
-  element.children[2].style.display = 'block';
-}
-
-
 function updateStreamingStatus(status) {
   console.info({status: status});
 
   app.streaming.status = status;
-  app.dom.streamingCautionText.style.display = 'none';
-  app.dom.streamingLiveImage.style.display = 'none';
-  const button = app.dom.streamingControlButton;
-  const error = app.dom.streamingErrorText;
+  app.dom.cautionText.style.display = 'none';
+  app.dom.liveImage.style.display = 'none';
+  const button = app.dom.controlButton;
+  const error = app.dom.errorText;
   error.style.display = 'none';
   switch (status) {
     case 'standby':
-      removeClass(button, 'loading');
+      ncsoft.klass.remove(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
       break;
     case 'setup':
-      removeClass(button, 'loading');
+      ncsoft.klass.remove(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
-      app.dom.streamingCautionText.style.display = 'block';
+      app.dom.cautionText.style.display = 'block';
       break;
     case 'starting':
-      addClass(button, 'loading');
+      ncsoft.klass.add(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
-      app.dom.streamingCautionText.style.display = 'block';
+      app.dom.cautionText.style.display = 'block';
       break;
     case 'onAir':
-      removeClass(button, 'loading');
+      ncsoft.klass.remove(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
       button.disabled = false;
-      app.dom.streamingLiveImage.style.display = 'block';
+      app.dom.liveImage.style.display = 'block';
       break;
     case 'stopping':
-      addClass(button, 'loading');
+      ncsoft.klass.add(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
       button.disabled = true;
       break;
     case 'error':
-      removeClass(button, 'loading');
+      ncsoft.klass.remove(button, 'loading');
       error.textContent = '%ERROR_MESSAGE%';
       error.style.display = 'block';
       button.textContent = '%START_BROADCASTING%';
@@ -192,13 +171,43 @@ function updateStreamingStatus(status) {
 }
 
 
+function getCurrentUserPage() {
+  return (app.dom.mePageSelect.children[0].value == 2) ?
+      app.dom.ownPageSelect.children[0].value : 'me';
+}
+
+
+function setUpUserPage(userPage) {
+  if (!userPage) {
+    return;
+  }
+
+  if (userPage == 'me') {
+    ncsoft.select.setByIndex(app.dom.mePageSelect, 0);
+    updateDependentsOnMePageSelect();
+  } else {
+    ncsoft.select.setByIndex(app.dom.mePageSelect, 1);
+    updateDependentsOnMePageSelect();
+
+    ncsoft.select.setByValue(app.dom.ownPageSelect, userPage);
+  }
+}
+
+
+function setUpPrivacy(privacy) {
+  ncsoft.select.setByValue(app.dom.privacySelect, privacy);
+  // TODO(khpark): confirm if tooltip should be shown or not.
+  // updateNctvTooltip(privacy);
+}
+
+
 function updateStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources')) {
     return;
   }
   const sources = obj.sources;
 
-  const gameSelect = app.dom.streamingGameSelect;
+  const gameSelect = app.dom.gameSelect;
   const display = gameSelect.children[0];
   const contents = gameSelect.children[1];
   while (contents.firstChild) {
@@ -206,9 +215,9 @@ function updateStreamingSources(obj) {
   }
 
   if (sources.length == 0) {
-    disableSelect(gameSelect);
+    ncsoft.select.disable(gameSelect);
   } else {
-    enableSelect(gameSelect);
+    ncsoft.select.enable(gameSelect);
     for (const source of sources) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
@@ -224,65 +233,85 @@ function updateStreamingSources(obj) {
 }
 
 
-function onStreamingSettingButtonClicked() {
-  console.info('click streamingSettingButton');
+function onSettingButtonClicked() {
+  console.info('click settingButton');
 }
 
 
-function onStreamingMinimizeButtonClicked() {
-  console.info('click streamingMinimizeButton');
+function onMinimizeButtonClicked() {
+  console.info('click minimizeButton');
   cef.windowMinimize.request();
 }
 
 
-function onStreamingCloseButtonClicked() {
-  console.info('click streamingCloseeButton');
+function onCloseButtonClicked() {
+  console.info('click closeeButton');
   cef.windowClose.request();
 }
 
 
-function onStreamingLoginButtonClicked() {
-  console.info('click streamingLoginButton');
+function onLoginButtonClicked() {
+  console.info('click loginButton');
   cef.serviceProviderLogIn.request('Facebook Live');
 }
 
 
 function onProviderPageLinkClicked() {
   console.info('click providerPageLink');
-  const link = (app.dom.streamingUserPageSelect.children[0].value == 2) ?
+  const link = (app.dom.mePageSelect.children[0].value == 2) ?
       app.service.user.pages[
-          app.dom.streamingManagingPageSelect.children[0].value].link :
+          app.dom.ownPageSelect.children[0].value].link :
       app.service.user.link;
   cef.externalBrowserPopUp.request(link);
 }
 
 
-function onStreamingUserPageSelectChanged() {
-  console.info('change streamingUserPageSelect');
-  const managingSelect = app.dom.streamingManagingPageSelect;
-  const privacySelect = app.dom.streamingPageAccess;
-  if (app.dom.streamingUserPageSelect.children[0].value == 2) {
-    managingSelect.style.display = 'block';
+function onMePageSelectChanged() {
+  console.info('change mePageSelect');
+
+  updateDependentsOnMePageSelect();
+
+  const userPage = getCurrentUserPage();
+  cef.storageUserPageUpdate.request(userPage);
+}
+
+
+function updateDependentsOnMePageSelect() {
+  const ownSelect = app.dom.ownPageSelect;
+  const privacySelect = app.dom.privacySelect;
+  if (app.dom.mePageSelect.children[0].value == 2) {
+    ownSelect.style.display = 'block';
     privacySelect.style.display = 'none';
-    disableSelect(privacySelect);
+    ncsoft.select.disable(privacySelect);
   } else {
-    managingSelect.style.display = 'none';
+    ownSelect.style.display = 'none';
     privacySelect.style.display = 'block';
-    enableSelect(privacySelect);
+    ncsoft.select.enable(privacySelect);
   }
 }
 
 
-function onStreamingManagingPageSelectChanged() {
-  console.info('change streamingManagingPageSelect');
+function onOwnPageSelectChanged() {
+  console.info('change ownPageSelect');
+
+  const userPage = getCurrentUserPage();
+  cef.storageUserPageUpdate.request(userPage);
 }
 
 
-function onStreamingPageAccessChanged() {
-  console.info('change streamingPageAccess');
-  const input = app.dom.streamingPageAccess.children[0].value;
-  const tooltip = app.dom.streamingNctvTooltip;
-  if (input == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
+function onPrivacySelectChanged() {
+  console.info('change privacySelect');
+  const privacy = app.dom.privacySelect.children[0].value;
+
+  updateNctvTooltip(privacy);
+
+  cef.storagePrivacyUpdate.request(privacy);
+}
+
+
+function updateNctvTooltip(privacy) {
+  const tooltip = app.dom.nctvTooltip;
+  if (privacy == 'EVERYONE' || tooltip.hasOwnProperty('show-once')) {
     tooltip.style.display = 'none';
   } else {
     tooltip.style.display = 'block';
@@ -290,20 +319,20 @@ function onStreamingPageAccessChanged() {
 }
 
 
-function onStreamingNctvTooltipClosed() {
-  console.info('close streamingNctvTooltip');
-  Object.defineProperty(app.dom.streamingNctvTooltip, 'show-once', {});
+function onNctvTooltipClosed() {
+  console.info('close nctvTooltip');
+  Object.defineProperty(app.dom.nctvTooltip, 'show-once', {});
 }
 
 
-function onStreamingGameSelectChanged() {
-  console.info('change streamingGameSelect');
+function onGameSelectChanged() {
+  console.info('change gameSelect');
 }
 
 
-function onStreamingMicCheckboxChanged() {
-  console.info('change streamingMicCheckbox');
-  if (app.dom.streamingMicCheckbox.checked) {
+function onMicCheckboxChanged() {
+  console.info('change micCheckbox');
+  if (app.dom.micCheckbox.checked) {
     console.info('mic on');
     cef.settingsMicOn.request();
   } else {
@@ -313,16 +342,15 @@ function onStreamingMicCheckboxChanged() {
 }
 
 
-function onStreamingControlButtonClicked() {
-  console.info('change streamingControlButton');
+function onControlButtonClicked() {
+  console.info('change controlButton');
   ({
     'standby': function() {
-      const source = app.dom.streamingGameSelect.children[0].value;
-      const userPage = app.dom.streamingUserPageSelect.children[0].value == 2 ?
-          app.dom.streamingManagingPageSelect.children[0].value : 'me';
-      const privacy = app.dom.streamingPageAccess.children[0].value;
-      const description = app.dom.streamingFeedDescription.value;
-      const mic = app.dom.streamingMicCheckbox.checked;
+      const source = app.dom.gameSelect.children[0].value;
+      const userPage = getCurrentUserPage();
+      const privacy = app.dom.privacySelect.children[0].value;
+      const description = app.dom.feedDescription.value;
+      const mic = app.dom.micCheckbox.checked;
       if (source == '' || userPage == '' || privacy == '')
         return;
 
@@ -340,8 +368,8 @@ function onStreamingControlButtonClicked() {
 }
 
 
-function onStreamingQualitySelectChanged() {
-  const curValue = app.dom.streamingQualitySelect.children[0].value;
+function onQualitySelectChanged() {
+  const curValue = app.dom.qualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
   console.info({ streamingQuality: curValue });
   cef.settingsVideoQualityUpdate.request(
@@ -353,8 +381,8 @@ function onStreamingQualitySelectChanged() {
 
 
 function setUpSteamingQuality() {
-  const display = app.dom.streamingQualitySelect.children[0];
-  const contents = app.dom.streamingQualitySelect.children[1];
+  const display = app.dom.qualitySelect.children[0];
+  const contents = app.dom.qualitySelect.children[1];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
@@ -378,11 +406,12 @@ function setUpSteamingQuality() {
   display.value = contents.firstChild.getAttribute('data-value');
   display.innerHTML = contents.firstChild.firstChild.textContent +
                       '<span class="caret"></span>';
-  onStreamingQualitySelectChanged();
+  onQualitySelectChanged();
 }
 
 
-cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
+cef.serviceProviderLogIn.onResponse = function(
+    userName, userLink, userPages, userPage, privacy) {
   app.service.user = {
     name: userName,
     link: userLink,
@@ -398,27 +427,27 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
   for (const element of app.dom.mainPagePanel) {
     element.style.display = 'block';
   }
-  app.dom.streamingSettingButton.style.display = 'inline';
-  app.dom.streamingMinimizeButton.style.display = 'inline';
+  app.dom.settingButton.style.display = 'inline';
+  app.dom.minimizeButton.style.display = 'inline';
 
   app.dom.providerUserName.textContent = userName;
 
-  const managingPageSelect = app.dom.streamingManagingPageSelect;
-  const display = managingPageSelect.children[0];
-  const contents = managingPageSelect.children[1];
+  const ownPageSelect = app.dom.ownPageSelect;
+  const display = ownPageSelect.children[0];
+  const contents = ownPageSelect.children[1];
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
 
   if (userPages.length == 0) {
-    disableSelect(managingPageSelect);
+    ncsoft.select.disable(ownPageSelect);
   } else {
-    enableSelect(managingPageSelect);
-    for (const userPage of userPages) {
+    ncsoft.select.enable(ownPageSelect);
+    for (const ownPage of userPages) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
-      aTag.textContent = userPage.name;
-      li.setAttribute('data-value', userPage.id);
+      aTag.textContent = ownPage.name;
+      li.setAttribute('data-value', ownPage.id);
       li.appendChild(aTag);
       contents.appendChild(li);
     }
@@ -426,6 +455,9 @@ cef.serviceProviderLogIn.onResponse = function(userName, userLink, userPages) {
     display.innerHTML = contents.firstChild.firstChild.textContent +
                         '<span class="caret"></span>';
   }
+
+  setUpUserPage(userPage);
+  setUpPrivacy(privacy);
 };
 
 
