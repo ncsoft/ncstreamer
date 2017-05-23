@@ -115,6 +115,7 @@
     <ClCompile Include="..\ncstreamer_cef\src\lib\string.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\uri.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\windows_types.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\local_storage.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\main.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\obs.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\obs\obs_output.cc" />
@@ -152,6 +153,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\lib\string.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\uri.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\windows_types.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\local_storage.h" />
     <ClInclude Include="..\ncstreamer_cef\src\manifest.h" />
     <ClInclude Include="..\ncstreamer_cef\src\obs.h" />
     <ClInclude Include="..\ncstreamer_cef\src\obs\obs_output.h" />

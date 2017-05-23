@@ -1,0 +1,44 @@
+/**
+ * Copyright (C) 2017 NCSOFT Corporation
+ */
+
+
+#ifndef NCSTREAMER_CEF_SRC_LOCAL_STORAGE_H_
+#define NCSTREAMER_CEF_SRC_LOCAL_STORAGE_H_
+
+
+#include <string>
+
+#include "boost/property_tree/ptree.hpp"
+
+
+namespace ncstreamer {
+class LocalStorage {
+ public:
+  static void SetUp(const std::wstring &storage_path);
+  static void ShutDown();
+  static LocalStorage *Get();
+
+ private:
+  explicit LocalStorage(const std::wstring &storage_path);
+  virtual ~LocalStorage();
+
+  static boost::property_tree::ptree LoadFromFile(
+      const std::wstring &file_path);
+
+  static void SaveToFile(
+      const boost::property_tree::ptree &tree,
+      const std::wstring &file_path);
+
+  template<typename T>
+      void SetValue(const std::string &key, const T &value);
+
+  static LocalStorage *static_instance;
+
+  std::wstring storage_path_;
+  boost::property_tree::ptree storage_;
+};
+}  // namespace ncstreamer
+
+
+#endif  // NCSTREAMER_CEF_SRC_LOCAL_STORAGE_H_
