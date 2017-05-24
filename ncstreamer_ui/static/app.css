@@ -34,6 +34,11 @@ div {
 }
 
 
+.dropdown > .dropdown-toggle, .dropdown-menu {
+  overflow-x: hidden;
+}
+
+
 .dropdown > .message, .admin {
   display: none;
 }
