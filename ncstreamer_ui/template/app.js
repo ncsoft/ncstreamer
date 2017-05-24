@@ -261,7 +261,9 @@ function onProviderPageLinkClicked() {
 
 function onMePageSelectChanged() {
   console.info('change mePageSelect');
-
+  if (app.errorType == 'mePage select empty') {
+    app.dom.errorText.style.display = 'none';
+  }
   updateDependentsOnMePageSelect();
 
   const userPage = getCurrentUserPage();
@@ -289,7 +291,9 @@ function updateDependentsOnMePageSelect() {
 
 function onOwnPageSelectChanged() {
   console.info('change ownPageSelect');
-
+  if (app.errorType == 'ownPage select empty') {
+    app.dom.errorText.style.display = 'none';
+  }
   const userPage = getCurrentUserPage();
   if (!userPage) {
     return;
@@ -300,14 +304,20 @@ function onOwnPageSelectChanged() {
 
 function onPrivacySelectChanged() {
   console.info('change privacySelect');
-  const privacy = app.dom.privacySelect.children[0].value;
+  if (app.errorType == 'privacy select empty') {
+    app.dom.errorText.style.display = 'none';
+  }
 
+  const privacy = app.dom.privacySelect.children[0].value;
   cef.storagePrivacyUpdate.request(privacy);
 }
 
 
 function onGameSelectChanged() {
   console.info('change gameSelect');
+  if (app.errorType == 'game select empty') {
+    app.dom.errorText.style.display = 'none';
+  }
 }
 
 
@@ -330,6 +340,9 @@ function onControlButtonClicked() {
   }
   ({
     'standby': function() {
+      if (!checkSelectValueValidation())
+        return;
+
       const source = app.dom.gameSelect.children[0].value;
       const userPage = getCurrentUserPage();
       const privacy = app.dom.privacySelect.children[0].value;
@@ -414,11 +427,50 @@ function showErrorText() {
     case 'fail streaming':
       error.textContent = '%ERROR_MESSAGE%';
       break;
+    case 'mePage select empty':
+      error.textContent = '%NO_SELECT_ME_PAGE%';
+      break;
+    case 'privacy select empty':
+      error.textContent = '%NO_SELECT_PRIVACY%';
+      break;
+    case 'ownPage select empty':
+      error.textContent = '%NO_SELECT_OWN_PAGE%';
+      break;
+    case 'game select empty':
+       error.textContent = '%NO_SELECT_GAME%';
+       break;
     default:
       error.TextContent = '%ERROR_MESSAGE%';
       break;
   }
   error.style.display = 'block';
+}
+
+
+function checkSelectValueValidation() {
+  const error = app.dom.errorText;
+  if (app.dom.mePageSelect.children[0].value == '') {
+    setUpError('mePage select empty');
+    return false;
+  }
+
+  if (app.dom.mePageSelect.children[0].value == 1 &&
+      app.dom.privacySelect.children[0].value == '') {
+    setUpError('privacy select empty');
+    return false;
+  }
+
+  if (app.dom.mePageSelect.children[0].value == 2 &&
+      app.dom.ownPageSelect.children[0].value == '') {
+    setUpError('ownPage select empty');
+    return false;
+  }
+
+  if (app.dom.gameSelect.children[0].value == '') {
+    setUpError('game select empty');
+    return false;
+  }
+  return true;
 }
 
 

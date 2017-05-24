@@ -33,7 +33,11 @@
     "CONFIRM": "Confirm",
     "NO_PLAYING_GAME": "Start the game you want to stream.",
     "NO_MANAGING_PAGE": "You have no Pages.",
-    "USER_INFO_CAUTION_MESSAGE": "Make sure to not share personal information when streaming."
+    "USER_INFO_CAUTION_MESSAGE": "Make sure to not share personal information when streaming.",
+    "NO_SELECT_ME_PAGE": "Check where to post.",
+    "NO_SELECT_PRIVACY": "Select the audience for your post.",
+    "NO_SELECT_OWN_PAGE": "Select a page you are managing.",
+    "NO_SELECT_GAME": "Select the game you want to stream."
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -69,7 +73,11 @@
     "CONFIRM": "확인",
     "NO_PLAYING_GAME": "방송할 게임을 실행해 주세요.",
     "NO_MANAGING_PAGE": "관리 중인 페이지가 없습니다.",
-    "USER_INFO_CAUTION_MESSAGE": "방송 중 고객님의 개인정보가 유출되지 않도록 주의해 주세요."
+    "USER_INFO_CAUTION_MESSAGE": "방송 중 고객님의 개인정보가 유출되지 않도록 주의해 주세요.",
+    "NO_SELECT_ME_PAGE": "게시물 등록 장소를 선택해 주세요.",
+    "NO_SELECT_PRIVACY": "게시물 공개 범위를 선택해 주세요.",
+    "NO_SELECT_OWN_PAGE": "관리 중인 페이지를 선택해 주세요.",
+    "NO_SELECT_GAME": "방송할 게임을 선택해 주세요."
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -105,7 +113,11 @@
     "CONFIRM": "Bestätigen",
     "NO_PLAYING_GAME": "Wenn du streamen möchtest, starte das Spiel.",
     "NO_MANAGING_PAGE": "Du hast keine Seiten.",
-    "USER_INFO_CAUTION_MESSAGE": "Achte darauf, dass du beim Streamen keine persönlichen Informationen preisgibst."
+    "USER_INFO_CAUTION_MESSAGE": "Achte darauf, dass du beim Streamen keine persönlichen Informationen preisgibst.",
+    "NO_SELECT_ME_PAGE": "Wähle aus, wo du posten möchtest.",
+    "NO_SELECT_PRIVACY": "Wähle aus, wo du posten möchtest.",
+    "NO_SELECT_OWN_PAGE": "Wähle eine Seite aus, die du verwaltest.",
+    "NO_SELECT_GAME": "Wähle das Spiel aus, das du streamen möchtest."
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -141,7 +153,11 @@
     "CONFIRM": "Confirmer",
     "NO_PLAYING_GAME": "방Lancez la partie à diffuser.",
     "NO_MANAGING_PAGE": "Vous n'avez pas de Pages.",
-    "USER_INFO_CAUTION_MESSAGE": "Évitez de partager des informations personnelles pendant la diffusion."
+    "USER_INFO_CAUTION_MESSAGE": "Évitez de partager des informations personnelles pendant la diffusion.",
+    "NO_SELECT_ME_PAGE": "Sélectionnez un site de publication.",
+    "NO_SELECT_PRIVACY": "Sélectionnez l'audience pour votre publication.",
+    "NO_SELECT_OWN_PAGE": "Sélectionnez une Page que vous gérez.",
+    "NO_SELECT_GAME": "Sélectionnez la partie à diffuser."
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -177,7 +193,11 @@
     "CONFIRM": "Confirmar",
     "NO_PLAYING_GAME": "Inicia la partida que deseas transmitir.",
     "NO_MANAGING_PAGE": "No tienes páginas.",
-    "USER_INFO_CAUTION_MESSAGE": "Asegúrate de no compartir información personal durante la transmisión."
+    "USER_INFO_CAUTION_MESSAGE": "Asegúrate de no compartir información personal durante la transmisión.",
+    "NO_SELECT_ME_PAGE": "Seleccionar el lugar donde vas a publicar.",
+    "NO_SELECT_PRIVACY": "Selecciona el público que verá tu publicación.",
+    "NO_SELECT_OWN_PAGE": "Selecciona una página que administres.",
+    "NO_SELECT_GAME": "Selecciona la partida que deseas transmitir."
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -213,7 +233,11 @@
     "CONFIRM": "Conferma",
     "NO_PLAYING_GAME": "Avvia il gioco per iniziare lo streaming.",
     "NO_MANAGING_PAGE": "Nessuna Pagina.",
-    "USER_INFO_CAUTION_MESSAGE": "Assicurati di non condividere informazioni personali durante lo streaming."
+    "USER_INFO_CAUTION_MESSAGE": "Assicurati di non condividere informazioni personali durante lo streaming.",
+    "NO_SELECT_ME_PAGE": "Scegli dove pubblicare.",
+    "NO_SELECT_PRIVACY": "Scegli i destinatari del tuo post.",
+    "NO_SELECT_OWN_PAGE": "Scegli una Pagina che gestisci",
+    "NO_SELECT_GAME": "Scegli il gioco di cui vuoi iniziare lo streaming."
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -249,7 +273,11 @@
     "CONFIRM": "Potwierdź",
     "NO_PLAYING_GAME": "Uruchom grę, którą chcesz transmitować.",
     "NO_MANAGING_PAGE": "Nie masz żadnej strony.",
-    "USER_INFO_CAUTION_MESSAGE": "Pamiętaj, aby podczas transmisji nie udostępniać żadnych danych osobowych."
+    "USER_INFO_CAUTION_MESSAGE": "Pamiętaj, aby podczas transmisji nie udostępniać żadnych danych osobowych.",
+    "NO_SELECT_ME_PAGE": "Wybierz, gdzie chcesz publikować.",
+    "NO_SELECT_PRIVACY": "Wybierz odbiorców swoich publikacji.",
+    "NO_SELECT_OWN_PAGE": "Wybierz stronę, którą zarządzasz.",
+    "NO_SELECT_GAME": "Wybierz grę, którą chcesz transmitować."
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -285,7 +313,11 @@
     "CONFIRM": "Confirmar",
     "NO_PLAYING_GAME": "Inicie o jogo que deseja transmitir.",
     "NO_MANAGING_PAGE": "Você não tem Páginas.",
-    "USER_INFO_CAUTION_MESSAGE": "Não compartilhe informações pessoais durante a transmissão."
+    "USER_INFO_CAUTION_MESSAGE": "Não compartilhe informações pessoais durante a transmissão.",
+    "NO_SELECT_ME_PAGE": "Selecione onde publicar.",
+    "NO_SELECT_PRIVACY": "Selecione o público da sua publicação.",
+    "NO_SELECT_OWN_PAGE": "Selecione uma página que você gerencia.",
+    "NO_SELECT_GAME": "Selecione o jogo que deseja transmitir."
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -321,6 +353,10 @@
     "CONFIRM": "Doğrula",
     "NO_PLAYING_GAME": "Yayınlamak istediğiniz oyunu başlatın.",
     "NO_MANAGING_PAGE": "Herhangi bir Sayfanız yok.",
-    "USER_INFO_CAUTION_MESSAGE": "Yayın yaparken kişisel bilgilerinizi paylaşmamaya dikkat edin."
+    "USER_INFO_CAUTION_MESSAGE": "Yayın yaparken kişisel bilgilerinizi paylaşmamaya dikkat edin.",
+    "NO_SELECT_ME_PAGE": "Paylaşılacak yeri seçin.",
+    "NO_SELECT_PRIVACY": "Paylaşımınız için izleyici kitlesi seçin.",
+    "NO_SELECT_OWN_PAGE": "Yönettiğiniz bir sayfa seçin.",
+    "NO_SELECT_GAME": "Yayınlamak istediğiniz oyunu seçin."
   }
 }
