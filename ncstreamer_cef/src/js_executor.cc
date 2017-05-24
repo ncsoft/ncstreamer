@@ -85,6 +85,18 @@ void JsExecutor::Execute(
 }
 
 
+void JsExecutor::Execute(
+    CefRefPtr<CefBrowser> browser,
+    const std::string &func_name,
+    const int &arg0,
+    const boost::property_tree::ptree &arg1) {
+  std::stringstream js;
+  AppendFunctionCall(func_name, arg0, arg1, &js);
+
+  browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
+}
+
+
 template <typename T>
 void JsExecutor::Execute(
     CefRefPtr<CefBrowser> browser,
@@ -181,6 +193,18 @@ void JsExecutor::AppendFunctionCall(
     std::ostream *out) {
   *out << func_name << "(";
   *out << "'" << arg0 << "',";
+  boost::property_tree::write_json(*out, arg1, false);
+  *out << ")";
+}
+
+
+void JsExecutor::AppendFunctionCall(
+    const std::string &func_name,
+    const int &arg0,
+    const boost::property_tree::ptree &arg1,
+    std::ostream *out) {
+  *out << func_name << "(";
+  *out << arg0 << ",";
   boost::property_tree::write_json(*out, arg1, false);
   *out << ")";
 }

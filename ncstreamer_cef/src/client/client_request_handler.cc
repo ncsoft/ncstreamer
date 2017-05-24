@@ -171,6 +171,11 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
        std::bind(&This::OnCommandRemoteStatus, this,
            std::placeholders::_1,
            std::placeholders::_2,
+           std::placeholders::_3)},
+      {"remote/start",
+       std::bind(&This::OnCommandRemoteStart, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
            std::placeholders::_3)}};
 
   auto i = kCommandHandlers.find(cmd);
@@ -497,5 +502,36 @@ void ClientRequestHandler::OnCommandRemoteStatus(
       request_key,
       status,
       source_title);
+}
+
+
+void ClientRequestHandler::OnCommandRemoteStart(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> /*browser*/) {
+  auto request_key_i = args.find("request_key");
+  auto error_i = args.find("error");
+  if (request_key_i == args.end() ||
+      error_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  int request_key{0};
+  try {
+    request_key = std::stoi(request_key_i->second);
+  } catch (...) {
+  }
+
+  if (request_key == 0) {
+    assert(false);
+    return;
+  }
+
+  const std::string &error = error_i->second;
+
+  RemoteServer::Get()->RespondStreamingStart(
+      request_key,
+      error);
 }
 }  // namespace ncstreamer

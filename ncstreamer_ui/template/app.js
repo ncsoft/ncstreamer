@@ -580,6 +580,11 @@ cef.streamingStart.onResponse = function(error) {
   } else {
     updateStreamingStatus('onAir');
   }
+
+  if (remote.startRequestKey) {
+    cef.remoteStart.request(remote.startRequestKey, error);
+    remote.startRequestKey = null;
+  }
 };
 
 

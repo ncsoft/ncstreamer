@@ -61,6 +61,10 @@ const cef = (function() {
       request: ['request_key', 'status', 'source_title'],
       response: [],
     },
+    'remote/start': {
+      request: ['request_key', 'error'],
+      response: [],
+    },
   };
 
   const exports = {};
@@ -118,9 +122,33 @@ const cef = (function() {
 
 
 const remote = {
+  startRequestKey: null,
   onStreamingStatusRequest: function(requestKey) {
     const status = app.streaming.status;
     const sourceTitle = app.dom.gameSelect.children[0].textContent;
     cef.remoteStatus.request(requestKey, status, sourceTitle);
+  },
+  onStreamingStartRequest: function(requestKey, args) {
+    const sourceTitle = args.sourceTitle;
+
+    const status = app.streaming.status;
+    if (status != 'standby') {
+      cef.remoteStart.request(requestKey, 'busy');
+      return;
+    }
+
+    const success = ncsoft.select.setByText(app.dom.gameSelect, sourceTitle);
+    if (!success) {
+      cef.remoteStart.request(requestKey, 'unknown title');
+      return;
+    }
+
+    const requested = submitControl();
+    if (!requested) {
+      cef.remoteStart.request(requestKey, 'no page');
+      return;
+    }
+
+    remote.startRequestKey = requestKey;
   },
 };
