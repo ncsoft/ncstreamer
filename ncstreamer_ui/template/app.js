@@ -165,10 +165,10 @@ function updateStreamingStatus(status) {
       break;
     case 'error':
       ncsoft.klass.remove(button, 'loading');
-      error.textContent = '%ERROR_MESSAGE%';
       error.style.display = 'block';
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
+      app.streaming.status = 'standby';
       break;
   }
 }
@@ -333,6 +333,7 @@ function onMicCheckboxChanged() {
 
 function onControlButtonClicked() {
   console.info('change controlButton');
+  app.dom.errorText.style.display = 'none';
   ({
     'standby': function() {
       const source = app.dom.gameSelect.children[0].value;
@@ -496,6 +497,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 cef.streamingStart.onResponse = function(error) {
   console.info(error);
   if (error != '') {
+    app.dom.errorText.textContent = '%ERROR_MESSAGE%';
     updateStreamingStatus('error');
   } else {
     updateStreamingStatus('onAir');
