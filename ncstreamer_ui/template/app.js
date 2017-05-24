@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'ncsoftSelectChange', onQualitySelectChanged);
 
   ncsoft.select.disable(app.dom.privacySelect);
+  ncsoft.select.disable(app.dom.gameSelect);
   setUpSteamingQuality();
 });
 
@@ -494,7 +495,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
 cef.streamingStart.onResponse = function(error) {
   console.info(error);
-  if (error != "") {
+  if (error != '') {
     updateStreamingStatus('error');
   } else {
     updateStreamingStatus('onAir');
