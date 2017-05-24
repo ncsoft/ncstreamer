@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'ncsoftSelectChange', onQualitySelectChanged);
 
   ncsoft.select.disable(app.dom.privacySelect);
+  ncsoft.select.disable(app.dom.gameSelect);
   setUpSteamingQuality();
 });
 
