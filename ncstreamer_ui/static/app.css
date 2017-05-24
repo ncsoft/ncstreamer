@@ -39,7 +39,7 @@ div {
 }
 
 
-.dropdown > .message, .admin {
+.dropdown > .message.admin {
   display: none;
 }
 
