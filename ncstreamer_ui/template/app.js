@@ -131,9 +131,8 @@ function updateStreamingStatus(status) {
   app.streaming.status = status;
   app.dom.cautionText.style.display = 'none';
   app.dom.liveImage.style.display = 'none';
+  app.dom.errorText.style.display = 'none';
   const button = app.dom.controlButton;
-  const error = app.dom.errorText;
-  error.style.display = 'none';
   switch (status) {
     case 'standby':
       ncsoft.klass.remove(button, 'loading');
@@ -165,7 +164,7 @@ function updateStreamingStatus(status) {
       break;
     case 'error':
       ncsoft.klass.remove(button, 'loading');
-      error.style.display = 'block';
+      app.dom.errorText.style.display = 'block';
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
       app.streaming.status = 'standby';
