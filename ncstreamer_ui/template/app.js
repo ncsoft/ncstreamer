@@ -9,7 +9,7 @@
 const app = {
   dom: {},
   streaming: {
-    // ['standby', 'setup', 'starting', 'onAir', 'stopping', 'error']
+    // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
     popupBrowserId: 0,
     quality: {
@@ -42,6 +42,7 @@ const app = {
   service: {
     user: null,
   },
+  errorType: null,
 };
 
 
@@ -132,8 +133,6 @@ function updateStreamingStatus(status) {
   app.dom.cautionText.style.display = 'none';
   app.dom.liveImage.style.display = 'none';
   const button = app.dom.controlButton;
-  const error = app.dom.errorText;
-  error.style.display = 'none';
   switch (status) {
     case 'standby':
       ncsoft.klass.remove(button, 'loading');
@@ -162,13 +161,6 @@ function updateStreamingStatus(status) {
       ncsoft.klass.add(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
       button.disabled = true;
-      break;
-    case 'error':
-      ncsoft.klass.remove(button, 'loading');
-      error.textContent = '%ERROR_MESSAGE%';
-      error.style.display = 'block';
-      button.textContent = '%START_BROADCASTING%';
-      button.disabled = false;
       break;
   }
 }
@@ -269,7 +261,9 @@ function onProviderPageLinkClicked() {
 
 function onMePageSelectChanged() {
   console.info('change mePageSelect');
-
+  if (app.errorType == 'mePage select empty') {
+    app.dom.errorText.style.display = 'none';
+  }
   updateDependentsOnMePageSelect();
 
   const userPage = getCurrentUserPage();
@@ -297,7 +291,9 @@ function updateDependentsOnMePageSelect() {
 
 function onOwnPageSelectChanged() {
   console.info('change ownPageSelect');
-
+  if (app.errorType == 'ownPage select empty') {
+    app.dom.errorText.style.display = 'none';
+  }
   const userPage = getCurrentUserPage();
   if (!userPage) {
     return;
@@ -308,14 +304,20 @@ function onOwnPageSelectChanged() {
 
 function onPrivacySelectChanged() {
   console.info('change privacySelect');
-  const privacy = app.dom.privacySelect.children[0].value;
+  if (app.errorType == 'privacy select empty') {
+    app.dom.errorText.style.display = 'none';
+  }
 
+  const privacy = app.dom.privacySelect.children[0].value;
   cef.storagePrivacyUpdate.request(privacy);
 }
 
 
 function onGameSelectChanged() {
   console.info('change gameSelect');
+  if (app.errorType == 'game select empty') {
+    app.dom.errorText.style.display = 'none';
+  }
 }
 
 
@@ -333,8 +335,14 @@ function onMicCheckboxChanged() {
 
 function onControlButtonClicked() {
   console.info('change controlButton');
+  if (app.errorType == 'fail streaming') {
+    app.dom.errorText.style.display = 'none';
+  }
   ({
     'standby': function() {
+      if (!checkSelectValueValidation())
+        return;
+
       const source = app.dom.gameSelect.children[0].value;
       const userPage = getCurrentUserPage();
       const privacy = app.dom.privacySelect.children[0].value;
@@ -404,6 +412,65 @@ function setUpSteamingQuality() {
   display.innerHTML = contents.firstChild.firstChild.textContent +
                       '<span class="caret"></span>';
   onQualitySelectChanged();
+}
+
+
+function setUpError(type) {
+  app.errorType = type;
+  showErrorText();
+}
+
+
+function showErrorText() {
+  const error = app.dom.errorText;
+  switch (app.errorType) {
+    case 'fail streaming':
+      error.textContent = '%ERROR_MESSAGE%';
+      break;
+    case 'mePage select empty':
+      error.textContent = '%NO_SELECT_ME_PAGE%';
+      break;
+    case 'privacy select empty':
+      error.textContent = '%NO_SELECT_PRIVACY%';
+      break;
+    case 'ownPage select empty':
+      error.textContent = '%NO_SELECT_OWN_PAGE%';
+      break;
+    case 'game select empty':
+       error.textContent = '%NO_SELECT_GAME%';
+       break;
+    default:
+      error.TextContent = '%ERROR_MESSAGE%';
+      break;
+  }
+  error.style.display = 'block';
+}
+
+
+function checkSelectValueValidation() {
+  const error = app.dom.errorText;
+  if (app.dom.mePageSelect.children[0].value == '') {
+    setUpError('mePage select empty');
+    return false;
+  }
+
+  if (app.dom.mePageSelect.children[0].value == 1 &&
+      app.dom.privacySelect.children[0].value == '') {
+    setUpError('privacy select empty');
+    return false;
+  }
+
+  if (app.dom.mePageSelect.children[0].value == 2 &&
+      app.dom.ownPageSelect.children[0].value == '') {
+    setUpError('ownPage select empty');
+    return false;
+  }
+
+  if (app.dom.gameSelect.children[0].value == '') {
+    setUpError('game select empty');
+    return false;
+  }
+  return true;
 }
 
 
@@ -496,7 +563,8 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 cef.streamingStart.onResponse = function(error) {
   console.info(error);
   if (error != '') {
-    updateStreamingStatus('error');
+    setUpError('fail streaming');
+    updateStreamingStatus('standby');
   } else {
     updateStreamingStatus('onAir');
   }
