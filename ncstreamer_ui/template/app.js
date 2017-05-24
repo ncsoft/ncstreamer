@@ -325,7 +325,9 @@ function onMicCheckboxChanged() {
 
 function onControlButtonClicked() {
   console.info('change controlButton');
-  app.dom.errorText.style.display = 'none';
+  if (app.errorType == 'fail streaming') {
+    app.dom.errorText.style.display = 'none';
+  }
   ({
     'standby': function() {
       const source = app.dom.gameSelect.children[0].value;
