@@ -335,13 +335,18 @@ function onMicCheckboxChanged() {
 
 function onControlButtonClicked() {
   console.info('change controlButton');
+  submitControl();
+}
+
+
+function submitControl() {
   if (app.errorType == 'fail streaming') {
     app.dom.errorText.style.display = 'none';
   }
-  ({
+  return ({
     'standby': function() {
       if (!checkSelectValueValidation()) {
-        return;
+        return false;
       }
 
       const source = app.dom.gameSelect.children[0].value;
@@ -350,19 +355,23 @@ function onControlButtonClicked() {
       const description = app.dom.feedDescription.value;
       const mic = app.dom.micCheckbox.checked;
       if (source == '' || userPage == '' || privacy == '')
-        return;
+        return false;
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
       updateStreamingStatus('starting');
+      return true;
     },
     'starting': function() {
+      return true;
     },
     'onAir': function() {
       cef.streamingStop.request();
       updateStreamingStatus('stopping');
+      return true;
     },
     'stopping': function() {
+      return true;
     },
   })[app.streaming.status]();
 }
