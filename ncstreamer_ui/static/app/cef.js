@@ -118,9 +118,9 @@ const cef = (function() {
 
 
 const remote = {
-  onStreamingStatusRequest: function(request_key) {
+  onStreamingStatusRequest: function(requestKey) {
     const status = app.streaming.status;
-    const source_title = app.dom.gameSelect.children[0].textContent;
-    cef.remoteStatus.request(request_key, status, source_title);
+    const sourceTitle = app.dom.gameSelect.children[0].textContent;
+    cef.remoteStatus.request(requestKey, status, sourceTitle);
   },
 };
