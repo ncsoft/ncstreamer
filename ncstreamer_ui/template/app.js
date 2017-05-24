@@ -495,7 +495,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
 cef.streamingStart.onResponse = function(error) {
   console.info(error);
-  if (error != "") {
+  if (error != '') {
     updateStreamingStatus('error');
   } else {
     updateStreamingStatus('onAir');
