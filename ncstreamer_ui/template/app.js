@@ -356,12 +356,14 @@ function onControlButtonClicked() {
           source, userPage, privacy, '' /* title */, description, mic);
       updateStreamingStatus('starting');
     },
-    'starting': function() {},
+    'starting': function() {
+    },
     'onAir': function() {
       cef.streamingStop.request();
       updateStreamingStatus('stopping');
     },
-    'stopping': function() {},
+    'stopping': function() {
+    },
   })[app.streaming.status]();
 }
 
