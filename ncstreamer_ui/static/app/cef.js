@@ -120,7 +120,7 @@ const cef = (function() {
 const remote = {
   onStreamingStatusRequest: function(request_key) {
     const status = app.streaming.status;
-    const source_title = app.dom.streamingGameSelect.children[0].textContent;
+    const source_title = app.dom.gameSelect.children[0].textContent;
     cef.remoteStatus.request(request_key, status, source_title);
   },
 };
