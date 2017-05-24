@@ -340,8 +340,9 @@ function onControlButtonClicked() {
   }
   ({
     'standby': function() {
-      if (!checkSelectValueValidation())
+      if (!checkSelectValueValidation()) {
         return;
+      }
 
       const source = app.dom.gameSelect.children[0].value;
       const userPage = getCurrentUserPage();
