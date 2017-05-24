@@ -9,7 +9,7 @@
 const app = {
   dom: {},
   streaming: {
-    // ['standby', 'setup', 'starting', 'onAir', 'stopping', 'error']
+    // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
     popupBrowserId: 0,
     quality: {
@@ -42,6 +42,7 @@ const app = {
   service: {
     user: null,
   },
+  errorType: null,
 };
 
 
@@ -131,7 +132,6 @@ function updateStreamingStatus(status) {
   app.streaming.status = status;
   app.dom.cautionText.style.display = 'none';
   app.dom.liveImage.style.display = 'none';
-  app.dom.errorText.style.display = 'none';
   const button = app.dom.controlButton;
   switch (status) {
     case 'standby':
@@ -161,13 +161,6 @@ function updateStreamingStatus(status) {
       ncsoft.klass.add(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
       button.disabled = true;
-      break;
-    case 'error':
-      ncsoft.klass.remove(button, 'loading');
-      app.dom.errorText.style.display = 'block';
-      button.textContent = '%START_BROADCASTING%';
-      button.disabled = false;
-      app.streaming.status = 'standby';
       break;
   }
 }
@@ -407,6 +400,26 @@ function setUpSteamingQuality() {
 }
 
 
+function setUpError(type) {
+  app.errorType = type;
+  showErrorText();
+}
+
+
+function showErrorText() {
+  const error = app.dom.errorText;
+  switch (app.errorType) {
+    case 'fail streaming':
+      error.textContent = '%ERROR_MESSAGE%';
+      break;
+    default:
+      error.TextContent = '%ERROR_MESSAGE%';
+      break;
+  }
+  error.style.display = 'block';
+}
+
+
 cef.serviceProviderLogIn.onResponse = function(
     userName, userLink, userPages, userPage, privacy) {
   app.service.user = {
@@ -496,8 +509,8 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 cef.streamingStart.onResponse = function(error) {
   console.info(error);
   if (error != '') {
-    app.dom.errorText.textContent = '%ERROR_MESSAGE%';
-    updateStreamingStatus('error');
+    setUpError('fail streaming');
+    updateStreamingStatus('standby');
   } else {
     updateStreamingStatus('onAir');
   }
