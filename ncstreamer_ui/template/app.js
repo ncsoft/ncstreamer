@@ -535,6 +535,8 @@ cef.serviceProviderLogIn.onResponse = function(
 
   setUpUserPage(userPage);
   setUpPrivacy(privacy);
+
+  app.dom.errorText.style.display = 'none';
 };
 
 
