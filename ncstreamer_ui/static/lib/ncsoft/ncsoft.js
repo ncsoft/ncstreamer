@@ -95,3 +95,9 @@ ncsoft.select.setByText = function(select, text) {
   }
   return false;
 };
+
+
+ncsoft.select.getText = function(select) {
+  const display = select.children[0];
+  return display.textContent;
+};

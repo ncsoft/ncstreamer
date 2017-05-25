@@ -44,6 +44,10 @@ class RemoteServer {
       int request_key,
       const std::string &error);
 
+  void RespondStreamingStop(
+      int request_key,
+      const std::string &error);
+
  private:
   using Asio = ws::config::asio;
 
@@ -78,6 +82,10 @@ class RemoteServer {
       const boost::property_tree::ptree &tree);
 
   void OnStreamingStartRequest(
+      const ws::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
+  void OnStreamingStopRequest(
       const ws::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 

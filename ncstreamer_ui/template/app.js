@@ -11,6 +11,7 @@ const app = {
   streaming: {
     // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
+    start: {},
     popupBrowserId: 0,
     quality: {
       high: {
@@ -359,6 +360,8 @@ function submitControl() {
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
+      app.streaming.start.sourceTitle =
+          ncsoft.select.getText(app.dom.gameSelect);
       updateStreamingStatus('starting');
       return true;
     },
@@ -578,6 +581,7 @@ cef.streamingStart.onResponse = function(error) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');
+    app.streaming.start.sourceTitle = null;
     updateStreamingStatus('standby');
   } else {
     updateStreamingStatus('onAir');
@@ -591,5 +595,11 @@ cef.streamingStart.onResponse = function(error) {
 
 
 cef.streamingStop.onResponse = function(error) {
+  app.streaming.start.sourceTitle = null;
   updateStreamingStatus('standby');
+
+  if (remote.stopRequestKey) {
+    cef.remoteStop.request(remote.stopRequestKey, error);
+    remote.stopRequestKey = null;
+  }
 };

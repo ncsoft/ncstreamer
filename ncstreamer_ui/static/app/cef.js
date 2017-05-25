@@ -65,6 +65,10 @@ const cef = (function() {
       request: ['request_key', 'error'],
       response: [],
     },
+    'remote/stop': {
+      request: ['request_key', 'error'],
+      response: [],
+    },
   };
 
   const exports = {};
@@ -123,6 +127,7 @@ const cef = (function() {
 
 const remote = {
   startRequestKey: null,
+  stopRequestKey: null,
   onStreamingStatusRequest: function(requestKey) {
     const status = app.streaming.status;
     const sourceTitle = app.dom.gameSelect.children[0].textContent;
@@ -150,5 +155,27 @@ const remote = {
     }
 
     remote.startRequestKey = requestKey;
+  },
+  onStreamingStopRequest: function(requestKey, args) {
+    const sourceTitle = args.sourceTitle;
+
+    const status = app.streaming.status;
+    if (status != 'onAir') {
+      cef.remoteStart.request(requestKey, 'idle');
+      return;
+    }
+
+    if (sourceTitle != app.streaming.start.sourceTitle) {
+      cef.remoteStart.request(requestKey, 'title mismatch');
+      return;
+    }
+
+    const requested = submitControl();
+    if (!requested) {
+      // assert false
+      return;
+    }
+
+    remote.stopRequestKey = requestKey;
   },
 };
