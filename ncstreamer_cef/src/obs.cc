@@ -166,6 +166,9 @@ Obs::Obs()
   video_encoder_ = CreateVideoEncoder();
 
   stream_output_.reset(new ObsOutput{});
+
+  ResetAudio();
+  ResetVideo();
 }
 
 
