@@ -201,7 +201,7 @@ RemoteServer::RemoteServer(
   server_.set_message_handler(ws::lib::bind(
       &RemoteServer::OnMessage, this, placeholders::_1, placeholders::_2));
 
-  server_.listen(port);
+  server_.listen({boost::asio::ip::address::from_string("::1"), port});
   server_.start_accept();
 
   static const std::size_t kServerThreadsSize{1};  // just one enough.
