@@ -58,10 +58,14 @@ ncsoft.select.setByIndex = function(select, index) {
   const display = select.children[0];
   const contents = select.children[1];
   const child = contents.children[index];
+  if (!child) {
+    return false;
+  }
 
   display.value = child.getAttribute('data-value');
   display.innerHTML = child.textContent +
                       '<span class="caret"></span>';
+  return true;
 };
 
 
@@ -72,10 +76,10 @@ ncsoft.select.setByValue = function(select, value) {
   for (let index = 0; index < contents.children.length; ++index) {
     const content = contents.children[index];
     if (content.getAttribute('data-value') == value) {
-      ncsoft.select.setByIndex(select, index);
-      return;
+      return ncsoft.select.setByIndex(select, index);
     }
   }
+  return false;
 };
 
 
@@ -86,8 +90,8 @@ ncsoft.select.setByText = function(select, text) {
   for (let index = 0; index < contents.children.length; ++index) {
     const content = contents.children[index];
     if (content.textContent == text) {
-      ncsoft.select.setByIndex(select, index);
-      return;
+      return ncsoft.select.setByIndex(select, index);
     }
   }
+  return false;
 };
