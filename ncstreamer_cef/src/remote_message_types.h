@@ -16,6 +16,8 @@ class RemoteMessage {
     kStreamingStatusResponse,
     kStreamingStartRequest,
     kStreamingStartResponse,
+    kStreamingStopRequest,
+    kStreamingStopResponse,
     kNcStreamerExitRequest,
     kNcStreamerExitResponse,  // not used.
   };
