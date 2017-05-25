@@ -590,6 +590,6 @@ cef.streamingStart.onResponse = function(error) {
 };
 
 
-cef.streamingStop.onResponse = function() {
+cef.streamingStop.onResponse = function(error) {
   updateStreamingStatus('standby');
 };

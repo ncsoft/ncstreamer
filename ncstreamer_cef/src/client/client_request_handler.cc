@@ -362,7 +362,8 @@ void ClientRequestHandler::OnCommandStreamingStop(
     JsExecutor::Execute(
         browser,
         "cef.onResponse",
-        cmd);
+        cmd,
+        std::make_pair("error", ""));
   });
 }
 

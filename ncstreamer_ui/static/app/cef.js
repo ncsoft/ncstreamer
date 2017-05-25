@@ -35,7 +35,7 @@ const cef = (function() {
     },
     'streaming/stop': {
       request: [],
-      response: [],
+      response: ['error'],
     },
     'settings/video_quality/update': {
       request: ['width', 'height', 'fps', 'bitrate'],
