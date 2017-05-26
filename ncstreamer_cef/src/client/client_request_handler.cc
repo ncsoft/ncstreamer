@@ -426,6 +426,11 @@ void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
   }
 
   Obs::Get()->UpdateVideoQuality({width, height}, fps, bitrate);
+  JsExecutor::Execute(
+      browser,
+      "cef.onResponse",
+      cmd,
+      std::make_pair("error", ""));
 }
 
 

@@ -613,3 +613,7 @@ cef.streamingStop.onResponse = function(error) {
     remote.stopRequestKey = null;
   }
 };
+
+
+cef.settingsVideoQualityUpdate.onResponse = function(error) {
+};

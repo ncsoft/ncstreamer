@@ -39,7 +39,7 @@ const cef = (function() {
     },
     'settings/video_quality/update': {
       request: ['width', 'height', 'fps', 'bitrate'],
-      response: [],
+      response: ['error'],
     },
     'settings/mic/on': {
       request: [],
