@@ -396,6 +396,11 @@ function onProviderUserDisconnectInSettingsClicked() {
 
 
 function onQualitySelectChanged() {
+  updateQualitySelect();
+}
+
+
+function updateQualitySelect() {
   const curValue = app.dom.qualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
   console.info({ streamingQuality: curValue });
@@ -404,6 +409,7 @@ function onQualitySelectChanged() {
       curQuality.resolution.height,
       curQuality.fps,
       curQuality.bitrate);
+  return true;
 }
 
 
