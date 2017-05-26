@@ -181,6 +181,11 @@ void ClientRequestHandler::OnCommand(const std::string &cmd,
        std::bind(&This::OnCommandRemoteStop, this,
            std::placeholders::_1,
            std::placeholders::_2,
+           std::placeholders::_3)},
+      {"remote/quality/update",
+       std::bind(&This::OnCommandRemoteQualityUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
            std::placeholders::_3)}};
 
   auto i = kCommandHandlers.find(cmd);
@@ -426,6 +431,11 @@ void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
   }
 
   Obs::Get()->UpdateVideoQuality({width, height}, fps, bitrate);
+  JsExecutor::Execute(
+      browser,
+      "cef.onResponse",
+      cmd,
+      std::make_pair("error", ""));
 }
 
 
@@ -475,12 +485,16 @@ void ClientRequestHandler::OnCommandRemoteStatus(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> /*browser*/) {
-  auto request_key_i = args.find("request_key");
+  auto request_key_i = args.find("requestKey");
   auto status_i = args.find("status");
-  auto source_title_i = args.find("source_title");
+  auto source_title_i = args.find("sourceTitle");
+  auto user_name_i = args.find("userName");
+  auto quality_i = args.find("quality");
   if (request_key_i == args.end() ||
       status_i == args.end() ||
-      source_title_i == args.end()) {
+      source_title_i == args.end() ||
+      user_name_i == args.end() ||
+      quality_i == args.end()) {
     assert(false);
     return;
   }
@@ -498,8 +512,11 @@ void ClientRequestHandler::OnCommandRemoteStatus(
 
   const std::string &status = status_i->second;
   const std::string &source_title = source_title_i->second;
+  const std::string &user_name = user_name_i->second;
+  const std::string &quality = quality_i->second;
 
-  if (status.empty() == true) {
+  if (status.empty() == true ||
+      quality.empty() == true) {
     assert(false);
     return;
   }
@@ -507,7 +524,9 @@ void ClientRequestHandler::OnCommandRemoteStatus(
   RemoteServer::Get()->RespondStreamingStatus(
       request_key,
       status,
-      source_title);
+      source_title,
+      user_name,
+      quality);
 }
 
 
@@ -515,7 +534,7 @@ void ClientRequestHandler::OnCommandRemoteStart(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> /*browser*/) {
-  auto request_key_i = args.find("request_key");
+  auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
   if (request_key_i == args.end() ||
       error_i == args.end()) {
@@ -546,7 +565,7 @@ void ClientRequestHandler::OnCommandRemoteStop(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> /*browser*/) {
-  auto request_key_i = args.find("request_key");
+  auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
   if (request_key_i == args.end() ||
       error_i == args.end()) {
@@ -568,6 +587,37 @@ void ClientRequestHandler::OnCommandRemoteStop(
   const std::string &error = error_i->second;
 
   RemoteServer::Get()->RespondStreamingStop(
+      request_key,
+      error);
+}
+
+
+void ClientRequestHandler::OnCommandRemoteQualityUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> /*browser*/) {
+  auto request_key_i = args.find("requestKey");
+  auto error_i = args.find("error");
+  if (request_key_i == args.end() ||
+      error_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  int request_key{0};
+  try {
+    request_key = std::stoi(request_key_i->second);
+  } catch (...) {
+  }
+
+  if (request_key == 0) {
+    assert(false);
+    return;
+  }
+
+  const std::string &error = error_i->second;
+
+  RemoteServer::Get()->RespondSettingsQualityUpdate(
       request_key,
       error);
 }

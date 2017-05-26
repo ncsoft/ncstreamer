@@ -396,6 +396,11 @@ function onProviderUserDisconnectInSettingsClicked() {
 
 
 function onQualitySelectChanged() {
+  updateQualitySelect();
+}
+
+
+function updateQualitySelect() {
   const curValue = app.dom.qualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
   console.info({ streamingQuality: curValue });
@@ -404,6 +409,7 @@ function onQualitySelectChanged() {
       curQuality.resolution.height,
       curQuality.fps,
       curQuality.bitrate);
+  return true;
 }
 
 
@@ -611,5 +617,13 @@ cef.streamingStop.onResponse = function(error) {
   if (remote.stopRequestKey) {
     cef.remoteStop.request(remote.stopRequestKey, error);
     remote.stopRequestKey = null;
+  }
+};
+
+
+cef.settingsVideoQualityUpdate.onResponse = function(error) {
+  if (remote.qualityUpdateRequestKey) {
+    cef.remoteQualityUpdate.request(remote.qualityUpdateRequestKey, error);
+    remote.qualityUpdateRequestKey = null;
   }
 };

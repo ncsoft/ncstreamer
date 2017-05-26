@@ -39,7 +39,7 @@ const cef = (function() {
     },
     'settings/video_quality/update': {
       request: ['width', 'height', 'fps', 'bitrate'],
-      response: [],
+      response: ['error'],
     },
     'settings/mic/on': {
       request: [],
@@ -58,15 +58,19 @@ const cef = (function() {
       response: [],
     },
     'remote/status': {
-      request: ['request_key', 'status', 'source_title'],
+      request: ['requestKey', 'status', 'sourceTitle', 'userName', 'quality'],
       response: [],
     },
     'remote/start': {
-      request: ['request_key', 'error'],
+      request: ['requestKey', 'error'],
       response: [],
     },
     'remote/stop': {
-      request: ['request_key', 'error'],
+      request: ['requestKey', 'error'],
+      response: [],
+    },
+    'remote/quality/update': {
+      request: ['requestKey', 'error'],
       response: [],
     },
   };
@@ -128,10 +132,14 @@ const cef = (function() {
 const remote = {
   startRequestKey: null,
   stopRequestKey: null,
+  qualityUpdateRequestKey: null,
   onStreamingStatusRequest: function(requestKey) {
     const status = app.streaming.status;
     const sourceTitle = app.dom.gameSelect.children[0].textContent;
-    cef.remoteStatus.request(requestKey, status, sourceTitle);
+    const userName = app.dom.providerUserName.textContent || '';
+    const quality = app.dom.qualitySelect.children[0].value;
+    cef.remoteStatus.request(
+        requestKey, status, sourceTitle, userName, quality);
   },
   onStreamingStartRequest: function(requestKey, args) {
     const sourceTitle = args.sourceTitle;
@@ -177,5 +185,28 @@ const remote = {
     }
 
     remote.stopRequestKey = requestKey;
+  },
+  onSettingsQualityUpdateRequest: function(requestKey, args) {
+    const quality = args.quality;
+
+    if (quality == ncsoft.select.getValue(app.dom.qualitySelect)) {
+      cef.remoteQualityUpdate.request(requestKey, /*success*/ '');
+      return;
+    }
+
+    const success = ncsoft.select.setByValue(app.dom.qualitySelect, quality);
+    if (!success) {
+      cef.remoteQualityUpdate.request(requestKey, 'unknown quality');
+      return;
+    }
+
+
+    const requested = updateQualitySelect();
+    if (!requested) {
+      // assert false
+      return;
+    }
+
+    remote.qualityUpdateRequestKey = requestKey;
   },
 };

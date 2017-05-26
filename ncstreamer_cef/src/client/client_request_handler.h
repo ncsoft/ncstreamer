@@ -101,6 +101,10 @@ class ClientRequestHandler : public CefRequestHandler {
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
+  void OnCommandRemoteQualityUpdate(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
 
   std::wstring locale_;
 

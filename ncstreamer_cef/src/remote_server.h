@@ -38,13 +38,19 @@ class RemoteServer {
   void RespondStreamingStatus(
       int request_key,
       const std::string &status,
-      const std::string &source_title);
+      const std::string &source_title,
+      const std::string &user_name,
+      const std::string &quality);
 
   void RespondStreamingStart(
       int request_key,
       const std::string &error);
 
   void RespondStreamingStop(
+      int request_key,
+      const std::string &error);
+
+  void RespondSettingsQualityUpdate(
       int request_key,
       const std::string &error);
 
@@ -86,6 +92,10 @@ class RemoteServer {
       const boost::property_tree::ptree &tree);
 
   void OnStreamingStopRequest(
+      const ws::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
+  void OnSettingsQualityUpdateRequest(
       const ws::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
