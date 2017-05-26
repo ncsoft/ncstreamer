@@ -475,9 +475,9 @@ void ClientRequestHandler::OnCommandRemoteStatus(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> /*browser*/) {
-  auto request_key_i = args.find("request_key");
+  auto request_key_i = args.find("requestKey");
   auto status_i = args.find("status");
-  auto source_title_i = args.find("source_title");
+  auto source_title_i = args.find("sourceTitle");
   if (request_key_i == args.end() ||
       status_i == args.end() ||
       source_title_i == args.end()) {
@@ -515,7 +515,7 @@ void ClientRequestHandler::OnCommandRemoteStart(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> /*browser*/) {
-  auto request_key_i = args.find("request_key");
+  auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
   if (request_key_i == args.end() ||
       error_i == args.end()) {
@@ -546,7 +546,7 @@ void ClientRequestHandler::OnCommandRemoteStop(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> /*browser*/) {
-  auto request_key_i = args.find("request_key");
+  auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
   if (request_key_i == args.end() ||
       error_i == args.end()) {

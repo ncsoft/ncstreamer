@@ -58,15 +58,15 @@ const cef = (function() {
       response: [],
     },
     'remote/status': {
-      request: ['request_key', 'status', 'source_title'],
+      request: ['requestKey', 'status', 'sourceTitle'],
       response: [],
     },
     'remote/start': {
-      request: ['request_key', 'error'],
+      request: ['requestKey', 'error'],
       response: [],
     },
     'remote/stop': {
-      request: ['request_key', 'error'],
+      request: ['requestKey', 'error'],
       response: [],
     },
   };
