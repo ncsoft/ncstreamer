@@ -341,7 +341,8 @@ function onControlButtonClicked() {
 
 
 function submitControl() {
-  if (app.errorType == 'fail streaming') {
+  if (app.errorType == 'fail streaming' ||
+      app.errorType == 'stop streaming first') {
     app.dom.errorText.style.display = 'none';
   }
   return ({
@@ -384,6 +385,12 @@ function onProviderUserDisconnectInSettingsClicked() {
   console.info('click providerUserDisconnectInSettings');
 
   app.dom.settingsConfirmButton.click();
+
+  if (app.streaming.status != 'standby') {
+    setUpError('stop streaming first');
+    return;
+  }
+
   cef.serviceProviderLogOut.request('Facebook Live');
 }
 
@@ -441,6 +448,9 @@ function showErrorText() {
   switch (app.errorType) {
     case 'fail streaming':
       error.textContent = '%ERROR_MESSAGE%';
+      break;
+    case 'stop streaming first':
+      error.textContent = '%STOP_STREAMING_FIRST%';
       break;
     case 'mePage select empty':
       error.textContent = '%NO_SELECT_ME_PAGE%';
