@@ -112,7 +112,7 @@ class Facebook::LoginClient
       bool is_redirect) override;
 
  private:
-  bool OnLoginSuccess(
+  bool OnLoginRedirected(
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefFrame> frame,
       CefRefPtr<CefRequest> request,

@@ -350,14 +350,14 @@ bool Facebook::LoginClient::OnBeforeBrowse(
 
   if (uri.scheme_authority_path() ==
       FacebookApi::Login::Redirect::static_uri().scheme_authority_path()) {
-    return OnLoginSuccess(browser, frame, request, is_redirect, uri);
+    return OnLoginRedirected(browser, frame, request, is_redirect, uri);
   }
 
   return false;  // proceed navigation.
 }
 
 
-bool Facebook::LoginClient::OnLoginSuccess(
+bool Facebook::LoginClient::OnLoginRedirected(
     CefRefPtr<CefBrowser> browser,
     CefRefPtr<CefFrame> /*frame*/,
     CefRefPtr<CefRequest> /*request*/,
@@ -370,12 +370,12 @@ bool Facebook::LoginClient::OnLoginSuccess(
           Uri::Query{uri.fragment()});
 
   if (access_token.empty() == true) {
-    assert(false);
-    return false;  // proceed navigation.
+    // login canceled.
+  } else {
+    owner_->OnLoginSuccess(
+        access_token, on_failed_, on_logged_in_);
   }
 
-  owner_->OnLoginSuccess(
-      access_token, on_failed_, on_logged_in_);
   browser->GetHost()->CloseBrowser(false);
   return true;
 }
