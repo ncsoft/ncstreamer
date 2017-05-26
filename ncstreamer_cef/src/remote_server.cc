@@ -60,7 +60,7 @@ void RemoteServer::RespondStreamingStatus(
     tree.put("type", static_cast<int>(
         RemoteMessage::MessageType::kStreamingStatusResponse));
     tree.put("status", status);
-    tree.put("source_title", source_title);
+    tree.put("sourceTitle", source_title);
     boost::property_tree::write_json(msg, tree, false);
   }
 
