@@ -370,12 +370,12 @@ bool Facebook::LoginClient::OnLoginRedirected(
           Uri::Query{uri.fragment()});
 
   if (access_token.empty() == true) {
-    assert(false);
-    return false;  // proceed navigation.
-  }
-
+    // login canceled.
+  } else {
   owner_->OnLoginSuccess(
       access_token, on_failed_, on_logged_in_);
+  }
+
   browser->GetHost()->CloseBrowser(false);
   return true;
 }
