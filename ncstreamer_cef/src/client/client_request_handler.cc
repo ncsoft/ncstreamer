@@ -478,9 +478,13 @@ void ClientRequestHandler::OnCommandRemoteStatus(
   auto request_key_i = args.find("requestKey");
   auto status_i = args.find("status");
   auto source_title_i = args.find("sourceTitle");
+  auto user_name_i = args.find("userName");
+  auto quality_i = args.find("quality");
   if (request_key_i == args.end() ||
       status_i == args.end() ||
-      source_title_i == args.end()) {
+      source_title_i == args.end() ||
+      user_name_i == args.end() ||
+      quality_i == args.end()) {
     assert(false);
     return;
   }
@@ -498,8 +502,11 @@ void ClientRequestHandler::OnCommandRemoteStatus(
 
   const std::string &status = status_i->second;
   const std::string &source_title = source_title_i->second;
+  const std::string &user_name = user_name_i->second;
+  const std::string &quality = quality_i->second;
 
-  if (status.empty() == true) {
+  if (status.empty() == true ||
+      quality.empty() == true) {
     assert(false);
     return;
   }
@@ -507,7 +514,9 @@ void ClientRequestHandler::OnCommandRemoteStatus(
   RemoteServer::Get()->RespondStreamingStatus(
       request_key,
       status,
-      source_title);
+      source_title,
+      user_name,
+      quality);
 }
 
 

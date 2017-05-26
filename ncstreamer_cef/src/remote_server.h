@@ -38,7 +38,9 @@ class RemoteServer {
   void RespondStreamingStatus(
       int request_key,
       const std::string &status,
-      const std::string &source_title);
+      const std::string &source_title,
+      const std::string &user_name,
+      const std::string &quality);
 
   void RespondStreamingStart(
       int request_key,

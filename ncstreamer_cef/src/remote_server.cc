@@ -47,7 +47,9 @@ RemoteServer *RemoteServer::Get() {
 void RemoteServer::RespondStreamingStatus(
     int request_key,
     const std::string &status,
-    const std::string &source_title) {
+    const std::string &source_title,
+    const std::string &user_name,
+    const std::string &quality) {
   ws::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     // TODO(khpark): log warning.
@@ -61,6 +63,8 @@ void RemoteServer::RespondStreamingStatus(
         RemoteMessage::MessageType::kStreamingStatusResponse));
     tree.put("status", status);
     tree.put("sourceTitle", source_title);
+    tree.put("userName", user_name);
+    tree.put("quality", quality);
     boost::property_tree::write_json(msg, tree, false);
   }
 

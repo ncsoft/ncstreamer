@@ -58,7 +58,7 @@ const cef = (function() {
       response: [],
     },
     'remote/status': {
-      request: ['requestKey', 'status', 'sourceTitle'],
+      request: ['requestKey', 'status', 'sourceTitle', 'userName', 'quality'],
       response: [],
     },
     'remote/start': {
@@ -131,7 +131,10 @@ const remote = {
   onStreamingStatusRequest: function(requestKey) {
     const status = app.streaming.status;
     const sourceTitle = app.dom.gameSelect.children[0].textContent;
-    cef.remoteStatus.request(requestKey, status, sourceTitle);
+    const userName = app.dom.providerUserName.textContent || '';
+    const quality = app.dom.qualitySelect.children[0].value;
+    cef.remoteStatus.request(
+        requestKey, status, sourceTitle, userName, quality);
   },
   onStreamingStartRequest: function(requestKey, args) {
     const sourceTitle = args.sourceTitle;
