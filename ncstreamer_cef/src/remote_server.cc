@@ -131,6 +131,33 @@ void RemoteServer::RespondStreamingStop(
 }
 
 
+void RemoteServer::RespondSettingsQualityUpdate(
+    int request_key,
+    const std::string &error) {
+  ws::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    // TODO(khpark): log warning.
+    return;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsQualityUpdateResponse));
+    tree.put("error", error);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  ws::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    // TODO(khpark): log error.
+    return;
+  }
+}
+
+
 RemoteServer::RequestCache::RequestCache()
     : mutex_{},
       cache_{},
@@ -269,6 +296,9 @@ void RemoteServer::OnMessage(ws::connection_hdl connection,
       {RemoteMessage::MessageType::kStreamingStopRequest,
        std::bind(&RemoteServer::OnStreamingStopRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsQualityUpdateRequest,
+       std::bind(&RemoteServer::OnSettingsQualityUpdateRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -336,6 +366,29 @@ void RemoteServer::OnStreamingStopRequest(
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
       "remote.onStreamingStopRequest",
+      request_key,
+      args);
+}
+
+
+void RemoteServer::OnSettingsQualityUpdateRequest(
+    const ws::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  const std::string &quality = tree.get("quality", "");
+  if (quality.empty()) {
+    // TBD
+    assert(false);
+    return;
+  }
+
+  boost::property_tree::ptree args;
+  args.add("quality", quality);
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsQualityUpdateRequest",
       request_key,
       args);
 }

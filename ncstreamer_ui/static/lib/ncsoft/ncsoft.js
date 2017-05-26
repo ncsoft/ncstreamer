@@ -97,6 +97,12 @@ ncsoft.select.setByText = function(select, text) {
 };
 
 
+ncsoft.select.getValue = function(select) {
+  const display = select.children[0];
+  return display.value;
+};
+
+
 ncsoft.select.getText = function(select) {
   const display = select.children[0];
   return display.textContent;

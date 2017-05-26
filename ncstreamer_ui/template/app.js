@@ -622,4 +622,8 @@ cef.streamingStop.onResponse = function(error) {
 
 
 cef.settingsVideoQualityUpdate.onResponse = function(error) {
+  if (remote.qualityUpdateRequestKey) {
+    cef.remoteQualityUpdate.request(remote.qualityUpdateRequestKey, error);
+    remote.qualityUpdateRequestKey = null;
+  }
 };

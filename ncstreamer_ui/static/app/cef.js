@@ -69,6 +69,10 @@ const cef = (function() {
       request: ['requestKey', 'error'],
       response: [],
     },
+    'remote/quality/update': {
+      request: ['requestKey', 'error'],
+      response: [],
+    },
   };
 
   const exports = {};
@@ -128,6 +132,7 @@ const cef = (function() {
 const remote = {
   startRequestKey: null,
   stopRequestKey: null,
+  qualityUpdateRequestKey: null,
   onStreamingStatusRequest: function(requestKey) {
     const status = app.streaming.status;
     const sourceTitle = app.dom.gameSelect.children[0].textContent;
@@ -180,5 +185,28 @@ const remote = {
     }
 
     remote.stopRequestKey = requestKey;
+  },
+  onSettingsQualityUpdateRequest: function(requestKey, args) {
+    const quality = args.quality;
+
+    if (quality == ncsoft.select.getValue(app.dom.qualitySelect)) {
+      cef.remoteQualityUpdate.request(requestKey, /*success*/ '');
+      return;
+    }
+
+    const success = ncsoft.select.setByValue(app.dom.qualitySelect, quality);
+    if (!success) {
+      cef.remoteQualityUpdate.request(requestKey, 'unknown quality');
+      return;
+    }
+
+
+    const requested = updateQualitySelect();
+    if (!requested) {
+      // assert false
+      return;
+    }
+
+    remote.qualityUpdateRequestKey = requestKey;
   },
 };
