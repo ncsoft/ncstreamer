@@ -372,8 +372,8 @@ bool Facebook::LoginClient::OnLoginRedirected(
   if (access_token.empty() == true) {
     // login canceled.
   } else {
-  owner_->OnLoginSuccess(
-      access_token, on_failed_, on_logged_in_);
+    owner_->OnLoginSuccess(
+        access_token, on_failed_, on_logged_in_);
   }
 
   browser->GetHost()->CloseBrowser(false);
