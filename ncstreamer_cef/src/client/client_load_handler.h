@@ -46,7 +46,7 @@ class ClientLoadHandler : public CefLoadHandler {
       const std::vector<std::string> &all,
       const std::vector<std::string> &filter);
 
-  void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
+  void OnMainPageLoaded(CefRefPtr<CefBrowser> browser);
 
   void UpdateSourcesPeriodically(
       int64_t millisec);
@@ -57,7 +57,7 @@ class ClientLoadHandler : public CefLoadHandler {
   const std::vector<std::string> white_sources_;
   std::vector<std::string> prev_sources_;
 
-  bool main_browser_created_;
+  bool main_page_loaded_;
 
   IMPLEMENT_REFCOUNTING(ClientLoadHandler);
 };
