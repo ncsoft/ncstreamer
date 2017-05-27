@@ -18,6 +18,7 @@ namespace ncstreamer {
 CommandLine::CommandLine(const std::wstring &cmd_line)
     : is_renderer_{false},
       hides_settings_{false},
+      video_quality_{},
       shows_sources_all_{false},
       sources_{},
       locale_{},
@@ -38,6 +39,10 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
     hides_settings_ = (hides_settings == L"") ||
                       (hides_settings == L"true");
   }
+
+  const std::wstring &video_quality =
+      cef_cmd_line->GetSwitchValue(L"video-quality");
+  video_quality_ = video_quality.empty() ? L"medium" : video_quality;
 
   const std::wstring &shows_sources_all =
       cef_cmd_line->GetSwitchValue(L"shows-sources-all");

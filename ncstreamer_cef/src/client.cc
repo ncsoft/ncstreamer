@@ -10,6 +10,7 @@ namespace ncstreamer {
 Client::Client(
     HINSTANCE instance,
     bool hides_settings,
+    const std::wstring &video_quality,
     bool shows_sources_all,
     const std::vector<std::string> &sources,
     const std::wstring &locale)
@@ -17,6 +18,7 @@ Client::Client(
       life_span_handler_{new ClientLifeSpanHandler{instance}},
       load_handler_{new ClientLoadHandler{life_span_handler_,
                                           hides_settings,
+                                          video_quality,
                                           shows_sources_all,
                                           sources}},
       request_handler_{new ClientRequestHandler{locale}} {

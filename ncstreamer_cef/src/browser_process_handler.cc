@@ -19,12 +19,14 @@ namespace ncstreamer {
 BrowserProcessHandler::BrowserProcessHandler(
     HINSTANCE instance,
     bool hides_settings,
+    const std::wstring &video_quality,
     bool shows_sources_all,
     const std::vector<std::string> &sources,
     const std::wstring &locale,
     const std::wstring &ui_uri)
     : instance_{instance},
       hides_settings_{hides_settings},
+      video_quality_{video_quality},
       shows_sources_all_{shows_sources_all},
       sources_{sources},
       locale_{locale},
@@ -52,6 +54,7 @@ void BrowserProcessHandler::OnContextInitialized() {
   client_ = new Client{
       instance_,
       hides_settings_,
+      video_quality_,
       shows_sources_all_,
       sources_,
       locale_};
