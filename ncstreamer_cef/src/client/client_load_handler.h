@@ -18,9 +18,11 @@
 namespace ncstreamer {
 class ClientLoadHandler : public CefLoadHandler {
  public:
-  ClientLoadHandler(const ClientLifeSpanHandler *const life_span_handler,
-                    bool shows_sources_all,
-                    const std::vector<std::string> &sources);
+  ClientLoadHandler(
+      const ClientLifeSpanHandler *const life_span_handler,
+      bool shows_sources_all,
+      const std::vector<std::string> &sources);
+
   virtual ~ClientLoadHandler();
 
   void OnLoadStart(CefRefPtr<CefBrowser> browser,
