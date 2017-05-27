@@ -82,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'caution-text',
     'live-image',
     'control-button',
-    'provider-user-name-in-settings',
     'provider-user-disconnect-in-settings',
     'quality-select',
     'settings-confirm-button',
@@ -537,7 +536,6 @@ cef.serviceProviderLogIn.onResponse = function(
   app.dom.minimizeButton.style.display = 'inline';
 
   app.dom.providerUserName.textContent = userName;
-  app.dom.providerUserNameInSettings.textContent = userName;
 
   const ownPageSelect = app.dom.ownPageSelect;
   const display = ownPageSelect.children[0];
@@ -594,7 +592,6 @@ cef.serviceProviderLogOut.onResponse = function(error) {
   app.dom.minimizeButton.style.display = 'none';
 
   app.dom.providerUserName.textContent = '';
-  app.dom.providerUserNameInSettings.textContent = '';
 
   const ownPages = app.dom.ownPageSelect.children[1];
   while (ownPages.firstChild) {
