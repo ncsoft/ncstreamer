@@ -175,6 +175,8 @@ function setUp(args) {
   if (app.options.hidesSettings == true) {
     app.dom.settingButton.style.display = 'none';
   }
+
+  ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
 }
 
 
