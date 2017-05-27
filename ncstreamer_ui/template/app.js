@@ -532,7 +532,7 @@ cef.serviceProviderLogIn.onResponse = function(
     element.style.display = 'block';
   }
   if (app.options.hidesSettings == false) {
-  app.dom.settingButton.style.display = 'inline';
+    app.dom.settingButton.style.display = 'inline';
   }
   app.dom.minimizeButton.style.display = 'inline';
 
