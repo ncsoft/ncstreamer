@@ -6,9 +6,12 @@
 #include "ncstreamer_cef/src/client/client_load_handler.h"
 
 #include <cassert>
+#include <codecvt>
+#include <locale>
 #include <sstream>
 #include <unordered_map>
 
+#include "boost/property_tree/ptree.hpp"
 #include "include/base/cef_bind.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
@@ -120,9 +123,13 @@ std::vector<std::string> ClientLoadHandler::FilterSources(
 
 void ClientLoadHandler::OnMainPageLoaded(
     CefRefPtr<CefBrowser> browser) {
-  if (hides_settings_ == true) {
-    JsExecutor::Execute(browser, "hideSettings");
-  }
+  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+  boost::property_tree::ptree args;
+  args.add("hidesSettings", hides_settings_);
+
+  JsExecutor::Execute(browser, "setUp", args);
+
   UpdateSourcesPeriodically(1000 /*millisec*/);
 }
 

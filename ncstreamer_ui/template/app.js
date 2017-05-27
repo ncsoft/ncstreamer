@@ -169,9 +169,12 @@ function updateStreamingStatus(status) {
 }
 
 
-function hideSettings() {
-  app.options.hidesSettings = true;
+function setUp(args) {
+  app.options.hidesSettings = (args.hidesSettings == 'true');
+
+  if (app.options.hidesSettings == true) {
   app.dom.settingButton.style.display = 'none';
+  }
 }
 
 
