@@ -39,13 +39,9 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
                       (hides_settings == L"true");
   }
 
-  static std::wstring kShowsSourcesAll{L"shows-sources-all"};
-  if (cef_cmd_line->HasSwitch(kShowsSourcesAll) == true) {
-    const std::wstring &shows_sources_all =
-        cef_cmd_line->GetSwitchValue(kShowsSourcesAll);
-    shows_sources_all_ = (shows_sources_all == L"") ||
-                         (shows_sources_all == L"true");
-  }
+  const std::wstring &shows_sources_all =
+      cef_cmd_line->GetSwitchValue(L"shows-sources-all");
+  shows_sources_all_ = (shows_sources_all != L"false");
 
   const std::wstring &sources_arg =
       cef_cmd_line->GetSwitchValue(L"sources");
