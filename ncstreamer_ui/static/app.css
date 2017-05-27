@@ -44,6 +44,12 @@ div {
 }
 
 
+#provider-user-disconnect {
+  display: inline;
+  padding-right: 80px;
+}
+
+
 #own-page-select {
   display: none;
 }
