@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'close-button',
     'login-button',
     'provider-user-name',
+    'provider-user-disconnect',
     'provider-page-link',
     'me-page-select',
     'own-page-select',
@@ -82,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'caution-text',
     'live-image',
     'control-button',
-    'provider-user-disconnect-in-settings',
     'quality-select',
     'settings-confirm-button',
   ].forEach(function(domId) {
@@ -97,6 +97,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onCloseButtonClicked);
   app.dom.loginButton.addEventListener(
       'click', onLoginButtonClicked);
+  app.dom.providerUserDisconnect.addEventListener(
+      'click', onProviderUserDisconnectClicked);
   app.dom.providerPageLink.addEventListener(
       'click', onProviderPageLinkClicked);
   app.dom.mePageSelect.addEventListener(
@@ -111,8 +113,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'change', onMicCheckboxChanged);
   app.dom.controlButton.addEventListener(
       'click', onControlButtonClicked);
-  app.dom.providerUserDisconnectInSettings.addEventListener(
-      'click', onProviderUserDisconnectInSettingsClicked);
   app.dom.qualitySelect.addEventListener(
       'ncsoftSelectChange', onQualitySelectChanged);
 
@@ -389,10 +389,8 @@ function submitControl() {
 }
 
 
-function onProviderUserDisconnectInSettingsClicked() {
-  console.info('click providerUserDisconnectInSettings');
-
-  app.dom.settingsConfirmButton.click();
+function onProviderUserDisconnectClicked() {
+  console.info('click providerUserDisconnect');
 
   if (app.streaming.status != 'standby') {
     setUpError('stop streaming first');
