@@ -43,6 +43,9 @@ const app = {
   service: {
     user: null,
   },
+  options: {
+    hidesSettings: false,
+  },
   errorType: null,
 };
 
@@ -164,6 +167,12 @@ function updateStreamingStatus(status) {
       button.disabled = true;
       break;
   }
+}
+
+
+function hideSettings() {
+  app.options.hidesSettings = true;
+  app.dom.settingButton.style.display = 'none';
 }
 
 
@@ -522,7 +531,9 @@ cef.serviceProviderLogIn.onResponse = function(
   for (const element of app.dom.mainPagePanel) {
     element.style.display = 'block';
   }
+  if (app.options.hidesSettings == false) {
   app.dom.settingButton.style.display = 'inline';
+  }
   app.dom.minimizeButton.style.display = 'inline';
 
   app.dom.providerUserName.textContent = userName;

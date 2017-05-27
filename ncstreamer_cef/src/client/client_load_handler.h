@@ -20,6 +20,7 @@ class ClientLoadHandler : public CefLoadHandler {
  public:
   ClientLoadHandler(
       const ClientLifeSpanHandler *const life_span_handler,
+      bool hides_settings,
       bool shows_sources_all,
       const std::vector<std::string> &sources);
 
@@ -55,6 +56,7 @@ class ClientLoadHandler : public CefLoadHandler {
 
   const ClientLifeSpanHandler *const life_span_handler_;
 
+  const bool hides_settings_;
   const bool shows_sources_all_;
   const std::vector<std::string> white_sources_;
   std::vector<std::string> prev_sources_;

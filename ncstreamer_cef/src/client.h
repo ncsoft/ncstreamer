@@ -24,6 +24,7 @@ class Client : public CefClient {
  public:
   Client(
       HINSTANCE instance,
+      bool hides_settings,
       bool shows_sources_all,
       const std::vector<std::string> &sources,
       const std::wstring &locale);

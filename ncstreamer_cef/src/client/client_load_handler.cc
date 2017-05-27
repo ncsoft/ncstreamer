@@ -21,9 +21,11 @@
 namespace ncstreamer {
 ClientLoadHandler::ClientLoadHandler(
     const ClientLifeSpanHandler *const life_span_handler,
+    bool hides_settings,
     bool shows_sources_all,
     const std::vector<std::string> &sources)
     : life_span_handler_{life_span_handler},
+      hides_settings_{hides_settings},
       shows_sources_all_{shows_sources_all},
       white_sources_{sources},
       prev_sources_{},
@@ -118,6 +120,9 @@ std::vector<std::string> ClientLoadHandler::FilterSources(
 
 void ClientLoadHandler::OnMainPageLoaded(
     CefRefPtr<CefBrowser> browser) {
+  if (hides_settings_ == true) {
+    JsExecutor::Execute(browser, "hideSettings");
+  }
   UpdateSourcesPeriodically(1000 /*millisec*/);
 }
 
