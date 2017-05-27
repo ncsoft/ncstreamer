@@ -590,6 +590,9 @@ cef.serviceProviderLogOut.onResponse = function(error) {
     element.style.display = 'none';
   }
 
+  app.dom.settingButton.style.display = 'none';
+  app.dom.minimizeButton.style.display = 'none';
+
   app.dom.providerUserName.textContent = '';
   app.dom.providerUserNameInSettings.textContent = '';
 
