@@ -21,6 +21,7 @@ class ClientLoadHandler : public CefLoadHandler {
   ClientLoadHandler(
       const ClientLifeSpanHandler *const life_span_handler,
       bool hides_settings,
+      const std::wstring &video_quality,
       bool shows_sources_all,
       const std::vector<std::string> &sources);
 
@@ -57,6 +58,7 @@ class ClientLoadHandler : public CefLoadHandler {
   const ClientLifeSpanHandler *const life_span_handler_;
 
   const bool hides_settings_;
+  const std::wstring video_quality_;
   const bool shows_sources_all_;
   const std::vector<std::string> white_sources_;
   std::vector<std::string> prev_sources_;

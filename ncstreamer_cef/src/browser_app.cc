@@ -10,6 +10,7 @@ namespace ncstreamer {
 BrowserApp::BrowserApp(
     HINSTANCE instance,
     bool hides_settings,
+    const std::wstring &video_quality,
     bool shows_sources_all,
     const std::vector<std::string> &sources,
     const std::wstring &locale,
@@ -17,6 +18,7 @@ BrowserApp::BrowserApp(
     : browser_process_handler_{new BrowserProcessHandler{
           instance,
           hides_settings,
+          video_quality,
           shows_sources_all,
           sources,
           locale,

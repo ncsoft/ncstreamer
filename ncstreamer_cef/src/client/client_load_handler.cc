@@ -25,10 +25,12 @@ namespace ncstreamer {
 ClientLoadHandler::ClientLoadHandler(
     const ClientLifeSpanHandler *const life_span_handler,
     bool hides_settings,
+    const std::wstring &video_quality,
     bool shows_sources_all,
     const std::vector<std::string> &sources)
     : life_span_handler_{life_span_handler},
       hides_settings_{hides_settings},
+      video_quality_{video_quality},
       shows_sources_all_{shows_sources_all},
       white_sources_{sources},
       prev_sources_{},

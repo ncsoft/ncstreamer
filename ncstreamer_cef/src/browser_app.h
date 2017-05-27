@@ -22,6 +22,7 @@ class BrowserApp : public CefApp {
   BrowserApp(
       HINSTANCE instance,
       bool hides_settings,
+      const std::wstring &video_quality,
       bool shows_sources_all,
       const std::vector<std::string> &sources,
       const std::wstring &locale,
