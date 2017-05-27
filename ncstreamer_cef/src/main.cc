@@ -58,6 +58,7 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   CefRefPtr<ncstreamer::BrowserApp> browser_app{new ncstreamer::BrowserApp{
       instance,
+      cmd_line.hides_settings(),
       cmd_line.shows_sources_all(),
       cmd_line.sources(),
       cmd_line.locale(),

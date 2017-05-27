@@ -21,13 +21,15 @@
 namespace ncstreamer {
 ClientLoadHandler::ClientLoadHandler(
     const ClientLifeSpanHandler *const life_span_handler,
+    bool hides_settings,
     bool shows_sources_all,
     const std::vector<std::string> &sources)
     : life_span_handler_{life_span_handler},
+      hides_settings_{hides_settings},
       shows_sources_all_{shows_sources_all},
       white_sources_{sources},
       prev_sources_{},
-      main_browser_created_{false} {
+      main_page_loaded_{false} {
   assert(life_span_handler);
 }
 
@@ -73,10 +75,10 @@ void ClientLoadHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
                                              bool isLoading,
                                              bool /*canGoBack*/,
                                              bool /*canGoForward*/) {
-  if (main_browser_created_ == false && isLoading == false) {
+  if (main_page_loaded_ == false && isLoading == false) {
     ::ShowWindow(browser->GetHost()->GetWindowHandle(), TRUE);
-    main_browser_created_ = true;
-    OnMainBrowserCreated(browser);
+    main_page_loaded_ = true;
+    OnMainPageLoaded(browser);
   }
 }
 
@@ -116,8 +118,11 @@ std::vector<std::string> ClientLoadHandler::FilterSources(
 }
 
 
-void ClientLoadHandler::OnMainBrowserCreated(
+void ClientLoadHandler::OnMainPageLoaded(
     CefRefPtr<CefBrowser> browser) {
+  if (hides_settings_ == true) {
+    JsExecutor::Execute(browser, "hideSettings");
+  }
   UpdateSourcesPeriodically(1000 /*millisec*/);
 }
 

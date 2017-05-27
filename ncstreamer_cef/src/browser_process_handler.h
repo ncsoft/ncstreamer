@@ -21,6 +21,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
  public:
   BrowserProcessHandler(
       HINSTANCE instance,
+      bool hides_settings,
       bool shows_sources_all,
       const std::vector<std::string> &sources,
       const std::wstring &locale,
@@ -34,6 +35,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
 
  private:
   const HINSTANCE instance_;
+  const bool hides_settings_;
   const bool shows_sources_all_;
   const std::vector<std::string> sources_;
   const std::wstring locale_;

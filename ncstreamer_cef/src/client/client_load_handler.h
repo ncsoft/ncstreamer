@@ -18,9 +18,12 @@
 namespace ncstreamer {
 class ClientLoadHandler : public CefLoadHandler {
  public:
-  ClientLoadHandler(const ClientLifeSpanHandler *const life_span_handler,
-                    bool shows_sources_all,
-                    const std::vector<std::string> &sources);
+  ClientLoadHandler(
+      const ClientLifeSpanHandler *const life_span_handler,
+      bool hides_settings,
+      bool shows_sources_all,
+      const std::vector<std::string> &sources);
+
   virtual ~ClientLoadHandler();
 
   void OnLoadStart(CefRefPtr<CefBrowser> browser,
@@ -46,18 +49,19 @@ class ClientLoadHandler : public CefLoadHandler {
       const std::vector<std::string> &all,
       const std::vector<std::string> &filter);
 
-  void OnMainBrowserCreated(CefRefPtr<CefBrowser> browser);
+  void OnMainPageLoaded(CefRefPtr<CefBrowser> browser);
 
   void UpdateSourcesPeriodically(
       int64_t millisec);
 
   const ClientLifeSpanHandler *const life_span_handler_;
 
+  const bool hides_settings_;
   const bool shows_sources_all_;
   const std::vector<std::string> white_sources_;
   std::vector<std::string> prev_sources_;
 
-  bool main_browser_created_;
+  bool main_page_loaded_;
 
   IMPLEMENT_REFCOUNTING(ClientLoadHandler);
 };
