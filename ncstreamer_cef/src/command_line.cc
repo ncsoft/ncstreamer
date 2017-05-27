@@ -17,6 +17,7 @@
 namespace ncstreamer {
 CommandLine::CommandLine(const std::wstring &cmd_line)
     : is_renderer_{false},
+      hides_settings_{false},
       shows_sources_all_{false},
       sources_{},
       locale_{},
@@ -29,6 +30,14 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
   const std::wstring &process_type =
       cef_cmd_line->GetSwitchValue(L"type");
   is_renderer_ = (process_type == L"renderer");
+
+  static std::wstring kHidesSettings{L"hides-settings"};
+  if (cef_cmd_line->HasSwitch(kHidesSettings) == true) {
+    const std::wstring &hides_settings =
+        cef_cmd_line->GetSwitchValue(kHidesSettings);
+    hides_settings_ = (hides_settings == L"") ||
+                      (hides_settings == L"true");
+  }
 
   static std::wstring kShowsSourcesAll{L"shows-sources-all"};
   if (cef_cmd_line->HasSwitch(kShowsSourcesAll) == true) {

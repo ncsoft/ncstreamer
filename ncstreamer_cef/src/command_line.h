@@ -18,6 +18,7 @@ class CommandLine {
   virtual ~CommandLine();
 
   bool is_renderer() const { return is_renderer_; }
+  bool hides_settings() const { return hides_settings_; }
   bool shows_sources_all() const { return shows_sources_all_; }
   const std::vector<std::string> &sources() const { return sources_; }
   const std::wstring &locale() const { return locale_; }
@@ -29,6 +30,7 @@ class CommandLine {
       ParseSourcesArgument(const std::wstring &arg);
 
   bool is_renderer_;
+  bool hides_settings_;
   bool shows_sources_all_;
   std::vector<std::string> sources_;
   std::wstring locale_;
