@@ -173,7 +173,7 @@ function setUp(args) {
   app.options.hidesSettings = (args.hidesSettings == 'true');
 
   if (app.options.hidesSettings == true) {
-  app.dom.settingButton.style.display = 'none';
+    app.dom.settingButton.style.display = 'none';
   }
 }
 
