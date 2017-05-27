@@ -146,7 +146,7 @@ const remote = {
 
     const status = app.streaming.status;
     if (status != 'standby') {
-      cef.remoteStart.request(requestKey, 'busy');
+      cef.remoteStart.request(requestKey, 'not standby');
       return;
     }
 
@@ -169,7 +169,7 @@ const remote = {
 
     const status = app.streaming.status;
     if (status != 'onAir') {
-      cef.remoteStart.request(requestKey, 'idle');
+      cef.remoteStart.request(requestKey, 'not onAir');
       return;
     }
 
