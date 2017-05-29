@@ -144,6 +144,11 @@ const remote = {
   onStreamingStartRequest: function(requestKey, args) {
     const sourceTitle = args.sourceTitle;
 
+    if (!app.dom.providerUserName.textContent) {
+      cef.remoteStart.request(requestKey, 'no user');
+      return;
+    }
+
     const status = app.streaming.status;
     if (status != 'standby') {
       cef.remoteStart.request(requestKey, 'not standby');
