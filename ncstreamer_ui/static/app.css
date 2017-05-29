@@ -50,6 +50,22 @@ div {
 }
 
 
+#provider-page-link {
+  cursor: default;
+  text-decoration: none;
+}
+
+
+#provider-page-link.live {
+  cursor: pointer;
+}
+
+
+#provider-page-link.live:hover {
+  text-decoration: underline;
+}
+
+
 #own-page-select {
   display: none;
 }
