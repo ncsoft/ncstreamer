@@ -6,6 +6,7 @@
 const ncsoft = {
   klass: {},
   select: {},
+  modal: {},
 };
 
 
@@ -106,4 +107,9 @@ ncsoft.select.getValue = function(select) {
 ncsoft.select.getText = function(select) {
   const display = select.children[0];
   return display.textContent;
+};
+
+
+ncsoft.modal.show = function(elementId) {
+  $(elementId).modal('show');
 };

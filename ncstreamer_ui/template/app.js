@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'control-button',
     'quality-select',
     'settings-confirm-button',
+    'modal-close-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
@@ -115,6 +116,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onControlButtonClicked);
   app.dom.qualitySelect.addEventListener(
       'ncsoftSelectChange', onQualitySelectChanged);
+  app.dom.modalCloseButton.addEventListener(
+      'click', onModalCloseClicked);
 
   ncsoft.select.disable(app.dom.privacySelect);
   ncsoft.select.disable(app.dom.gameSelect);
@@ -255,7 +258,11 @@ function onMinimizeButtonClicked() {
 
 function onCloseButtonClicked() {
   console.info('click closeeButton');
-  cef.windowClose.request();
+  if (app.streaming.status == 'onAir') {
+    ncsoft.modal.show('#close-check-modal');
+  } else {
+    cef.windowClose.request();
+  }
 }
 
 
@@ -428,6 +435,12 @@ function updateQualitySelect() {
       curQuality.fps,
       curQuality.bitrate);
   return true;
+}
+
+
+function onModalCloseClicked() {
+  console.info('click modalClose');
+  cef.windowClose.request();
 }
 
 
