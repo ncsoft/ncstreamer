@@ -205,7 +205,6 @@ const remote = {
       return;
     }
 
-
     const requested = updateQualitySelect();
     if (!requested) {
       // assert false
