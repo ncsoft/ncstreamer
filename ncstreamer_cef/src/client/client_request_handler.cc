@@ -354,7 +354,7 @@ void ClientRequestHandler::OnCommandStreamingStart(
         std::make_pair("error", error));
   }, [browser, cmd, source, mic_flag](const std::string &service_provider,
                                       const std::string &stream_url) {
-    Obs::Get()->StartStreaming(
+    bool result = Obs::Get()->StartStreaming(
         source,
         service_provider,
         stream_url,
@@ -366,6 +366,13 @@ void ClientRequestHandler::OnCommandStreamingStart(
           cmd,
           std::make_pair("error", ""));
     });
+    if (result == false) {
+      JsExecutor::Execute(
+          browser,
+          "cef.onResponse",
+          cmd,
+          std::make_pair("error", "obs internal"));
+    }
   });
 }
 
