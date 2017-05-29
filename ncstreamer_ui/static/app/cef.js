@@ -161,8 +161,8 @@ const remote = {
       return;
     }
 
-    const requested = submitControl();
-    if (!requested) {
+    const errorType = submitControl();
+    if (errorType) {
       cef.remoteStart.request(requestKey, 'no page');
       return;
     }
@@ -183,8 +183,8 @@ const remote = {
       return;
     }
 
-    const requested = submitControl();
-    if (!requested) {
+    const errorType = submitControl();
+    if (errorType) {
       // assert false
       return;
     }

@@ -377,7 +377,7 @@ function submitControl() {
       const errorType = checkSelectValueValidation();
       if (errorType) {
         setUpError(errorType);
-        return false;
+        return errorType;
       }
 
       const source = app.dom.gameSelect.children[0].value;
@@ -391,18 +391,18 @@ function submitControl() {
       app.streaming.start.sourceTitle =
           ncsoft.select.getText(app.dom.gameSelect);
       updateStreamingStatus('starting');
-      return true;
+      return /*no error*/ '';
     },
     'starting': function() {
-      return true;
+      return /*no error*/ '';
     },
     'onAir': function() {
       cef.streamingStop.request();
       updateStreamingStatus('stopping');
-      return true;
+      return /*no error*/ '';
     },
     'stopping': function() {
-      return true;
+      return /*no error*/ '';
     },
   })[app.streaming.status]();
 }
