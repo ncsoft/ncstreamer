@@ -130,7 +130,7 @@ h2. Steps to execute ncstreamer.exe
    **** whole 'obs-plugins' directory
  ** Warning: DO NOT copy any files duplicated with those copied from CEF3_2704_PATH.
 
-* Copy OpenSSL buid results(dll files in 'bin' directory) into the build directory of ncstreamer project.
+* Copy OpenSSL build results(dll files in 'bin' directory) into the build directory of ncstreamer project.
  ** Ex: in case of vs14.0 Release
   *** Directories to be copied
    **** From: D:\dev\lib\openssl-1.0.2j-32bit-release-DLL-VS2015\bin\
