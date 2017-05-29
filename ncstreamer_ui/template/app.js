@@ -385,8 +385,6 @@ function submitControl() {
       const privacy = app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
       const mic = app.dom.micCheckbox.checked;
-      if (source == '' || userPage == '' || privacy == '')
-        return false;
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
