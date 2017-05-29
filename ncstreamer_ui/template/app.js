@@ -374,7 +374,9 @@ function submitControl() {
   }
   return ({
     'standby': function() {
-      if (!checkSelectValueValidation()) {
+      const errorType = checkSelectValueValidation();
+      if (errorType) {
+        setUpError(errorType);
         return false;
       }
 
@@ -512,27 +514,23 @@ function showErrorText() {
 function checkSelectValueValidation() {
   const error = app.dom.errorText;
   if (app.dom.mePageSelect.children[0].value == '') {
-    setUpError('mePage select empty');
-    return false;
+    return 'mePage select empty';
   }
 
   if (app.dom.mePageSelect.children[0].value == 1 &&
       app.dom.privacySelect.children[0].value == '') {
-    setUpError('privacy select empty');
-    return false;
+    return 'privacy select empty';
   }
 
   if (app.dom.mePageSelect.children[0].value == 2 &&
       app.dom.ownPageSelect.children[0].value == '') {
-    setUpError('ownPage select empty');
-    return false;
+    return 'ownPage select empty';
   }
 
   if (app.dom.gameSelect.children[0].value == '') {
-    setUpError('game select empty');
-    return false;
+    return 'game select empty';
   }
-  return true;
+  return '';
 }
 
 
