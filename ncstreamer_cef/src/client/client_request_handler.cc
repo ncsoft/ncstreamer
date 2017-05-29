@@ -6,6 +6,8 @@
 #include "ncstreamer_cef/src/client/client_request_handler.h"
 
 #include <cassert>
+#include <codecvt>
+#include <locale>
 #include <regex>  // NOLINT
 #include <unordered_map>
 #include <utility>
@@ -226,7 +228,11 @@ void ClientRequestHandler::OnCommandExternalBrowserPopUp(
   }
 
   const std::string &uri = uri_i->second;
-  ::ShellExecuteA(NULL, "open", uri.c_str(), NULL, NULL, SW_SHOWNORMAL);
+
+  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+  ::ShellExecute(NULL, L"open", converter.from_bytes(uri).c_str(),
+      NULL, NULL, SW_SHOWNORMAL);
 }
 
 
