@@ -151,7 +151,9 @@ const remote = {
 
     const status = app.streaming.status;
     if (status != 'standby') {
-      cef.remoteStart.request(requestKey, 'not standby');
+      const errorType = (sourceTitle == app.streaming.start.sourceTitle) ?
+          'not standby: self' : 'not standby: other';
+      cef.remoteStart.request(requestKey, errorType);
       return;
     }
 
