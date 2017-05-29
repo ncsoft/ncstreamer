@@ -141,6 +141,7 @@ function updateStreamingStatus(status) {
       ncsoft.klass.remove(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
+      ncsoft.klass.remove(app.dom.providerPageLink, 'live');
       break;
     case 'setup':
       ncsoft.klass.remove(button, 'loading');
@@ -159,6 +160,7 @@ function updateStreamingStatus(status) {
       button.textContent = '%END_BROADCASTING%';
       button.disabled = false;
       app.dom.liveImage.style.display = 'block';
+      ncsoft.klass.add(app.dom.providerPageLink, 'live');
       break;
     case 'stopping':
       ncsoft.klass.add(button, 'loading');
@@ -265,6 +267,11 @@ function onLoginButtonClicked() {
 
 function onProviderPageLinkClicked() {
   console.info('click providerPageLink');
+
+  if (app.streaming.status != 'onAir') {
+    return;
+  }
+
   const link = (app.dom.mePageSelect.children[0].value == 2) ?
       app.service.user.pages[
           app.dom.ownPageSelect.children[0].value].link :
