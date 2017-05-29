@@ -353,7 +353,7 @@ void ClientRequestHandler::OnCommandStreamingStart(
         cmd,
         std::make_pair("error", error));
   }, [browser, cmd, source, mic_flag](const std::string &service_provider,
-                            const std::string &stream_url) {
+                                      const std::string &stream_url) {
     Obs::Get()->StartStreaming(
         source,
         service_provider,
