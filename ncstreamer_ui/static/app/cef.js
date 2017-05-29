@@ -169,12 +169,12 @@ const remote = {
 
     const status = app.streaming.status;
     if (status != 'onAir') {
-      cef.remoteStart.request(requestKey, 'not onAir');
+      cef.remoteStop.request(requestKey, 'not onAir');
       return;
     }
 
     if (sourceTitle != app.streaming.start.sourceTitle) {
-      cef.remoteStart.request(requestKey, 'title mismatch');
+      cef.remoteStop.request(requestKey, 'title mismatch');
       return;
     }
 
