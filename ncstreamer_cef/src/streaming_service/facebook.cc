@@ -101,19 +101,24 @@ void Facebook::LogOut(
   class LogoutCallback : public CefDeleteCookiesCallback {
    public:
     LogoutCallback(
+        Facebook *caller,
         const OnFailed &on_failed,
         const OnLoggedOut &on_logged_out)
         : CefDeleteCookiesCallback{},
+          caller_{caller},
           on_failed_{on_failed},
           on_logged_out_{on_logged_out} {}
 
     virtual ~LogoutCallback() {}
 
     void OnComplete(int /*num_deleted*/) override {
+      caller_->SetAccessToken("");
+      caller_->SetMeInfo({"", "", "", {}});
       on_logged_out_();
     }
 
    private:
+    Facebook *caller_;
     OnFailed on_failed_;
     OnLoggedOut on_logged_out_;
 
@@ -121,7 +126,7 @@ void Facebook::LogOut(
   };
 
   CefRefPtr<LogoutCallback> logout_callback{
-      new LogoutCallback{on_failed, on_logged_out}};
+      new LogoutCallback{this, on_failed, on_logged_out}};
   CefCookieManager::GetGlobalManager(NULL)->DeleteCookies(
       L"",
       L"",
