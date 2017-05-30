@@ -290,9 +290,14 @@ void Facebook::OnLoginSuccess(
 
 std::string Facebook::GetPageAccessToken(
     const std::string &page_id) const {
+  std::string page_access_token{};
+
   auto i = me_accounts_.find(page_id);
-  return (i != me_accounts_.end()) ?
-      i->second.access_token() : "";
+  if (i != me_accounts_.end()) {
+    page_access_token = i->second.access_token();
+  }
+
+  return page_access_token;
 }
 
 
