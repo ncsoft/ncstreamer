@@ -30,10 +30,10 @@ namespace ncstreamer {
 Facebook::Facebook()
     : login_client_{},
       http_request_service_{},
+      access_token_mutex_{},
       access_token_{},
-      me_id_{},
-      me_name_{},
-      me_accounts_{} {
+      me_info_mutex_{},
+      me_info_{} {
 }
 
 
@@ -101,19 +101,24 @@ void Facebook::LogOut(
   class LogoutCallback : public CefDeleteCookiesCallback {
    public:
     LogoutCallback(
+        Facebook *caller,
         const OnFailed &on_failed,
         const OnLoggedOut &on_logged_out)
         : CefDeleteCookiesCallback{},
+          caller_{caller},
           on_failed_{on_failed},
           on_logged_out_{on_logged_out} {}
 
     virtual ~LogoutCallback() {}
 
     void OnComplete(int /*num_deleted*/) override {
+      caller_->SetAccessToken("");
+      caller_->SetMeInfo({"", "", "", {}});
       on_logged_out_();
     }
 
    private:
+    Facebook *caller_;
     OnFailed on_failed_;
     OnLoggedOut on_logged_out_;
 
@@ -121,7 +126,7 @@ void Facebook::LogOut(
   };
 
   CefRefPtr<LogoutCallback> logout_callback{
-      new LogoutCallback{on_failed, on_logged_out}};
+      new LogoutCallback{this, on_failed, on_logged_out}};
   CefCookieManager::GetGlobalManager(NULL)->DeleteCookies(
       L"",
       L"",
@@ -140,7 +145,7 @@ void Facebook::PostLiveVideo(
       user_page_id)};
 
   const std::string &access_token = (user_page_id == "me") ?
-      access_token_ : GetPageAccessToken(user_page_id);
+      GetAccessToken() : GetPageAccessToken(user_page_id);
   if (access_token.empty() == true) {
     std::stringstream msg;
     msg << "invalid user page: " << user_page_id;
@@ -209,7 +214,7 @@ void Facebook::GetMe(
     const OnFailed &on_failed,
     const OnMeGotten &on_me_gotten) {
   Uri me_uri{FacebookApi::Graph::Me::BuildUri(
-      access_token_,
+      GetAccessToken(),
       {"id",
        "name",
        "link",
@@ -259,38 +264,68 @@ void Facebook::OnLoginSuccess(
     const std::string &access_token,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
-  access_token_ = access_token;
+  SetAccessToken(access_token);
 
   GetMe(on_failed, [this, on_logged_in](
       const std::string &me_id,
       const std::string &me_name,
       const std::string &me_link,
       const std::vector<UserPage> &me_accounts) {
-    me_id_ = me_id;
-    me_name_ = me_name;
-    me_link_ = me_link;
+    AccountMap me_accounts_as_map{};
     for (const auto &account : me_accounts) {
-      me_accounts_.emplace(account.id(), account);
+      me_accounts_as_map.emplace(account.id(), account);
     }
 
-    OutputDebugStringA((me_id_ + "/id\r\n").c_str());
-    OutputDebugStringA((me_name_ + "/name\r\n").c_str());
-    OutputDebugStringA((me_link_ + "/link\r\n").c_str());
+    SetMeInfo({
+        me_id, me_name, me_link, me_accounts_as_map});
+
+    OutputDebugStringA((me_id + "/id\r\n").c_str());
+    OutputDebugStringA((me_name + "/name\r\n").c_str());
+    OutputDebugStringA((me_link + "/link\r\n").c_str());
     OutputDebugStringA(
-        (std::to_string(me_accounts_.size()) + "/accounts\r\n").c_str());
+        (std::to_string(me_accounts.size()) + "/accounts\r\n").c_str());
 
     on_logged_in(me_name, me_link, me_accounts);
   });
 }
 
 
-const std::string &Facebook::GetPageAccessToken(
-    const std::string &page_id) const {
-  static const std::string kEmptyAccessToken{""};
+std::string Facebook::GetAccessToken() const {
+  std::string access_token{};
+  {
+    std::lock_guard<std::mutex> lock{access_token_mutex_};
+    access_token = access_token_;
+  }
+  return access_token;
+}
 
-  auto i = me_accounts_.find(page_id);
-  return (i != me_accounts_.end()) ?
-      i->second.access_token() : kEmptyAccessToken;
+
+std::string Facebook::GetPageAccessToken(const std::string &page_id) const {
+  std::string page_access_token{};
+
+  {
+    std::lock_guard<std::mutex> lock{me_info_mutex_};
+
+    const auto &me_accounts = std::get<3>(me_info_);;
+    auto i = me_accounts.find(page_id);
+    if (i != me_accounts.end()) {
+      page_access_token = i->second.access_token();
+    }
+  }
+
+  return page_access_token;
+}
+
+
+void Facebook::SetAccessToken(const std::string &access_token) {
+  std::lock_guard<std::mutex> lock{access_token_mutex_};
+  access_token_ = access_token;
+}
+
+
+void Facebook::SetMeInfo(const MeInfo &me_info) {
+  std::lock_guard<std::mutex> lock{me_info_mutex_};
+  me_info_ = me_info;
 }
 
 

@@ -7,7 +7,9 @@
 #define NCSTREAMER_CEF_SRC_STREAMING_SERVICE_FACEBOOK_H_
 
 
+#include <mutex>  // NOLINT
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -49,6 +51,12 @@ class Facebook : public StreamingServiceProvider {
   using AccountMap =
       std::unordered_map<std::string /*id*/, UserPage>;
 
+  using MeInfo = std::tuple<
+      std::string /*me_id*/,
+      std::string /*me_name*/,
+      std::string /*me_link*/,
+      AccountMap /*me_accounts*/>;
+
   using OnMeGotten = std::function<void(
       const std::string &me_id,
       const std::string &me_name,
@@ -69,17 +77,22 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 
-  const std::string &GetPageAccessToken(
-      const std::string &page_id) const;
+  std::string GetAccessToken() const;
+  std::string GetPageAccessToken(const std::string &page_id) const;
+
+  void SetAccessToken(const std::string &access_token);
+  void SetMeInfo(const MeInfo &me_info);
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
 
+  // TODO(khpark): refactoring this by AccessToken class.
+  mutable std::mutex access_token_mutex_;
   std::string access_token_;
-  std::string me_id_;
-  std::string me_name_;
-  std::string me_link_;
-  AccountMap me_accounts_;
+
+  // TODO(khpark): refactoring this by MeInfo class.
+  mutable std::mutex me_info_mutex_;
+  MeInfo me_info_;
 };
 
 
