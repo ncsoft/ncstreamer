@@ -283,8 +283,7 @@ void Facebook::OnLoginSuccess(
 }
 
 
-std::string Facebook::GetPageAccessToken(
-    const std::string &page_id) const {
+std::string Facebook::GetPageAccessToken(const std::string &page_id) const {
   std::string page_access_token{};
 
   const auto &me_accounts = std::get<3>(me_info_);;
