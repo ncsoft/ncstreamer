@@ -23,7 +23,8 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       sources_{},
       locale_{},
       ui_uri_{},
-      remote_port_{0} {
+      remote_port_{0},
+      designated_user_{} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
   cef_cmd_line->InitFromString(cmd_line);
@@ -67,6 +68,8 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
   } catch (...) {
     remote_port_ = 9002;
   }
+
+  designated_user_ = cef_cmd_line->GetSwitchValue(L"designated-user");
 }
 
 
