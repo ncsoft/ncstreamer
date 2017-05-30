@@ -185,6 +185,11 @@ function setUp(args) {
 }
 
 
+function setProviderUserName(userName) {
+  app.dom.providerUserName.textContent = userName;
+}
+
+
 function getCurrentUserPage() {
   return (app.dom.mePageSelect.children[0].value == 2) ?
       app.dom.ownPageSelect.children[0].value : 'me';
@@ -560,7 +565,7 @@ cef.serviceProviderLogIn.onResponse = function(
   }
   app.dom.minimizeButton.style.display = 'inline';
 
-  app.dom.providerUserName.textContent = userName;
+  setProviderUserName(userName);
 
   const ownPageSelect = app.dom.ownPageSelect;
   const display = ownPageSelect.children[0];
@@ -616,7 +621,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
   app.dom.settingButton.style.display = 'none';
   app.dom.minimizeButton.style.display = 'none';
 
-  app.dom.providerUserName.textContent = '';
+  setProviderUserName('');
 
   const ownPages = app.dom.ownPageSelect.children[1];
   while (ownPages.firstChild) {
