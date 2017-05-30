@@ -144,9 +144,16 @@ const remote = {
   onStreamingStartRequest: function(requestKey, args) {
     const sourceTitle = args.sourceTitle;
 
+    if (!app.dom.providerUserName.textContent) {
+      cef.remoteStart.request(requestKey, 'no user');
+      return;
+    }
+
     const status = app.streaming.status;
     if (status != 'standby') {
-      cef.remoteStart.request(requestKey, 'not standby');
+      const errorType = (sourceTitle == app.streaming.start.sourceTitle) ?
+          'not standby: self' : 'not standby: other';
+      cef.remoteStart.request(requestKey, errorType);
       return;
     }
 
@@ -156,9 +163,9 @@ const remote = {
       return;
     }
 
-    const requested = submitControl();
-    if (!requested) {
-      cef.remoteStart.request(requestKey, 'no page');
+    const errorType = submitControl();
+    if (errorType) {
+      cef.remoteStart.request(requestKey, errorType);
       return;
     }
 
@@ -169,18 +176,18 @@ const remote = {
 
     const status = app.streaming.status;
     if (status != 'onAir') {
-      cef.remoteStart.request(requestKey, 'not onAir');
+      cef.remoteStop.request(requestKey, 'not onAir');
       return;
     }
 
     if (sourceTitle != app.streaming.start.sourceTitle) {
-      cef.remoteStart.request(requestKey, 'title mismatch');
+      cef.remoteStop.request(requestKey, 'title mismatch');
       return;
     }
 
-    const requested = submitControl();
-    if (!requested) {
-      // assert false
+    const errorType = submitControl();
+    if (errorType) {
+      cef.remoteStop.request(requestKey, errorType);
       return;
     }
 
@@ -199,7 +206,6 @@ const remote = {
       cef.remoteQualityUpdate.request(requestKey, 'unknown quality');
       return;
     }
-
 
     const requested = updateQualitySelect();
     if (!requested) {

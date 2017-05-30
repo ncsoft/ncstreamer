@@ -374,8 +374,10 @@ function submitControl() {
   }
   return ({
     'standby': function() {
-      if (!checkSelectValueValidation()) {
-        return false;
+      const errorType = checkSelectValueValidation();
+      if (errorType) {
+        setUpError(errorType);
+        return errorType;
       }
 
       const source = app.dom.gameSelect.children[0].value;
@@ -383,26 +385,24 @@ function submitControl() {
       const privacy = app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
       const mic = app.dom.micCheckbox.checked;
-      if (source == '' || userPage == '' || privacy == '')
-        return false;
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
       app.streaming.start.sourceTitle =
           ncsoft.select.getText(app.dom.gameSelect);
       updateStreamingStatus('starting');
-      return true;
+      return /*no error*/ '';
     },
     'starting': function() {
-      return true;
+      return /*no error*/ '';
     },
     'onAir': function() {
       cef.streamingStop.request();
       updateStreamingStatus('stopping');
-      return true;
+      return /*no error*/ '';
     },
     'stopping': function() {
-      return true;
+      return /*no error*/ '';
     },
   })[app.streaming.status]();
 }
@@ -512,27 +512,23 @@ function showErrorText() {
 function checkSelectValueValidation() {
   const error = app.dom.errorText;
   if (app.dom.mePageSelect.children[0].value == '') {
-    setUpError('mePage select empty');
-    return false;
+    return 'mePage select empty';
   }
 
   if (app.dom.mePageSelect.children[0].value == 1 &&
       app.dom.privacySelect.children[0].value == '') {
-    setUpError('privacy select empty');
-    return false;
+    return 'privacy select empty';
   }
 
   if (app.dom.mePageSelect.children[0].value == 2 &&
       app.dom.ownPageSelect.children[0].value == '') {
-    setUpError('ownPage select empty');
-    return false;
+    return 'ownPage select empty';
   }
 
   if (app.dom.gameSelect.children[0].value == '') {
-    setUpError('game select empty');
-    return false;
+    return 'game select empty';
   }
-  return true;
+  return '';
 }
 
 
