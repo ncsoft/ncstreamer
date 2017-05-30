@@ -288,13 +288,11 @@ void Facebook::OnLoginSuccess(
 }
 
 
-const std::string &Facebook::GetPageAccessToken(
+std::string Facebook::GetPageAccessToken(
     const std::string &page_id) const {
-  static const std::string kEmptyAccessToken{""};
-
   auto i = me_accounts_.find(page_id);
   return (i != me_accounts_.end()) ?
-      i->second.access_token() : kEmptyAccessToken;
+      i->second.access_token() : "";
 }
 
 
