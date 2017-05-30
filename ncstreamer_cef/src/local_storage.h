@@ -21,9 +21,11 @@ class LocalStorage {
 
   std::string GetUserPage() const;
   std::string GetPrivacy() const;
+  std::string GetDesignatedUser() const;
 
   void SetUserPage(const std::string &user_page);
   void SetPrivacy(const std::string &privacy);
+  void SetDesignatedUser(const std::string &designated_user);
 
  private:
   explicit LocalStorage(const std::wstring &storage_path);
@@ -41,6 +43,7 @@ class LocalStorage {
 
   static const char *kUserPage;
   static const char *kPrivacy;
+  static const char *kDesignatedUser;
 
   static LocalStorage *static_instance;
 

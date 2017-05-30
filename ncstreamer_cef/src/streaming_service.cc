@@ -108,6 +108,17 @@ void StreamingService::PostLiveVideo(
 }
 
 
+void StreamingService::LogOutAll() {
+  for (const auto &elem : service_providers_) {
+    auto service_provider = elem.second;
+    service_provider->LogOut([](
+        const std::string &/*fail*/) {
+    }, []() {
+    });
+  }
+}
+
+
 std::string StreamingService::FailMessage::ToUnknownServiceProvider(
     const std::string &service_provider_id) {
   std::stringstream msg;

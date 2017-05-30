@@ -25,6 +25,7 @@ class CommandLine {
   const std::wstring &locale() const { return locale_; }
   const std::wstring &ui_uri() const { return ui_uri_; }
   uint16_t remote_port() const { return remote_port_; }
+  const std::wstring &designated_user() const { return designated_user_; }
 
  private:
   static std::vector<std::string>
@@ -38,6 +39,7 @@ class CommandLine {
   std::wstring locale_;
   std::wstring ui_uri_;
   uint16_t remote_port_;
+  std::wstring designated_user_;
 };
 }  // namespace ncstreamer
 
