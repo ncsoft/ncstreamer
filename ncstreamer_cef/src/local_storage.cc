@@ -41,6 +41,11 @@ std::string LocalStorage::GetPrivacy() const {
 }
 
 
+std::string LocalStorage::GetDesignatedUser() const {
+  return storage_.get(kDesignatedUser, "");
+}
+
+
 void LocalStorage::SetUserPage(const std::string &user_page) {
   SetValue(kUserPage, user_page);
 }
@@ -48,6 +53,11 @@ void LocalStorage::SetUserPage(const std::string &user_page) {
 
 void LocalStorage::SetPrivacy(const std::string &privacy) {
   SetValue(kPrivacy, privacy);
+}
+
+
+void LocalStorage::SetDesignatedUser(const std::string &designated_user) {
+  SetValue(kDesignatedUser, designated_user);
 }
 
 
@@ -102,6 +112,7 @@ void LocalStorage::SetValue<bool>(
 
 const char *LocalStorage::kUserPage{"userPage"};
 const char *LocalStorage::kPrivacy{"privacy"};
+const char *LocalStorage::kDesignatedUser{"designatedUser"};
 
 
 LocalStorage *LocalStorage::static_instance{nullptr};
