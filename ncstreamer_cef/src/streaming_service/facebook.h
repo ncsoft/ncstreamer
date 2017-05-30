@@ -8,6 +8,7 @@
 
 
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -49,6 +50,12 @@ class Facebook : public StreamingServiceProvider {
   using AccountMap =
       std::unordered_map<std::string /*id*/, UserPage>;
 
+  using MeInfo = std::tuple<
+      std::string /*me_id*/,
+      std::string /*me_name*/,
+      std::string /*me_link*/,
+      AccountMap /*me_accounts*/>;
+
   using OnMeGotten = std::function<void(
       const std::string &me_id,
       const std::string &me_name,
@@ -76,10 +83,7 @@ class Facebook : public StreamingServiceProvider {
   HttpRequestService http_request_service_;
 
   std::string access_token_;
-  std::string me_id_;
-  std::string me_name_;
-  std::string me_link_;
-  AccountMap me_accounts_;
+  MeInfo me_info_;
 };
 
 

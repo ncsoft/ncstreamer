@@ -31,10 +31,7 @@ Facebook::Facebook()
     : login_client_{},
       http_request_service_{},
       access_token_{},
-      me_id_{},
-      me_name_{},
-      me_link_{},
-      me_accounts_{} {
+      me_info_{} {
 }
 
 
@@ -272,10 +269,8 @@ void Facebook::OnLoginSuccess(
       me_accounts_as_map.emplace(account.id(), account);
     }
 
-    me_id_ = me_id;
-    me_name_ = me_name;
-    me_link_ = me_link;
-    me_accounts_ = me_accounts_as_map;
+    me_info_ = std::make_tuple(
+        me_id, me_name, me_link, me_accounts_as_map);
 
     OutputDebugStringA((me_id + "/id\r\n").c_str());
     OutputDebugStringA((me_name + "/name\r\n").c_str());
@@ -292,7 +287,7 @@ std::string Facebook::GetPageAccessToken(
     const std::string &page_id) const {
   std::string page_access_token{};
 
-  const auto &me_accounts = me_accounts_;
+  const auto &me_accounts = std::get<3>(me_info_);;
   auto i = me_accounts.find(page_id);
   if (i != me_accounts.end()) {
     page_access_token = i->second.access_token();
