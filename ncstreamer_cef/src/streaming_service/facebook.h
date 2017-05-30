@@ -80,6 +80,7 @@ class Facebook : public StreamingServiceProvider {
   std::string GetPageAccessToken(const std::string &page_id) const;
 
   void SetAccessToken(const std::string &access_token);
+  void SetMeInfo(const MeInfo &me_info);
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
