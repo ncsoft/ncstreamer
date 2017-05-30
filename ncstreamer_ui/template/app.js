@@ -241,6 +241,10 @@ function updateStreamingSources(obj) {
     display.value = contents.firstChild.getAttribute('data-value');
     display.innerHTML = contents.firstChild.firstChild.textContent +
                         '<span class="caret"></span>';
+
+    if (app.errorType == 'game select empty') {
+      app.dom.errorText.style.display = 'none';
+    }
   }
 }
 
@@ -378,6 +382,8 @@ function submitControl() {
       if (errorType) {
         setUpError(errorType);
         return errorType;
+      } else {
+        app.dom.errorText.style.display = 'none';
       }
 
       const source = app.dom.gameSelect.children[0].value;
