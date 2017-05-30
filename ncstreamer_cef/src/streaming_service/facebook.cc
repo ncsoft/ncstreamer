@@ -138,7 +138,7 @@ void Facebook::PostLiveVideo(
       user_page_id)};
 
   const std::string &access_token = (user_page_id == "me") ?
-      access_token_ : GetPageAccessToken(user_page_id);
+      GetAccessToken() : GetPageAccessToken(user_page_id);
   if (access_token.empty() == true) {
     std::stringstream msg;
     msg << "invalid user page: " << user_page_id;
@@ -207,7 +207,7 @@ void Facebook::GetMe(
     const OnFailed &on_failed,
     const OnMeGotten &on_me_gotten) {
   Uri me_uri{FacebookApi::Graph::Me::BuildUri(
-      access_token_,
+      GetAccessToken(),
       {"id",
        "name",
        "link",
@@ -257,7 +257,7 @@ void Facebook::OnLoginSuccess(
     const std::string &access_token,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
-  access_token_ = access_token;
+  SetAccessToken(access_token);
 
   GetMe(on_failed, [this, on_logged_in](
       const std::string &me_id,
@@ -283,6 +283,13 @@ void Facebook::OnLoginSuccess(
 }
 
 
+std::string Facebook::GetAccessToken() const {
+  std::string access_token{};
+  access_token = access_token_;
+  return access_token;
+}
+
+
 std::string Facebook::GetPageAccessToken(const std::string &page_id) const {
   std::string page_access_token{};
 
@@ -293,6 +300,11 @@ std::string Facebook::GetPageAccessToken(const std::string &page_id) const {
   }
 
   return page_access_token;
+}
+
+
+void Facebook::SetAccessToken(const std::string &access_token) {
+  access_token_ = access_token;
 }
 
 

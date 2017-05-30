@@ -76,7 +76,10 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 
+  std::string GetAccessToken() const;
   std::string GetPageAccessToken(const std::string &page_id) const;
+
+  void SetAccessToken(const std::string &access_token);
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
