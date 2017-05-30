@@ -33,6 +33,7 @@ Facebook::Facebook()
       access_token_{},
       me_id_{},
       me_name_{},
+      me_link_{},
       me_accounts_{} {
 }
 
