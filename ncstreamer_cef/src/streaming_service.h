@@ -50,6 +50,8 @@ class StreamingService {
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted);
 
+  void LogOutAll();
+
  private:
   class FailMessage {
    public:

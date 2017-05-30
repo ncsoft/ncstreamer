@@ -11,6 +11,7 @@
 
 #include "ncstreamer_cef/src/browser_app.h"
 #include "ncstreamer_cef/src/command_line.h"
+#include "ncstreamer_cef/src/designated_user.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
 #include "ncstreamer_cef/src/lib/windows_types.h"
 #include "ncstreamer_cef/src/local_storage.h"
@@ -80,6 +81,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
   ncstreamer::RemoteServer::SetUp(
       browser_app,
       cmd_line.remote_port());
+
+  ncstreamer::DesignatedUser::SetUp(cmd_line.designated_user());
 
   ::CefRunMessageLoop();
 
