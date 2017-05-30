@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <functional>
+#include <sstream>
 #include <unordered_map>
 
 #include "boost/property_tree/json_parser.hpp"
@@ -52,7 +53,7 @@ void RemoteServer::RespondStreamingStatus(
     const std::string &quality) {
   ws::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
-    // TODO(khpark): log warning.
+    LogWarning("RespondStreamingStatus: !connection.lock()");
     return;
   }
 
@@ -71,7 +72,7 @@ void RemoteServer::RespondStreamingStatus(
   ws::lib::error_code ec;
   server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
   if (ec) {
-    // TODO(khpark): log error.
+    LogError(ec.message());
     return;
   }
 }
@@ -82,7 +83,7 @@ void RemoteServer::RespondStreamingStart(
     const std::string &error) {
   ws::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
-    // TODO(khpark): log warning.
+    LogWarning("RespondStreamingStart: !connection.lock()");
     return;
   }
 
@@ -98,7 +99,7 @@ void RemoteServer::RespondStreamingStart(
   ws::lib::error_code ec;
   server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
   if (ec) {
-    // TODO(khpark): log error.
+    LogError(ec.message());
     return;
   }
 }
@@ -109,7 +110,7 @@ void RemoteServer::RespondStreamingStop(
     const std::string &error) {
   ws::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
-    // TODO(khpark): log warning.
+    LogWarning("RespondStreamingStop: !connection.lock()");
     return;
   }
 
@@ -125,7 +126,7 @@ void RemoteServer::RespondStreamingStop(
   ws::lib::error_code ec;
   server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
   if (ec) {
-    // TODO(khpark): log error.
+    LogError(ec.message());
     return;
   }
 }
@@ -136,7 +137,7 @@ void RemoteServer::RespondSettingsQualityUpdate(
     const std::string &error) {
   ws::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
-    // TODO(khpark): log warning.
+    LogWarning("RespondSettingsQualityUpdate: !connection.lock()");
     return;
   }
 
@@ -152,7 +153,7 @@ void RemoteServer::RespondSettingsQualityUpdate(
   ws::lib::error_code ec;
   server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
   if (ec) {
-    // TODO(khpark): log error.
+    LogError(ec.message());
     return;
   }
 }
@@ -218,8 +219,7 @@ RemoteServer::RemoteServer(
   ws::lib::error_code ec;
   server_.init_asio(&io_service_, ec);
   if (ec) {
-    // TODO(khpark): log error.
-    assert(false);
+    LogError(ec.message());
     return;
   }
 
@@ -256,15 +256,17 @@ RemoteServer::~RemoteServer() {
 
 
 void RemoteServer::OnFail(ws::connection_hdl connection) {
-  // TBD: log error.
+  LogError("OnFail");
 }
 
 
 void RemoteServer::OnOpen(ws::connection_hdl connection) {
+  LogInfo("OnOpen");
 }
 
 
 void RemoteServer::OnClose(ws::connection_hdl connection) {
+  LogInfo("OnClose");
 }
 
 
@@ -305,8 +307,9 @@ void RemoteServer::OnMessage(ws::connection_hdl connection,
 
   auto i = kMessageHandlers.find(msg_type);
   if (i == kMessageHandlers.end()) {
-    // TBD
-    assert(false);
+    std::stringstream err;
+    err << "unknown message type: " << static_cast<int>(msg_type);
+    LogError(err.str());
     return;
   }
   i->second(connection, msg_tree);
@@ -330,8 +333,7 @@ void RemoteServer::OnStreamingStartRequest(
     const boost::property_tree::ptree &tree) {
   const std::string &title = tree.get("title", "");
   if (title.empty()) {
-    // TBD
-    assert(false);
+    LogError("OnStreamingStartRequest: title empty.");
     return;
   }
 
@@ -353,8 +355,7 @@ void RemoteServer::OnStreamingStopRequest(
     const boost::property_tree::ptree &tree) {
   const std::string &title = tree.get("title", "");
   if (title.empty()) {
-    // TBD
-    assert(false);
+    LogError("OnStreamingStopRequest: title empty.");
     return;
   }
 
@@ -376,8 +377,7 @@ void RemoteServer::OnSettingsQualityUpdateRequest(
     const boost::property_tree::ptree &tree) {
   const std::string &quality = tree.get("quality", "");
   if (quality.empty()) {
-    // TBD
-    assert(false);
+    LogError("OnSettingsQualityUpdateRequest: quality empty.");
     return;
   }
 
@@ -399,6 +399,21 @@ void RemoteServer::OnNcStreamerExitRequest(
     const boost::property_tree::ptree &/*tree*/) {
   HWND wnd = browser_app_->GetMainBrowser()->GetHost()->GetWindowHandle();
   ::PostMessage(wnd, WM_CLOSE, NULL, NULL);
+}
+
+
+void RemoteServer::LogError(const std::string &err_msg) {
+  server_.get_elog().write(ws::log::elevel::rerror, err_msg);
+}
+
+
+void RemoteServer::LogWarning(const std::string &warn_msg) {
+  server_.get_elog().write(ws::log::elevel::warn, warn_msg);
+}
+
+
+void RemoteServer::LogInfo(const std::string &info_msg) {
+  server_.get_elog().write(ws::log::elevel::info, info_msg);
 }
 
 

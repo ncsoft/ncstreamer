@@ -103,6 +103,10 @@ class RemoteServer {
       const ws::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void LogError(const std::string &err_msg);
+  void LogWarning(const std::string &warn_msg);
+  void LogInfo(const std::string &info_msg);
+
   static RemoteServer *static_instance;
 
   const BrowserApp *const browser_app_;
