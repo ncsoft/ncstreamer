@@ -30,7 +30,9 @@ namespace ncstreamer {
 Facebook::Facebook()
     : login_client_{},
       http_request_service_{},
+      access_token_mutex_{},
       access_token_{},
+      me_info_mutex_{},
       me_info_{} {
 }
 
@@ -285,7 +287,10 @@ void Facebook::OnLoginSuccess(
 
 std::string Facebook::GetAccessToken() const {
   std::string access_token{};
+  {
+    std::lock_guard<std::mutex> lock{access_token_mutex_};
   access_token = access_token_;
+  }
   return access_token;
 }
 
@@ -293,10 +298,14 @@ std::string Facebook::GetAccessToken() const {
 std::string Facebook::GetPageAccessToken(const std::string &page_id) const {
   std::string page_access_token{};
 
+  {
+    std::lock_guard<std::mutex> lock{me_info_mutex_};
+
   const auto &me_accounts = std::get<3>(me_info_);;
   auto i = me_accounts.find(page_id);
   if (i != me_accounts.end()) {
     page_access_token = i->second.access_token();
+  }
   }
 
   return page_access_token;
@@ -304,11 +313,13 @@ std::string Facebook::GetPageAccessToken(const std::string &page_id) const {
 
 
 void Facebook::SetAccessToken(const std::string &access_token) {
+  std::lock_guard<std::mutex> lock{access_token_mutex_};
   access_token_ = access_token;
 }
 
 
 void Facebook::SetMeInfo(const MeInfo &me_info) {
+  std::lock_guard<std::mutex> lock{me_info_mutex_};
   me_info_ = me_info;
 }
 

@@ -7,6 +7,7 @@
 #define NCSTREAMER_CEF_SRC_STREAMING_SERVICE_FACEBOOK_H_
 
 
+#include <mutex>  // NOLINT
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -85,7 +86,10 @@ class Facebook : public StreamingServiceProvider {
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
 
+  mutable std::mutex access_token_mutex_;
   std::string access_token_;
+
+  mutable std::mutex me_info_mutex_;
   MeInfo me_info_;
 };
 
