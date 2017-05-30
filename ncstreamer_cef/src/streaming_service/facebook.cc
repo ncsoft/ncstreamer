@@ -292,8 +292,9 @@ std::string Facebook::GetPageAccessToken(
     const std::string &page_id) const {
   std::string page_access_token{};
 
-  auto i = me_accounts_.find(page_id);
-  if (i != me_accounts_.end()) {
+  const auto &me_accounts = me_accounts_;
+  auto i = me_accounts.find(page_id);
+  if (i != me_accounts.end()) {
     page_access_token = i->second.access_token();
   }
 
