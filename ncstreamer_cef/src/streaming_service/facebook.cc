@@ -267,12 +267,15 @@ void Facebook::OnLoginSuccess(
       const std::string &me_name,
       const std::string &me_link,
       const std::vector<UserPage> &me_accounts) {
+    AccountMap me_accounts_as_map{};
+    for (const auto &account : me_accounts) {
+      me_accounts_as_map.emplace(account.id(), account);
+    }
+
     me_id_ = me_id;
     me_name_ = me_name;
     me_link_ = me_link;
-    for (const auto &account : me_accounts) {
-      me_accounts_.emplace(account.id(), account);
-    }
+    me_accounts_ = me_accounts_as_map;
 
     OutputDebugStringA((me_id + "/id\r\n").c_str());
     OutputDebugStringA((me_name + "/name\r\n").c_str());
