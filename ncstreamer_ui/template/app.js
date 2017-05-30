@@ -382,6 +382,8 @@ function submitControl() {
       if (errorType) {
         setUpError(errorType);
         return errorType;
+      } else {
+        app.dom.errorText.style.display = 'none';
       }
 
       const source = app.dom.gameSelect.children[0].value;
