@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "boost/algorithm/string/replace.hpp"
 #include "boost/filesystem.hpp"
 #include "boost/program_options.hpp"
 #include "boost/property_tree/json_parser.hpp"
@@ -84,10 +85,8 @@ int main(int argc, char *argv[]) {
           key_map.emplace(matched.str(), matched[1].str());
         }
         for (const auto &key : key_map) {
-          const std::regex key_pattern{key.first};
           const std::string &text = texts.get<std::string>(key.second);
-          output_contents =
-              std::regex_replace(output_contents, key_pattern, text);
+          boost::replace_all(output_contents, key.first, text);
         }
 
         // create file
