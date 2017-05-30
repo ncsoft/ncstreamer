@@ -273,11 +273,11 @@ void Facebook::OnLoginSuccess(
       me_accounts_.emplace(account.id(), account);
     }
 
-    OutputDebugStringA((me_id_ + "/id\r\n").c_str());
-    OutputDebugStringA((me_name_ + "/name\r\n").c_str());
-    OutputDebugStringA((me_link_ + "/link\r\n").c_str());
+    OutputDebugStringA((me_id + "/id\r\n").c_str());
+    OutputDebugStringA((me_name + "/name\r\n").c_str());
+    OutputDebugStringA((me_link + "/link\r\n").c_str());
     OutputDebugStringA(
-        (std::to_string(me_accounts_.size()) + "/accounts\r\n").c_str());
+        (std::to_string(me_accounts.size()) + "/accounts\r\n").c_str());
 
     on_logged_in(me_name, me_link, me_accounts);
   });
