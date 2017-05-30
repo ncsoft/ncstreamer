@@ -86,9 +86,11 @@ class Facebook : public StreamingServiceProvider {
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
 
+  // TODO(khpark): refactoring this by AccessToken class.
   mutable std::mutex access_token_mutex_;
   std::string access_token_;
 
+  // TODO(khpark): refactoring this by MeInfo class.
   mutable std::mutex me_info_mutex_;
   MeInfo me_info_;
 };
