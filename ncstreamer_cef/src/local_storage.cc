@@ -74,6 +74,11 @@ LocalStorage::~LocalStorage() {
 boost::property_tree::ptree LocalStorage::LoadFromFile(
     const std::wstring &file_path) {
   boost::property_tree::ptree tree;
+
+  if (file_path.empty()) {
+    return tree;
+  }
+
   std::ifstream fs{file_path};
   try {
     boost::property_tree::json_parser::read_json(fs, tree);
@@ -87,6 +92,9 @@ boost::property_tree::ptree LocalStorage::LoadFromFile(
 void LocalStorage::SaveToFile(
     const boost::property_tree::ptree &tree,
     const std::wstring &file_path) {
+  if (file_path.empty()) {
+    return;
+  }
   std::ofstream fs{file_path};
   boost::property_tree::write_json(fs, tree);
 }
