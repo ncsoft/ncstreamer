@@ -85,7 +85,19 @@ int main(int argc, char *argv[]) {
           key_map.emplace(matched.str(), matched[1].str());
         }
         for (const auto &key : key_map) {
-          const std::string &text = texts.get<std::string>(key.second);
+          std::string &text = texts.get<std::string>(key.second);
+          const std::string &extension = i->path().extension().string();
+          if (extension == ".js") {
+            static const std::unordered_map<std::string,
+                                            std::string> kEscapeChars{
+               {"\r", "\\r"},
+               {"\n", "\\n"},
+               {"'", "\\'"},
+               {"\"", "\\\""}};
+            for (auto escape : kEscapeChars) {
+              boost::replace_all(text, escape.first, escape.second);
+            }
+          }
           boost::replace_all(output_contents, key.first, text);
         }
 
