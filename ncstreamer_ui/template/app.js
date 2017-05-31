@@ -133,7 +133,7 @@ function toCamel(str) {
 
 
 function updateStreamingStatus(status) {
-  console.info({status: status});
+  console.info(JSON.stringify({status: status}));
 
   app.streaming.status = status;
   app.dom.cautionText.style.display = 'none';
@@ -456,7 +456,7 @@ function onQualitySelectChanged() {
 function updateQualitySelect() {
   const curValue = app.dom.qualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
-  console.info({ streamingQuality: curValue });
+  console.info(JSON.stringify({ streamingQuality: curValue }));
   cef.settingsVideoQualityUpdate.request(
       curQuality.resolution.width,
       curQuality.resolution.height,
