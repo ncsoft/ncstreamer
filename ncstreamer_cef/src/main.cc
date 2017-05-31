@@ -72,7 +72,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
 
-  auto storage_path = app_data_path / L"local_storage.json";
+  boost::filesystem::path storage_path{};
+  storage_path = app_data_path / L"local_storage.json";
 
   ncstreamer::LocalStorage::SetUp(storage_path.c_str());
   ncstreamer::WindowFrameRemover::SetUp();
