@@ -224,6 +224,8 @@ function updateStreamingSources(obj) {
   }
   const sources = obj.sources;
 
+  stopInvalidSource(sources);
+
   const gameSelect = app.dom.gameSelect;
   const display = gameSelect.children[0];
   const contents = gameSelect.children[1];
@@ -251,6 +253,21 @@ function updateStreamingSources(obj) {
       app.dom.errorText.style.display = 'none';
     }
   }
+}
+
+
+function stopInvalidSource(sources) {
+  if (app.streaming.status != 'onAir') {
+    return;
+  }
+
+  const currentSource = ncsoft.select.getValue(app.dom.gameSelect);
+  if (sources.includes(currentSource) == true) {
+    return;
+  }
+
+  console.info('stop invalid source: ' + currentSource);
+  app.dom.controlButton.click();
 }
 
 
