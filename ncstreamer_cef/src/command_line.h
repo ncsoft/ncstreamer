@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "include/cef_command_line.h"
+
 
 namespace ncstreamer {
 class CommandLine {
@@ -25,9 +27,15 @@ class CommandLine {
   const std::wstring &locale() const { return locale_; }
   const std::wstring &ui_uri() const { return ui_uri_; }
   uint16_t remote_port() const { return remote_port_; }
+  bool in_memory_local_storage() const { return in_memory_local_storage_; }
   const std::wstring &designated_user() const { return designated_user_; }
 
  private:
+  static bool ReadBool(
+      const CefRefPtr<CefCommandLine> &cmd_line,
+      const std::wstring &key,
+      const bool &default_value);
+
   static std::vector<std::string>
       ParseSourcesArgument(const std::wstring &arg);
 
@@ -39,6 +47,7 @@ class CommandLine {
   std::wstring locale_;
   std::wstring ui_uri_;
   uint16_t remote_port_;
+  bool in_memory_local_storage_;
   std::wstring designated_user_;
 };
 }  // namespace ncstreamer
