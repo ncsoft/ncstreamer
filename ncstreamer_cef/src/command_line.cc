@@ -23,6 +23,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       locale_{},
       ui_uri_{},
       remote_port_{0},
+      in_memory_local_storage_{false},
       designated_user_{} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
@@ -59,6 +60,9 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
   } catch (...) {
     remote_port_ = 9002;
   }
+
+  in_memory_local_storage_ =
+      ReadBool(cef_cmd_line, L"in-memory-local-storage", false);
 
   designated_user_ = cef_cmd_line->GetSwitchValue(L"designated-user");
 }
