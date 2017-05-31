@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "include/cef_command_line.h"
+
 
 namespace ncstreamer {
 class CommandLine {
@@ -28,6 +30,11 @@ class CommandLine {
   const std::wstring &designated_user() const { return designated_user_; }
 
  private:
+  static bool ReadBool(
+      const CefRefPtr<CefCommandLine> &cmd_line,
+      const std::wstring &key,
+      const bool &default_value);
+
   static std::vector<std::string>
       ParseSourcesArgument(const std::wstring &arg);
 

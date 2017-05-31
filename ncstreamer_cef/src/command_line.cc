@@ -11,7 +11,6 @@
 
 #include "boost/property_tree/json_parser.hpp"
 #include "boost/property_tree/ptree.hpp"
-#include "include/cef_command_line.h"
 
 
 namespace ncstreamer {
@@ -33,21 +32,13 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       cef_cmd_line->GetSwitchValue(L"type");
   is_renderer_ = (process_type == L"renderer");
 
-  static std::wstring kHidesSettings{L"hides-settings"};
-  if (cef_cmd_line->HasSwitch(kHidesSettings) == true) {
-    const std::wstring &hides_settings =
-        cef_cmd_line->GetSwitchValue(kHidesSettings);
-    hides_settings_ = (hides_settings == L"") ||
-                      (hides_settings == L"true");
-  }
+  hides_settings_ = ReadBool(cef_cmd_line, L"hides-settings", false);
 
   const std::wstring &video_quality =
       cef_cmd_line->GetSwitchValue(L"video-quality");
   video_quality_ = video_quality.empty() ? L"medium" : video_quality;
 
-  const std::wstring &shows_sources_all =
-      cef_cmd_line->GetSwitchValue(L"shows-sources-all");
-  shows_sources_all_ = (shows_sources_all != L"false");
+  shows_sources_all_ = ReadBool(cef_cmd_line, L"shows-sources-all", true);
 
   const std::wstring &sources_arg =
       cef_cmd_line->GetSwitchValue(L"sources");
@@ -74,6 +65,28 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
 
 
 CommandLine::~CommandLine() {
+}
+
+
+bool CommandLine::ReadBool(
+    const CefRefPtr<CefCommandLine> &cmd_line,
+    const std::wstring &key,
+    const bool &default_value) {
+  if (cmd_line->HasSwitch(key) == false) {
+    return default_value;
+  }
+
+  const std::wstring &value = cmd_line->GetSwitchValue(key);
+  if (value == L"" ||
+      value == L"true") {
+    return true;
+  }
+
+  if (value == L"false") {
+    return false;
+  }
+
+  return default_value;
 }
 
 
