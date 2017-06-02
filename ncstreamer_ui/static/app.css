@@ -95,3 +95,13 @@ div {
 #minimize-button {
   display: none;
 }
+
+
+#login-guide-notice._0 {
+  display: none;
+}
+
+
+#login-guide-notice._1 {
+  display: block;
+}

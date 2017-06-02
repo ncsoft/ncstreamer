@@ -44,8 +44,9 @@
     "NO": "No",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
+    "LOGIN_GUIDE_NOTICE1": "",
+    "LOGIN_GUIDE_NOTICE2": ""
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -92,6 +93,7 @@
     "NO": "아니요",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
     "LOGIN_GUIDE_NOTICE1": "PC방에서는",
     "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
   },
@@ -140,8 +142,9 @@
     "NO": "Nein",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
+    "LOGIN_GUIDE_NOTICE1": "",
+    "LOGIN_GUIDE_NOTICE2": ""
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -188,8 +191,9 @@
     "NO": "Non",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
+    "LOGIN_GUIDE_NOTICE1": "",
+    "LOGIN_GUIDE_NOTICE2": ""
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -236,8 +240,9 @@
     "NO": "No",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
+    "LOGIN_GUIDE_NOTICE1": "",
+    "LOGIN_GUIDE_NOTICE2": ""
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -284,8 +289,9 @@
     "NO": "No",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
+    "LOGIN_GUIDE_NOTICE1": "",
+    "LOGIN_GUIDE_NOTICE2": ""
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -332,8 +338,9 @@
     "NO": "Nie",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
+    "LOGIN_GUIDE_NOTICE1": "",
+    "LOGIN_GUIDE_NOTICE2": ""
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -380,8 +387,9 @@
     "NO": "Não",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
+    "LOGIN_GUIDE_NOTICE1": "",
+    "LOGIN_GUIDE_NOTICE2": ""
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -428,8 +436,9 @@
     "NO": "Hayır",
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
+    "LOGIN_GUIDE_NOTICE1": "",
+    "LOGIN_GUIDE_NOTICE2": ""
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",
@@ -476,6 +485,7 @@
     "NO": "否",
     "CLOSE_CHECK_MESSAGE1": "방關閉直播視訊時，遊戲直播也會一同關閉，",
     "CLOSE_CHECK_MESSAGE2": "要維持直播視訊服務嗎?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
     "LOGIN_GUIDE_NOTICE1": "在網咖裡",
     "LOGIN_GUIDE_NOTICE2": "為了保護您的個人資料將解除facebook帳號的連接"
   },
@@ -524,6 +534,7 @@
     "NO": "いいえ",
     "CLOSE_CHECK_MESSAGE1": "配信システムを終了すると配信も終了します。",
     "CLOSE_CHECK_MESSAGE2": "配信システムを終了しますか？",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
     "LOGIN_GUIDE_NOTICE1": "ネットカフェでは",
     "LOGIN_GUIDE_NOTICE2": "お客様の個人情報保護のためFacebookのアカウント連携を維持しません。"
   }
