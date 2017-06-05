@@ -45,9 +45,17 @@ div {
 }
 
 
-#provider-user-disconnect {
-  display: inline;
-  padding-right: 80px;
+#connect-info-button {
+  width: 16px;
+  height: 15px;
+  vertical-align: middle;
+  background: url("app/res/btn-connect-info.png") no-repeat;
+  background-position: 0 0;
+}
+
+
+#connect-info-button:hover {
+  background-position: -16px 0;
 }
 
 
@@ -88,6 +96,7 @@ div {
 }
 
 
+#connect-info-button,
 #setting-button,
 #minimize-button {
   display: none;
