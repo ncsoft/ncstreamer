@@ -913,6 +913,13 @@ body {
     margin: 0 auto
 }
 
+.nc-streamer-footer .msg.status-warning {
+    padding-top: 6px;
+    color: #fbd2cb;
+    line-height: normal;
+    background-color: #9a3726
+}
+
 .nc-streamer-footer .btn-start {
     color: #2f76ad;
     font-size: 16px;
