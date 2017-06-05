@@ -283,7 +283,7 @@ function onMinimizeButtonClicked() {
 
 
 function onCloseButtonClicked() {
-  console.info('click closeeButton');
+  console.info('click closeButton');
   if (app.streaming.status == 'onAir') {
     ncsoft.modal.show('#close-check-modal');
   } else {
