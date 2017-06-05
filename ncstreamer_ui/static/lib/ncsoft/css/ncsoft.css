@@ -327,7 +327,7 @@ button {
     display: inline-block;
     width: 67px;
     height: 15px;
-    background: url("img/icon-streaming-live.png") no-repeat;
+    background: url("../img/icon-streaming-live.png") no-repeat;
     -webkit-animation: pulse 1.5s infinite;
     animation: pulse 1.5s infinite
 }
@@ -397,7 +397,7 @@ textarea::-webkit-scrollbar-thumb {
     cursor: pointer;
     width: 9px;
     height: 9px;
-    background: url("img/btn-layer-close.png") no-repeat
+    background: url("../img/btn-layer-close.png") no-repeat
 }
 
 .nc-streamer-setting .nc-streamer-tooltip p {
@@ -497,7 +497,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-    background: url("img/checkbox.png") no-repeat 50% 50%
+    background: url("../img/checkbox.png") no-repeat 50% 50%
 }
 
 input[type="checkbox"]:checked+label {
@@ -558,7 +558,7 @@ body {
     width: 14px;
     height: 14px;
     vertical-align: middle;
-    background: url("img/btn-settings.png") no-repeat
+    background: url("../img/btn-settings.png") no-repeat
 }
 
 .nc-streamer-container .header .settings .btn-setting {
@@ -693,7 +693,7 @@ body {
     width: 42px;
     height: 42px;
     vertical-align: middle;
-    background: url("img/icon-chain.png") no-repeat 0 0;
+    background: url("../img/icon-chain.png") no-repeat 0 0;
     margin: 0 auto 15px auto
 }
 
@@ -733,7 +733,7 @@ body {
     width: 9px;
     height: 19px;
     vertical-align: middle;
-    background: url("img/icon-fb.png") no-repeat 0 0;
+    background: url("../img/icon-fb.png") no-repeat 0 0;
     display: inline-block;
     margin-right: 9px
 }
@@ -783,7 +783,7 @@ body {
     width: 19px;
     height: 19px;
     vertical-align: middle;
-    background: url("img/icon-fb2.png") no-repeat 0 0;
+    background: url("../img/icon-fb2.png") no-repeat 0 0;
     margin-right: 9px;
     vertical-align: bottom
 }
@@ -801,7 +801,7 @@ body {
     width: 11px;
     height: 9px;
     vertical-align: middle;
-    background: url("img/icon-open-off.png") no-repeat 0 0;
+    background: url("../img/icon-open-off.png") no-repeat 0 0;
     margin-left: 5px
 }
 
@@ -815,7 +815,7 @@ body {
     width: 11px;
     height: 9px;
     vertical-align: middle;
-    background: url("img/icon-open-on.png") no-repeat 0 0;
+    background: url("../img/icon-open-on.png") no-repeat 0 0;
     margin-left: 5px
 }
 
@@ -867,7 +867,7 @@ body {
     width: 14px;
     height: 17px;
     vertical-align: middle;
-    background: url("img/icon-webcam.png") no-repeat 0 0;
+    background: url("../img/icon-webcam.png") no-repeat 0 0;
     margin-right: 7px
 }
 
@@ -877,7 +877,7 @@ body {
     width: 14px;
     height: 17px;
     vertical-align: middle;
-    background: url("img/icon-mic.png") no-repeat 0 0;
+    background: url("../img/icon-mic.png") no-repeat 0 0;
     margin-right: 7px
 }
 
