@@ -266,7 +266,7 @@ function stopInvalidSource(sources) {
     return;
   }
 
-  const currentSource = ncsoft.select.getValue(app.dom.gameSelect);
+  const currentSource = app.streaming.start.source;
   if (sources.includes(currentSource) == true) {
     return;
   }
