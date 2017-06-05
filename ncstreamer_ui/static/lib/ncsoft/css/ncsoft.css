@@ -281,6 +281,12 @@ button {
     background-color: transparent
 }
 
+.nc-streamer-modal .connect-info:after {
+    content: '';
+    display: table;
+    clear: both
+}
+
 .nc-streamer-setting .nc-streamer-tooltip:before,
 .nc-streamer-footer .msg.status-live:before,
 .nc-streamer-footer .btn-start.loading:before {
@@ -562,11 +568,13 @@ body {
 }
 
 .nc-streamer-container .header .settings .btn-setting {
+    width: 16px;
+    height: 16px;
     background-position: 0 0
 }
 
 .nc-streamer-container .header .settings .btn-setting:hover {
-    background-position: -14px 0
+    background-position: -16px 0
 }
 
 .nc-streamer-container .header .settings .btn-minimum {
@@ -666,6 +674,54 @@ body {
     padding-top: 0;
     text-align: center;
     border-top: 0 none
+}
+
+.nc-streamer-modal .connect-info {
+    width: 100%;
+    padding: 10px 10px 0 10px
+}
+
+.nc-streamer-modal .connect-info .name {
+    float: left;
+    display: inline-block;
+    overflow: hidden;
+    width: 180px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    font-size: 14px;
+    color: #d8b17e
+}
+
+.nc-streamer-modal .connect-info .name.fb::before {
+    content: '';
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    vertical-align: middle;
+    background: url("../img/icon-fb2.png") no-repeat 0 0;
+    margin-right: 9px;
+    vertical-align: middle
+}
+
+.nc-streamer-modal .connect-info .btn {
+    float: right;
+    display: inline-block;
+    width: initial;
+    padding: initial;
+    font-size: 13px;
+    color: #61a3d9;
+    vertical-align: middle;
+    text-decoration: underline
+}
+
+.nc-streamer-modal .connect-info .btn:hover {
+    color: #ffffff
+}
+
+.nc-streamer-modal .connect-info .btn.disabled {
+    color: #595b5f;
+    opacity: 1
 }
 
 .nc-streamer-modal .msg {
