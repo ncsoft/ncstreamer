@@ -66,12 +66,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
   });
 
   [
+    'connect-info-button',
     'setting-button',
     'minimize-button',
     'close-button',
     'login-button',
     'provider-user-name',
-    'provider-user-disconnect',
+    'connect-info-user-name',
+    'connect-info-disconnect-button',
+    'connect-info-msg',
+    'connect-info-confirm-button',
     'provider-page-link',
     'me-page-select',
     'own-page-select',
@@ -84,12 +88,13 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'live-image',
     'control-button',
     'quality-select',
-    'settings-confirm-button',
     'modal-close-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
 
+  app.dom.connectInfoButton.addEventListener(
+      'click', onConnectInfoButtonClicked);
   app.dom.settingButton.addEventListener(
       'click', onSettingButtonClicked);
   app.dom.minimizeButton.addEventListener(
@@ -98,8 +103,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onCloseButtonClicked);
   app.dom.loginButton.addEventListener(
       'click', onLoginButtonClicked);
-  app.dom.providerUserDisconnect.addEventListener(
-      'click', onProviderUserDisconnectClicked);
+  app.dom.connectInfoDisconnectButton.addEventListener(
+      'click', onConnectInfoDisconnectButtonClicked);
   app.dom.providerPageLink.addEventListener(
       'click', onProviderPageLinkClicked);
   app.dom.mePageSelect.addEventListener(
@@ -187,6 +192,7 @@ function setUp(args) {
 
 function setProviderUserName(userName) {
   app.dom.providerUserName.textContent = userName;
+  app.dom.connectInfoUserName.textContent = userName;
 }
 
 
@@ -273,6 +279,13 @@ function stopInvalidSource(sources) {
 
   console.info('stop invalid source: ' + currentSource);
   app.dom.controlButton.click();
+}
+
+
+function onConnectInfoButtonClicked() {
+  console.info('click connectInfoButton');
+
+  app.dom.connectInfoMsg.textContent = '';
 }
 
 
@@ -441,14 +454,15 @@ function submitControl() {
 }
 
 
-function onProviderUserDisconnectClicked() {
-  console.info('click providerUserDisconnect');
+function onConnectInfoDisconnectButtonClicked() {
+  console.info('click connectInfoDisconnectButton');
 
   if (app.streaming.status != 'standby') {
-    setUpError('stop streaming first');
+    app.dom.connectInfoMsg.textContent = '%STOP_STREAMING_FIRST%';
     return;
   }
 
+  app.dom.connectInfoConfirmButton.click();
   cef.serviceProviderLogOut.request('Facebook Live');
 }
 
@@ -582,6 +596,8 @@ cef.serviceProviderLogIn.onResponse = function(
   for (const element of app.dom.mainPagePanel) {
     element.style.display = 'block';
   }
+
+  app.dom.connectInfoButton.style.display = 'inline';
   if (app.options.hidesSettings == false) {
     app.dom.settingButton.style.display = 'inline';
   }
@@ -640,6 +656,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
     element.style.display = 'none';
   }
 
+  app.dom.connectInfoButton.style.display = 'none';
   app.dom.settingButton.style.display = 'none';
   app.dom.minimizeButton.style.display = 'none';
 

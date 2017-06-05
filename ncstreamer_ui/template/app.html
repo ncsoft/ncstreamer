@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <title>NCStreaming</title>
 <link href="../static/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-<link href="../static/lib/ncsoft/ncsoft.css" rel="stylesheet">
+<link href="../static/lib/ncsoft/css/ncsoft.css" rel="stylesheet">
 <link href="../static/app.css" rel="stylesheet">
 
 <div class="nc-streamer-container">
@@ -10,6 +10,10 @@
   <div class="header">
     <h1 class="title">%BROADCASTING%<span class="label-beta">Beta</span></h1>
     <div class="settings">
+      <button id="connect-info-button"
+              value="ConnectInfo"
+              data-toggle="modal"
+              data-target="#connect-info-modal"></button>
       <button id="setting-button"
               class="btn-setting"
               value="Setting"
@@ -51,9 +55,6 @@
       <div class="profile">
         <span id="provider-user-name"
               class="name fb"></span>
-        <a id="provider-user-disconnect"
-           href="#"
-           class="btn-view-streaming">%DISCONNECT%</a>
         <a id="provider-page-link"
            href="#"
            class="btn-view-streaming">%WATCH_BROADCASTING%</a>
@@ -175,7 +176,45 @@
             class="btn-start">%START_BROADCASTING%</button>
   </div>
 
-  <!-- setting page -->
+  <!-- connect info modal -->
+  <div id="connect-info-modal"
+       class="modal nc-streamer-modal"
+       tabindex="-1"
+       role="dialog">
+    <div class="modal-dialog"
+         role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">%CONNECT_INFO%</h4>
+          <button type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="connect-info">
+            <span id="connect-info-user-name"
+                  class="name fb"></span>
+            <button type="button"
+                    id="connect-info-disconnect-button"
+                    class="btn">%DISCONNECT%</button>
+          </div>
+          <div id="connect-info-msg"
+               class="msg"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button"
+                  id="connect-info-confirm-button"
+                  class="btn btn-primary"
+                  data-dismiss="modal">%CONFIRM%</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- setting modal -->
   <div id="settingModal"
        class="modal fade"
        tabindex="-1"
@@ -208,14 +247,13 @@
               </button>
               <ul class="dropdown-menu">
                 <!--<li data-value="1"><a>quality option 1</a></li>-->
-                <!--<li data-value="1"><a>quality option 2</a></li>-->
+                <!--<li data-value="2"><a>quality option 2</a></li>-->
               </ul>
             </div>
           </section>
         </div>
         <div class="modal-footer">
           <button type="button"
-                  id="settings-confirm-button"
                   class="btn btn-primary"
                   data-dismiss="modal">%CONFIRM%</button>
         </div>

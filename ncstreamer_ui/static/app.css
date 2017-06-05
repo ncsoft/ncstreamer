@@ -13,24 +13,25 @@ div {
 }
 
 
-.modal-header{
+.modal-header {
   background-color: #292e38;
   color: #ffffff;
   border-color: #494d56;
 }
 
 
-.modal-body{
+.modal-body {
   background-color: #292e38;
   color: #ffffff;
   border-color: #494d56;
 }
 
 
-.modal-footer{
+.modal-footer {
   background-color: #292e38;
   color: #ffffff;
   border-color: #494d56;
+  text-align: center;
 }
 
 
@@ -44,9 +45,17 @@ div {
 }
 
 
-#provider-user-disconnect {
-  display: inline;
-  padding-right: 80px;
+#connect-info-button {
+  width: 16px;
+  height: 15px;
+  vertical-align: middle;
+  background: url("app/res/btn-connect-info.png") no-repeat;
+  background-position: 0 0;
+}
+
+
+#connect-info-button:hover {
+  background-position: -16px 0;
 }
 
 
@@ -87,11 +96,8 @@ div {
 }
 
 
-#setting-button {
-  display: none;
-}
-
-
+#connect-info-button,
+#setting-button,
 #minimize-button {
   display: none;
 }
