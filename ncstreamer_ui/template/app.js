@@ -421,8 +421,8 @@ function submitControl() {
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
-      app.streaming.start.sourceTitle =
-          ncsoft.select.getText(app.dom.gameSelect);
+      app.streaming.start.source =
+          ncsoft.select.getValue(app.dom.gameSelect);
       updateStreamingStatus('starting');
       return /*no error*/ '';
     },
@@ -660,7 +660,7 @@ cef.streamingStart.onResponse = function(error) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');
-    app.streaming.start.sourceTitle = null;
+    app.streaming.start.source = null;
     updateStreamingStatus('standby');
   } else {
     updateStreamingStatus('onAir');
@@ -674,7 +674,7 @@ cef.streamingStart.onResponse = function(error) {
 
 
 cef.streamingStop.onResponse = function(error) {
-  app.streaming.start.sourceTitle = null;
+  app.streaming.start.source = null;
   updateStreamingStatus('standby');
 
   if (remote.stopRequestKey) {
