@@ -587,19 +587,17 @@ body {
 }
 
 .nc-streamer-container .nc-streamer-contents {
-    height: calc(100% - 148px);
     padding: 0 13px;
     border-top: 1px solid #303540
 }
 
 .nc-streamer-container .nc-streamer-footer {
-    position: relative;
-    height: 100px
+    position: fixed;
+    bottom: 0;
+    width: 100%
 }
 
 .nc-streamer-container .nc-streamer-footer button {
-    position: absolute;
-    bottom: 0;
     width: 100%;
     height: 50px;
     line-height: 50%;
@@ -887,8 +885,10 @@ body {
 }
 
 .nc-streamer-footer .msg {
-    height: 50px;
-    line-height: 50px;
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    padding: 0 13px 10px 13px;
     color: #42698b;
     text-align: center;
     vertical-align: text-bottom
@@ -910,9 +910,7 @@ body {
 
 .nc-streamer-footer .msg.status-live:before {
     display: block;
-    position: absolute;
-    bottom: 70px;
-    left: calc(50% - 33px)
+    margin: 0 auto
 }
 
 .nc-streamer-footer .btn-start {
