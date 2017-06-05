@@ -51,7 +51,7 @@ void RemoteServer::RespondStreamingStatus(
     const std::string &source_title,
     const std::string &user_name,
     const std::string &quality) {
-  ws::connection_hdl connection = request_cache_.CheckOut(request_key);
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     LogWarning("RespondStreamingStatus: !connection.lock()");
     return;
@@ -69,7 +69,7 @@ void RemoteServer::RespondStreamingStatus(
     boost::property_tree::write_json(msg, tree, false);
   }
 
-  ws::lib::error_code ec;
+  websocketpp::lib::error_code ec;
   server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
   if (ec) {
     LogError(ec.message());
@@ -81,7 +81,7 @@ void RemoteServer::RespondStreamingStatus(
 void RemoteServer::RespondStreamingStart(
     int request_key,
     const std::string &error) {
-  ws::connection_hdl connection = request_cache_.CheckOut(request_key);
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     LogWarning("RespondStreamingStart: !connection.lock()");
     return;
@@ -96,7 +96,7 @@ void RemoteServer::RespondStreamingStart(
     boost::property_tree::write_json(msg, tree, false);
   }
 
-  ws::lib::error_code ec;
+  websocketpp::lib::error_code ec;
   server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
   if (ec) {
     LogError(ec.message());
@@ -108,7 +108,7 @@ void RemoteServer::RespondStreamingStart(
 void RemoteServer::RespondStreamingStop(
     int request_key,
     const std::string &error) {
-  ws::connection_hdl connection = request_cache_.CheckOut(request_key);
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     LogWarning("RespondStreamingStop: !connection.lock()");
     return;
@@ -123,7 +123,7 @@ void RemoteServer::RespondStreamingStop(
     boost::property_tree::write_json(msg, tree, false);
   }
 
-  ws::lib::error_code ec;
+  websocketpp::lib::error_code ec;
   server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
   if (ec) {
     LogError(ec.message());
@@ -135,7 +135,7 @@ void RemoteServer::RespondStreamingStop(
 void RemoteServer::RespondSettingsQualityUpdate(
     int request_key,
     const std::string &error) {
-  ws::connection_hdl connection = request_cache_.CheckOut(request_key);
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     LogWarning("RespondSettingsQualityUpdate: !connection.lock()");
     return;
@@ -150,7 +150,7 @@ void RemoteServer::RespondSettingsQualityUpdate(
     boost::property_tree::write_json(msg, tree, false);
   }
 
-  ws::lib::error_code ec;
+  websocketpp::lib::error_code ec;
   server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
   if (ec) {
     LogError(ec.message());
@@ -171,7 +171,7 @@ RemoteServer::RequestCache::~RequestCache() {
 
 
 int RemoteServer::RequestCache::CheckIn(
-    ws::connection_hdl connection) {
+    websocketpp::connection_hdl connection) {
   int last_key{0};
   {
     std::lock_guard<std::mutex> lock{mutex_};
@@ -184,9 +184,9 @@ int RemoteServer::RequestCache::CheckIn(
 }
 
 
-ws::connection_hdl RemoteServer::RequestCache::CheckOut(
+websocketpp::connection_hdl RemoteServer::RequestCache::CheckOut(
     int key) {
-  ws::connection_hdl connection{};
+  websocketpp::connection_hdl connection{};
   {
     std::lock_guard<std::mutex> lock{mutex_};
 
@@ -211,25 +211,25 @@ RemoteServer::RemoteServer(
       server_log_{},
       request_cache_{} {
   server_log_.open("remote_server.log");
-  server_.set_access_channels(ws::log::alevel::all);
-  server_.set_access_channels(ws::log::elevel::all);
+  server_.set_access_channels(websocketpp::log::alevel::all);
+  server_.set_access_channels(websocketpp::log::elevel::all);
   server_.get_alog().set_ostream(&server_log_);
   server_.get_elog().set_ostream(&server_log_);
 
-  ws::lib::error_code ec;
+  websocketpp::lib::error_code ec;
   server_.init_asio(&io_service_, ec);
   if (ec) {
     LogError(ec.message());
     return;
   }
 
-  server_.set_fail_handler(ws::lib::bind(
+  server_.set_fail_handler(websocketpp::lib::bind(
       &RemoteServer::OnFail, this, placeholders::_1));
-  server_.set_open_handler(ws::lib::bind(
+  server_.set_open_handler(websocketpp::lib::bind(
       &RemoteServer::OnOpen, this, placeholders::_1));
-  server_.set_close_handler(ws::lib::bind(
+  server_.set_close_handler(websocketpp::lib::bind(
       &RemoteServer::OnClose, this, placeholders::_1));
-  server_.set_message_handler(ws::lib::bind(
+  server_.set_message_handler(websocketpp::lib::bind(
       &RemoteServer::OnMessage, this, placeholders::_1, placeholders::_2));
 
   server_.listen({boost::asio::ip::address::from_string("::1"), port});
@@ -255,23 +255,24 @@ RemoteServer::~RemoteServer() {
 }
 
 
-void RemoteServer::OnFail(ws::connection_hdl connection) {
+void RemoteServer::OnFail(websocketpp::connection_hdl connection) {
   LogError("OnFail");
 }
 
 
-void RemoteServer::OnOpen(ws::connection_hdl connection) {
+void RemoteServer::OnOpen(websocketpp::connection_hdl connection) {
   LogInfo("OnOpen");
 }
 
 
-void RemoteServer::OnClose(ws::connection_hdl connection) {
+void RemoteServer::OnClose(websocketpp::connection_hdl connection) {
   LogInfo("OnClose");
 }
 
 
-void RemoteServer::OnMessage(ws::connection_hdl connection,
-                             ws::connection<Asio>::message_ptr msg) {
+void RemoteServer::OnMessage(
+    websocketpp::connection_hdl connection,
+    websocketpp::connection<websocketpp::config::asio>::message_ptr msg) {
   boost::property_tree::ptree msg_tree;
   auto msg_type{RemoteMessage::MessageType::kUndefined};
 
@@ -285,7 +286,7 @@ void RemoteServer::OnMessage(ws::connection_hdl connection,
   }
 
   using MessageHandler = std::function<void(
-      const ws::connection_hdl &,
+      const websocketpp::connection_hdl &,
       const boost::property_tree::ptree &/*msg*/)>;
   static const std::unordered_map<RemoteMessage::MessageType,
                                   MessageHandler> kMessageHandlers{
@@ -317,7 +318,7 @@ void RemoteServer::OnMessage(ws::connection_hdl connection,
 
 
 void RemoteServer::OnStreamingStatusRequest(
-    const ws::connection_hdl &connection,
+    const websocketpp::connection_hdl &connection,
     const boost::property_tree::ptree &/*tree*/) {
   int request_key = request_cache_.CheckIn(connection);
 
@@ -329,7 +330,7 @@ void RemoteServer::OnStreamingStatusRequest(
 
 
 void RemoteServer::OnStreamingStartRequest(
-    const ws::connection_hdl &connection,
+    const websocketpp::connection_hdl &connection,
     const boost::property_tree::ptree &tree) {
   const std::string &title = tree.get("title", "");
   if (title.empty()) {
@@ -351,7 +352,7 @@ void RemoteServer::OnStreamingStartRequest(
 
 
 void RemoteServer::OnStreamingStopRequest(
-    const ws::connection_hdl &connection,
+    const websocketpp::connection_hdl &connection,
     const boost::property_tree::ptree &tree) {
   const std::string &title = tree.get("title", "");
   if (title.empty()) {
@@ -373,7 +374,7 @@ void RemoteServer::OnStreamingStopRequest(
 
 
 void RemoteServer::OnSettingsQualityUpdateRequest(
-    const ws::connection_hdl &connection,
+    const websocketpp::connection_hdl &connection,
     const boost::property_tree::ptree &tree) {
   const std::string &quality = tree.get("quality", "");
   if (quality.empty()) {
@@ -395,7 +396,7 @@ void RemoteServer::OnSettingsQualityUpdateRequest(
 
 
 void RemoteServer::OnNcStreamerExitRequest(
-    const ws::connection_hdl &/*connection*/,
+    const websocketpp::connection_hdl &/*connection*/,
     const boost::property_tree::ptree &/*tree*/) {
   HWND wnd = browser_app_->GetMainBrowser()->GetHost()->GetWindowHandle();
   ::PostMessage(wnd, WM_CLOSE, NULL, NULL);
@@ -403,17 +404,17 @@ void RemoteServer::OnNcStreamerExitRequest(
 
 
 void RemoteServer::LogError(const std::string &err_msg) {
-  server_.get_elog().write(ws::log::elevel::rerror, err_msg);
+  server_.get_elog().write(websocketpp::log::elevel::rerror, err_msg);
 }
 
 
 void RemoteServer::LogWarning(const std::string &warn_msg) {
-  server_.get_elog().write(ws::log::elevel::warn, warn_msg);
+  server_.get_elog().write(websocketpp::log::elevel::warn, warn_msg);
 }
 
 
 void RemoteServer::LogInfo(const std::string &info_msg) {
-  server_.get_elog().write(ws::log::elevel::info, info_msg);
+  server_.get_elog().write(websocketpp::log::elevel::info, info_msg);
 }
 
 

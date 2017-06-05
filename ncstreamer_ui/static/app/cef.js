@@ -151,7 +151,8 @@ const remote = {
 
     const status = app.streaming.status;
     if (status != 'standby') {
-      const errorType = (sourceTitle == app.streaming.start.sourceTitle) ?
+      const startTitle = getTitleFromSource(app.streaming.start.source);
+      const errorType = (sourceTitle == startTitle) ?
           'not standby: self' : 'not standby: other';
       cef.remoteStart.request(requestKey, errorType);
       return;
@@ -180,7 +181,8 @@ const remote = {
       return;
     }
 
-    if (sourceTitle != app.streaming.start.sourceTitle) {
+    const startTitle = getTitleFromSource(app.streaming.start.source);
+    if (sourceTitle != startTitle) {
       cef.remoteStop.request(requestKey, 'title mismatch');
       return;
     }

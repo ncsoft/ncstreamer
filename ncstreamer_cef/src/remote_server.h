@@ -23,9 +23,6 @@
 
 
 namespace ncstreamer {
-namespace ws = websocketpp;
-
-
 class RemoteServer {
  public:
   static void SetUp(
@@ -55,19 +52,17 @@ class RemoteServer {
       const std::string &error);
 
  private:
-  using Asio = ws::config::asio;
-
   class RequestCache {
    public:
     RequestCache();
     virtual ~RequestCache();
 
-    int CheckIn(ws::connection_hdl connection);
-    ws::connection_hdl CheckOut(int key);
+    int CheckIn(websocketpp::connection_hdl connection);
+    websocketpp::connection_hdl CheckOut(int key);
 
    private:
     mutable std::mutex mutex_;
-    std::unordered_map<int /*key*/, ws::connection_hdl> cache_;
+    std::unordered_map<int /*key*/, websocketpp::connection_hdl> cache_;
     int last_key_;
   };
 
@@ -77,30 +72,31 @@ class RemoteServer {
 
   virtual ~RemoteServer();
 
-  void OnFail(ws::connection_hdl connection);
-  void OnOpen(ws::connection_hdl connection);
-  void OnClose(ws::connection_hdl connection);
-  void OnMessage(ws::connection_hdl connection,
-                 ws::connection<Asio>::message_ptr msg);
+  void OnFail(websocketpp::connection_hdl connection);
+  void OnOpen(websocketpp::connection_hdl connection);
+  void OnClose(websocketpp::connection_hdl connection);
+  void OnMessage(
+      websocketpp::connection_hdl connection,
+      websocketpp::connection<websocketpp::config::asio>::message_ptr msg);
 
   void OnStreamingStatusRequest(
-      const ws::connection_hdl &connection,
+      const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
   void OnStreamingStartRequest(
-      const ws::connection_hdl &connection,
+      const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
   void OnStreamingStopRequest(
-      const ws::connection_hdl &connection,
+      const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
   void OnSettingsQualityUpdateRequest(
-      const ws::connection_hdl &connection,
+      const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
   void OnNcStreamerExitRequest(
-      const ws::connection_hdl &connection,
+      const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
   void LogError(const std::string &err_msg);
@@ -113,7 +109,7 @@ class RemoteServer {
 
   boost::asio::io_service io_service_;
   boost::asio::io_service::work io_service_work_;
-  ws::server<Asio> server_;
+  websocketpp::server<websocketpp::config::asio> server_;
   std::vector<std::thread> server_threads_;
   std::ofstream server_log_;
 

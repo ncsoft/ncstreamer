@@ -218,6 +218,11 @@ function setUpPrivacy(privacy) {
 }
 
 
+function getTitleFromSource(source) {
+  return source.split(':')[0];
+}
+
+
 function updateStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources')) {
     return;
@@ -240,7 +245,7 @@ function updateStreamingSources(obj) {
     for (const source of sources) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
-      aTag.textContent = source.split(':')[0];
+      aTag.textContent = getTitleFromSource(source);
       li.setAttribute('data-value', source);
       li.appendChild(aTag);
       contents.appendChild(li);
@@ -261,7 +266,7 @@ function stopInvalidSource(sources) {
     return;
   }
 
-  const currentSource = ncsoft.select.getValue(app.dom.gameSelect);
+  const currentSource = app.streaming.start.source;
   if (sources.includes(currentSource) == true) {
     return;
   }
@@ -283,7 +288,7 @@ function onMinimizeButtonClicked() {
 
 
 function onCloseButtonClicked() {
-  console.info('click closeeButton');
+  console.info('click closeButton');
   if (app.streaming.status == 'onAir') {
     ncsoft.modal.show('#close-check-modal');
   } else {
@@ -416,8 +421,8 @@ function submitControl() {
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
-      app.streaming.start.sourceTitle =
-          ncsoft.select.getText(app.dom.gameSelect);
+      app.streaming.start.source =
+          ncsoft.select.getValue(app.dom.gameSelect);
       updateStreamingStatus('starting');
       return /*no error*/ '';
     },
@@ -655,7 +660,7 @@ cef.streamingStart.onResponse = function(error) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');
-    app.streaming.start.sourceTitle = null;
+    app.streaming.start.source = null;
     updateStreamingStatus('standby');
   } else {
     updateStreamingStatus('onAir');
@@ -669,7 +674,7 @@ cef.streamingStart.onResponse = function(error) {
 
 
 cef.streamingStop.onResponse = function(error) {
-  app.streaming.start.sourceTitle = null;
+  app.streaming.start.source = null;
   updateStreamingStatus('standby');
 
   if (remote.stopRequestKey) {
