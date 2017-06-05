@@ -218,6 +218,11 @@ function setUpPrivacy(privacy) {
 }
 
 
+function getTitleFromSource(source) {
+  return source.split(':')[0];
+}
+
+
 function updateStreamingSources(obj) {
   if (!obj.hasOwnProperty('sources')) {
     return;
@@ -240,7 +245,7 @@ function updateStreamingSources(obj) {
     for (const source of sources) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
-      aTag.textContent = source.split(':')[0];
+      aTag.textContent = getTitleFromSource(source);
       li.setAttribute('data-value', source);
       li.appendChild(aTag);
       contents.appendChild(li);
