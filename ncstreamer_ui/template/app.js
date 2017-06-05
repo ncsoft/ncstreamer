@@ -84,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'live-image',
     'control-button',
     'quality-select',
-    'settings-confirm-button',
     'modal-close-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
