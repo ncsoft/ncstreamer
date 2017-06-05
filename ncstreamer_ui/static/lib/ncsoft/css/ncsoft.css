@@ -626,22 +626,52 @@ body {
 }
 
 .nc-streamer-modal .modal-content .modal-header {
+    position: relative;
+    text-align: left;
     border-bottom: 0 none
 }
 
+.nc-streamer-modal .modal-content .modal-header .modal-title {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0 0 15px 20px;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #40434d
+}
+
 .nc-streamer-modal .modal-content .modal-header .close {
+    position: relative;
+    z-index: 99;
     color: #a3a5aa;
     opacity: 1;
     text-shadow: none
 }
 
-.nc-streamer-modal .modal-content .modal-body {
-    margin: 0 20px
+.nc-streamer-modal .modal-content .modal-header .close:hover {
+    color: #BFC0C3
+}
+
+.nc-streamer-modal .modal-content .modal-body .message {
+    padding-bottom: 20px
 }
 
 .nc-streamer-modal .modal-content .modal-footer {
+    padding-top: 0;
     text-align: center;
     border-top: 0 none
+}
+
+.nc-streamer-modal .msg {
+    padding-top: 10px;
+    font-size: 12px;
+    color: #42698b !important
 }
 
 .nc-streamer-modal .btn {
