@@ -17,7 +17,7 @@ namespace ncstreamer {
 static const wchar_t *kAppName{L"NCStreaming"};
 
 static const Dimension<int> kWindowMinimumSize{348 + 16, 603 - 11};
-static const RECT kWindowTitlebarDragRect{5, 5, 270, 48};
+static const RECT kWindowTitlebarDragRect{5, 5, 252, 48};
 
 static const wchar_t *kDefaultUiUriLocaleTemplate{L"{LOCALE}"};
 static const std::wstring kDefaultUiUri{[]() {
