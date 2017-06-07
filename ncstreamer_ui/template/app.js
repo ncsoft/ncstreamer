@@ -238,16 +238,16 @@ function updateStreamingSources(obj) {
   stopInvalidSource(sources);
 
   const gameSelect = app.dom.gameSelect;
-  const display = gameSelect.children[0];
-  const contents = gameSelect.children[1];
-  while (contents.firstChild) {
-    contents.removeChild(contents.firstChild);
-  }
+  ncsoft.select.clear(gameSelect);
 
   if (sources.length == 0) {
     ncsoft.select.disable(gameSelect);
   } else {
     ncsoft.select.enable(gameSelect);
+
+    const display = gameSelect.children[0];
+    const contents = gameSelect.children[1];
+
     for (const source of sources) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
