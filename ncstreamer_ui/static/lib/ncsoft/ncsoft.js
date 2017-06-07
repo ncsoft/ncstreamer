@@ -58,6 +58,8 @@ ncsoft.select.disable = function(element) {
 ncsoft.select.clear = function(element) {
   const display = element.children[0];
   const contents = element.children[1];
+
+  display.value = '';
   while (contents.firstChild) {
     contents.removeChild(contents.firstChild);
   }
