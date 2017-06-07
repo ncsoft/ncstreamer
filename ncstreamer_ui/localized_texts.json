@@ -96,8 +96,8 @@
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
-    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해 페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE1": "주의 사항",
+    "LOGIN_GUIDE_NOTICE2": "방송(BETA)은 게임의 창 모드 또는 전체 창 모드만 지원합니다."
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -496,8 +496,8 @@
     "CLOSE_CHECK_MESSAGE1": "방關閉直播視訊時，遊戲直播也會一同關閉，",
     "CLOSE_CHECK_MESSAGE2": "要維持直播視訊服務嗎?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
-    "LOGIN_GUIDE_NOTICE1": "在網咖裡",
-    "LOGIN_GUIDE_NOTICE2": "為了保護您的個人資料將解除facebook帳號的連接"
+    "LOGIN_GUIDE_NOTICE1": "주의 사항",
+    "LOGIN_GUIDE_NOTICE2": "방송(BETA)은 게임의 창 모드 또는 전체 창 모드만 지원합니다."
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -546,7 +546,7 @@
     "CLOSE_CHECK_MESSAGE1": "配信システムを終了すると配信も終了します。",
     "CLOSE_CHECK_MESSAGE2": "配信システムを終了しますか？",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
-    "LOGIN_GUIDE_NOTICE1": "ネットカフェでは",
-    "LOGIN_GUIDE_NOTICE2": "お客様の個人情報保護のためFacebookのアカウント連携を維持しません。"
+    "LOGIN_GUIDE_NOTICE1": "주의 사항",
+    "LOGIN_GUIDE_NOTICE2": "방송(BETA)은 게임의 창 모드 또는 전체 창 모드만 지원합니다."
   }
 }
