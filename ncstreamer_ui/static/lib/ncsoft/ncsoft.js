@@ -55,6 +55,15 @@ ncsoft.select.disable = function(element) {
 };
 
 
+ncsoft.select.clear = function(element) {
+  const display = element.children[0];
+  const contents = element.children[1];
+  while (contents.firstChild) {
+    contents.removeChild(contents.firstChild);
+  }
+};
+
+
 ncsoft.select.setByIndex = function(select, index) {
   const display = select.children[0];
   const contents = select.children[1];
