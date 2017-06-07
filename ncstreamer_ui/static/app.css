@@ -59,6 +59,17 @@ div {
 }
 
 
+#setting-button {
+  width: 14px;
+  height: 14px;
+}
+
+
+#setting-button:hover {
+  background-position: -14px 0;
+}
+
+
 #provider-page-link {
   cursor: default;
   text-decoration: none;
