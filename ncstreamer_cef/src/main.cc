@@ -55,6 +55,11 @@ int APIENTRY wWinMain(HINSTANCE instance,
     return ExecuteRenderProcess(instance);
   }
 
+  HWND prev_instance = ::FindWindow(NULL, ncstreamer::kAppName);
+  if (prev_instance != NULL) {
+    return -1;
+  }
+
   auto app_data_path = CreateUserLocalAppDirectory();
 
   CefRefPtr<ncstreamer::BrowserApp> browser_app{new ncstreamer::BrowserApp{
