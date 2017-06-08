@@ -234,7 +234,14 @@ RemoteServer::RemoteServer(
   server_.set_message_handler(websocketpp::lib::bind(
       &RemoteServer::OnMessage, this, placeholders::_1, placeholders::_2));
 
-  server_.listen({boost::asio::ip::address::from_string("::1"), port});
+  {
+    websocketpp::lib::error_code ec;
+    server_.listen({boost::asio::ip::address::from_string("::1"), port}, ec);
+    if (ec) {
+      LogError(ec.message());
+      return;
+    }
+  }
   server_.start_accept();
 
   static const std::size_t kServerThreadsSize{1};  // just one enough.
