@@ -216,11 +216,13 @@ RemoteServer::RemoteServer(
   server_.get_alog().set_ostream(&server_log_);
   server_.get_elog().set_ostream(&server_log_);
 
-  websocketpp::lib::error_code ec;
-  server_.init_asio(&io_service_, ec);
-  if (ec) {
-    LogError(ec.message());
-    return;
+  {
+    websocketpp::lib::error_code ec;
+    server_.init_asio(&io_service_, ec);
+    if (ec) {
+      LogError(ec.message());
+      return;
+    }
   }
 
   server_.set_fail_handler(websocketpp::lib::bind(
