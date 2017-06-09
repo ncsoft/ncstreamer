@@ -336,5 +336,15 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
 }
 
 
+void Obs::UpdateMicVolume(float volume) {
+  obs_source_t *source = obs_get_output_source(3);
+  if (!source)
+    return;
+
+  obs_source_set_volume(source, volume);
+  obs_source_release(source);
+}
+
+
 Obs *Obs::static_instance{nullptr};
 }  // namespace ncstreamer

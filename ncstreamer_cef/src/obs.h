@@ -71,6 +71,7 @@ class Obs {
       const std::string &stream_key);
   void ReleaseCurrentService();
   void UpdateBaseResolution(const std::string &source_info);
+  void UpdateMicVolume(float volume);
 
   static Obs *static_instance;
 
