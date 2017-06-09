@@ -60,8 +60,6 @@ int APIENTRY wWinMain(HINSTANCE instance,
     return -1;
   }
 
-  auto app_data_path = CreateUserLocalAppDirectory();
-
   CefRefPtr<ncstreamer::BrowserApp> browser_app{new ncstreamer::BrowserApp{
       instance,
       cmd_line.hides_settings(),
@@ -70,6 +68,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
       cmd_line.sources(),
       cmd_line.locale(),
       cmd_line.ui_uri()}};
+
+  auto app_data_path = CreateUserLocalAppDirectory();
 
   CefSettings settings;
   settings.no_sandbox = true;
