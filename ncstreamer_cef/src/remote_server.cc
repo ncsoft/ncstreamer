@@ -216,11 +216,13 @@ RemoteServer::RemoteServer(
   server_.get_alog().set_ostream(&server_log_);
   server_.get_elog().set_ostream(&server_log_);
 
-  websocketpp::lib::error_code ec;
-  server_.init_asio(&io_service_, ec);
-  if (ec) {
-    LogError(ec.message());
-    return;
+  {
+    websocketpp::lib::error_code ec;
+    server_.init_asio(&io_service_, ec);
+    if (ec) {
+      LogError(ec.message());
+      return;
+    }
   }
 
   server_.set_fail_handler(websocketpp::lib::bind(
@@ -232,7 +234,14 @@ RemoteServer::RemoteServer(
   server_.set_message_handler(websocketpp::lib::bind(
       &RemoteServer::OnMessage, this, placeholders::_1, placeholders::_2));
 
-  server_.listen({boost::asio::ip::address::from_string("::1"), port});
+  {
+    websocketpp::lib::error_code ec;
+    server_.listen({boost::asio::ip::address::from_string("::1"), port}, ec);
+    if (ec) {
+      LogError(ec.message());
+      return;
+    }
+  }
   server_.start_accept();
 
   static const std::size_t kServerThreadsSize{1};  // just one enough.
