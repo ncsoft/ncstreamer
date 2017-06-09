@@ -259,10 +259,9 @@ void Obs::UpdateCurrentSource(const std::string &source_info,
   {
     obs_data_t *settings = obs_data_create();
     obs_data_set_string(settings, "window", source_info.c_str());
-    obs_data_set_string(settings, "capture_mode", "window");
 
     obs_source_t *source = obs_source_create(
-        "game_capture", "Game Capture", settings, nullptr);
+        "window_capture", "Window Capture", settings, nullptr);
     obs_data_release(settings);
 
     obs_set_output_source(0, source);
