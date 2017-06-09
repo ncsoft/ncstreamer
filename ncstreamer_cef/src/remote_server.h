@@ -26,11 +26,12 @@ namespace ncstreamer {
 class RemoteServer {
  public:
   static void SetUp(
-      const BrowserApp *browser_app,
-      uint16_t port);
+      const BrowserApp *browser_app);
 
   static void ShutDown();
   static RemoteServer *Get();
+
+  bool Start(uint16_t port);
 
   void RespondStreamingStatus(
       int request_key,
@@ -67,8 +68,7 @@ class RemoteServer {
   };
 
   RemoteServer(
-      const BrowserApp *browser_app,
-      uint16_t port);
+      const BrowserApp *browser_app);
 
   virtual ~RemoteServer();
 
