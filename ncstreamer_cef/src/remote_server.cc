@@ -23,12 +23,9 @@ namespace placeholders = websocketpp::lib::placeholders;
 
 namespace ncstreamer {
 void RemoteServer::SetUp(
-    const BrowserApp *browser_app,
-    uint16_t port) {
+    const BrowserApp *browser_app) {
   assert(!static_instance);
-  static_instance = new RemoteServer{
-      browser_app,
-      port};
+  static_instance = new RemoteServer{browser_app};
 }
 
 
@@ -201,8 +198,7 @@ websocketpp::connection_hdl RemoteServer::RequestCache::CheckOut(
 
 
 RemoteServer::RemoteServer(
-    const BrowserApp *browser_app,
-    uint16_t port)
+    const BrowserApp *browser_app)
     : browser_app_{browser_app},
       io_service_{},
       io_service_work_{io_service_},
@@ -210,6 +206,10 @@ RemoteServer::RemoteServer(
       server_threads_{},
       server_log_{},
       request_cache_{} {
+}
+
+
+bool RemoteServer::Start(uint16_t port) {
   server_log_.open("remote_server.log");
   server_.set_access_channels(websocketpp::log::alevel::all);
   server_.set_access_channels(websocketpp::log::elevel::all);
@@ -221,7 +221,7 @@ RemoteServer::RemoteServer(
     server_.init_asio(&io_service_, ec);
     if (ec) {
       LogError(ec.message());
-      return;
+      return false;
     }
   }
 
@@ -239,7 +239,7 @@ RemoteServer::RemoteServer(
     server_.listen({boost::asio::ip::address::from_string("::1"), port}, ec);
     if (ec) {
       LogError(ec.message());
-      return;
+      return false;
     }
   }
   server_.start_accept();
@@ -250,6 +250,8 @@ RemoteServer::RemoteServer(
       server_.run();
     });
   }
+
+  return true;
 }
 
 

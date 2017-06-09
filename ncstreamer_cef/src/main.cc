@@ -88,9 +88,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
-  ncstreamer::RemoteServer::SetUp(
-      browser_app,
-      cmd_line.remote_port());
+  ncstreamer::RemoteServer::SetUp(browser_app);
+  ncstreamer::RemoteServer::Get()->Start(cmd_line.remote_port());
 
   ncstreamer::DesignatedUser::SetUp(cmd_line.designated_user());
 
