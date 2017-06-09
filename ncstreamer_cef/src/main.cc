@@ -69,6 +69,12 @@ int APIENTRY wWinMain(HINSTANCE instance,
       cmd_line.locale(),
       cmd_line.ui_uri()}};
 
+  ncstreamer::RemoteServer::SetUp(browser_app);
+  bool started = ncstreamer::RemoteServer::Get()->Start(cmd_line.remote_port());
+  if (started == false) {
+    return -1;
+  }
+
   auto app_data_path = CreateUserLocalAppDirectory();
 
   CefSettings settings;
@@ -88,8 +94,6 @@ int APIENTRY wWinMain(HINSTANCE instance,
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
-  ncstreamer::RemoteServer::SetUp(browser_app);
-  ncstreamer::RemoteServer::Get()->Start(cmd_line.remote_port());
 
   ncstreamer::DesignatedUser::SetUp(cmd_line.designated_user());
 
