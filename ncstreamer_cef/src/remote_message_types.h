@@ -12,15 +12,15 @@ class RemoteMessage {
  public:
   enum class MessageType {
     kUndefined = 0,
-    kStreamingStatusRequest,
+    kStreamingStatusRequest = 101,
     kStreamingStatusResponse,
-    kStreamingStartRequest,
+    kStreamingStartRequest = 201,
     kStreamingStartResponse,
-    kStreamingStopRequest,
+    kStreamingStopRequest = 211,
     kStreamingStopResponse,
-    kSettingsQualityUpdateRequest,
+    kSettingsQualityUpdateRequest = 301,
     kSettingsQualityUpdateResponse,
-    kNcStreamerExitRequest,
+    kNcStreamerExitRequest = 901,
     kNcStreamerExitResponse,  // not used.
   };
 };
