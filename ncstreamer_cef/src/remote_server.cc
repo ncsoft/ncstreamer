@@ -434,6 +434,17 @@ void RemoteServer::OnNcStreamerExitRequest(
 }
 
 
+void RemoteServer::Broadcast(const std::string &msg) {
+  for (const auto &connection : connections_) {
+    websocketpp::lib::error_code ec;
+    server_.send(connection, msg, websocketpp::frame::opcode::text, ec);
+    if (ec) {
+      LogError(ec.message());
+    }
+  }
+}
+
+
 void RemoteServer::LogError(const std::string &err_msg) {
   server_.get_elog().write(websocketpp::log::elevel::rerror, err_msg);
 }

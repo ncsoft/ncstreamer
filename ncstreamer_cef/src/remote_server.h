@@ -113,6 +113,8 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void Broadcast(const std::string &msg);
+
   void LogError(const std::string &err_msg);
   void LogWarning(const std::string &warn_msg);
   void LogInfo(const std::string &info_msg);
