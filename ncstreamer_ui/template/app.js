@@ -434,7 +434,9 @@ function submitControl() {
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
-      app.streaming.startInfo.source = source;
+      app.streaming.startInfo = {
+        source: source,
+      };
       updateStreamingStatus('starting');
       return /*no error*/ '';
     },
@@ -676,7 +678,7 @@ cef.streamingStart.onResponse = function(error) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');
-    app.streaming.startInfo.source = null;
+    app.streaming.startInfo = {};
     updateStreamingStatus('standby');
   } else {
     updateStreamingStatus('onAir');
@@ -690,7 +692,7 @@ cef.streamingStart.onResponse = function(error) {
 
 
 cef.streamingStop.onResponse = function(error) {
-  app.streaming.startInfo.source = null;
+  app.streaming.startInfo = {};
   updateStreamingStatus('standby');
 
   if (remote.stopRequestKey) {
