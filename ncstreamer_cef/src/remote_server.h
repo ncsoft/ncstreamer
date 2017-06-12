@@ -54,7 +54,8 @@ class RemoteServer {
 
   void RespondStreamingStop(
       int request_key,
-      const std::string &error);
+      const std::string &error,
+      const std::string &source);
 
   void RespondSettingsQualityUpdate(
       int request_key,
@@ -128,6 +129,9 @@ class RemoteServer {
       const std::string &mic,
       const std::string &service_provider,
       const std::string &stream_url);
+
+  void BroadcastStreamingStop(
+      const std::string &source);
 
   void Broadcast(const std::string &msg);
 

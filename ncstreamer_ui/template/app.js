@@ -708,11 +708,12 @@ cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
 
 
 cef.streamingStop.onResponse = function(error) {
+  const source = app.streaming.startInfo.source;
   app.streaming.startInfo = {};
   updateStreamingStatus('standby');
 
   if (remote.stopRequestKey) {
-    cef.remoteStop.request(remote.stopRequestKey, error);
+    cef.remoteStop.request(remote.stopRequestKey, error, source);
     remote.stopRequestKey = null;
   }
 };

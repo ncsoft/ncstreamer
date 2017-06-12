@@ -67,7 +67,7 @@ const cef = (function() {
       response: [],
     },
     'remote/stop': {
-      request: ['requestKey', 'error'],
+      request: ['requestKey', 'error', 'source'],
       response: [],
     },
     'remote/quality/update': {

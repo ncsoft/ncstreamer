@@ -122,7 +122,8 @@ void RemoteServer::RespondStreamingStart(
 
 void RemoteServer::RespondStreamingStop(
     int request_key,
-    const std::string &error) {
+    const std::string &error,
+    const std::string &source) {
   websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     LogWarning("RespondStreamingStop: !connection.lock()");
@@ -143,6 +144,10 @@ void RemoteServer::RespondStreamingStop(
   if (ec) {
     LogError(ec.message());
     return;
+  }
+
+  if (error.empty() == true) {
+    BroadcastStreamingStop(source);
   }
 }
 
@@ -472,6 +477,20 @@ void RemoteServer::BroadcastStreamingStart(
     tree.put("mic", mic);
     tree.put("serviceProvider", service_provider);
     tree.put("streamUrl", stream_url);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+  Broadcast(msg.str());
+}
+
+
+void RemoteServer::BroadcastStreamingStop(
+    const std::string &source) {
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kStreamingStopEvent));
+    tree.put("source", source);
     boost::property_tree::write_json(msg, tree, false);
   }
   Broadcast(msg.str());

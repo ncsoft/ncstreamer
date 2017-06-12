@@ -590,8 +590,10 @@ void ClientRequestHandler::OnCommandRemoteStop(
     CefRefPtr<CefBrowser> /*browser*/) {
   auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
+  auto source_i = args.find("source");
   if (request_key_i == args.end() ||
-      error_i == args.end()) {
+      error_i == args.end() ||
+      source_i == args.end()) {
     assert(false);
     return;
   }
@@ -608,10 +610,12 @@ void ClientRequestHandler::OnCommandRemoteStop(
   }
 
   const std::string &error = error_i->second;
+  const std::string &source = source_i->second;
 
   RemoteServer::Get()->RespondStreamingStop(
       request_key,
-      error);
+      error,
+      source);
 }
 
 
