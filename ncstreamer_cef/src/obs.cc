@@ -10,6 +10,8 @@
 
 #include "windows.h"  //NOLINT
 
+#include "obs-studio/plugins/win-capture/graphics-hook-info.h"
+
 #include "ncstreamer_cef/src_imported/from_obs_studio_ui/obs-app.hpp"
 
 
@@ -328,11 +330,22 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
 
   HWND handle = ::FindWindowExW(
       nullptr, nullptr, w_class_name.c_str(), w_title.c_str());
-  RECT rect;
-  GetClientRect(handle, &rect);
-  uint32_t width = rect.right - rect.left;
-  uint32_t height = rect.bottom - rect.top;
-  base_size_ = {width, height};
+  DWORD process_id;
+  GetWindowThreadProcessId(handle, &process_id);
+  std::wstring map_name = L"CaptureHook_HookInfo" + std::to_wstring(process_id);
+  for (int i = 0; i < 50; ++i) {
+    HANDLE hook_info_map = OpenFileMapping(
+        FILE_MAP_READ, false, map_name.c_str());
+    if (hook_info_map) {
+      struct hook_info *info = reinterpret_cast<struct hook_info *>(
+          MapViewOfFile(hook_info_map, FILE_MAP_READ, 0, 0, sizeof(info)));
+      if (info && info->cx != 0 && info->cy != 0) {
+        base_size_ = {info->cx, info->cy};
+        break;
+      }
+    }
+    Sleep(100);
+  }
 }
 
 
