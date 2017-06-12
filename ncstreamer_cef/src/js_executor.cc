@@ -73,7 +73,7 @@ void JsExecutor::Execute(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
     const std::string &arg0,
-    const StringPair &arg1) {
+    const StringPairVector &arg1) {
   std::stringstream js;
   AppendFunctionCall(func_name, arg0, BuildTree(arg1), &js);
 
@@ -227,9 +227,11 @@ boost::property_tree::ptree JsExecutor::BuildTree(
 
 
 boost::property_tree::ptree JsExecutor::BuildTree(
-    const StringPair &value) {
+    const StringPairVector &value) {
   boost::property_tree::ptree node;
-  node.add(value.first, value.second);
+  for (const auto &elem : value) {
+    node.add(elem.first, elem.second);
+  }
   return node;
 }
 

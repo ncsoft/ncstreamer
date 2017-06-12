@@ -294,13 +294,13 @@ void ClientRequestHandler::OnCommandServiceProviderLogOut(
         browser,
         "cef.onResponse",
         cmd,
-        std::make_pair("error", error));
+        JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd]() {
     JsExecutor::Execute(
         browser,
         "cef.onResponse",
         cmd,
-        std::make_pair("error", ""));
+        JsExecutor::StringPairVector{{"error", ""}});
   });
 }
 
@@ -351,7 +351,7 @@ void ClientRequestHandler::OnCommandStreamingStart(
         browser,
         "cef.onResponse",
         cmd,
-        std::make_pair("error", error));
+        JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd, source, mic_flag](const std::string &service_provider,
                                       const std::string &stream_url) {
     bool result = Obs::Get()->StartStreaming(
@@ -364,14 +364,14 @@ void ClientRequestHandler::OnCommandStreamingStart(
           browser,
           "cef.onResponse",
           cmd,
-          std::make_pair("error", ""));
+          JsExecutor::StringPairVector{{"error", ""}});
     });
     if (result == false) {
       JsExecutor::Execute(
           browser,
           "cef.onResponse",
           cmd,
-          std::make_pair("error", "obs internal"));
+          JsExecutor::StringPairVector{{"error", "obs internal"}});
     }
   });
 }
@@ -386,7 +386,7 @@ void ClientRequestHandler::OnCommandStreamingStop(
         browser,
         "cef.onResponse",
         cmd,
-        std::make_pair("error", ""));
+        JsExecutor::StringPairVector{{"error", ""}});
   });
 }
 
@@ -448,7 +448,7 @@ void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
       browser,
       "cef.onResponse",
       cmd,
-      std::make_pair("error", ""));
+      JsExecutor::StringPairVector{{"error", ""}});
 }
 
 
