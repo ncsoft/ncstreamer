@@ -674,7 +674,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 };
 
 
-cef.streamingStart.onResponse = function(error) {
+cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');

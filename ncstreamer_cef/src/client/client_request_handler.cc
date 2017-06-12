@@ -350,10 +350,12 @@ void ClientRequestHandler::OnCommandStreamingStart(
         service_provider,
         stream_url,
         mic_flag,
-        [browser, cmd]() {
+        [browser, cmd, service_provider, stream_url]() {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
           JsExecutor::StringPairVector{
-              {"error", ""}});
+              {"error", ""},
+              {"serviceProvider", service_provider},
+              {"streamUrl", stream_url}});
     });
     if (result == false) {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
