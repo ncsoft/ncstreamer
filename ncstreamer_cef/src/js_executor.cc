@@ -73,9 +73,9 @@ void JsExecutor::Execute(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
     const std::string &arg0,
-    const StringPair &arg1_0) {
+    const StringPair &arg1) {
   std::stringstream js;
-  AppendFunctionCall(func_name, arg0, BuildTree(arg1_0), &js);
+  AppendFunctionCall(func_name, arg0, BuildTree(arg1), &js);
   browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
 }
 
