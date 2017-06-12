@@ -685,7 +685,10 @@ cef.streamingStart.onResponse = function(error) {
   }
 
   if (remote.startRequestKey) {
-    cef.remoteStart.request(remote.startRequestKey, error);
+    cef.remoteStart.request(
+        remote.startRequestKey,
+        error);
+
     remote.startRequestKey = null;
   }
 };
