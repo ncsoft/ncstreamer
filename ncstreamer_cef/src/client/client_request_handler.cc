@@ -290,16 +290,10 @@ void ClientRequestHandler::OnCommandServiceProviderLogOut(
   StreamingService::Get()->LogOut(
       service_provider,
       [browser, cmd](const std::string &error) {
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd]() {
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", ""}});
   });
 }
@@ -347,10 +341,7 @@ void ClientRequestHandler::OnCommandStreamingStart(
       title,
       description,
       [browser, cmd](const std::string &error) {
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd, source, mic_flag](const std::string &service_provider,
                                       const std::string &stream_url) {
@@ -360,17 +351,11 @@ void ClientRequestHandler::OnCommandStreamingStart(
         stream_url,
         mic_flag,
         [browser, cmd]() {
-      JsExecutor::Execute(
-          browser,
-          "cef.onResponse",
-          cmd,
+      JsExecutor::Execute(browser, "cef.onResponse", cmd,
           JsExecutor::StringPairVector{{"error", ""}});
     });
     if (result == false) {
-      JsExecutor::Execute(
-          browser,
-          "cef.onResponse",
-          cmd,
+      JsExecutor::Execute(browser, "cef.onResponse", cmd,
           JsExecutor::StringPairVector{{"error", "obs internal"}});
     }
   });
@@ -382,10 +367,7 @@ void ClientRequestHandler::OnCommandStreamingStop(
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
   Obs::Get()->StopStreaming([browser, cmd]() {
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", ""}});
   });
 }
@@ -444,10 +426,7 @@ void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
   }
 
   Obs::Get()->UpdateVideoQuality({width, height}, fps, bitrate);
-  JsExecutor::Execute(
-      browser,
-      "cef.onResponse",
-      cmd,
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
       JsExecutor::StringPairVector{{"error", ""}});
 }
 
