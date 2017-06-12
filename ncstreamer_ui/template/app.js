@@ -434,8 +434,7 @@ function submitControl() {
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
-      app.streaming.startInfo.source =
-          ncsoft.select.getValue(app.dom.gameSelect);
+      app.streaming.startInfo.source = source;
       updateStreamingStatus('starting');
       return /*no error*/ '';
     },
