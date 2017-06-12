@@ -76,6 +76,7 @@ void JsExecutor::Execute(
     const StringPair &arg1) {
   std::stringstream js;
   AppendFunctionCall(func_name, arg0, BuildTree(arg1), &js);
+
   browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
 }
 
