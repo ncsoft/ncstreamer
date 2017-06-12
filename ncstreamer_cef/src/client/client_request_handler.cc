@@ -352,7 +352,8 @@ void ClientRequestHandler::OnCommandStreamingStart(
         mic_flag,
         [browser, cmd]() {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
-          JsExecutor::StringPairVector{{"error", ""}});
+          JsExecutor::StringPairVector{
+              {"error", ""}});
     });
     if (result == false) {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
