@@ -61,6 +61,8 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <PreBuildEvent>
       <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../ncstreamer_cef/src</Command>
@@ -82,6 +84,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
