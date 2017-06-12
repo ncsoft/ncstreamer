@@ -61,14 +61,13 @@ bool Obs::StartStreaming(
     const std::string &stream_url,
     const bool &mic,
     const ObsOutput::OnStarted &on_streaming_started) {
+  UpdateCurrentSource(source_info, mic);
   UpdateBaseResolution(source_info);
 
   ResetAudio();
   ResetVideo();
   obs_encoder_set_audio(audio_encoder_, obs_get_audio());
   obs_encoder_set_video(video_encoder_, obs_get_video());
-
-  UpdateCurrentSource(source_info, mic);
 
   std::string stream_server;
   std::string stream_key;
