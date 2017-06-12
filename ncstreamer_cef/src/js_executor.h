@@ -88,6 +88,9 @@ class JsExecutor {
       const std::string &value);
 
   static boost::property_tree::ptree BuildTree(
+      const StringPair &value);
+
+  static boost::property_tree::ptree BuildTree(
       const boost::property_tree::ptree &value);
 };
 }  // namespace ncstreamer

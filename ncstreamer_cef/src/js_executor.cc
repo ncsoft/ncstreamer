@@ -75,11 +75,7 @@ void JsExecutor::Execute(
     const std::string &arg0,
     const StringPair &arg1_0) {
   std::stringstream js;
-  boost::property_tree::ptree arg1;
-
-  arg1.add(arg1_0.first, arg1_0.second);
-
-  AppendFunctionCall(func_name, arg0, arg1, &js);
+  AppendFunctionCall(func_name, arg0, BuildTree(arg1_0), &js);
   browser->GetMainFrame()->ExecuteJavaScript(js.str(), "", 0);
 }
 
@@ -225,6 +221,14 @@ boost::property_tree::ptree JsExecutor::BuildTree(
     const std::string &value) {
   boost::property_tree::ptree node;
   node.put("", value);
+  return node;
+}
+
+
+boost::property_tree::ptree JsExecutor::BuildTree(
+    const StringPair &value) {
+  boost::property_tree::ptree node;
+  node.add(value.first, value.second);
   return node;
 }
 
