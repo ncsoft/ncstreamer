@@ -43,7 +43,14 @@ class RemoteServer {
 
   void RespondStreamingStart(
       int request_key,
-      const std::string &error);
+      const std::string &error,
+      const std::string &source,
+      const std::string &user_page,
+      const std::string &privacy,
+      const std::string &description,
+      const std::string &mic,
+      const std::string &service_provider,
+      const std::string &stream_url);
 
   void RespondStreamingStop(
       int request_key,
@@ -112,6 +119,15 @@ class RemoteServer {
   void OnNcStreamerExitRequest(
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
+
+  void BroadcastStreamingStart(
+      const std::string &source,
+      const std::string &user_page,
+      const std::string &privacy,
+      const std::string &description,
+      const std::string &mic,
+      const std::string &service_provider,
+      const std::string &stream_url);
 
   void Broadcast(const std::string &msg);
 

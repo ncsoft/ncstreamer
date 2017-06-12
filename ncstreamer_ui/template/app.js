@@ -436,6 +436,10 @@ function submitControl() {
           source, userPage, privacy, '' /* title */, description, mic);
       app.streaming.startInfo = {
         source: source,
+        userPage: userPage,
+        privacy: privacy,
+        description: description,
+        mic: mic,
       };
       updateStreamingStatus('starting');
       return /*no error*/ '';
@@ -685,9 +689,18 @@ cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
   }
 
   if (remote.startRequestKey) {
+    const startInfo = app.streaming.startInfo;
+
     cef.remoteStart.request(
         remote.startRequestKey,
-        error);
+        error,
+        startInfo.source,
+        startInfo.userPage,
+        startInfo.privacy,
+        startInfo.description,
+        startInfo.mic,
+        serviceProvider,
+        streamUrl);
 
     remote.startRequestKey = null;
   }

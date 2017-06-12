@@ -16,6 +16,7 @@ class RemoteMessage {
     kStreamingStatusResponse,
     kStreamingStartRequest = 201,
     kStreamingStartResponse,
+    kStreamingStartEvent,
     kStreamingStopRequest = 211,
     kStreamingStopResponse,
     kSettingsQualityUpdateRequest = 301,

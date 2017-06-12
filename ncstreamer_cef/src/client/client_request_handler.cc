@@ -531,8 +531,22 @@ void ClientRequestHandler::OnCommandRemoteStart(
     CefRefPtr<CefBrowser> /*browser*/) {
   auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
+  auto source_i = args.find("source");
+  auto user_page_i = args.find("userPage");
+  auto privacy_i = args.find("privacy");
+  auto description_i = args.find("description");
+  auto mic_i = args.find("mic");
+  auto service_provider_i = args.find("serviceProvider");
+  auto stream_url_i = args.find("streamUrl");
   if (request_key_i == args.end() ||
-      error_i == args.end()) {
+      error_i == args.end() ||
+      source_i == args.end() ||
+      user_page_i == args.end() ||
+      privacy_i == args.end() ||
+      description_i == args.end() ||
+      mic_i == args.end() ||
+      service_provider_i == args.end() ||
+      stream_url_i == args.end()) {
     assert(false);
     return;
   }
@@ -549,10 +563,24 @@ void ClientRequestHandler::OnCommandRemoteStart(
   }
 
   const std::string &error = error_i->second;
+  const std::string &source = source_i->second;
+  const std::string &user_page = user_page_i->second;
+  const std::string &privacy = privacy_i->second;
+  const std::string &description = description_i->second;
+  const std::string &mic = mic_i->second;
+  const std::string &service_provider = service_provider_i->second;
+  const std::string &stream_url = stream_url_i->second;
 
   RemoteServer::Get()->RespondStreamingStart(
       request_key,
-      error);
+      error,
+      source,
+      user_page,
+      privacy,
+      description,
+      mic,
+      service_provider,
+      stream_url);
 }
 
 
