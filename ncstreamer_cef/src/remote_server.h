@@ -13,6 +13,7 @@
 #include <thread>  // NOLINT
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "boost/asio/io_service.hpp"
 #include "boost/property_tree/ptree.hpp"
@@ -53,6 +54,19 @@ class RemoteServer {
       const std::string &error);
 
  private:
+  class ConnectionHasher {
+   public:
+    std::size_t operator()(
+        const websocketpp::connection_hdl &connection) const;
+  };
+
+  class ConnectionKeyeq {
+   public:
+    bool operator()(
+        const websocketpp::connection_hdl &left,
+        const websocketpp::connection_hdl &right) const;
+  };
+
   class RequestCache {
    public:
     RequestCache();
@@ -112,6 +126,9 @@ class RemoteServer {
   websocketpp::server<websocketpp::config::asio> server_;
   std::vector<std::thread> server_threads_;
   std::ofstream server_log_;
+
+  std::unordered_set<websocketpp::connection_hdl,
+      ConnectionHasher, ConnectionKeyeq> connections_;
 
   RequestCache request_cache_;
 };

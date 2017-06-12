@@ -156,6 +156,19 @@ void RemoteServer::RespondSettingsQualityUpdate(
 }
 
 
+std::size_t RemoteServer::ConnectionHasher::operator()(
+    const websocketpp::connection_hdl &connection) const {
+  return reinterpret_cast<std::size_t>(connection.lock().get());
+}
+
+
+bool RemoteServer::ConnectionKeyeq::operator()(
+    const websocketpp::connection_hdl &left,
+    const websocketpp::connection_hdl &right) const {
+  return (left.lock().get() == right.lock().get());
+}
+
+
 RemoteServer::RequestCache::RequestCache()
     : mutex_{},
       cache_{},
@@ -205,6 +218,7 @@ RemoteServer::RemoteServer(
       server_{},
       server_threads_{},
       server_log_{},
+      connections_{},
       request_cache_{} {
 }
 
@@ -268,16 +282,22 @@ RemoteServer::~RemoteServer() {
 
 void RemoteServer::OnFail(websocketpp::connection_hdl connection) {
   LogError("OnFail");
+
+  connections_.erase(connection);
 }
 
 
 void RemoteServer::OnOpen(websocketpp::connection_hdl connection) {
   LogInfo("OnOpen");
+
+  connections_.emplace(connection);
 }
 
 
 void RemoteServer::OnClose(websocketpp::connection_hdl connection) {
   LogInfo("OnClose");
+
+  connections_.erase(connection);
 }
 
 
