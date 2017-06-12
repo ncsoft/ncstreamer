@@ -11,7 +11,7 @@ const app = {
   streaming: {
     // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
-    start: {},
+    startInfo: {},
     popupBrowserId: 0,
     quality: {
       high: {
@@ -272,7 +272,7 @@ function stopInvalidSource(sources) {
     return;
   }
 
-  const currentSource = app.streaming.start.source;
+  const currentSource = app.streaming.startInfo.source;
   if (sources.includes(currentSource) == true) {
     return;
   }
@@ -434,7 +434,7 @@ function submitControl() {
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
-      app.streaming.start.source =
+      app.streaming.startInfo.source =
           ncsoft.select.getValue(app.dom.gameSelect);
       updateStreamingStatus('starting');
       return /*no error*/ '';
@@ -677,7 +677,7 @@ cef.streamingStart.onResponse = function(error) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');
-    app.streaming.start.source = null;
+    app.streaming.startInfo.source = null;
     updateStreamingStatus('standby');
   } else {
     updateStreamingStatus('onAir');
@@ -691,7 +691,7 @@ cef.streamingStart.onResponse = function(error) {
 
 
 cef.streamingStop.onResponse = function(error) {
-  app.streaming.start.source = null;
+  app.streaming.startInfo.source = null;
   updateStreamingStatus('standby');
 
   if (remote.stopRequestKey) {
