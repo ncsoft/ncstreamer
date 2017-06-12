@@ -73,7 +73,7 @@ void JsExecutor::Execute(
     CefRefPtr<CefBrowser> browser,
     const std::string &func_name,
     const std::string &arg0,
-    const std::pair<std::string, std::string> &arg1_0) {
+    const StringPair &arg1_0) {
   std::stringstream js;
   boost::property_tree::ptree arg1;
 
