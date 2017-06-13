@@ -43,11 +43,11 @@
     "NO_SELECT_GAME": "Select the game you want to stream.",
     "YES": "Yes",
     "NO": "No",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
-    "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "CLOSE_CHECK_MESSAGE1": "Closing the Streaming System will end the game stream.",
+    "CLOSE_CHECK_MESSAGE2": "Close streaming?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE1": "Warning",
+    "LOGIN_GUIDE_NOTICE2": "Streaming(BETA) is only supported in Window and Full Screen modes."
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -104,7 +104,7 @@
     "BROADCASTING": "Stream",
     "CONNECT_PLATFORM": "Account verbinden",
     "LOGIN_GUIDE1": "Mit NC Streaming",
-    "LOGIN_GUIDE2": "kannst du dein Spiel streamen.",
+    "LOGIN_GUIDE2": "du dein Spiel streamen.",
     "LOGIN_GUIDE3": "Verbinde dich zum Posten mit deinem Facebook-Konto.",
     "CONNECT_FACEBOOK": "Facebook-Konto verbinden",
     "CONNECT_INFO": "Verbindungsinformationen",
@@ -143,11 +143,11 @@
     "NO_SELECT_GAME": "Wähle das Spiel aus, das du streamen möchtest.",
     "YES": "Ja",
     "NO": "Nein",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
-    "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "CLOSE_CHECK_MESSAGE1": "Wenn du das Streamingsystem schließt, endet der Spielstream.",
+    "CLOSE_CHECK_MESSAGE2": "Streaming schließen?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE1": "Achtung",
+    "LOGIN_GUIDE_NOTICE2": "Streaming (BETA) wird nur im Fenster- und Vollbild-Modus unterstützt."
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -178,9 +178,9 @@
     "USE_MIC": "Utiliser micro",
     "ERROR_MESSAGE": "Connexion impossible à Facebook.\r\nRéessayez ultérieurement.",
     "START_BROADCASTING": "Lancer la diffusion",
-    "END_BROADCASTING": "Diffusion en cours",
+    "END_BROADCASTING": "Diffusion terminée",
     "PREPARING_BROADCASTING": "Préparation de la diffusion",
-    "ONAIR": "Diffusion",
+    "ONAIR": "Diffusion en cours",
     "SETTING": "Paramètres",
     "QUALITY": "Qualité",
     "CONFIRM": "Confirmer",
@@ -193,11 +193,11 @@
     "NO_SELECT_GAME": "Sélectionnez la partie à diffuser.",
     "YES": "Oui",
     "NO": "Non",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
-    "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "CLOSE_CHECK_MESSAGE1": "La fermeture du système de diffusion arrêtera la diffusion de la partie.",
+    "CLOSE_CHECK_MESSAGE2": "Fermer la diffusion ?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE1": "Attention",
+    "LOGIN_GUIDE_NOTICE2": "NC Streaming (BETA) est uniquement pris en charge en modes Fenêtre et Plein écran."
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -243,11 +243,11 @@
     "NO_SELECT_GAME": "Selecciona la partida que deseas transmitir.",
     "YES": "Sí",
     "NO": "No",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
-    "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "CLOSE_CHECK_MESSAGE1": "Si cierras el sistema de transmisión, finalizará la transmisión de la partida.",
+    "CLOSE_CHECK_MESSAGE2": "¿Quieres cerrar la transmisión?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE1": "Advertencia",
+    "LOGIN_GUIDE_NOTICE2": "Streaming(BETA) solo es compatible en modos de ventana y pantalla completa."
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -293,11 +293,11 @@
     "NO_SELECT_GAME": "Scegli il gioco di cui vuoi iniziare lo streaming.",
     "YES": "Sí",
     "NO": "No",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
-    "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "CLOSE_CHECK_MESSAGE1": "Chiudendo il sistema di streaming lo streaming verrà terminato.",
+    "CLOSE_CHECK_MESSAGE2": "Chiudere streaming?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE1": "Attenzione",
+    "LOGIN_GUIDE_NOTICE2": "Streaming(BETA) è supportato solo da Window e in modalità Full Screen."
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -343,11 +343,11 @@
     "NO_SELECT_GAME": "Wybierz grę, którą chcesz transmitować.",
     "YES": "Tak",
     "NO": "Nie",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
-    "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "CLOSE_CHECK_MESSAGE1": "Zamknięcie systemu transmisyjnego spowoduje przerwanie transmisji gry.",
+    "CLOSE_CHECK_MESSAGE2": "Zamknąć transmisję?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE1": "Ostrzeżenie",
+    "LOGIN_GUIDE_NOTICE2": "Funkcja transmisji (BETA) jest dostępna tylko w trybie okna i trybie pełnoekranowym."
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -393,11 +393,11 @@
     "NO_SELECT_GAME": "Selecione o jogo que deseja transmitir.",
     "YES": "Sim",
     "NO": "Não",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
-    "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "CLOSE_CHECK_MESSAGE1": "Fechar o Sistema de transmissão encerrará a transmissão do jogo.",
+    "CLOSE_CHECK_MESSAGE2": "Fechar transmissão?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE1": "Aviso",
+    "LOGIN_GUIDE_NOTICE2": "A transmissão (BETA) tem suporte apenas para os modos janela e tela cheia."
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -443,11 +443,11 @@
     "NO_SELECT_GAME": "Yayınlamak istediğiniz oyunu seçin.",
     "YES": "Evet",
     "NO": "Hayır",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
-    "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "CLOSE_CHECK_MESSAGE1": "Yayın Sistemini kapatırsanız oyun yayını sona erer.",
+    "CLOSE_CHECK_MESSAGE2": "Yayın kapatılsın mı?",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE1": "Uyarı",
+    "LOGIN_GUIDE_NOTICE2": "Yayın (BETA) sadece Pencere ve Tam Ekran modlarında desteklenir."
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",
