@@ -318,9 +318,9 @@ void Obs::ReleaseCurrentService() {
 
 void Obs::UpdateBaseResolution(const std::string &source_info) {
   std::string title_class = source_info.substr(
-    0, source_info.find_last_of(":"));
+      0, source_info.find_last_of(":"));
   std::string class_name = title_class.substr(
-    title_class.find_last_of(":") + 1, title_class.length());
+      title_class.find_last_of(":") + 1, title_class.length());
   std::string title = title_class.substr(0, title_class.find_last_of(":"));
 
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -328,7 +328,7 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
   std::wstring w_title = converter.from_bytes(title);
 
   HWND handle = ::FindWindowExW(
-    nullptr, nullptr, w_class_name.c_str(), w_title.c_str());
+      nullptr, nullptr, w_class_name.c_str(), w_title.c_str());
   RECT rect;
   GetClientRect(handle, &rect);
   uint32_t width = rect.right - rect.left;
