@@ -85,10 +85,7 @@ void RemoteServer::NotifyStreamingStart(
     const std::string &mic,
     const std::string &service_provider,
     const std::string &stream_url) {
-  bool result = RespondStreamingStart(request_key, error);
-  if (result == false) {
-    return;
-  }
+  RespondStreamingStart(request_key, error);
 
   if (error.empty() == true) {
     BroadcastStreamingStart(
@@ -107,10 +104,7 @@ void RemoteServer::NotifyStreamingStop(
     int request_key,
     const std::string &error,
     const std::string &source) {
-  bool result = RespondStreamingStop(request_key, error);
-  if (result == false) {
-    return;
-  }
+  RespondStreamingStop(request_key, error);
 
   if (error.empty() == true) {
     BroadcastStreamingStop(source);
@@ -121,10 +115,7 @@ void RemoteServer::NotifyStreamingStop(
 void RemoteServer::NotifySettingsQualityUpdate(
     int request_key,
     const std::string &error) {
-  bool result = RespondSettingsQualityUpdate(request_key, error);
-  if (result == false) {
-    return;
-  }
+  RespondSettingsQualityUpdate(request_key, error);
 }
 
 
