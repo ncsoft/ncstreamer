@@ -557,11 +557,6 @@ void ClientRequestHandler::OnCommandRemoteStart(
   } catch (...) {
   }
 
-  if (request_key == 0) {
-    assert(false);
-    return;
-  }
-
   const std::string &error = error_i->second;
   const std::string &source = source_i->second;
   const std::string &user_page = user_page_i->second;
@@ -604,11 +599,6 @@ void ClientRequestHandler::OnCommandRemoteStop(
   } catch (...) {
   }
 
-  if (request_key == 0) {
-    assert(false);
-    return;
-  }
-
   const std::string &error = error_i->second;
   const std::string &source = source_i->second;
 
@@ -635,11 +625,6 @@ void ClientRequestHandler::OnCommandRemoteQualityUpdate(
   try {
     request_key = std::stoi(request_key_i->second);
   } catch (...) {
-  }
-
-  if (request_key == 0) {
-    assert(false);
-    return;
   }
 
   const std::string &error = error_i->second;

@@ -688,7 +688,8 @@ cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
     updateStreamingStatus('onAir');
   }
 
-  if (remote.startRequestKey) {
+  // notify remote.
+  {
     const startInfo = app.streaming.startInfo;
 
     cef.remoteStart.request(
@@ -712,7 +713,8 @@ cef.streamingStop.onResponse = function(error) {
   app.streaming.startInfo = {};
   updateStreamingStatus('standby');
 
-  if (remote.stopRequestKey) {
+  // notify remote.
+  {
     cef.remoteStop.request(remote.stopRequestKey, error, source);
     remote.stopRequestKey = '';
   }
@@ -720,7 +722,8 @@ cef.streamingStop.onResponse = function(error) {
 
 
 cef.settingsVideoQualityUpdate.onResponse = function(error) {
-  if (remote.qualityUpdateRequestKey) {
+  // notify remote.
+  {
     cef.remoteQualityUpdate.request(remote.qualityUpdateRequestKey, error);
     remote.qualityUpdateRequestKey = '';
   }
