@@ -702,7 +702,7 @@ cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
         serviceProvider,
         streamUrl);
 
-    remote.startRequestKey = null;
+    remote.startRequestKey = '';
   }
 };
 
@@ -714,7 +714,7 @@ cef.streamingStop.onResponse = function(error) {
 
   if (remote.stopRequestKey) {
     cef.remoteStop.request(remote.stopRequestKey, error, source);
-    remote.stopRequestKey = null;
+    remote.stopRequestKey = '';
   }
 };
 
@@ -722,6 +722,6 @@ cef.streamingStop.onResponse = function(error) {
 cef.settingsVideoQualityUpdate.onResponse = function(error) {
   if (remote.qualityUpdateRequestKey) {
     cef.remoteQualityUpdate.request(remote.qualityUpdateRequestKey, error);
-    remote.qualityUpdateRequestKey = null;
+    remote.qualityUpdateRequestKey = '';
   }
 };

@@ -131,9 +131,9 @@ const cef = (function() {
 
 
 const remote = {
-  startRequestKey: null,
-  stopRequestKey: null,
-  qualityUpdateRequestKey: null,
+  startRequestKey: '',
+  stopRequestKey: '',
+  qualityUpdateRequestKey: '',
   onStreamingStatusRequest: function(requestKey) {
     const status = app.streaming.status;
     const sourceTitle = app.dom.gameSelect.children[0].textContent;
