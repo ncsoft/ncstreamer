@@ -557,11 +557,6 @@ void ClientRequestHandler::OnCommandRemoteStart(
   } catch (...) {
   }
 
-  if (request_key == 0) {
-    assert(false);
-    return;
-  }
-
   const std::string &error = error_i->second;
   const std::string &source = source_i->second;
   const std::string &user_page = user_page_i->second;
@@ -571,7 +566,7 @@ void ClientRequestHandler::OnCommandRemoteStart(
   const std::string &service_provider = service_provider_i->second;
   const std::string &stream_url = stream_url_i->second;
 
-  RemoteServer::Get()->RespondStreamingStart(
+  RemoteServer::Get()->NotifyStreamingStart(
       request_key,
       error,
       source,
@@ -604,15 +599,10 @@ void ClientRequestHandler::OnCommandRemoteStop(
   } catch (...) {
   }
 
-  if (request_key == 0) {
-    assert(false);
-    return;
-  }
-
   const std::string &error = error_i->second;
   const std::string &source = source_i->second;
 
-  RemoteServer::Get()->RespondStreamingStop(
+  RemoteServer::Get()->NotifyStreamingStop(
       request_key,
       error,
       source);
@@ -637,14 +627,9 @@ void ClientRequestHandler::OnCommandRemoteQualityUpdate(
   } catch (...) {
   }
 
-  if (request_key == 0) {
-    assert(false);
-    return;
-  }
-
   const std::string &error = error_i->second;
 
-  RemoteServer::Get()->RespondSettingsQualityUpdate(
+  RemoteServer::Get()->NotifySettingsQualityUpdate(
       request_key,
       error);
 }
