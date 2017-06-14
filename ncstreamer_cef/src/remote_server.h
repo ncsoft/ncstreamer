@@ -41,7 +41,7 @@ class RemoteServer {
       const std::string &user_name,
       const std::string &quality);
 
-  void RespondStreamingStart(
+  void NotifyStreamingStart(
       int request_key,
       const std::string &error,
       const std::string &source,
@@ -52,12 +52,12 @@ class RemoteServer {
       const std::string &service_provider,
       const std::string &stream_url);
 
-  void RespondStreamingStop(
+  void NotifyStreamingStop(
       int request_key,
       const std::string &error,
       const std::string &source);
 
-  void RespondSettingsQualityUpdate(
+  void NotifySettingsQualityUpdate(
       int request_key,
       const std::string &error);
 

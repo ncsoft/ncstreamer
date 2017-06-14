@@ -75,7 +75,7 @@ void RemoteServer::RespondStreamingStatus(
 }
 
 
-void RemoteServer::RespondStreamingStart(
+void RemoteServer::NotifyStreamingStart(
     int request_key,
     const std::string &error,
     const std::string &source,
@@ -120,7 +120,7 @@ void RemoteServer::RespondStreamingStart(
 }
 
 
-void RemoteServer::RespondStreamingStop(
+void RemoteServer::NotifyStreamingStop(
     int request_key,
     const std::string &error,
     const std::string &source) {
@@ -152,7 +152,7 @@ void RemoteServer::RespondStreamingStop(
 }
 
 
-void RemoteServer::RespondSettingsQualityUpdate(
+void RemoteServer::NotifySettingsQualityUpdate(
     int request_key,
     const std::string &error) {
   websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
