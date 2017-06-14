@@ -121,6 +121,18 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  bool RespondStreamingStart(
+      int request_key,
+      const std::string &error);
+
+  bool RespondStreamingStop(
+      int request_key,
+      const std::string &error);
+
+  bool RespondSettingsQualityUpdate(
+      int request_key,
+      const std::string &error);
+
   void BroadcastStreamingStart(
       const std::string &source,
       const std::string &user_page,

@@ -85,25 +85,8 @@ void RemoteServer::NotifyStreamingStart(
     const std::string &mic,
     const std::string &service_provider,
     const std::string &stream_url) {
-  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
-  if (!connection.lock()) {
-    LogWarning("RespondStreamingStart: !connection.lock()");
-    return;
-  }
-
-  std::stringstream msg;
-  {
-    boost::property_tree::ptree tree;
-    tree.put("type", static_cast<int>(
-        RemoteMessage::MessageType::kStreamingStartResponse));
-    tree.put("error", error);
-    boost::property_tree::write_json(msg, tree, false);
-  }
-
-  websocketpp::lib::error_code ec;
-  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
-  if (ec) {
-    LogError(ec.message());
+  bool result = RespondStreamingStart(request_key, error);
+  if (result == false) {
     return;
   }
 
@@ -124,25 +107,8 @@ void RemoteServer::NotifyStreamingStop(
     int request_key,
     const std::string &error,
     const std::string &source) {
-  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
-  if (!connection.lock()) {
-    LogWarning("RespondStreamingStop: !connection.lock()");
-    return;
-  }
-
-  std::stringstream msg;
-  {
-    boost::property_tree::ptree tree;
-    tree.put("type", static_cast<int>(
-        RemoteMessage::MessageType::kStreamingStopResponse));
-    tree.put("error", error);
-    boost::property_tree::write_json(msg, tree, false);
-  }
-
-  websocketpp::lib::error_code ec;
-  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
-  if (ec) {
-    LogError(ec.message());
+  bool result = RespondStreamingStop(request_key, error);
+  if (result == false) {
     return;
   }
 
@@ -155,25 +121,8 @@ void RemoteServer::NotifyStreamingStop(
 void RemoteServer::NotifySettingsQualityUpdate(
     int request_key,
     const std::string &error) {
-  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
-  if (!connection.lock()) {
-    LogWarning("RespondSettingsQualityUpdate: !connection.lock()");
-    return;
-  }
-
-  std::stringstream msg;
-  {
-    boost::property_tree::ptree tree;
-    tree.put("type", static_cast<int>(
-        RemoteMessage::MessageType::kSettingsQualityUpdateResponse));
-    tree.put("error", error);
-    boost::property_tree::write_json(msg, tree, false);
-  }
-
-  websocketpp::lib::error_code ec;
-  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
-  if (ec) {
-    LogError(ec.message());
+  bool result = RespondSettingsQualityUpdate(request_key, error);
+  if (result == false) {
     return;
   }
 }
@@ -454,6 +403,93 @@ void RemoteServer::OnNcStreamerExitRequest(
     const boost::property_tree::ptree &/*tree*/) {
   HWND wnd = browser_app_->GetMainBrowser()->GetHost()->GetWindowHandle();
   ::PostMessage(wnd, WM_CLOSE, NULL, NULL);
+}
+
+
+bool RemoteServer::RespondStreamingStart(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondStreamingStart: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kStreamingStartResponse));
+    tree.put("error", error);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondStreamingStop(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondStreamingStop: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kStreamingStopResponse));
+    tree.put("error", error);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsQualityUpdate(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsQualityUpdate: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsQualityUpdateResponse));
+    tree.put("error", error);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
 }
 
 
