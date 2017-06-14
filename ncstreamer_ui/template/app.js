@@ -11,7 +11,7 @@ const app = {
   streaming: {
     // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
-    start: {},
+    startInfo: {},
     popupBrowserId: 0,
     quality: {
       high: {
@@ -272,7 +272,7 @@ function stopInvalidSource(sources) {
     return;
   }
 
-  const currentSource = app.streaming.start.source;
+  const currentSource = app.streaming.startInfo.source;
   if (sources.includes(currentSource) == true) {
     return;
   }
@@ -434,8 +434,13 @@ function submitControl() {
 
       cef.streamingStart.request(
           source, userPage, privacy, '' /* title */, description, mic);
-      app.streaming.start.source =
-          ncsoft.select.getValue(app.dom.gameSelect);
+      app.streaming.startInfo = {
+        source: source,
+        userPage: userPage,
+        privacy: privacy,
+        description: description,
+        mic: mic,
+      };
       updateStreamingStatus('starting');
       return /*no error*/ '';
     },
@@ -673,29 +678,42 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 };
 
 
-cef.streamingStart.onResponse = function(error) {
+cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');
-    app.streaming.start.source = null;
+    app.streaming.startInfo = {};
     updateStreamingStatus('standby');
   } else {
     updateStreamingStatus('onAir');
   }
 
   if (remote.startRequestKey) {
-    cef.remoteStart.request(remote.startRequestKey, error);
+    const startInfo = app.streaming.startInfo;
+
+    cef.remoteStart.request(
+        remote.startRequestKey,
+        error,
+        startInfo.source,
+        startInfo.userPage,
+        startInfo.privacy,
+        startInfo.description,
+        startInfo.mic,
+        serviceProvider,
+        streamUrl);
+
     remote.startRequestKey = null;
   }
 };
 
 
 cef.streamingStop.onResponse = function(error) {
-  app.streaming.start.source = null;
+  const source = app.streaming.startInfo.source;
+  app.streaming.startInfo = {};
   updateStreamingStatus('standby');
 
   if (remote.stopRequestKey) {
-    cef.remoteStop.request(remote.stopRequestKey, error);
+    cef.remoteStop.request(remote.stopRequestKey, error, source);
     remote.stopRequestKey = null;
   }
 };

@@ -31,7 +31,7 @@ const cef = (function() {
     'streaming/start': {
       request: ['source', 'userPage', 'privacy', 'title', 'description',
                 'mic'],
-      response: ['error'],
+      response: ['error', 'serviceProvider', 'streamUrl'],
     },
     'streaming/stop': {
       request: [],
@@ -62,11 +62,12 @@ const cef = (function() {
       response: [],
     },
     'remote/start': {
-      request: ['requestKey', 'error'],
+      request: ['requestKey', 'error', 'source', 'userPage', 'privacy',
+                'description', 'mic', 'serviceProvider', 'streamUrl'],
       response: [],
     },
     'remote/stop': {
-      request: ['requestKey', 'error'],
+      request: ['requestKey', 'error', 'source'],
       response: [],
     },
     'remote/quality/update': {
@@ -151,7 +152,7 @@ const remote = {
 
     const status = app.streaming.status;
     if (status != 'standby') {
-      const startTitle = getTitleFromSource(app.streaming.start.source);
+      const startTitle = getTitleFromSource(app.streaming.startInfo.source);
       const errorType = (sourceTitle == startTitle) ?
           'not standby: self' : 'not standby: other';
       cef.remoteStart.request(requestKey, errorType);
@@ -181,7 +182,7 @@ const remote = {
       return;
     }
 
-    const startTitle = getTitleFromSource(app.streaming.start.source);
+    const startTitle = getTitleFromSource(app.streaming.startInfo.source);
     if (sourceTitle != startTitle) {
       cef.remoteStop.request(requestKey, 'title mismatch');
       return;

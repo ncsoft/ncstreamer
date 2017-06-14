@@ -290,17 +290,11 @@ void ClientRequestHandler::OnCommandServiceProviderLogOut(
   StreamingService::Get()->LogOut(
       service_provider,
       [browser, cmd](const std::string &error) {
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
-        std::make_pair("error", error));
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd]() {
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
-        std::make_pair("error", ""));
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", ""}});
   });
 }
 
@@ -347,11 +341,8 @@ void ClientRequestHandler::OnCommandStreamingStart(
       title,
       description,
       [browser, cmd](const std::string &error) {
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
-        std::make_pair("error", error));
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd, source, mic_flag](const std::string &service_provider,
                                       const std::string &stream_url) {
     bool result = Obs::Get()->StartStreaming(
@@ -359,19 +350,16 @@ void ClientRequestHandler::OnCommandStreamingStart(
         service_provider,
         stream_url,
         mic_flag,
-        [browser, cmd]() {
-      JsExecutor::Execute(
-          browser,
-          "cef.onResponse",
-          cmd,
-          std::make_pair("error", ""));
+        [browser, cmd, service_provider, stream_url]() {
+      JsExecutor::Execute(browser, "cef.onResponse", cmd,
+          JsExecutor::StringPairVector{
+              {"error", ""},
+              {"serviceProvider", service_provider},
+              {"streamUrl", stream_url}});
     });
     if (result == false) {
-      JsExecutor::Execute(
-          browser,
-          "cef.onResponse",
-          cmd,
-          std::make_pair("error", "obs internal"));
+      JsExecutor::Execute(browser, "cef.onResponse", cmd,
+          JsExecutor::StringPairVector{{"error", "obs internal"}});
     }
   });
 }
@@ -382,11 +370,8 @@ void ClientRequestHandler::OnCommandStreamingStop(
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
   Obs::Get()->StopStreaming([browser, cmd]() {
-    JsExecutor::Execute(
-        browser,
-        "cef.onResponse",
-        cmd,
-        std::make_pair("error", ""));
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", ""}});
   });
 }
 
@@ -444,11 +429,8 @@ void ClientRequestHandler::OnCommandSettingsVideoQualityUpdate(
   }
 
   Obs::Get()->UpdateVideoQuality({width, height}, fps, bitrate);
-  JsExecutor::Execute(
-      browser,
-      "cef.onResponse",
-      cmd,
-      std::make_pair("error", ""));
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", ""}});
 }
 
 
@@ -549,8 +531,22 @@ void ClientRequestHandler::OnCommandRemoteStart(
     CefRefPtr<CefBrowser> /*browser*/) {
   auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
+  auto source_i = args.find("source");
+  auto user_page_i = args.find("userPage");
+  auto privacy_i = args.find("privacy");
+  auto description_i = args.find("description");
+  auto mic_i = args.find("mic");
+  auto service_provider_i = args.find("serviceProvider");
+  auto stream_url_i = args.find("streamUrl");
   if (request_key_i == args.end() ||
-      error_i == args.end()) {
+      error_i == args.end() ||
+      source_i == args.end() ||
+      user_page_i == args.end() ||
+      privacy_i == args.end() ||
+      description_i == args.end() ||
+      mic_i == args.end() ||
+      service_provider_i == args.end() ||
+      stream_url_i == args.end()) {
     assert(false);
     return;
   }
@@ -567,10 +563,24 @@ void ClientRequestHandler::OnCommandRemoteStart(
   }
 
   const std::string &error = error_i->second;
+  const std::string &source = source_i->second;
+  const std::string &user_page = user_page_i->second;
+  const std::string &privacy = privacy_i->second;
+  const std::string &description = description_i->second;
+  const std::string &mic = mic_i->second;
+  const std::string &service_provider = service_provider_i->second;
+  const std::string &stream_url = stream_url_i->second;
 
   RemoteServer::Get()->RespondStreamingStart(
       request_key,
-      error);
+      error,
+      source,
+      user_page,
+      privacy,
+      description,
+      mic,
+      service_provider,
+      stream_url);
 }
 
 
@@ -580,8 +590,10 @@ void ClientRequestHandler::OnCommandRemoteStop(
     CefRefPtr<CefBrowser> /*browser*/) {
   auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
+  auto source_i = args.find("source");
   if (request_key_i == args.end() ||
-      error_i == args.end()) {
+      error_i == args.end() ||
+      source_i == args.end()) {
     assert(false);
     return;
   }
@@ -598,10 +610,12 @@ void ClientRequestHandler::OnCommandRemoteStop(
   }
 
   const std::string &error = error_i->second;
+  const std::string &source = source_i->second;
 
   RemoteServer::Get()->RespondStreamingStop(
       request_key,
-      error);
+      error,
+      source);
 }
 
 

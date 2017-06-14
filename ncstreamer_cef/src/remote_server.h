@@ -13,6 +13,7 @@
 #include <thread>  // NOLINT
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "boost/asio/io_service.hpp"
 #include "boost/property_tree/ptree.hpp"
@@ -42,17 +43,38 @@ class RemoteServer {
 
   void RespondStreamingStart(
       int request_key,
-      const std::string &error);
+      const std::string &error,
+      const std::string &source,
+      const std::string &user_page,
+      const std::string &privacy,
+      const std::string &description,
+      const std::string &mic,
+      const std::string &service_provider,
+      const std::string &stream_url);
 
   void RespondStreamingStop(
       int request_key,
-      const std::string &error);
+      const std::string &error,
+      const std::string &source);
 
   void RespondSettingsQualityUpdate(
       int request_key,
       const std::string &error);
 
  private:
+  class ConnectionHasher {
+   public:
+    std::size_t operator()(
+        const websocketpp::connection_hdl &connection) const;
+  };
+
+  class ConnectionKeyeq {
+   public:
+    bool operator()(
+        const websocketpp::connection_hdl &left,
+        const websocketpp::connection_hdl &right) const;
+  };
+
   class RequestCache {
    public:
     RequestCache();
@@ -99,6 +121,20 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void BroadcastStreamingStart(
+      const std::string &source,
+      const std::string &user_page,
+      const std::string &privacy,
+      const std::string &description,
+      const std::string &mic,
+      const std::string &service_provider,
+      const std::string &stream_url);
+
+  void BroadcastStreamingStop(
+      const std::string &source);
+
+  void Broadcast(const std::string &msg);
+
   void LogError(const std::string &err_msg);
   void LogWarning(const std::string &warn_msg);
   void LogInfo(const std::string &info_msg);
@@ -112,6 +148,9 @@ class RemoteServer {
   websocketpp::server<websocketpp::config::asio> server_;
   std::vector<std::thread> server_threads_;
   std::ofstream server_log_;
+
+  std::unordered_set<websocketpp::connection_hdl,
+      ConnectionHasher, ConnectionKeyeq> connections_;
 
   RequestCache request_cache_;
 };
