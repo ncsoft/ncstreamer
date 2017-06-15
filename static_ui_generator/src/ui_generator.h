@@ -33,6 +33,11 @@ extern ContentsVector GenerateLocale(
     const ContentsVector &templates,
     const boost::property_tree::ptree &texts);
 
+extern std::string ReplaceTexts(
+    const std::string &extension,
+    const std::string &contents,
+    const boost::property_tree::ptree &texts);
+
 extern void WriteLocale(
     const std::string &output_dir,
     const std::string &locale,

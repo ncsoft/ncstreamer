@@ -88,6 +88,18 @@ ContentsVector GenerateLocale(
     const auto &file_path = elem.first;
     const auto &contents = elem.second;
     const std::string &extension = file_path.extension().string();
+    const std::string &output_contents =
+        ReplaceTexts(extension, contents, texts);
+    outputs.emplace_back(file_path, output_contents);
+  }
+  return outputs;
+}
+
+
+std::string ReplaceTexts(
+    const std::string &extension,
+    const std::string &contents,
+    const boost::property_tree::ptree &texts) {
     std::string output_contents = contents;
 
     // replace loop
@@ -115,9 +127,7 @@ ContentsVector GenerateLocale(
       }
       boost::replace_all(output_contents, key.first, text);
     }
-    outputs.emplace_back(file_path, output_contents);
-  }
-  return outputs;
+  return output_contents;
 }
 
 
