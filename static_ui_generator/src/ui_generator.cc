@@ -41,8 +41,8 @@ std::string Run(
   try {
     // locale loop
     for (const auto &prop : texts_all) {
-      auto locale = prop.first;
-      auto texts = prop.second;
+      const auto &locale = prop.first;
+      const auto &texts = prop.second;
 
       // file loop
       for (boost::filesystem::directory_iterator i{input_dir};
