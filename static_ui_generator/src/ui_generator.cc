@@ -87,6 +87,7 @@ ContentsVector GenerateLocale(
   for (const auto &elem : templates) {
     const auto &file_path = elem.first;
     const auto &contents = elem.second;
+    const std::string &extension = file_path.extension().string();
     std::string output_contents = contents;
 
     // replace loop
@@ -101,7 +102,6 @@ ContentsVector GenerateLocale(
     }
     for (const auto &key : key_map) {
       std::string &text = texts.get<std::string>(key.second);
-      const std::string &extension = file_path.extension().string();
       if (extension == ".js") {
         static const std::unordered_map<std::string,
                                         std::string> kEscapeChars{
