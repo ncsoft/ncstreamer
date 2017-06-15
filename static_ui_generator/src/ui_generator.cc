@@ -74,9 +74,9 @@ ContentsVector GenerateLocale(
     static const std::regex kPattern{R"(%([_A-Z][_A-Z0-9]*)%)"};
     std::sregex_iterator words_begin{
         contents.begin(), contents.end(), kPattern};
-    for (std::sregex_iterator j = words_begin;
-         j != std::sregex_iterator(); ++j) {
-      const std::smatch &matched = *j;
+    for (std::sregex_iterator i = words_begin;
+         i != std::sregex_iterator(); ++i) {
+      const std::smatch &matched = *i;
       key_map.emplace(matched.str(), matched[1].str());
     }
     for (const auto &key : key_map) {
