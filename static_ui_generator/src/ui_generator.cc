@@ -86,12 +86,12 @@ ContentsVector GenerateLocale(
 
   // file loop
   for (const auto &elem : templates) {
-    const auto &file_path = elem.first;
+    const auto &file_name = elem.first;
     const auto &contents = elem.second;
-    const std::string &extension = file_path.extension().string();
+    const std::string &extension = file_name.extension().string();
     const std::string &output_contents =
         ReplaceTexts(extension, contents, texts);
-    outputs.emplace_back(file_path, output_contents);
+    outputs.emplace_back(file_name, output_contents);
   }
   return outputs;
 }
@@ -140,12 +140,12 @@ void WriteLocale(
   const boost::filesystem::path dir{output_dir_path / locale_path};
   boost::filesystem::create_directories(dir);
   for (const auto &elem : outputs) {
-    const auto &file_path = elem.first;
+    const auto &file_name = elem.first;
     const auto &output_contents = elem.second;
 
     // create file
     const boost::filesystem::path filepath =
-        dir / file_path.filename().c_str();
+        dir / file_name.filename().c_str();
     boost::filesystem::ofstream ofs{filepath};
     ofs << output_contents;
     ofs.close();
