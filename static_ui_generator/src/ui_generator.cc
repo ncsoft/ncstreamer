@@ -137,12 +137,12 @@ void WriteLocale(
     const std::string &locale,
     const ContentsVector &outputs) {
   boost::filesystem::path locale_path{locale};
+  const boost::filesystem::path dir{output_dir_path / locale_path};
   for (const auto &elem : outputs) {
     const auto &file_path = elem.first;
     const auto &output_contents = elem.second;
 
     // create file
-    const boost::filesystem::path dir{output_dir_path / locale_path};
     if (boost::filesystem::exists(dir) ||
         boost::filesystem::create_directories(dir)) {
       const boost::filesystem::path file_name =
