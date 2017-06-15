@@ -14,7 +14,6 @@
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/filesystem.hpp"
 #include "boost/property_tree/json_parser.hpp"
-#include "boost/property_tree/ptree.hpp"
 
 
 namespace static_ui_generator {
@@ -46,6 +45,23 @@ std::string Run(
     for (const auto &prop : texts_all) {
       const auto &locale = prop.first;
       const auto &texts = prop.second;
+
+      const auto &outputs = GenerateLocale(templates, texts);
+      WriteLocale(output_dir, locale, outputs);
+
+      *info_out << "Done: " << locale << std::endl;
+    }
+  } catch (const std::exception &e) {
+    err_msg = e.what();
+  }
+  return err_msg;
+}
+
+
+ContentsVector GenerateLocale(
+    const ContentsVector &templates,
+    const boost::property_tree::ptree &texts) {
+  ContentsVector outputs{};
 
       // file loop
       for (const auto &elem : templates) {
@@ -79,6 +95,19 @@ std::string Run(
           }
           boost::replace_all(output_contents, key.first, text);
         }
+        outputs.emplace_back(file_path, output_contents);
+      }
+  return outputs;
+}
+
+
+void WriteLocale(
+    const std::string &output_dir,
+    const std::string &locale,
+    const ContentsVector &outputs) {
+  for (const auto &elem : outputs) {
+    const auto &file_path = elem.first;
+    const auto &output_contents = elem.second;
 
         // create file
         const boost::filesystem::path dir{
@@ -92,14 +121,7 @@ std::string Run(
           ofs << output_contents;
           ofs.close();
         }
-      }
-
-      *info_out << "Done: " << locale << std::endl;
-    }
-  } catch (const std::exception &e) {
-    err_msg = e.what();
   }
-  return err_msg;
 }
 
 

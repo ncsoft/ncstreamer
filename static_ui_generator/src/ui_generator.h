@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "boost/filesystem/path.hpp"
+#include "boost/property_tree/ptree.hpp"
 
 
 namespace static_ui_generator {
@@ -27,6 +28,15 @@ extern std::string Run(
 
 extern ContentsVector ReadTemplates(
     const std::string &input_dir);
+
+extern ContentsVector GenerateLocale(
+    const ContentsVector &templates,
+    const boost::property_tree::ptree &texts);
+
+extern void WriteLocale(
+    const std::string &output_dir,
+    const std::string &locale,
+    const ContentsVector &outputs);
 }  // namespace static_ui_generator
 
 
