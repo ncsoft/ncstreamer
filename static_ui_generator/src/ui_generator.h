@@ -24,6 +24,9 @@ extern std::string Run(
     const std::string &input_dir,
     const std::string &output_dir,
     std::ostream *info_out);
+
+extern ContentsVector ReadTemplates(
+    const std::string &input_dir);
 }  // namespace static_ui_generator
 
 

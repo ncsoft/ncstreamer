@@ -38,20 +38,7 @@ std::string Run(
   *info_out << "Target locales: " << texts_all.size() << std::endl;
 
   // read input dir
-  ContentsVector templates;
-  for (boost::filesystem::directory_iterator i{input_dir};
-       i != boost::filesystem::directory_iterator(); ++i) {
-    if (!is_regular_file(i->status())) {
-      continue;
-    }
-    const auto &file_path = i->path();
-    boost::filesystem::ifstream ifs{file_path.c_str()};
-    std::string contents{
-        std::istreambuf_iterator<char>{ifs},
-        std::istreambuf_iterator<char>{}};
-    ifs.close();
-    templates.emplace_back(file_path.filename(), contents);
-  }
+  const auto &templates = ReadTemplates(input_dir);
   *info_out << "Target template files: " << templates.size() << std::endl;
 
   try {
@@ -113,5 +100,25 @@ std::string Run(
     err_msg = e.what();
   }
   return err_msg;
+}
+
+
+ContentsVector ReadTemplates(
+    const std::string &input_dir) {
+  ContentsVector templates;
+  for (boost::filesystem::directory_iterator i{input_dir};
+       i != boost::filesystem::directory_iterator(); ++i) {
+    if (!is_regular_file(i->status())) {
+      continue;
+    }
+    const auto &file_path = i->path();
+    boost::filesystem::ifstream ifs{file_path.c_str()};
+    std::string contents{
+        std::istreambuf_iterator<char>{ifs},
+        std::istreambuf_iterator<char>{}};
+    ifs.close();
+    templates.emplace_back(file_path.filename(), contents);
+  }
+  return templates;
 }
 }  // namespace static_ui_generator
