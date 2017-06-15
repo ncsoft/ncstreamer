@@ -10,7 +10,6 @@
 #include <locale>
 #include <regex>  // NOLINT
 #include <unordered_map>
-#include <vector>
 
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/filesystem.hpp"
@@ -38,6 +37,22 @@ std::string Run(
   }
   *info_out << "Target locales: " << texts_all.size() << std::endl;
 
+  // read input dir
+  ContentsVector templates;
+  for (boost::filesystem::directory_iterator i{input_dir};
+       i != boost::filesystem::directory_iterator(); ++i) {
+    if (!is_regular_file(i->status())) {
+      continue;
+    }
+    const auto &file_path = i->path();
+    boost::filesystem::ifstream ifs{file_path.c_str()};
+    std::string contents{
+        std::istreambuf_iterator<char>{ifs},
+        std::istreambuf_iterator<char>{}};
+    ifs.close();
+    templates.emplace_back(file_path.filename(), contents);
+  }
+
   try {
     // locale loop
     for (const auto &prop : texts_all) {
@@ -45,17 +60,9 @@ std::string Run(
       const auto &texts = prop.second;
 
       // file loop
-      for (boost::filesystem::directory_iterator i{input_dir};
-           i != boost::filesystem::directory_iterator(); ++i) {
-        if (!is_regular_file(i->status())) {
-          continue;
-        }
-        const auto &file_path = i->path();
-        boost::filesystem::ifstream ifs{file_path.c_str()};
-        std::string contents{
-            std::istreambuf_iterator<char>{ifs},
-            std::istreambuf_iterator<char>{}};
-        ifs.close();
+      for (const auto &elem : templates) {
+        const auto &file_path = elem.first;
+        const auto &contents = elem.second;
         std::string output_contents = contents;
 
         // replace loop

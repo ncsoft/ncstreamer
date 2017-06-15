@@ -9,9 +9,16 @@
 
 #include <ostream>
 #include <string>
+#include <utility>
+#include <vector>
+
+#include "boost/filesystem/path.hpp"
 
 
 namespace static_ui_generator {
+using ContentsVector = std::vector<std::pair<
+    boost::filesystem::path /*filename*/, std::string /*contents*/>>;
+
 extern std::string Run(
     const std::string &texts_file,
     const std::string &input_dir,
