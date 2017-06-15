@@ -58,6 +58,26 @@ std::string Run(
 }
 
 
+ContentsVector ReadTemplates(
+    const std::string &input_dir) {
+  ContentsVector templates;
+  for (boost::filesystem::directory_iterator i{input_dir};
+       i != boost::filesystem::directory_iterator(); ++i) {
+    if (!is_regular_file(i->status())) {
+      continue;
+    }
+    const auto &file_path = i->path();
+    boost::filesystem::ifstream ifs{file_path.c_str()};
+    std::string contents{
+        std::istreambuf_iterator<char>{ifs},
+        std::istreambuf_iterator<char>{}};
+    ifs.close();
+    templates.emplace_back(file_path.filename(), contents);
+  }
+  return templates;
+}
+
+
 ContentsVector GenerateLocale(
     const ContentsVector &templates,
     const boost::property_tree::ptree &texts) {
@@ -122,25 +142,5 @@ void WriteLocale(
       ofs.close();
     }
   }
-}
-
-
-ContentsVector ReadTemplates(
-    const std::string &input_dir) {
-  ContentsVector templates;
-  for (boost::filesystem::directory_iterator i{input_dir};
-       i != boost::filesystem::directory_iterator(); ++i) {
-    if (!is_regular_file(i->status())) {
-      continue;
-    }
-    const auto &file_path = i->path();
-    boost::filesystem::ifstream ifs{file_path.c_str()};
-    std::string contents{
-        std::istreambuf_iterator<char>{ifs},
-        std::istreambuf_iterator<char>{}};
-    ifs.close();
-    templates.emplace_back(file_path.filename(), contents);
-  }
-  return templates;
 }
 }  // namespace static_ui_generator
