@@ -51,7 +51,8 @@ std::string Run(
           continue;
         }
         static const std::regex kPattern{R"(%([_A-Z][_A-Z0-9]*)%)"};
-        boost::filesystem::ifstream ifs{i->path().c_str()};
+        const auto &file_path = i->path();
+        boost::filesystem::ifstream ifs{file_path.c_str()};
         std::string contents{
             std::istreambuf_iterator<char>{ifs},
             std::istreambuf_iterator<char>{}};
@@ -69,7 +70,7 @@ std::string Run(
         }
         for (const auto &key : key_map) {
           std::string &text = texts.get<std::string>(key.second);
-          const std::string &extension = i->path().extension().string();
+          const std::string &extension = file_path.extension().string();
           if (extension == ".js") {
             static const std::unordered_map<std::string,
                                             std::string> kEscapeChars{
@@ -91,7 +92,7 @@ std::string Run(
         if (boost::filesystem::exists(dir) ||
             boost::filesystem::create_directories(dir)) {
           const boost::filesystem::path file_name =
-              dir / i->path().filename().c_str();
+              dir / file_path.filename().c_str();
           boost::filesystem::ofstream ofs{file_name};
           ofs << output_contents;
           ofs.close();
