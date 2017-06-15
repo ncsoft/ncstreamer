@@ -138,19 +138,17 @@ void WriteLocale(
     const ContentsVector &outputs) {
   boost::filesystem::path locale_path{locale};
   const boost::filesystem::path dir{output_dir_path / locale_path};
+  boost::filesystem::create_directories(dir);
   for (const auto &elem : outputs) {
     const auto &file_path = elem.first;
     const auto &output_contents = elem.second;
 
     // create file
-    if (boost::filesystem::exists(dir) ||
-        boost::filesystem::create_directories(dir)) {
       const boost::filesystem::path file_name =
           dir / file_path.filename().c_str();
       boost::filesystem::ofstream ofs{file_name};
       ofs << output_contents;
       ofs.close();
-    }
   }
 }
 }  // namespace static_ui_generator
