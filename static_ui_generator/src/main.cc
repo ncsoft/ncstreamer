@@ -19,7 +19,6 @@
 
 
 int main(int argc, char *argv[]) {
-  std::string texts_file, input_dir, output_dir;
   static_ui_generator::ProgramOptionMap options{argc, argv};
   if (options.failed_to_parse()) {
     std::cout << options.description();
@@ -29,14 +28,11 @@ int main(int argc, char *argv[]) {
     std::cout << options.description();
     return 0;
   }
-  texts_file = options.texts_file();
-  input_dir = options.input_dir();
-  output_dir = options.output_dir();
 
   try {
     // read json file
     boost::property_tree::ptree props;
-    boost::property_tree::read_json(texts_file, props);
+    boost::property_tree::read_json(options.texts_file(), props);
 
     // locale loop
     std::cout << "Target locales: " << props.size() << std::endl;
@@ -45,7 +41,7 @@ int main(int argc, char *argv[]) {
       auto texts = prop.second;
 
       // file loop
-      for (boost::filesystem::directory_iterator i{input_dir};
+      for (boost::filesystem::directory_iterator i{options.input_dir()};
            i != boost::filesystem::directory_iterator(); ++i) {
         if (!is_regular_file(i->status())) {
           continue;
@@ -86,7 +82,7 @@ int main(int argc, char *argv[]) {
 
         // create file
         const boost::filesystem::path dir{
-            boost::filesystem::path{output_dir} /  // NOLINT
+            boost::filesystem::path{options.output_dir()} /  // NOLINT
             boost::filesystem::path{locale}};      // NOLINT
         if (boost::filesystem::exists(dir) ||
             boost::filesystem::create_directories(dir)) {
