@@ -50,7 +50,6 @@ std::string Run(
         if (!is_regular_file(i->status())) {
           continue;
         }
-        static const std::regex kPattern{R"(%([_A-Z][_A-Z0-9]*)%)"};
         const auto &file_path = i->path();
         boost::filesystem::ifstream ifs{file_path.c_str()};
         std::string contents{
@@ -61,6 +60,7 @@ std::string Run(
 
         // replace loop
         std::unordered_map<std::string, std::string> key_map;
+        static const std::regex kPattern{R"(%([_A-Z][_A-Z0-9]*)%)"};
         std::sregex_iterator words_begin{
             contents.begin(), contents.end(), kPattern};
         for (std::sregex_iterator j = words_begin;
