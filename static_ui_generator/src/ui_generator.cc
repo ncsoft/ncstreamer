@@ -40,7 +40,7 @@ std::string Run(
 
   try {
     // locale loop
-    for (const boost::property_tree::ptree::value_type &prop : texts_all) {
+    for (const auto &prop : texts_all) {
       auto locale = prop.first;
       auto texts = prop.second;
 
