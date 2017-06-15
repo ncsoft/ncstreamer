@@ -27,20 +27,20 @@ std::string Run(
   std::string err_msg{};
 
   // read json file
-  boost::property_tree::ptree props;
+  boost::property_tree::ptree texts_all;
   try {
-    boost::property_tree::read_json(texts_file, props);
+    boost::property_tree::read_json(texts_file, texts_all);
   } catch (const std::exception &e) {
     err_msg = e.what();
   }
   if (!err_msg.empty()) {
     return err_msg;
   }
-  *info_out << "Target locales: " << props.size() << std::endl;
+  *info_out << "Target locales: " << texts_all.size() << std::endl;
 
   try {
     // locale loop
-    for (const boost::property_tree::ptree::value_type &prop : props) {
+    for (const boost::property_tree::ptree::value_type &prop : texts_all) {
       auto locale = prop.first;
       auto texts = prop.second;
 
