@@ -142,9 +142,7 @@ void WriteLocale(
     const auto &output_contents = elem.second;
 
     // create file
-    const boost::filesystem::path dir{
-        output_dir_path /
-        locale_path};
+    const boost::filesystem::path dir{output_dir_path / locale_path};
     if (boost::filesystem::exists(dir) ||
         boost::filesystem::create_directories(dir)) {
       const boost::filesystem::path file_name =
