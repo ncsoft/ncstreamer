@@ -25,11 +25,19 @@ std::string Run(
     const std::string &output_dir,
     std::ostream *info_out) {
   std::string err_msg{};
-  try {
-    // read json file
-    boost::property_tree::ptree props;
-    boost::property_tree::read_json(texts_file, props);
 
+  // read json file
+  boost::property_tree::ptree props;
+  try {
+    boost::property_tree::read_json(texts_file, props);
+  } catch (const std::exception &e) {
+    err_msg = e.what();
+  }
+  if (!err_msg.empty()) {
+    return err_msg;
+  }
+
+  try {
     // locale loop
     *info_out << "Target locales: " << props.size() << std::endl;
     for (const boost::property_tree::ptree::value_type &prop : props) {
