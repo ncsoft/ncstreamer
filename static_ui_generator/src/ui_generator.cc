@@ -26,7 +26,7 @@ std::string Run(
     std::ostream *info_out) {
   std::string err_msg{};
 
-  // read json file
+  // read texts file
   boost::property_tree::ptree texts_all;
   try {
     boost::property_tree::read_json(texts_file, texts_all);
