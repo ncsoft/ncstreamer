@@ -52,6 +52,7 @@ std::string Run(
     ifs.close();
     templates.emplace_back(file_path.filename(), contents);
   }
+  *info_out << "Target template files: " << templates.size() << std::endl;
 
   try {
     // locale loop
