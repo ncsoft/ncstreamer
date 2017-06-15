@@ -13,42 +13,25 @@
 
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/filesystem.hpp"
-#include "boost/program_options.hpp"
 #include "boost/property_tree/json_parser.hpp"
 #include "boost/property_tree/ptree.hpp"
+#include "static_ui_generator/src/program_option_map.h"
 
 
 int main(int argc, char *argv[]) {
   std::string texts_file, input_dir, output_dir;
-  try {
-    boost::program_options::options_description desc{"Options"};
-    desc.add_options()
-        ("help", "Help screen")
-        ("texts",
-         boost::program_options::value<std::string>()->
-             default_value("./localized_texts.json"),
-         "Json file")
-        ("input-dir",
-         boost::program_options::value<std::string>()->default_value("./"),
-         "Directory of input files")
-        ("output-dir",
-         boost::program_options::value<std::string>()->default_value("./"),
-         "Directory of output files");
-
-    boost::program_options::variables_map vm;
-    boost::program_options::store(parse_command_line(argc, argv, desc), vm);
-    boost::program_options::notify(vm);
-    if (vm.count("help")) {
-      std::cout << desc;
-      return 0;
-    }
-    texts_file = vm["texts"].as<std::string>();
-    input_dir = vm["input-dir"].as<std::string>();
-    output_dir = vm["output-dir"].as<std::string>();
-  } catch (const boost::program_options::error &e) {
-    std::cerr << e.what() << std::endl;
+  static_ui_generator::ProgramOptionMap options{argc, argv};
+  if (options.failed_to_parse()) {
+    std::cout << options.description();
     return -1;
   }
+  if (options.help()) {
+    std::cout << options.description();
+    return 0;
+  }
+  texts_file = options.texts_file();
+  input_dir = options.input_dir();
+  output_dir = options.output_dir();
 
   try {
     // read json file

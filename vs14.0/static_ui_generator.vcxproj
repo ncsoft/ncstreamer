@@ -83,6 +83,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\static_ui_generator\src\main.cc" />
+    <ClCompile Include="..\static_ui_generator\src\program_option_map.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\static_ui_generator\src\program_option_map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
