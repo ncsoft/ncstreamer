@@ -36,10 +36,10 @@ std::string Run(
   if (!err_msg.empty()) {
     return err_msg;
   }
+  *info_out << "Target locales: " << props.size() << std::endl;
 
   try {
     // locale loop
-    *info_out << "Target locales: " << props.size() << std::endl;
     for (const boost::property_tree::ptree::value_type &prop : props) {
       auto locale = prop.first;
       auto texts = prop.second;
