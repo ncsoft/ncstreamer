@@ -144,8 +144,7 @@ void WriteLocale(
     const auto &output_contents = elem.second;
 
     // create file
-    const boost::filesystem::path file_path =
-        dir / file_name;
+    const boost::filesystem::path file_path = dir / file_name;
     boost::filesystem::ofstream ofs{file_path};
     ofs << output_contents;
     ofs.close();
