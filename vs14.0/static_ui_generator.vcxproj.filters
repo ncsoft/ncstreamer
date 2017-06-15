@@ -12,9 +12,15 @@
     <ClCompile Include="..\static_ui_generator\src\program_option_map.cc">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\static_ui_generator\src\ui_generator.cc">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\static_ui_generator\src\program_option_map.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\static_ui_generator\src\ui_generator.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -84,9 +84,11 @@
   <ItemGroup>
     <ClCompile Include="..\static_ui_generator\src\main.cc" />
     <ClCompile Include="..\static_ui_generator\src\program_option_map.cc" />
+    <ClCompile Include="..\static_ui_generator\src\ui_generator.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\static_ui_generator\src\program_option_map.h" />
+    <ClInclude Include="..\static_ui_generator\src\ui_generator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
