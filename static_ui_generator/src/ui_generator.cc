@@ -63,40 +63,40 @@ ContentsVector GenerateLocale(
     const boost::property_tree::ptree &texts) {
   ContentsVector outputs{};
 
-      // file loop
-      for (const auto &elem : templates) {
-        const auto &file_path = elem.first;
-        const auto &contents = elem.second;
-        std::string output_contents = contents;
+  // file loop
+  for (const auto &elem : templates) {
+    const auto &file_path = elem.first;
+    const auto &contents = elem.second;
+    std::string output_contents = contents;
 
-        // replace loop
-        std::unordered_map<std::string, std::string> key_map;
-        static const std::regex kPattern{R"(%([_A-Z][_A-Z0-9]*)%)"};
-        std::sregex_iterator words_begin{
-            contents.begin(), contents.end(), kPattern};
-        for (std::sregex_iterator j = words_begin;
-             j != std::sregex_iterator(); ++j) {
-          const std::smatch &matched = *j;
-          key_map.emplace(matched.str(), matched[1].str());
+    // replace loop
+    std::unordered_map<std::string, std::string> key_map;
+    static const std::regex kPattern{R"(%([_A-Z][_A-Z0-9]*)%)"};
+    std::sregex_iterator words_begin{
+        contents.begin(), contents.end(), kPattern};
+    for (std::sregex_iterator j = words_begin;
+         j != std::sregex_iterator(); ++j) {
+      const std::smatch &matched = *j;
+      key_map.emplace(matched.str(), matched[1].str());
+    }
+    for (const auto &key : key_map) {
+      std::string &text = texts.get<std::string>(key.second);
+      const std::string &extension = file_path.extension().string();
+      if (extension == ".js") {
+        static const std::unordered_map<std::string,
+                                        std::string> kEscapeChars{
+            {"\r", "\\r"},
+            {"\n", "\\n"},
+            {"'", "\\'"},
+            {"\"", "\\\""}};
+        for (auto escape : kEscapeChars) {
+          boost::replace_all(text, escape.first, escape.second);
         }
-        for (const auto &key : key_map) {
-          std::string &text = texts.get<std::string>(key.second);
-          const std::string &extension = file_path.extension().string();
-          if (extension == ".js") {
-            static const std::unordered_map<std::string,
-                                            std::string> kEscapeChars{
-               {"\r", "\\r"},
-               {"\n", "\\n"},
-               {"'", "\\'"},
-               {"\"", "\\\""}};
-            for (auto escape : kEscapeChars) {
-              boost::replace_all(text, escape.first, escape.second);
-            }
-          }
-          boost::replace_all(output_contents, key.first, text);
-        }
-        outputs.emplace_back(file_path, output_contents);
       }
+      boost::replace_all(output_contents, key.first, text);
+    }
+    outputs.emplace_back(file_path, output_contents);
+  }
   return outputs;
 }
 
@@ -109,18 +109,18 @@ void WriteLocale(
     const auto &file_path = elem.first;
     const auto &output_contents = elem.second;
 
-        // create file
-        const boost::filesystem::path dir{
-            boost::filesystem::path{output_dir} /  // NOLINT
-            boost::filesystem::path{locale}};      // NOLINT
-        if (boost::filesystem::exists(dir) ||
-            boost::filesystem::create_directories(dir)) {
-          const boost::filesystem::path file_name =
-              dir / file_path.filename().c_str();
-          boost::filesystem::ofstream ofs{file_name};
-          ofs << output_contents;
-          ofs.close();
-        }
+    // create file
+    const boost::filesystem::path dir{
+        boost::filesystem::path{output_dir} /  // NOLINT
+        boost::filesystem::path{locale}};      // NOLINT
+    if (boost::filesystem::exists(dir) ||
+        boost::filesystem::create_directories(dir)) {
+      const boost::filesystem::path file_name =
+          dir / file_path.filename().c_str();
+      boost::filesystem::ofstream ofs{file_name};
+      ofs << output_contents;
+      ofs.close();
+    }
   }
 }
 
