@@ -40,6 +40,7 @@ std::string Run(
   const auto &templates = ReadTemplates(input_dir);
   *info_out << "Target template files: " << templates.size() << std::endl;
 
+  boost::filesystem::path output_dir_path{output_dir};
   try {
     // locale loop
     for (const auto &prop : texts_all) {
@@ -47,7 +48,7 @@ std::string Run(
       const auto &texts = prop.second;
 
       const auto &outputs = GenerateLocale(templates, texts);
-      WriteLocale(output_dir, locale, outputs);
+      WriteLocale(output_dir_path, locale, outputs);
 
       *info_out << "Done: " << locale << std::endl;
     }
@@ -132,7 +133,7 @@ std::string ReplaceTexts(
 
 
 void WriteLocale(
-    const std::string &output_dir,
+    const boost::filesystem::path &output_dir_path,
     const std::string &locale,
     const ContentsVector &outputs) {
   for (const auto &elem : outputs) {
@@ -141,7 +142,7 @@ void WriteLocale(
 
     // create file
     const boost::filesystem::path dir{
-        boost::filesystem::path{output_dir} /  // NOLINT
+        output_dir_path /
         boost::filesystem::path{locale}};      // NOLINT
     if (boost::filesystem::exists(dir) ||
         boost::filesystem::create_directories(dir)) {

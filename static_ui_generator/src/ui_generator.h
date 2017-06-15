@@ -39,7 +39,7 @@ extern std::string ReplaceTexts(
     const boost::property_tree::ptree &texts);
 
 extern void WriteLocale(
-    const std::string &output_dir,
+    const boost::filesystem::path &output_dir_path,
     const std::string &locale,
     const ContentsVector &outputs);
 }  // namespace static_ui_generator
