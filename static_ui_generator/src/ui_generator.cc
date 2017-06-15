@@ -144,11 +144,11 @@ void WriteLocale(
     const auto &output_contents = elem.second;
 
     // create file
-      const boost::filesystem::path file_name =
-          dir / file_path.filename().c_str();
-      boost::filesystem::ofstream ofs{file_name};
-      ofs << output_contents;
-      ofs.close();
+    const boost::filesystem::path file_name =
+        dir / file_path.filename().c_str();
+    boost::filesystem::ofstream ofs{file_name};
+    ofs << output_contents;
+    ofs.close();
   }
 }
 }  // namespace static_ui_generator
