@@ -54,7 +54,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <PreBuildEvent>
       <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../static_ui_generator/src</Command>
@@ -70,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -83,6 +83,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\static_ui_generator\src\main.cc" />
+    <ClCompile Include="..\static_ui_generator\src\program_option_map.cc" />
+    <ClCompile Include="..\static_ui_generator\src\ui_generator.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\static_ui_generator\src\program_option_map.h" />
+    <ClInclude Include="..\static_ui_generator\src\ui_generator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
