@@ -1,8 +1,8 @@
 # vs14.0 (Visual Studio 2015)
+vs14.0/.vs/
 vs14.0/*.VC.db
 vs14.0/*.VC.opendb
 vs14.0/*.vcxproj.user
-vs14.0/.vs/
 vs14.0/build/
 
 # VS Code
