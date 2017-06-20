@@ -114,6 +114,7 @@
     <ClCompile Include="..\ncstreamer_cef\src\lib\dimension.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\display.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\position.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\lib\monitor_info.cpp" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\window_frame_remover.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\http_request.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\http_request_service.cc" />
@@ -154,6 +155,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\lib\dimension.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\display.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\position.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\lib\monitor_info.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\window_frame_remover.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\http_request.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\http_request_service.h" />

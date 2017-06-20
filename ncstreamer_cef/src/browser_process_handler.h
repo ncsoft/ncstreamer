@@ -14,7 +14,7 @@
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/client.h"
-#include "ncstreamer_cef/src/lib/position.h"
+#include "ncstreamer_cef/src/lib/rectangle.h"
 
 
 namespace ncstreamer {
@@ -36,7 +36,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const CefRefPtr<CefBrowser> &GetMainBrowser() const;
 
  private:
-  Position<int> LoadWindowPosition();
+  Rectangle LoadWindowRectangle();
 
   const HINSTANCE instance_;
   const bool hides_settings_;
