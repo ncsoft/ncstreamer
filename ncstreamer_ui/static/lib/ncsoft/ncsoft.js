@@ -22,7 +22,7 @@ ncsoft.onDOMContentLoaded = function() {
         $(this).parent().attr('data-value'));
     document.querySelector(
         '#' + $(this).parents('.dropdown').attr('id')
-        ).dispatchEvent(event);
+    ).dispatchEvent(event);
   });
 
   // tooltip

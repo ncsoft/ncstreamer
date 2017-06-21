@@ -58,6 +58,9 @@
     <PostBuildEvent>
       <Command>$(ProjectDir)..\ncstreamer_ui\build_tools\post_build_event.bat $(ProjectDir) $(Configuration)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>build_tools/gjslint/gjslint_ncstreamer_ui.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -74,6 +77,9 @@
     <PostBuildEvent>
       <Command>$(ProjectDir)..\ncstreamer_ui\build_tools\post_build_event.bat $(ProjectDir) $(Configuration)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>build_tools/gjslint/gjslint_ncstreamer_ui.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_ui\build_tools\generate_static_ui_per_locale.bat" />

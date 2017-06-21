@@ -511,10 +511,11 @@ function setUpSteamingQuality() {
     const li = document.createElement('li');
     const aTag = document.createElement('a');
     aTag.textContent = [
-        level,
-        quality.resolution.width + '*' + quality.resolution.height,
-        'fps: ' + quality.fps,
-        'bitrate: ' + quality.bitrate].join(', ');
+      level,
+      quality.resolution.width + '*' + quality.resolution.height,
+      'fps: ' + quality.fps,
+      'bitrate: ' + quality.bitrate,
+    ].join(', ');
     li.setAttribute('data-value', level);
     li.appendChild(aTag);
     contents.appendChild(li);
@@ -551,8 +552,8 @@ function showErrorText() {
       error.textContent = '%NO_SELECT_OWN_PAGE%';
       break;
     case 'game select empty':
-       error.textContent = '%NO_SELECT_GAME%';
-       break;
+      error.textContent = '%NO_SELECT_GAME%';
+      break;
     default:
       error.TextContent = '%ERROR_MESSAGE%';
       break;
@@ -688,8 +689,7 @@ cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
     updateStreamingStatus('onAir');
   }
 
-  // notify remote.
-  {
+  (function notifyRemote() {
     const startInfo = app.streaming.startInfo;
 
     cef.remoteStart.request(
@@ -704,7 +704,7 @@ cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
         streamUrl);
 
     remote.startRequestKey = '';
-  }
+  })();
 };
 
 
@@ -713,18 +713,16 @@ cef.streamingStop.onResponse = function(error) {
   app.streaming.startInfo = {};
   updateStreamingStatus('standby');
 
-  // notify remote.
-  {
+  (function notifyRemote() {
     cef.remoteStop.request(remote.stopRequestKey, error, source);
     remote.stopRequestKey = '';
-  }
+  })();
 };
 
 
 cef.settingsVideoQualityUpdate.onResponse = function(error) {
-  // notify remote.
-  {
+  (function notifyRemote() {
     cef.remoteQualityUpdate.request(remote.qualityUpdateRequestKey, error);
     remote.qualityUpdateRequestKey = '';
-  }
+  })();
 };
