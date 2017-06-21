@@ -511,10 +511,11 @@ function setUpSteamingQuality() {
     const li = document.createElement('li');
     const aTag = document.createElement('a');
     aTag.textContent = [
-        level,
-        quality.resolution.width + '*' + quality.resolution.height,
-        'fps: ' + quality.fps,
-        'bitrate: ' + quality.bitrate].join(', ');
+      level,
+      quality.resolution.width + '*' + quality.resolution.height,
+      'fps: ' + quality.fps,
+      'bitrate: ' + quality.bitrate,
+    ].join(', ');
     li.setAttribute('data-value', level);
     li.appendChild(aTag);
     contents.appendChild(li);
