@@ -8,4 +8,9 @@ call gjslint.exe --nojsdoc --strict^
  %SrcRoot%/static/app/cef.js^
  %SrcRoot%/static/lib/ncsoft/ncsoft.js
 
+if %ERRORLEVEL% NEQ 0 (
+  exit /b %ERRORLEVEL%
+)
+
 @echo gjslint ends.
+exit /b %ERRORLEVEL%
