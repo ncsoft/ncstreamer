@@ -14,8 +14,23 @@ if %ERRORLEVEL% GEQ 8 (
 set ERRORLEVEL=0
 
 set Generator=%ProjectDir%build\static_ui_generator\%Configuration%\static_ui_generator.exe
+if not exist "%Generator%" (
+  @echo Fatal error: "%Generator%" does not exist.
+  exit /b 1
+)
+
 set Texts=%ProjectDir%..\ncstreamer_ui\localized_texts.json
+if not exist "%Texts%" (
+  @echo Fatal error: "%Texts%" does not exist.
+  exit /b 1
+)
+
 set TemplateDir=%ProjectDir%..\ncstreamer_ui\template
+if not exist "%TemplateDir%" (
+  @echo Fatal error: "%TemplateDir%" does not exist.
+  exit /b 1
+)
+
 set OutputDir=%ProjectDir%build\ncstreamer_ui\static_ui
 
 set "startTime=%time: =0%"

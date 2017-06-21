@@ -13,7 +13,7 @@
 
 namespace ncstreamer {
 const char *FacebookApi::kScheme{"https"};
-const char *FacebookApi::kVersion{"v2.8"};
+const char *FacebookApi::kVersion{"v2.9"};
 
 
 const char *FacebookApi::Login::kAuthority{"www.facebook.com"};
