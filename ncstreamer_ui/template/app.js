@@ -552,8 +552,8 @@ function showErrorText() {
       error.textContent = '%NO_SELECT_OWN_PAGE%';
       break;
     case 'game select empty':
-       error.textContent = '%NO_SELECT_GAME%';
-       break;
+      error.textContent = '%NO_SELECT_GAME%';
+      break;
     default:
       error.TextContent = '%ERROR_MESSAGE%';
       break;
