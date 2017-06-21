@@ -1,6 +1,6 @@
 @echo off
 
-set SrcRoot=../../../ncstreamer_ui
+set SrcRoot=../ncstreamer_ui
 
 @echo gjslint begins.
 call gjslint.exe --nojsdoc --strict^
