@@ -14,6 +14,7 @@
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/client.h"
+#include "ncstreamer_cef/src/lib/position.h"
 #include "ncstreamer_cef/src/lib/rectangle.h"
 
 
@@ -27,7 +28,8 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
       bool shows_sources_all,
       const std::vector<std::string> &sources,
       const std::wstring &locale,
-      const std::wstring &ui_uri);
+      const std::wstring &ui_uri,
+      const Position<int> &default_position);
   virtual ~BrowserProcessHandler();
 
   // override CefBrowserProcessHandler
@@ -45,6 +47,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const std::vector<std::string> sources_;
   const std::wstring locale_;
   const std::wstring ui_uri_;
+  const Position<int> defalut_position_;
 
   CefRefPtr<Client> client_;
 

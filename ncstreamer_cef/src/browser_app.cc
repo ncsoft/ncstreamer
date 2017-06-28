@@ -14,7 +14,8 @@ BrowserApp::BrowserApp(
     bool shows_sources_all,
     const std::vector<std::string> &sources,
     const std::wstring &locale,
-    const std::wstring &ui_uri)
+    const std::wstring &ui_uri,
+    const Position<int> &default_position)
     : browser_process_handler_{new BrowserProcessHandler{
           instance,
           hides_settings,
@@ -22,7 +23,8 @@ BrowserApp::BrowserApp(
           shows_sources_all,
           sources,
           locale,
-          ui_uri}} {
+          ui_uri,
+          default_position}} {
 }
 
 
