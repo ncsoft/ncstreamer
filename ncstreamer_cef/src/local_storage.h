@@ -41,6 +41,10 @@ class LocalStorage {
   template<typename T>
       void SetValue(const std::string &key, const T &value);
 
+  void SetValue(
+      const std::string &key,
+      const boost::property_tree::ptree &value);
+
   static const char *kUserPage;
   static const char *kPrivacy;
   static const char *kDesignatedUser;

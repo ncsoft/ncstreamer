@@ -118,6 +118,14 @@ void LocalStorage::SetValue<bool>(
     const std::string &key, const bool &value);
 
 
+void LocalStorage::SetValue(
+    const std::string &key,
+    const boost::property_tree::ptree &value) {
+  storage_.put_child(key, value);
+  SaveToFile(storage_, storage_path_);
+}
+
+
 const char *LocalStorage::kUserPage{"userPage"};
 const char *LocalStorage::kPrivacy{"privacy"};
 const char *LocalStorage::kDesignatedUser{"designatedUser"};
