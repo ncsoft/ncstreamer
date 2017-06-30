@@ -46,6 +46,18 @@ std::string LocalStorage::GetDesignatedUser() const {
 }
 
 
+boost::optional<Position<int>> LocalStorage::GetWindowPosition() const {
+  boost::optional<const boost::property_tree::ptree &> pos =
+      storage_.get_child_optional(kWindowPosition);
+  if (!pos) {
+    return boost::none;
+  }
+  return Position<int>{
+      pos->get(kWindowPositionX, 0),
+      pos->get(kWindowPositionY, 0)};
+}
+
+
 void LocalStorage::SetUserPage(const std::string &user_page) {
   SetValue(kUserPage, user_page);
 }
@@ -58,6 +70,15 @@ void LocalStorage::SetPrivacy(const std::string &privacy) {
 
 void LocalStorage::SetDesignatedUser(const std::string &designated_user) {
   SetValue(kDesignatedUser, designated_user);
+}
+
+
+void LocalStorage::SetWindowPosition(const Position<int> &window_position) {
+  boost::property_tree::ptree pos;
+  pos.put(kWindowPositionX, window_position.x());
+  pos.put(kWindowPositionY, window_position.y());
+
+  SetValue(kWindowPosition, pos);
 }
 
 
@@ -129,6 +150,9 @@ void LocalStorage::SetValue(
 const char *LocalStorage::kUserPage{"userPage"};
 const char *LocalStorage::kPrivacy{"privacy"};
 const char *LocalStorage::kDesignatedUser{"designatedUser"};
+const char *LocalStorage::kWindowPosition{"windowPosition"};
+const char *LocalStorage::kWindowPositionX{"x"};
+const char *LocalStorage::kWindowPositionY{"y"};
 
 
 LocalStorage *LocalStorage::static_instance{nullptr};
