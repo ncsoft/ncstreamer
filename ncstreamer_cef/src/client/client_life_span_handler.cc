@@ -11,6 +11,7 @@
 #include "ncstreamer_cef/src/js_executor.h"
 #include "ncstreamer_cef/src/lib/display.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
+#include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/manifest.h"
 #include "ncstreamer_cef/src/resource.h"
 
@@ -74,9 +75,25 @@ void ClientLifeSpanHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
 
   if (browsers_.empty()) {
     HWND wnd = browser->GetHost()->GetWindowHandle();
+    SaveWindowPosition(wnd);
     WindowFrameRemover::Get()->UnregisterWindow(wnd);
     main_browser_ = nullptr;
     ::CefQuitMessageLoop();
+  }
+}
+
+
+void ClientLifeSpanHandler::SaveWindowPosition(HWND handle) {
+  WINDOWPLACEMENT wp;
+  GetWindowPlacement(handle, &wp);
+  UINT state = wp.showCmd;
+  if (state != SW_HIDE &&
+      state != SW_MINIMIZE &&
+      state != SW_SHOWMINIMIZED &&
+      state != SW_SHOWMINNOACTIVE) {
+    int x = wp.rcNormalPosition.left;
+    int y = wp.rcNormalPosition.top;
+    LocalStorage::Get()->SetWindowPosition({x, y});
   }
 }
 

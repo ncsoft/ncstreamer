@@ -12,6 +12,7 @@
 
 #include "ncstreamer_cef/src/lib/display.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
+#include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/manifest.h"
 
 
@@ -42,12 +43,13 @@ BrowserProcessHandler::~BrowserProcessHandler() {
 void BrowserProcessHandler::OnContextInitialized() {
   CEF_REQUIRE_UI_THREAD();
 
+  Position<int> position = LoadWindowPosition();
   Dimension<int> window_size{Display::Scale(kWindowMinimumSize)};
 
   CefWindowInfo window_info;
   window_info.style = WindowFrameRemover::kWindowStyleBeforeInitialization;
-  window_info.x = CW_USEDEFAULT;
-  window_info.y = CW_USEDEFAULT;
+  window_info.x = position.x();
+  window_info.y = position.y();
   window_info.width = window_size.width();
   window_info.height = window_size.height();
 
@@ -69,6 +71,16 @@ void BrowserProcessHandler::OnContextInitialized() {
 
   CefBrowserHost::CreateBrowser(
       window_info, client_, uri, browser_settings, NULL);
+}
+
+
+Position<int> BrowserProcessHandler::LoadWindowPosition() {
+  boost::optional<Position<int>> position =
+      LocalStorage::Get()->GetWindowPosition();
+  if (!position) {
+    return {CW_USEDEFAULT, CW_USEDEFAULT};
+  }
+  return *position;
 }
 
 

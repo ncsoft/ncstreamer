@@ -14,6 +14,7 @@
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/client.h"
+#include "ncstreamer_cef/src/lib/position.h"
 
 
 namespace ncstreamer {
@@ -35,6 +36,8 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const CefRefPtr<CefBrowser> &GetMainBrowser() const;
 
  private:
+  Position<int> LoadWindowPosition();
+
   const HINSTANCE instance_;
   const bool hides_settings_;
   const std::wstring video_quality_;
