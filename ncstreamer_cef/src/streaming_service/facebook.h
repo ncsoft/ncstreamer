@@ -72,6 +72,12 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnMeGotten &on_me_gotten);
 
+  void GetPostUrl(
+      const std::string &stream_id,
+      const std::string &stream_url,
+      const OnFailed &on_failed,
+      const OnLiveVideoPosted &on_live_video_posted);
+
   void OnLoginSuccess(
       const std::string &access_token,
       const OnFailed &on_failed,
