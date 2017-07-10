@@ -144,6 +144,9 @@
     <ClCompile Include="..\ncstreamer_cef\src\lib\position.cc">
       <Filter>src\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\lib\monitor_info.cpp">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -264,6 +267,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\lib\position.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\lib\monitor_info.h">
       <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>

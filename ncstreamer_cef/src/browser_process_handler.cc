@@ -11,7 +11,10 @@
 #include "include/wrapper/cef_helpers.h"
 
 #include "ncstreamer_cef/src/lib/display.h"
+#include "ncstreamer_cef/src/lib/monitor_info.h"
+#include "ncstreamer_cef/src/lib/position.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
+#include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/manifest.h"
 
 
@@ -42,14 +45,14 @@ BrowserProcessHandler::~BrowserProcessHandler() {
 void BrowserProcessHandler::OnContextInitialized() {
   CEF_REQUIRE_UI_THREAD();
 
-  Dimension<int> window_size{Display::Scale(kWindowMinimumSize)};
+  const Rectangle &rect = LoadWindowRectangle();
 
   CefWindowInfo window_info;
   window_info.style = WindowFrameRemover::kWindowStyleBeforeInitialization;
-  window_info.x = CW_USEDEFAULT;
-  window_info.y = CW_USEDEFAULT;
-  window_info.width = window_size.width();
-  window_info.height = window_size.height();
+  window_info.x = rect.x();
+  window_info.y = rect.y();
+  window_info.width = rect.width();
+  window_info.height = rect.height();
 
   client_ = new Client{
       instance_,
@@ -69,6 +72,27 @@ void BrowserProcessHandler::OnContextInitialized() {
 
   CefBrowserHost::CreateBrowser(
       window_info, client_, uri, browser_settings, NULL);
+}
+
+
+Rectangle BrowserProcessHandler::LoadWindowRectangle() {
+  const boost::optional<Position<int>> &position =
+      LocalStorage::Get()->GetWindowPosition();
+  Dimension<int> window_size{Display::Scale(kWindowMinimumSize)};
+  if (!position ||
+      !MonitorInfo::RectInMonitor({position->x(),
+                                   position->y(),
+                                   window_size.width(),
+                                   window_size.height()})) {
+    return {CW_USEDEFAULT,
+            CW_USEDEFAULT,
+            window_size.width(),
+            window_size.height()};
+  }
+  return {position->x(),
+          position->y(),
+          window_size.width(),
+          window_size.height()};
 }
 
 

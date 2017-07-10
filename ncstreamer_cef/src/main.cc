@@ -76,6 +76,11 @@ int APIENTRY wWinMain(HINSTANCE instance,
   }
 
   auto app_data_path = CreateUserLocalAppDirectory();
+  boost::filesystem::path storage_path{};
+  if (cmd_line.in_memory_local_storage() == false) {
+    storage_path = app_data_path / L"local_storage.json";
+  }
+  ncstreamer::LocalStorage::SetUp(storage_path.c_str());
 
   CefSettings settings;
   settings.no_sandbox = true;
@@ -85,12 +90,6 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
 
-  boost::filesystem::path storage_path{};
-  if (cmd_line.in_memory_local_storage() == false) {
-    storage_path = app_data_path / L"local_storage.json";
-  }
-
-  ncstreamer::LocalStorage::SetUp(storage_path.c_str());
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp();
