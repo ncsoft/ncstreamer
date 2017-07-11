@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "include/cef_command_line.h"
+#include "ncstreamer_cef/src/lib/position.h"
 
 
 namespace ncstreamer {
@@ -29,6 +30,9 @@ class CommandLine {
   uint16_t remote_port() const { return remote_port_; }
   bool in_memory_local_storage() const { return in_memory_local_storage_; }
   const std::wstring &designated_user() const { return designated_user_; }
+  const Position<int> &default_position() const {
+    return default_position_;
+  }
 
  private:
   static bool ReadBool(
@@ -38,6 +42,7 @@ class CommandLine {
 
   static std::vector<std::string>
       ParseSourcesArgument(const std::wstring &arg);
+  static Position<int> ParseDefaultPosition(const std::wstring &arg);
 
   bool is_renderer_;
   bool hides_settings_;
@@ -49,6 +54,7 @@ class CommandLine {
   uint16_t remote_port_;
   bool in_memory_local_storage_;
   std::wstring designated_user_;
+  Position<int> default_position_;
 };
 }  // namespace ncstreamer
 

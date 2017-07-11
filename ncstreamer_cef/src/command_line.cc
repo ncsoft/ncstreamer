@@ -11,6 +11,7 @@
 
 #include "boost/property_tree/json_parser.hpp"
 #include "boost/property_tree/ptree.hpp"
+#include "windows.h"  // NOLINT
 
 
 namespace ncstreamer {
@@ -24,7 +25,8 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       ui_uri_{},
       remote_port_{0},
       in_memory_local_storage_{false},
-      designated_user_{} {
+      designated_user_{},
+      default_position_{CW_USEDEFAULT, CW_USEDEFAULT} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
   cef_cmd_line->InitFromString(cmd_line);
@@ -65,6 +67,12 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       ReadBool(cef_cmd_line, L"in-memory-local-storage", false);
 
   designated_user_ = cef_cmd_line->GetSwitchValue(L"designated-user");
+
+  const std::wstring default_position =
+      cef_cmd_line->GetSwitchValue(L"default-position");
+  if (default_position.empty() == false) {
+    default_position_ = ParseDefaultPosition(default_position);
+  }
 }
 
 
@@ -114,5 +122,25 @@ std::vector<std::string>
     sources.clear();
   }
   return sources;
+}
+
+
+Position<int> CommandLine::ParseDefaultPosition(const std::wstring &arg) {
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  std::string utf8 = converter.to_bytes(arg);
+  int x;
+  int y;
+  boost::property_tree::ptree root;
+  std::stringstream root_ss{utf8};
+  try {
+    boost::property_tree::read_json(root_ss, root);
+    x = root.get<int>("x");
+    y = root.get<int>("y");
+  }
+  catch (const std::exception &/*e*/) {
+    x = CW_USEDEFAULT;
+    y = CW_USEDEFAULT;
+  }
+  return {x, y};
 }
 }  // namespace ncstreamer

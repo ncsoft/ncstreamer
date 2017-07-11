@@ -26,7 +26,8 @@ BrowserProcessHandler::BrowserProcessHandler(
     bool shows_sources_all,
     const std::vector<std::string> &sources,
     const std::wstring &locale,
-    const std::wstring &ui_uri)
+    const std::wstring &ui_uri,
+    const Position<int> &default_position)
     : instance_{instance},
       hides_settings_{hides_settings},
       video_quality_{video_quality},
@@ -34,6 +35,7 @@ BrowserProcessHandler::BrowserProcessHandler(
       sources_{sources},
       locale_{locale},
       ui_uri_{ui_uri},
+      defalut_position_{default_position},
       client_{} {
 }
 
@@ -84,8 +86,8 @@ Rectangle BrowserProcessHandler::LoadWindowRectangle() {
                                    position->y(),
                                    window_size.width(),
                                    window_size.height()})) {
-    return {CW_USEDEFAULT,
-            CW_USEDEFAULT,
+    return {defalut_position_.x(),
+            defalut_position_.y(),
             window_size.width(),
             window_size.height()};
   }
