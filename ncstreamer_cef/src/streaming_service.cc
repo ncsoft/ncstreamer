@@ -102,8 +102,8 @@ void StreamingService::PostLiveVideo(
       description,
       on_failed,
       [on_live_video_posted, service_provider_id](
-          const std::string &stream_url) {
-        on_live_video_posted(service_provider_id, stream_url);
+          const std::string &stream_url, const std::string &post_url) {
+        on_live_video_posted(service_provider_id, stream_url, post_url);
       });
 }
 

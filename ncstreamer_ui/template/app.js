@@ -13,6 +13,7 @@ const app = {
     status: 'standby',
     startInfo: {},
     popupBrowserId: 0,
+    postUrl: null,
     quality: {
       high: {
         resolution: {
@@ -323,11 +324,7 @@ function onProviderPageLinkClicked() {
     return;
   }
 
-  const link = (app.dom.mePageSelect.children[0].value == 2) ?
-      app.service.user.pages[
-          app.dom.ownPageSelect.children[0].value].link :
-      app.service.user.link;
-  cef.externalBrowserPopUp.request(link);
+  cef.externalBrowserPopUp.request(app.streaming.postUrl);
 }
 
 
@@ -679,13 +676,15 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 };
 
 
-cef.streamingStart.onResponse = function(error, serviceProvider, streamUrl) {
+cef.streamingStart.onResponse =
+    function(error, serviceProvider, streamUrl, postUrl) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');
     app.streaming.startInfo = {};
     updateStreamingStatus('standby');
   } else {
+    app.streaming.postUrl = postUrl;
     updateStreamingStatus('onAir');
   }
 

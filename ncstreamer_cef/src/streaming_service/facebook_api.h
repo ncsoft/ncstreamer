@@ -63,6 +63,7 @@ class FacebookApi::Graph {
  public:
   class Me;
   class LiveVideos;
+  class PostId;
 
  private:
   static const char *kAuthority;
@@ -95,6 +96,17 @@ class FacebookApi::Graph::LiveVideos {
  private:
   static std::string BuildPath(
       const std::string &user_page_id);
+};
+
+
+class FacebookApi::Graph::PostId {
+ public:
+  static Uri BuildUri(
+      const std::string &access_token,
+      const std::string &stream_id);
+ private:
+  static std::string BuildPath(
+      const std::string &stream_id);
 };
 }  // namespace ncstreamer
 

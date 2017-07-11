@@ -120,4 +120,20 @@ std::string FacebookApi::Graph::LiveVideos::BuildPath(
   ss << "/" << user_page_id << "/live_videos";
   return ss.str();
 }
+
+
+Uri FacebookApi::Graph::PostId::BuildUri(
+    const std::string &access_token,
+    const std::string &stream_id) {
+  return {kScheme, kAuthority, BuildPath(stream_id),
+      Uri::Query{{{"access_token", access_token}}}};
+}
+
+
+std::string FacebookApi::Graph::PostId::BuildPath(
+    const std::string &stream_id) {
+  std::stringstream ss;
+  ss << "/" << stream_id;
+  return ss.str();
+}
 }  // namespace ncstreamer
