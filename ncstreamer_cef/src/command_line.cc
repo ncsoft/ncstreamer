@@ -21,6 +21,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       video_quality_{},
       shows_sources_all_{false},
       sources_{},
+      streaming_service_tag_ids_{},
       locale_{},
       ui_uri_{},
       remote_port_{0},
@@ -47,6 +48,12 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       cef_cmd_line->GetSwitchValue(L"sources");
   if (sources_arg.empty() == false) {
     sources_ = ParseSourcesArgument(sources_arg);
+  }
+
+  const std::wstring &tag_ids_arg =
+      cef_cmd_line->GetSwitchValue(L"tag-ids");
+  if (tag_ids_arg.empty() == false) {
+    streaming_service_tag_ids_ = ParseTagIdsArgument(tag_ids_arg);
   }
 
   const std::wstring &locale =
@@ -122,6 +129,34 @@ std::vector<std::string>
     sources.clear();
   }
   return sources;
+}
+
+
+StreamingServiceTagMap
+    CommandLine::ParseTagIdsArgument(const std::wstring &arg) {
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  std::string utf8 = converter.to_bytes(arg);
+
+  StreamingServiceTagMap service_tag_ids;
+  boost::property_tree::ptree root;
+  std::stringstream root_ss{utf8};
+  try {
+    boost::property_tree::read_json(root_ss, root);
+    for (const auto &service_elem : root) {
+      const std::string &service_provider = service_elem.first;
+      const boost::property_tree::ptree &service_obj = service_elem.second;
+      SourceTagMap source_tag_ids;
+      for (const auto &source_elem : service_obj) {
+        const std::string &source_title = source_elem.first;
+        const std::string &tag_id = source_elem.second.get_value<std::string>();
+        source_tag_ids.emplace(source_title, tag_id);
+      }
+      service_tag_ids.emplace(service_provider, source_tag_ids);
+    }
+  } catch (const std::exception &/*e*/) {
+    service_tag_ids.clear();
+  }
+  return service_tag_ids;
 }
 
 

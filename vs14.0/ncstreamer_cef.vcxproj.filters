@@ -272,6 +272,9 @@
     <ClInclude Include="..\ncstreamer_cef\src\lib\monitor_info.h">
       <Filter>src\lib</Filter>
     </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_types.h">
+      <Filter>src\streaming_service</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\ncstreamer_cef\src\ncstreamer.rc">
