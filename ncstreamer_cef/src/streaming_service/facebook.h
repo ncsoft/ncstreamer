@@ -44,6 +44,7 @@ class Facebook : public StreamingServiceProvider {
       const std::string &privacy,
       const std::string &title,
       const std::string &description,
+      const std::string &app_attribution_tag,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted) override;
 

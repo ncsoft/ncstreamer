@@ -141,10 +141,12 @@ void Facebook::PostLiveVideo(
     const std::string &privacy,
     const std::string &title,
     const std::string &description,
+    const std::string &app_attribution_tag,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
-      user_page_id)};
+      user_page_id,
+      app_attribution_tag)};
 
   const std::string &access_token = (user_page_id == "me") ?
       GetAccessToken() : GetPageAccessToken(user_page_id);

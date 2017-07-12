@@ -85,7 +85,8 @@ class FacebookApi::Graph::Me {
 class FacebookApi::Graph::LiveVideos {
  public:
   static Uri BuildUri(
-      const std::string &user_page_id);
+      const std::string &user_page_id,
+      const std::string &app_attribution_tag);
 
   static boost::property_tree::ptree BuildPostContent(
       const std::string &access_token,

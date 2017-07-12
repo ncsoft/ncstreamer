@@ -95,7 +95,7 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
-  ncstreamer::StreamingService::SetUp();
+  ncstreamer::StreamingService::SetUp(cmd_line.streaming_service_tag_ids());
 
   ncstreamer::DesignatedUser::SetUp(cmd_line.designated_user());
 

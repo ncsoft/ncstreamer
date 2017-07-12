@@ -11,9 +11,10 @@
 
 
 namespace ncstreamer {
-void StreamingService::SetUp() {
+void StreamingService::SetUp(
+    const StreamingServiceTagMap &tag_ids) {
   assert(!static_instance);
-  static_instance = new StreamingService{};
+  static_instance = new StreamingService{tag_ids};
 }
 
 
@@ -30,8 +31,10 @@ StreamingService *StreamingService::Get() {
 }
 
 
-StreamingService::StreamingService()
-    : service_providers_{
+StreamingService::StreamingService(
+    const StreamingServiceTagMap &tag_ids)
+    : tag_ids_{tag_ids},
+      service_providers_{
           {"Facebook Live", std::shared_ptr<Facebook>{new Facebook{}}}},
       current_service_provider_id_{nullptr},
       current_service_provider_{} {
@@ -87,6 +90,7 @@ void StreamingService::PostLiveVideo(
     const std::string &privacy,
     const std::string &title,
     const std::string &description,
+    const std::string &source,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
   if (!current_service_provider_) {
@@ -95,11 +99,14 @@ void StreamingService::PostLiveVideo(
   }
 
   const std::string &service_provider_id = *current_service_provider_id_;
+  const std::string &tag_id = FindTagId(service_provider_id, source);
+
   current_service_provider_->PostLiveVideo(
       user_page_id,
       privacy,
       title,
       description,
+      tag_id,
       on_failed,
       [on_live_video_posted, service_provider_id](
           const std::string &stream_url, const std::string &post_url) {
@@ -131,6 +138,24 @@ std::string StreamingService::FailMessage::ToNotLoggedIn() {
   std::stringstream msg;
   msg << "not logged in";
   return msg.str();
+}
+
+
+const std::string &StreamingService::FindTagId(
+    const std::string &service_provider,
+    const std::string &source) {
+  static const std::string kEmptyTagId{""};
+
+  auto source_tags_i = tag_ids_.find(service_provider);
+  if (source_tags_i == tag_ids_.end()) {
+    return kEmptyTagId;
+  }
+  const auto &source_tags = source_tags_i->second;
+  auto tag_i = source_tags.find(source);
+  if (tag_i == source_tags.end()) {
+    return kEmptyTagId;
+  }
+  return tag_i->second;
 }
 
 

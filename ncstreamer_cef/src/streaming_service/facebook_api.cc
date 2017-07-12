@@ -85,8 +85,10 @@ const std::string &FacebookApi::Graph::Me::static_path() {
 
 
 Uri FacebookApi::Graph::LiveVideos::BuildUri(
-    const std::string &user_page_id) {
-  return {kScheme, kAuthority, BuildPath(user_page_id)};
+    const std::string &user_page_id,
+    const std::string &app_attribution_tag) {
+  return {kScheme, kAuthority, BuildPath(user_page_id),
+      Uri::Query{{{"app_attribution_tag", app_attribution_tag}}}};
 }
 
 
