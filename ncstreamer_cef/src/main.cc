@@ -57,6 +57,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   HWND prev_instance = ::FindWindow(NULL, ncstreamer::kAppName);
   if (prev_instance != NULL) {
+    ::ShowWindow(prev_instance, SW_RESTORE);
+    ::SetForegroundWindow(prev_instance);
     return -1;
   }
 
