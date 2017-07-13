@@ -14,6 +14,9 @@ const app = {
     startInfo: {},
     popupBrowserId: 0,
     postUrl: null,
+    mic: {
+      use: false,
+    },
     quality: {
       high: {
         resolution: {
@@ -728,10 +731,18 @@ cef.settingsVideoQualityUpdate.onResponse = function(error) {
 
 
 cef.settingsMicOn.onResponse = function(error) {
-  console.info(error);
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.mic.use = true;
 };
 
 
 cef.settingsMicOff.onResponse = function(error) {
-  console.info(error);
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.mic.use = false;
 };
