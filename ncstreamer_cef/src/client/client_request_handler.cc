@@ -23,6 +23,7 @@
 #include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/obs.h"
+#include "ncstreamer_cef/src/obs/obs_source_info.h"
 #include "ncstreamer_cef/src/streaming_service.h"
 
 
@@ -335,11 +336,14 @@ void ClientRequestHandler::OnCommandStreamingStart(
   }
 
   const bool &mic_flag = (mic == "true");
+  ObsSourceInfo source_info{source};
+
   StreamingService::Get()->PostLiveVideo(
       user_page,
       privacy,
       title,
       description,
+      source_info.title(),
       [browser, cmd](const std::string &error) {
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});

@@ -11,9 +11,11 @@
 #include <string>
 #include <unordered_map>
 
+#include "boost/optional.hpp"
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/streaming_service/streaming_service_provider.h"
+#include "ncstreamer_cef/src/streaming_service/streaming_service_types.h"
 
 
 namespace ncstreamer {
@@ -27,7 +29,9 @@ class StreamingService {
                          const std::string &stream_url,
                          const std::string &post_url)>;
 
-  static void SetUp();
+  static void SetUp(
+      const StreamingServiceTagMap &tag_ids);
+
   static void ShutDown();
   static StreamingService *Get();
 
@@ -48,6 +52,7 @@ class StreamingService {
       const std::string &privacy,
       const std::string &title,
       const std::string &description,
+      const std::string &source,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted);
 
@@ -61,10 +66,18 @@ class StreamingService {
     static std::string ToNotLoggedIn();
   };
 
-  StreamingService();
+  explicit StreamingService(
+      const StreamingServiceTagMap &tag_ids);
+
   virtual ~StreamingService();
 
+  const std::string &FindTagId(
+      const std::string &service_provider,
+      const std::string &source);
+
   static StreamingService *static_instance;
+
+  const StreamingServiceTagMap tag_ids_;
 
   std::unordered_map<
       std::string /*service_provider_id*/,

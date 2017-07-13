@@ -180,6 +180,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\facebook_api.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_provider.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_types.h" />
     <ClInclude Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.hpp" />
   </ItemGroup>
   <ItemGroup>

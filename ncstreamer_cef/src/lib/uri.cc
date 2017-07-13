@@ -77,7 +77,7 @@ const std::string &Uri::Query::GetParameter(const std::string &key) const {
 
 
 std::string Uri::Query::Encode(const std::string &raw) {
-  return std::string{::CefURIEncode(raw, false)};
+  return std::string{raw.empty() ? "" : ::CefURIEncode(raw, false)};
 }
 
 
