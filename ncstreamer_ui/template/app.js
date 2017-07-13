@@ -725,3 +725,13 @@ cef.settingsVideoQualityUpdate.onResponse = function(error) {
     remote.qualityUpdateRequestKey = '';
   })();
 };
+
+
+cef.settingsMicOn.onResponse = function(error) {
+  console.info(error);
+};
+
+
+cef.settingsMicOff.onResponse = function(error) {
+  console.info(error);
+};

@@ -385,16 +385,28 @@ void ClientRequestHandler::OnCommandStreamingStop(
 void ClientRequestHandler::OnCommandSettingsMicOn(
     const std::string &cmd,
     const CommandArgumentMap &/*args*/,
-    CefRefPtr<CefBrowser> /*browser*/) {
-  Obs::Get()->TurnOnMic();
+    CefRefPtr<CefBrowser> browser) {
+  std::string error{};
+  bool result = Obs::Get()->TurnOnMic();
+  if (!result) {
+    error = "turn on after start streaming";
+  }
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", error}});
 }
 
 
 void ClientRequestHandler::OnCommandSettingsMicOff(
     const std::string &cmd,
     const CommandArgumentMap &/*args*/,
-    CefRefPtr<CefBrowser> /*browser*/) {
-  Obs::Get()->TurnOffMic();
+    CefRefPtr<CefBrowser> browser) {
+  std::string error{};
+  bool result = Obs::Get()->TurnOffMic();
+  if (!result) {
+    error = "turn off error";
+  }
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", error}});
 }
 
 

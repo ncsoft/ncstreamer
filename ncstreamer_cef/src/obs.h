@@ -37,8 +37,8 @@ class Obs {
   void StopStreaming(
       const ObsOutput::OnStopped &on_streaming_stopped);
 
-  void TurnOnMic();
-  void TurnOffMic();
+  bool TurnOnMic();
+  bool TurnOffMic();
   void UpdateVideoQuality(
       const Dimension<uint32_t> &output_size,
       uint32_t fps,

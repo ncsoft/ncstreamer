@@ -43,11 +43,11 @@ const cef = (function() {
     },
     'settings/mic/on': {
       request: [],
-      response: [],
+      response: ['error'],
     },
     'settings/mic/off': {
       request: [],
-      response: [],
+      response: ['error'],
     },
     'storage/user_page/update': {
       request: ['userPage'],

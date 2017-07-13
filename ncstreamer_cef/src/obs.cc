@@ -88,11 +88,11 @@ void Obs::StopStreaming(
 }
 
 
-void Obs::TurnOnMic() {
+bool Obs::TurnOnMic() {
   obs_source_t *video_source = obs_get_output_source(0);
-  if (!video_source)
-    return;
-
+  if (!video_source) {
+    return false;
+  }
   obs_data_t *settings = obs_data_create();
   obs_data_set_string(settings, "device_id", "default");
 
@@ -102,11 +102,13 @@ void Obs::TurnOnMic() {
 
   obs_set_output_source(3, source);
   obs_source_release(source);
+  return true;
 }
 
 
-void Obs::TurnOffMic() {
+bool Obs::TurnOffMic() {
   obs_set_output_source(3, nullptr);
+  return true;
 }
 
 
