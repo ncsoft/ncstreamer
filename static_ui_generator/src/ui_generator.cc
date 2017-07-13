@@ -125,6 +125,13 @@ std::string ReplaceTexts(
       for (auto escape : kEscapeChars) {
         boost::replace_all(text, escape.first, escape.second);
       }
+    } else if (extension == ".html") {
+      static const std::unordered_map<std::string,
+                                      std::string> kEscapeChars{
+          {"\r\n", "<br>"}};
+      for (auto escape : kEscapeChars) {
+        boost::replace_all(text, escape.first, escape.second);
+      }
     }
     boost::replace_all(output_contents, key.first, text);
   }
