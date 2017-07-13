@@ -15,7 +15,7 @@ const app = {
     popupBrowserId: 0,
     postUrl: null,
     mic: {
-      use: false,
+      use: true,
     },
     quality: {
       high: {
@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   ncsoft.select.disable(app.dom.privacySelect);
   ncsoft.select.disable(app.dom.gameSelect);
   setUpSteamingQuality();
+  setUpMic();
 });
 
 
@@ -524,6 +525,11 @@ function setUpSteamingQuality() {
   display.innerHTML = contents.firstChild.firstChild.textContent +
                       '<span class="caret"></span>';
   onQualitySelectChanged();
+}
+
+
+function setUpMic() {
+  app.dom.micCheckbox.checked = app.streaming.mic.use;
 }
 
 
