@@ -16,6 +16,12 @@ const app = {
     postUrl: null,
     mic: {
       use: true,
+      volume: {
+        max: 1,
+        min: 0,
+        step: 0.1,
+        value: 0.5,
+      }
     },
     quality: {
       high: {
@@ -87,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'game-select',
     'feed-description',
     'mic-checkbox',
+    'mic-volume',
     'error-text',
     'caution-text',
     'live-image',
@@ -119,6 +126,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'ncsoftSelectChange', onPrivacySelectChanged);
   app.dom.gameSelect.addEventListener(
       'ncsoftSelectChange', onGameSelectChanged);
+  app.dom.micVolume.addEventListener(
+      'ncsoftSelectChange', onMicVolumeChanged);
   app.dom.micCheckbox.addEventListener(
       'change', onMicCheckboxChanged);
   app.dom.controlButton.addEventListener(
@@ -406,6 +415,12 @@ function onMicCheckboxChanged() {
 }
 
 
+function onMicVolumeChanged() {
+  console.info('change micVolume');
+  cef.settingsMicVolumeUpdate.request(app.dom.micVolume.value);
+}
+
+
 function onControlButtonClicked() {
   console.info('change controlButton');
   submitControl();
@@ -527,7 +542,13 @@ function setUpSteamingQuality() {
 
 
 function setUpMic() {
-  app.dom.micCheckbox.checked = app.streaming.mic.use;
+  const mic = app.streaming.mic;
+  app.dom.micCheckbox.checked = mic.use;
+  app.dom.micVolume.max = mic.volume.max;
+  app.dom.micVolume.min = mic.volume.min;
+  app.dom.micVolume.step = mic.volume.step;
+  app.dom.micVolume.value = mic.volume.value;
+  ncsoft.slider.adjustRange(app.dom.micVolume);
 }
 
 
@@ -745,6 +766,7 @@ cef.settingsMicOn.onResponse = function(error) {
     return;
   }
   app.streaming.mic.use = true;
+  onMicVolumeChanged();
 };
 
 
@@ -758,5 +780,9 @@ cef.settingsMicOff.onResponse = function(error) {
 
 
 cef.settingsMicVolumeUpdate.onResponse = function(error, volume) {
-  console.info('mic volume response');
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.mic.volume.value = volume;
 };
