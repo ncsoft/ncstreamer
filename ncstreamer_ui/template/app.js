@@ -14,6 +14,15 @@ const app = {
     startInfo: {},
     popupBrowserId: 0,
     postUrl: null,
+    mic: {
+      use: true,
+      volume: {
+        max: 1,
+        min: 0,
+        step: 0.1,
+        value: 0.5,
+      }
+    },
     quality: {
       high: {
         resolution: {
@@ -84,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'game-select',
     'feed-description',
     'mic-checkbox',
+    'mic-volume',
     'error-text',
     'caution-text',
     'live-image',
@@ -116,6 +126,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'ncsoftSelectChange', onPrivacySelectChanged);
   app.dom.gameSelect.addEventListener(
       'ncsoftSelectChange', onGameSelectChanged);
+  app.dom.micVolume.addEventListener(
+      'ncsoftSelectChange', onMicVolumeChanged);
   app.dom.micCheckbox.addEventListener(
       'change', onMicCheckboxChanged);
   app.dom.controlButton.addEventListener(
@@ -128,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   ncsoft.select.disable(app.dom.privacySelect);
   ncsoft.select.disable(app.dom.gameSelect);
   setUpSteamingQuality();
+  setUpMic();
 });
 
 
@@ -394,11 +407,18 @@ function onMicCheckboxChanged() {
   console.info('change micCheckbox');
   if (app.dom.micCheckbox.checked) {
     console.info('mic on');
-    cef.settingsMicOn.request();
+    const volume = app.dom.micVolume.value;
+    cef.settingsMicOn.request(volume);
   } else {
     console.info('mic off');
     cef.settingsMicOff.request();
   }
+}
+
+
+function onMicVolumeChanged() {
+  console.info('change micVolume');
+  cef.settingsMicVolumeUpdate.request(app.dom.micVolume.value);
 }
 
 
@@ -427,16 +447,14 @@ function submitControl() {
       const userPage = getCurrentUserPage();
       const privacy = app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
-      const mic = app.dom.micCheckbox.checked;
 
       cef.streamingStart.request(
-          source, userPage, privacy, '' /* title */, description, mic);
+          source, userPage, privacy, '' /* title */, description);
       app.streaming.startInfo = {
         source: source,
         userPage: userPage,
         privacy: privacy,
         description: description,
-        mic: mic,
       };
       updateStreamingStatus('starting');
       return /*no error*/ '';
@@ -521,6 +539,17 @@ function setUpSteamingQuality() {
   display.innerHTML = contents.firstChild.firstChild.textContent +
                       '<span class="caret"></span>';
   onQualitySelectChanged();
+}
+
+
+function setUpMic() {
+  const mic = app.streaming.mic;
+  app.dom.micCheckbox.checked = mic.use;
+  app.dom.micVolume.max = mic.volume.max;
+  app.dom.micVolume.min = mic.volume.min;
+  app.dom.micVolume.step = mic.volume.step;
+  app.dom.micVolume.value = mic.volume.value;
+  ncsoft.slider.adjustRange(app.dom.micVolume);
 }
 
 
@@ -698,7 +727,7 @@ cef.streamingStart.onResponse =
         startInfo.userPage,
         startInfo.privacy,
         startInfo.description,
-        startInfo.mic,
+        app.dom.micCheckbox.checked,
         serviceProvider,
         streamUrl);
 
@@ -719,9 +748,43 @@ cef.streamingStop.onResponse = function(error) {
 };
 
 
+cef.remoteStart.onResponse = function() {
+  onMicCheckboxChanged();
+};
+
+
 cef.settingsVideoQualityUpdate.onResponse = function(error) {
   (function notifyRemote() {
     cef.remoteQualityUpdate.request(remote.qualityUpdateRequestKey, error);
     remote.qualityUpdateRequestKey = '';
   })();
+};
+
+
+cef.settingsMicOn.onResponse = function(error, volume) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.mic.use = true;
+  app.streaming.mic.volume.value = volume;
+};
+
+
+cef.settingsMicOff.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  console.info('start volume' + volume);
+  app.streaming.mic.use = false;
+};
+
+
+cef.settingsMicVolumeUpdate.onResponse = function(error, volume) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.mic.volume.value = volume;
 };

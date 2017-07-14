@@ -29,8 +29,7 @@ const cef = (function() {
       response: ['error'],
     },
     'streaming/start': {
-      request: ['source', 'userPage', 'privacy', 'title', 'description',
-                'mic'],
+      request: ['source', 'userPage', 'privacy', 'title', 'description'],
       response: ['error', 'serviceProvider', 'streamUrl', 'postUrl'],
     },
     'streaming/stop': {
@@ -42,12 +41,16 @@ const cef = (function() {
       response: ['error'],
     },
     'settings/mic/on': {
-      request: [],
-      response: [],
+      request: ['volume'],
+      response: ['error', 'volume'],
     },
     'settings/mic/off': {
       request: [],
-      response: [],
+      response: ['error'],
+    },
+    'settings/mic/volume/update': {
+      request: ['volume'],
+      response: ['error', 'volume'],
     },
     'storage/user_page/update': {
       request: ['userPage'],

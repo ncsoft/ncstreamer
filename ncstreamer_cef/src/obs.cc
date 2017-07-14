@@ -61,9 +61,8 @@ bool Obs::StartStreaming(
     const std::string &source_info,
     const std::string &service_provider,
     const std::string &stream_url,
-    const bool &mic,
     const ObsOutput::OnStarted &on_streaming_started) {
-  UpdateCurrentSource(source_info, mic);
+  UpdateCurrentSource(source_info);
   UpdateBaseResolution(source_info);
 
   ResetAudio();
@@ -88,11 +87,11 @@ void Obs::StopStreaming(
 }
 
 
-void Obs::TurnOnMic() {
+bool Obs::TurnOnMic() {
   obs_source_t *video_source = obs_get_output_source(0);
-  if (!video_source)
-    return;
-
+  if (!video_source) {
+    return false;
+  }
   obs_data_t *settings = obs_data_create();
   obs_data_set_string(settings, "device_id", "default");
 
@@ -102,11 +101,13 @@ void Obs::TurnOnMic() {
 
   obs_set_output_source(3, source);
   obs_source_release(source);
+  return true;
 }
 
 
-void Obs::TurnOffMic() {
+bool Obs::TurnOffMic() {
   obs_set_output_source(3, nullptr);
+  return true;
 }
 
 
@@ -254,8 +255,7 @@ void Obs::ClearSceneData() {
 }
 
 
-void Obs::UpdateCurrentSource(const std::string &source_info,
-                              const bool &mic) {
+void Obs::UpdateCurrentSource(const std::string &source_info) {
   // video
   {
     obs_data_t *settings = obs_data_create();
@@ -281,11 +281,6 @@ void Obs::UpdateCurrentSource(const std::string &source_info,
 
     obs_set_output_source(1, source);
     obs_source_release(source);
-  }
-
-  // mic
-  if (mic) {
-    TurnOnMic();
   }
 }
 
@@ -346,6 +341,17 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
     }
     Sleep(100);
   }
+}
+
+
+bool Obs::UpdateMicVolume(float volume) {
+  obs_source_t *source = obs_get_output_source(3);
+  if (!source) {
+    return false;
+  }
+  obs_source_set_volume(source, volume);
+  obs_source_release(source);
+  return true;
 }
 
 
