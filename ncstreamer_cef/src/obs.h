@@ -32,7 +32,6 @@ class Obs {
       const std::string &source_info,
       const std::string &service_provider,
       const std::string &stream_url,
-      const bool &mic,
       const ObsOutput::OnStarted &on_streaming_started);
   void StopStreaming(
       const ObsOutput::OnStopped &on_streaming_stopped);
@@ -62,8 +61,7 @@ class Obs {
   obs_encoder_t *CreateVideoEncoder();
   void ClearSceneData();
 
-  void UpdateCurrentSource(const std::string &source_info,
-                           const bool &mic);
+  void UpdateCurrentSource(const std::string &source_info);
 
   void UpdateCurrentService(
       const std::string &service_provider,

@@ -431,16 +431,14 @@ function submitControl() {
       const userPage = getCurrentUserPage();
       const privacy = app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
-      const mic = app.dom.micCheckbox.checked;
 
       cef.streamingStart.request(
-          source, userPage, privacy, '' /* title */, description, mic);
+          source, userPage, privacy, '' /* title */, description);
       app.streaming.startInfo = {
         source: source,
         userPage: userPage,
         privacy: privacy,
         description: description,
-        mic: mic,
       };
       updateStreamingStatus('starting');
       return /*no error*/ '';
@@ -707,7 +705,7 @@ cef.streamingStart.onResponse =
         startInfo.userPage,
         startInfo.privacy,
         startInfo.description,
-        startInfo.mic,
+        app.dom.micCheckbox.checked,
         serviceProvider,
         streamUrl);
 
@@ -729,7 +727,7 @@ cef.streamingStop.onResponse = function(error) {
 
 
 cef.remoteStart.onResponse = function() {
-  console.info('remote/start respose');
+  onMicCheckboxChanged();
 };
 
 

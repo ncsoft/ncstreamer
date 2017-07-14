@@ -309,13 +309,11 @@ void ClientRequestHandler::OnCommandStreamingStart(
   auto privacy_i = args.find("privacy");
   auto title_i = args.find("title");
   auto description_i = args.find("description");
-  auto mic_i = args.find("mic");
   if (source_i == args.end() ||
       user_page_i == args.end() ||
       privacy_i == args.end() ||
       title_i == args.end() ||
-      description_i == args.end() ||
-      mic_i == args.end()) {
+      description_i == args.end()) {
     assert(false);
     return;
   }
@@ -325,17 +323,14 @@ void ClientRequestHandler::OnCommandStreamingStart(
   const std::string &privacy = privacy_i->second;
   const std::string &title = title_i->second;
   const std::string &description = description_i->second;
-  const std::string &mic = mic_i->second;
 
   if (source.empty() == true ||
       user_page.empty() == true ||
-      privacy.empty() == true ||
-      mic.empty() == true) {
+      privacy.empty() == true) {
     assert(false);
     return;
   }
 
-  const bool &mic_flag = (mic == "true");
   ObsSourceInfo source_info{source};
 
   StreamingService::Get()->PostLiveVideo(
@@ -347,14 +342,13 @@ void ClientRequestHandler::OnCommandStreamingStart(
       [browser, cmd](const std::string &error) {
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});
-  }, [browser, cmd, source, mic_flag](const std::string &service_provider,
-                                      const std::string &stream_url,
-                                      const std::string &post_url) {
+  }, [browser, cmd, source](const std::string &service_provider,
+                            const std::string &stream_url,
+                            const std::string &post_url) {
     bool result = Obs::Get()->StartStreaming(
         source,
         service_provider,
         stream_url,
-        mic_flag,
         [browser, cmd, service_provider, stream_url, post_url]() {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
           JsExecutor::StringPairVector{
