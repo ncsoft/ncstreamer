@@ -728,6 +728,11 @@ cef.streamingStop.onResponse = function(error) {
 };
 
 
+cef.remoteStart.onResponse = function() {
+  console.info('remote/start respose');
+};
+
+
 cef.settingsVideoQualityUpdate.onResponse = function(error) {
   (function notifyRemote() {
     cef.remoteQualityUpdate.request(remote.qualityUpdateRequestKey, error);

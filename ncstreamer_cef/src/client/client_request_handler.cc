@@ -546,7 +546,7 @@ void ClientRequestHandler::OnCommandRemoteStatus(
 void ClientRequestHandler::OnCommandRemoteStart(
     const std::string &cmd,
     const CommandArgumentMap &args,
-    CefRefPtr<CefBrowser> /*browser*/) {
+    CefRefPtr<CefBrowser> browser) {
   auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
   auto source_i = args.find("source");
@@ -594,6 +594,7 @@ void ClientRequestHandler::OnCommandRemoteStart(
       mic,
       service_provider,
       stream_url);
+  JsExecutor::Execute(browser, "cef.onResponse", cmd);
 }
 
 
