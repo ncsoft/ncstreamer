@@ -407,7 +407,8 @@ function onMicCheckboxChanged() {
   console.info('change micCheckbox');
   if (app.dom.micCheckbox.checked) {
     console.info('mic on');
-    cef.settingsMicOn.request();
+    const volume = app.dom.micVolume.value;
+    cef.settingsMicOn.request(volume);
   } else {
     console.info('mic off');
     cef.settingsMicOff.request();
@@ -760,13 +761,13 @@ cef.settingsVideoQualityUpdate.onResponse = function(error) {
 };
 
 
-cef.settingsMicOn.onResponse = function(error) {
+cef.settingsMicOn.onResponse = function(error, volume) {
   if (error != '') {
     console.info(error);
     return;
   }
   app.streaming.mic.use = true;
-  onMicVolumeChanged();
+  app.streaming.mic.volume.value = volume;
 };
 
 
@@ -775,6 +776,7 @@ cef.settingsMicOff.onResponse = function(error) {
     console.info(error);
     return;
   }
+  console.info('start volume' + volume);
   app.streaming.mic.use = false;
 };
 

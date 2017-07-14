@@ -383,15 +383,39 @@ void ClientRequestHandler::OnCommandStreamingStop(
 
 void ClientRequestHandler::OnCommandSettingsMicOn(
     const std::string &cmd,
-    const CommandArgumentMap &/*args*/,
+    const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
   std::string error{};
   bool result = Obs::Get()->TurnOnMic();
   if (!result) {
     error = "turn on after start streaming";
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error},
+                                     {"volume", ""}});
+    return;
+  }
+
+  auto volume_i = args.find("volume");
+  if (volume_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  float volume{0.0};
+  try {
+    volume = std::stof(volume_i->second);
+  }
+  catch (...) {
+    assert(false);
+    return;
+  }
+  result = Obs::Get()->UpdateMicVolume(volume);
+  if (!result) {
+    error = "update volume error";
   }
   JsExecutor::Execute(browser, "cef.onResponse", cmd,
-      JsExecutor::StringPairVector{{"error", error}});
+      JsExecutor::StringPairVector{{"error", error},
+                                   {"volume", volume_i->second}});
 }
 
 

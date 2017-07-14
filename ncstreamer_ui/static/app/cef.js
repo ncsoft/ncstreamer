@@ -41,8 +41,8 @@ const cef = (function() {
       response: ['error'],
     },
     'settings/mic/on': {
-      request: [],
-      response: ['error'],
+      request: ['volume'],
+      response: ['error', 'volume'],
     },
     'settings/mic/off': {
       request: [],
