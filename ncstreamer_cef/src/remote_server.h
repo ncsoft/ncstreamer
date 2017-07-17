@@ -50,7 +50,8 @@ class RemoteServer {
       const std::string &description,
       const std::string &mic,
       const std::string &service_provider,
-      const std::string &stream_url);
+      const std::string &stream_url,
+      const std::string &post_url);
 
   void NotifyStreamingStop(
       int request_key,
@@ -140,7 +141,8 @@ class RemoteServer {
       const std::string &description,
       const std::string &mic,
       const std::string &service_provider,
-      const std::string &stream_url);
+      const std::string &stream_url,
+      const std::string &post_url);
 
   void BroadcastStreamingStop(
       const std::string &source);

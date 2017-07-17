@@ -66,7 +66,8 @@ const cef = (function() {
     },
     'remote/start': {
       request: ['requestKey', 'error', 'source', 'userPage', 'privacy',
-                'description', 'mic', 'serviceProvider', 'streamUrl'],
+                'description', 'mic', 'serviceProvider', 'streamUrl',
+                'postUrl'],
       response: [],
     },
     'remote/stop': {
