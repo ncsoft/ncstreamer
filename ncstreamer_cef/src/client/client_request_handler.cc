@@ -608,6 +608,7 @@ void ClientRequestHandler::OnCommandRemoteStart(
   auto mic_i = args.find("mic");
   auto service_provider_i = args.find("serviceProvider");
   auto stream_url_i = args.find("streamUrl");
+  auto post_url_i = args.find("postUrl");
   if (request_key_i == args.end() ||
       error_i == args.end() ||
       source_i == args.end() ||
@@ -616,7 +617,8 @@ void ClientRequestHandler::OnCommandRemoteStart(
       description_i == args.end() ||
       mic_i == args.end() ||
       service_provider_i == args.end() ||
-      stream_url_i == args.end()) {
+      stream_url_i == args.end() ||
+      post_url_i == args.end()) {
     assert(false);
     return;
   }
@@ -635,6 +637,7 @@ void ClientRequestHandler::OnCommandRemoteStart(
   const std::string &mic = mic_i->second;
   const std::string &service_provider = service_provider_i->second;
   const std::string &stream_url = stream_url_i->second;
+  const std::string &post_url = post_url_i->second;
 
   RemoteServer::Get()->NotifyStreamingStart(
       request_key,
@@ -645,7 +648,8 @@ void ClientRequestHandler::OnCommandRemoteStart(
       description,
       mic,
       service_provider,
-      stream_url);
+      stream_url,
+      post_url);
   JsExecutor::Execute(browser, "cef.onResponse", cmd);
 }
 
