@@ -73,7 +73,7 @@ class StreamingService {
 
   const std::string &FindTagId(
       const std::string &service_provider,
-      const std::string &source);
+      const std::string &source) const;
 
   static StreamingService *static_instance;
 

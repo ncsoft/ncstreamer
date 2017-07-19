@@ -143,7 +143,7 @@ std::string StreamingService::FailMessage::ToNotLoggedIn() {
 
 const std::string &StreamingService::FindTagId(
     const std::string &service_provider,
-    const std::string &source) {
+    const std::string &source) const {
   static const std::string kEmptyTagId{""};
 
   auto source_tags_i = tag_ids_.find(service_provider);
