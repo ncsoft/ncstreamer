@@ -49,7 +49,7 @@ ncsoft.onDOMContentLoaded = function() {
   });
 
   $(document).on(
-      'change', '.form-checkbox.mic input[type="range"]', function() {
+      'mousemove', '.form-checkbox.mic input[type="range"]', function() {
         adjustRange(_range);
         document.querySelector(
             '#' + $(this).attr('id')
