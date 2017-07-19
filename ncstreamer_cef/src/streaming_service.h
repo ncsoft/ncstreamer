@@ -75,6 +75,11 @@ class StreamingService {
       const std::string &service_provider,
       const std::string &source) const;
 
+  void HandleFail(
+      const OnFailed &on_failed,
+      const std::string &func,
+      const std::string &msg);
+
   static StreamingService *static_instance;
 
   const StreamingServiceTagMap tag_ids_;

@@ -51,9 +51,12 @@ void StreamingService::LogIn(
     const std::wstring &locale,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
+  static const std::string kFunc{"LogIn"};
+
   auto i = service_providers_.find(service_provider_id);
   if (i == service_providers_.end()) {
-    on_failed(FailMessage::ToUnknownServiceProvider(service_provider_id));
+    HandleFail(on_failed, kFunc,
+        FailMessage::ToUnknownServiceProvider(service_provider_id));
     return;
   }
   current_service_provider_id_ = &(i->first);
@@ -62,7 +65,9 @@ void StreamingService::LogIn(
   current_service_provider_->LogIn(
       parent,
       locale,
-      on_failed,
+      [this, on_failed](const std::string &error) {
+        HandleFail(on_failed, kFunc, error);
+      },
       on_logged_in);
 }
 
@@ -71,16 +76,21 @@ void StreamingService::LogOut(
     const std::string &service_provider_id,
     const OnFailed &on_failed,
     const OnLoggedOut &on_logged_out) {
+  static const std::string kFunc{"LogOut"};
+
   auto i = service_providers_.find(service_provider_id);
   if (i == service_providers_.end()) {
-    on_failed(FailMessage::ToUnknownServiceProvider(service_provider_id));
+    HandleFail(on_failed, kFunc,
+        FailMessage::ToUnknownServiceProvider(service_provider_id));
     return;
   }
   current_service_provider_id_ = &(i->first);
   current_service_provider_ = i->second;
 
   current_service_provider_->LogOut(
-      on_failed,
+      [this, on_failed](const std::string &error) {
+        HandleFail(on_failed, kFunc, error);
+      },
       on_logged_out);
 }
 
@@ -93,8 +103,11 @@ void StreamingService::PostLiveVideo(
     const std::string &source,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
+  static const std::string kFunc{"PostLiveVideo"};
+
   if (!current_service_provider_) {
-    on_failed(FailMessage::ToNotLoggedIn());
+    HandleFail(on_failed, kFunc,
+        FailMessage::ToNotLoggedIn());
     return;
   }
 
@@ -107,7 +120,9 @@ void StreamingService::PostLiveVideo(
       title,
       description,
       tag_id,
-      on_failed,
+      [this, on_failed](const std::string &error) {
+        HandleFail(on_failed, kFunc, error);
+      },
       [on_live_video_posted, service_provider_id](
           const std::string &stream_url, const std::string &post_url) {
         on_live_video_posted(service_provider_id, stream_url, post_url);
@@ -156,6 +171,21 @@ const std::string &StreamingService::FindTagId(
     return kEmptyTagId;
   }
   return tag_i->second;
+}
+
+
+void StreamingService::HandleFail(
+    const OnFailed &on_failed,
+    const std::string &func,
+    const std::string &msg) {
+  std::stringstream ss;
+  ss << "StreamingService";
+  if (current_service_provider_id_) {
+    ss << "[" << *current_service_provider_id_ << "]";
+  }
+  ss << ": " << func
+     << ": " << msg;
+  on_failed(ss.str());
 }
 
 
