@@ -258,8 +258,8 @@ void ClientRequestHandler::OnCommandServiceProviderLogIn(
       service_provider,
       browser->GetHost()->GetWindowHandle(),
       locale_,
-      [](const std::string &error) {
-    // TODO(khpark): TBD
+      [](const std::string &/*error*/) {
+    // nothing to do.
   }, [browser, cmd](
       const std::string &user_name,
       const std::string &user_link,
