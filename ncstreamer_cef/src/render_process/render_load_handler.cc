@@ -52,8 +52,8 @@ Dimension<int>
 
   static const CefString kJsCode =
       L"(function(e) {"
-      L"  if (!e) {"
-      L"    return null;"
+      L"  if (!e || e.scrollHeight < 100) {"
+      L"    return {w:0,h:0};"
       L"  }"
       L"  return {"
       L"    w: e.scrollWidth - e.clientWidth,"
