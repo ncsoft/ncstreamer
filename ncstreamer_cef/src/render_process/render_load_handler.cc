@@ -51,8 +51,7 @@ Dimension<int>
   CEF_REQUIRE_RENDERER_THREAD();
 
   static const CefString kJsCode =
-      L"(function() {"
-      L"  var e = document.documentElement;"
+      L"(function(e) {"
       L"  if (!e) {"
       L"    return null;"
       L"  }"
@@ -60,7 +59,7 @@ Dimension<int>
       L"    w: e.scrollWidth - e.clientWidth,"
       L"    h: e.scrollHeight - e.clientHeight"
       L"  };"
-      L"})()";
+      L"})(document.documentElement)";
 
   CefRefPtr<CefV8Context> context = frame->GetV8Context();
   CefRefPtr<CefV8Value> returnValue;
