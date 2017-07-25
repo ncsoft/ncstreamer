@@ -26,9 +26,7 @@ void RenderLoadHandler::OnLoadEnd(
     int httpStatusCode) {
   CEF_REQUIRE_RENDERER_THREAD();
 
-  if (frame->IsValid() == false ||
-      frame->IsMain() == false ||
-      frame->IsFocused() == false) {
+  if (frame->IsValid() == false) {
     return;
   }
 
