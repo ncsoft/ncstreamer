@@ -32,7 +32,7 @@ void RenderLoadHandler::OnLoadEnd(
     return;
   }
 
-  const Dimension<int> &gap = GetScrollGap(frame);
+  const Dimension<int> &gap = GetScrollGap(browser->GetMainFrame());
   if (gap.empty() == true) {
     return;
   }
