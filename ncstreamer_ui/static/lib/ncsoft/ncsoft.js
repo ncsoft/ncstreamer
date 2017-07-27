@@ -7,6 +7,7 @@ const ncsoft = {
   klass: {},
   select: {},
   modal: {},
+  slider: {},
 };
 
 
@@ -22,13 +23,63 @@ ncsoft.onDOMContentLoaded = function() {
         $(this).parent().attr('data-value'));
     document.querySelector(
         '#' + $(this).parents('.dropdown').attr('id')
-        ).dispatchEvent(event);
+    ).dispatchEvent(event);
   });
 
   // tooltip
   $(document).on('click', '.nc-streamer-tooltip .layer-close', function(e) {
     $('.nc-streamer-tooltip').hide();
   });
+
+  // range slider
+  var _range = $('.form-checkbox.mic input[type="range"]');
+  adjustRange(_range);
+
+  $(document).on('click', '.form-checkbox.mic #mic-checkbox', function() {
+    adjustRange(_range);
+    if ($(this).is(':checked') !== true) {
+      $('.range-slider-range').attr(
+          'value', _range.value).removeAttr(
+          'style').attr('disabled', 'disabled');
+    }
+    else {
+      $('.range-slider-range').attr(
+          'value', _range.value).removeAttr('disabled');
+    }
+  });
+
+  $(document).on(
+      'mousemove', '.form-checkbox.mic input[type="range"]', function() {
+        adjustRange(_range);
+        document.querySelector(
+            '#' + $(this).attr('id')
+        ).dispatchEvent(event);
+      });
+
+  function adjustRange(el) {
+    var val = (el.val() - el.attr('min')) / (el.attr('max') - el.attr('min'));
+    el.attr('value', this.value);
+    el.css('background-image',
+           '-webkit-gradient(linear, left top, right top,' +
+           'color-stop(' + val + ', #2f76ad),' +
+           'color-stop(' + val + ', #22252f)' +
+           ')'
+    );
+  }
+};
+
+
+ncsoft.slider.adjustRange = function(element) {
+  const range = $('#' + element.getAttribute('id'));
+  const val = (range.val() - range.attr('min')) /
+              (range.attr('max') - range.attr('min'));
+  range.attr('value', range.value);
+  range.css('background-image',
+            '-webkit-gradient(linear, left top, right top,' +
+            'color-stop(' + val + ', #2f76ad),' +
+            'color-stop(' + val + ', #22252f)' +
+            ')'
+  );
 };
 
 

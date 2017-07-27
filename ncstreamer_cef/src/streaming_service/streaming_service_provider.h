@@ -30,7 +30,8 @@ class StreamingServiceProvider {
   using OnLoggedOut =
       std::function<void()>;
   using OnLiveVideoPosted =
-      std::function<void(const std::string &stream_url)>;
+      std::function<void(const std::string &stream_url,
+                         const std::string &post_url)>;
 
   StreamingServiceProvider();
   virtual ~StreamingServiceProvider() = 0;
@@ -50,6 +51,7 @@ class StreamingServiceProvider {
       const std::string &privacy,
       const std::string &title,
       const std::string &description,
+      const std::string &app_attribution_tag,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted) = 0;
 };

@@ -61,6 +61,8 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <PreBuildEvent>
       <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../ncstreamer_cef/src</Command>
@@ -68,6 +70,7 @@
     <Link>
       <AdditionalDependencies>Shlwapi.lib;dwmapi.lib;$(CEF3_2704_PATH)$(Configuration)\libcef.lib;$(CEF3_2704_PATH)vs$(VisualStudioVersion)\libcef_dll_wrapper\$(Configuration)\libcef_dll_wrapper.lib;$(OBS_STUDIO_PATH)vs$(VisualStudioVersion)\libobs\$(Configuration)\obs.lib;$(OPENSSL_ROOT)\lib\libeay32.lib;$(OPENSSL_ROOT)\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(BOOST_PATH)lib32-msvc-14.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,12 +85,14 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>Shlwapi.lib;dwmapi.lib;$(CEF3_2704_PATH)$(Configuration)\libcef.lib;$(CEF3_2704_PATH)vs$(VisualStudioVersion)\libcef_dll_wrapper\$(Configuration)\libcef_dll_wrapper.lib;$(OBS_STUDIO_PATH)vs$(VisualStudioVersion)\libobs\$(Configuration)\obs.lib;$(OPENSSL_ROOT)\lib\libeay32.lib;$(OPENSSL_ROOT)\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(BOOST_PATH)lib32-msvc-14.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <PreBuildEvent>
       <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../ncstreamer_cef/src</Command>
@@ -108,6 +113,8 @@
     <ClCompile Include="..\ncstreamer_cef\src\command_line.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\dimension.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\display.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\lib\position.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\lib\monitor_info.cpp" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\window_frame_remover.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\http_request.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\http_request_service.cc" />
@@ -147,6 +154,8 @@
     <ClInclude Include="..\ncstreamer_cef\src\command_line.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\dimension.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\display.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\lib\position.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\lib\monitor_info.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\window_frame_remover.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\http_request.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\http_request_service.h" />
@@ -171,6 +180,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\facebook_api.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_provider.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_types.h" />
     <ClInclude Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.hpp" />
   </ItemGroup>
   <ItemGroup>

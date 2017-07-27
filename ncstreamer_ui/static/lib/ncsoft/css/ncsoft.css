@@ -965,6 +965,62 @@ body {
     margin-right: 7px
 }
 
+.nc-streamer-setting .form-checkbox.mic .range-slider {
+    display: inline-block;
+    margin-left: 30px;
+    vertical-align: middle
+}
+
+.nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range {
+    height: 7px;
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    box-shadow: 1px 1px 1px #2f343f;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #2f76ad), color-stop(0, #22252f))
+}
+
+.nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range::-webkit-slider-thumb {
+    width: 8px;
+    height: 18px;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid #8fc6e8;
+    background: #4b8ed0;
+    background: -webkit-linear-gradient(#79b8e2, #4b8ed0);
+    background: linear-gradient(#79b8e2, #4b8ed0);
+    -webkit-transition: background .15s ease-in-out;
+    transition: background .15s ease-in-out
+}
+
+.nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range::-webkit-slider-thumb:hover,
+.nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range::-webkit-slider-thumb:active {
+    background: -webkit-linear-gradient(#9ddbf0, #1e63be);
+    background: linear-gradient(#9ddbf0, #1e63be)
+}
+
+.nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range:disabled {
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #303440), color-stop(0, #303440))
+}
+
+.nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range:disabled::-webkit-slider-thumb {
+    border: 1px solid #3c4048;
+    background: -webkit-linear-gradient(#32363e, #32363e);
+    background: linear-gradient(#32363e, #32363e)
+}
+
+.nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range:disabled::-webkit-slider-thumb:hover,
+.nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range:disabled::-webkit-slider-thumb:active {
+    background: -webkit-linear-gradient(#32363e, #32363e);
+    background: linear-gradient(#32363e, #32363e)
+}
+
 .nc-streamer-setting .form-checkbox label {
     color: #7b808c;
     cursor: pointer

@@ -44,6 +44,7 @@ class Facebook : public StreamingServiceProvider {
       const std::string &privacy,
       const std::string &title,
       const std::string &description,
+      const std::string &app_attribution_tag,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted) override;
 
@@ -71,6 +72,12 @@ class Facebook : public StreamingServiceProvider {
   void GetMe(
       const OnFailed &on_failed,
       const OnMeGotten &on_me_gotten);
+
+  void GetPostUrl(
+      const std::string &stream_id,
+      const std::string &stream_url,
+      const OnFailed &on_failed,
+      const OnLiveVideoPosted &on_live_video_posted);
 
   void OnLoginSuccess(
       const std::string &access_token,

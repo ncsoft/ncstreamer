@@ -11,8 +11,18 @@ const app = {
   streaming: {
     // ['standby', 'setup', 'starting', 'onAir', 'stopping']
     status: 'standby',
-    start: {},
+    startInfo: {},
     popupBrowserId: 0,
+    postUrl: null,
+    mic: {
+      use: true,
+      volume: {
+        max: 1,
+        min: 0,
+        step: 0.1,
+        value: 0.5,
+      }
+    },
     quality: {
       high: {
         resolution: {
@@ -83,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'game-select',
     'feed-description',
     'mic-checkbox',
+    'mic-volume',
     'error-text',
     'caution-text',
     'live-image',
@@ -115,6 +126,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'ncsoftSelectChange', onPrivacySelectChanged);
   app.dom.gameSelect.addEventListener(
       'ncsoftSelectChange', onGameSelectChanged);
+  app.dom.micVolume.addEventListener(
+      'ncsoftSelectChange', onMicVolumeChanged);
   app.dom.micCheckbox.addEventListener(
       'change', onMicCheckboxChanged);
   app.dom.controlButton.addEventListener(
@@ -127,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   ncsoft.select.disable(app.dom.privacySelect);
   ncsoft.select.disable(app.dom.gameSelect);
   setUpSteamingQuality();
+  setUpMic();
 });
 
 
@@ -272,7 +286,7 @@ function stopInvalidSource(sources) {
     return;
   }
 
-  const currentSource = app.streaming.start.source;
+  const currentSource = app.streaming.startInfo.source;
   if (sources.includes(currentSource) == true) {
     return;
   }
@@ -323,11 +337,7 @@ function onProviderPageLinkClicked() {
     return;
   }
 
-  const link = (app.dom.mePageSelect.children[0].value == 2) ?
-      app.service.user.pages[
-          app.dom.ownPageSelect.children[0].value].link :
-      app.service.user.link;
-  cef.externalBrowserPopUp.request(link);
+  cef.externalBrowserPopUp.request(app.streaming.postUrl);
 }
 
 
@@ -397,11 +407,18 @@ function onMicCheckboxChanged() {
   console.info('change micCheckbox');
   if (app.dom.micCheckbox.checked) {
     console.info('mic on');
-    cef.settingsMicOn.request();
+    const volume = app.dom.micVolume.value;
+    cef.settingsMicOn.request(volume);
   } else {
     console.info('mic off');
     cef.settingsMicOff.request();
   }
+}
+
+
+function onMicVolumeChanged() {
+  console.info('change micVolume');
+  cef.settingsMicVolumeUpdate.request(app.dom.micVolume.value);
 }
 
 
@@ -430,12 +447,15 @@ function submitControl() {
       const userPage = getCurrentUserPage();
       const privacy = app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
-      const mic = app.dom.micCheckbox.checked;
 
       cef.streamingStart.request(
-          source, userPage, privacy, '' /* title */, description, mic);
-      app.streaming.start.source =
-          ncsoft.select.getValue(app.dom.gameSelect);
+          source, userPage, privacy, '' /* title */, description);
+      app.streaming.startInfo = {
+        source: source,
+        userPage: userPage,
+        privacy: privacy,
+        description: description,
+      };
       updateStreamingStatus('starting');
       return /*no error*/ '';
     },
@@ -506,10 +526,11 @@ function setUpSteamingQuality() {
     const li = document.createElement('li');
     const aTag = document.createElement('a');
     aTag.textContent = [
-        level,
-        quality.resolution.width + '*' + quality.resolution.height,
-        'fps: ' + quality.fps,
-        'bitrate: ' + quality.bitrate].join(', ');
+      level,
+      quality.resolution.width + '*' + quality.resolution.height,
+      'fps: ' + quality.fps,
+      'bitrate: ' + quality.bitrate,
+    ].join(', ');
     li.setAttribute('data-value', level);
     li.appendChild(aTag);
     contents.appendChild(li);
@@ -518,6 +539,17 @@ function setUpSteamingQuality() {
   display.innerHTML = contents.firstChild.firstChild.textContent +
                       '<span class="caret"></span>';
   onQualitySelectChanged();
+}
+
+
+function setUpMic() {
+  const mic = app.streaming.mic;
+  app.dom.micCheckbox.checked = mic.use;
+  app.dom.micVolume.max = mic.volume.max;
+  app.dom.micVolume.min = mic.volume.min;
+  app.dom.micVolume.step = mic.volume.step;
+  app.dom.micVolume.value = mic.volume.value;
+  ncsoft.slider.adjustRange(app.dom.micVolume);
 }
 
 
@@ -546,8 +578,8 @@ function showErrorText() {
       error.textContent = '%NO_SELECT_OWN_PAGE%';
       break;
     case 'game select empty':
-       error.textContent = '%NO_SELECT_GAME%';
-       break;
+      error.textContent = '%NO_SELECT_GAME%';
+      break;
     default:
       error.TextContent = '%ERROR_MESSAGE%';
       break;
@@ -673,37 +705,87 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 };
 
 
-cef.streamingStart.onResponse = function(error) {
+cef.streamingStart.onResponse =
+    function(error, serviceProvider, streamUrl, postUrl) {
   console.info(error);
   if (error != '') {
     setUpError('fail streaming');
-    app.streaming.start.source = null;
+    app.streaming.startInfo = {};
     updateStreamingStatus('standby');
   } else {
+    app.streaming.postUrl = postUrl;
     updateStreamingStatus('onAir');
   }
 
-  if (remote.startRequestKey) {
-    cef.remoteStart.request(remote.startRequestKey, error);
-    remote.startRequestKey = null;
-  }
+  (function notifyRemote() {
+    const startInfo = app.streaming.startInfo;
+
+    cef.remoteStart.request(
+        remote.startRequestKey,
+        error,
+        startInfo.source,
+        startInfo.userPage,
+        startInfo.privacy,
+        startInfo.description,
+        app.dom.micCheckbox.checked,
+        serviceProvider,
+        streamUrl,
+        postUrl);
+
+    remote.startRequestKey = '';
+  })();
 };
 
 
 cef.streamingStop.onResponse = function(error) {
-  app.streaming.start.source = null;
+  const source = app.streaming.startInfo.source;
+  app.streaming.startInfo = {};
   updateStreamingStatus('standby');
 
-  if (remote.stopRequestKey) {
-    cef.remoteStop.request(remote.stopRequestKey, error);
-    remote.stopRequestKey = null;
-  }
+  (function notifyRemote() {
+    cef.remoteStop.request(remote.stopRequestKey, error, source);
+    remote.stopRequestKey = '';
+  })();
+};
+
+
+cef.remoteStart.onResponse = function() {
+  onMicCheckboxChanged();
 };
 
 
 cef.settingsVideoQualityUpdate.onResponse = function(error) {
-  if (remote.qualityUpdateRequestKey) {
+  (function notifyRemote() {
     cef.remoteQualityUpdate.request(remote.qualityUpdateRequestKey, error);
-    remote.qualityUpdateRequestKey = null;
+    remote.qualityUpdateRequestKey = '';
+  })();
+};
+
+
+cef.settingsMicOn.onResponse = function(error, volume) {
+  if (error != '') {
+    console.info(error);
+    return;
   }
+  app.streaming.mic.use = true;
+  app.streaming.mic.volume.value = volume;
+};
+
+
+cef.settingsMicOff.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  console.info('start volume' + volume);
+  app.streaming.mic.use = false;
+};
+
+
+cef.settingsMicVolumeUpdate.onResponse = function(error, volume) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.mic.volume.value = volume;
 };

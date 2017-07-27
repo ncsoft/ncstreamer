@@ -19,6 +19,8 @@
 namespace ncstreamer {
 class JsExecutor {
  public:
+  using StringPairVector = std::vector<std::pair<std::string, std::string>>;
+
   static void Execute(CefRefPtr<CefBrowser> browser,
                       const std::string &func_name);
   static void Execute(CefRefPtr<CefBrowser> browser,
@@ -37,7 +39,7 @@ class JsExecutor {
   static void Execute(CefRefPtr<CefBrowser> browser,
                       const std::string &func_name,
                       const std::string &arg0,
-                      const std::pair<std::string, std::string> &arg1_0);
+                      const StringPairVector &arg1);
   static void Execute(CefRefPtr<CefBrowser> browser,
                       const std::string &func_name,
                       const std::string &arg0,
@@ -84,6 +86,9 @@ class JsExecutor {
 
   static boost::property_tree::ptree BuildTree(
       const std::string &value);
+
+  static boost::property_tree::ptree BuildTree(
+      const StringPairVector &value);
 
   static boost::property_tree::ptree BuildTree(
       const boost::property_tree::ptree &value);

@@ -26,13 +26,11 @@ void RenderLoadHandler::OnLoadEnd(
     int httpStatusCode) {
   CEF_REQUIRE_RENDERER_THREAD();
 
-  if (frame->IsValid() == false ||
-      frame->IsMain() == false ||
-      frame->IsFocused() == false) {
+  if (frame->IsValid() == false) {
     return;
   }
 
-  const Dimension<int> &gap = GetScrollGap(frame);
+  const Dimension<int> &gap = GetScrollGap(browser->GetMainFrame());
   if (gap.empty() == true) {
     return;
   }
@@ -51,16 +49,15 @@ Dimension<int>
   CEF_REQUIRE_RENDERER_THREAD();
 
   static const CefString kJsCode =
-      L"(function() {"
-      L"  var e = document.documentElement;"
-      L"  if (!e) {"
-      L"    return null;"
+      L"(function(e) {"
+      L"  if (!e || e.scrollHeight < 100) {"
+      L"    return {w:0,h:0};"
       L"  }"
       L"  return {"
       L"    w: e.scrollWidth - e.clientWidth,"
       L"    h: e.scrollHeight - e.clientHeight"
       L"  };"
-      L"})()";
+      L"})(document.documentElement)";
 
   CefRefPtr<CefV8Context> context = frame->GetV8Context();
   CefRefPtr<CefV8Value> returnValue;

@@ -43,11 +43,11 @@
     "NO_SELECT_GAME": "Select the game you want to stream.",
     "YES": "Yes",
     "NO": "No",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "CLOSE_CHECK_MESSAGE1": "Closing the Streaming System will end the game stream.",
+    "CLOSE_CHECK_MESSAGE2": "Close streaming?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "LOGIN_GUIDE_NOTICE2": "Facebook accounts are not connected at PC cafes for the protection of users' private information."
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -96,15 +96,15 @@
     "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
-    "LOGIN_GUIDE_NOTICE1": "주의 사항",
-    "LOGIN_GUIDE_NOTICE2": "방송(BETA)은 게임의 창 모드 또는 전체 창 모드만 지원합니다."
+    "LOGIN_GUIDE_NOTICE1": "PC방에서는",
+    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해\r\n페이스북 계정 연결을 유지하지 않습니다."
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
     "BROADCASTING": "Stream",
     "CONNECT_PLATFORM": "Account verbinden",
     "LOGIN_GUIDE1": "Mit NC Streaming",
-    "LOGIN_GUIDE2": "kannst du dein Spiel streamen.",
+    "LOGIN_GUIDE2": "du dein Spiel streamen.",
     "LOGIN_GUIDE3": "Verbinde dich zum Posten mit deinem Facebook-Konto.",
     "CONNECT_FACEBOOK": "Facebook-Konto verbinden",
     "CONNECT_INFO": "Verbindungsinformationen",
@@ -143,11 +143,11 @@
     "NO_SELECT_GAME": "Wähle das Spiel aus, das du streamen möchtest.",
     "YES": "Ja",
     "NO": "Nein",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "CLOSE_CHECK_MESSAGE1": "Wenn du das Streamingsystem schließt, endet der Spielstream.",
+    "CLOSE_CHECK_MESSAGE2": "Streaming schließen?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "LOGIN_GUIDE_NOTICE2": "Facebook-Konten sind bei PCs in Internetcafés nicht verbunden. Dadurch sollen die privaten Informationen der Benutzer geschützt werden."
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -178,9 +178,9 @@
     "USE_MIC": "Utiliser micro",
     "ERROR_MESSAGE": "Connexion impossible à Facebook.\r\nRéessayez ultérieurement.",
     "START_BROADCASTING": "Lancer la diffusion",
-    "END_BROADCASTING": "Diffusion en cours",
+    "END_BROADCASTING": "Diffusion terminée",
     "PREPARING_BROADCASTING": "Préparation de la diffusion",
-    "ONAIR": "Diffusion",
+    "ONAIR": "Diffusion en cours",
     "SETTING": "Paramètres",
     "QUALITY": "Qualité",
     "CONFIRM": "Confirmer",
@@ -193,11 +193,11 @@
     "NO_SELECT_GAME": "Sélectionnez la partie à diffuser.",
     "YES": "Oui",
     "NO": "Non",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "CLOSE_CHECK_MESSAGE1": "La fermeture du système de diffusion arrêtera la diffusion de la partie.",
+    "CLOSE_CHECK_MESSAGE2": "Fermer la diffusion ?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "LOGIN_GUIDE_NOTICE2": "Pour des raisons de protection des informations privées des utilisateurs, les comptes Facebook ne sont pas connectés sur les ordinateurs de cybercafés."
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -243,11 +243,11 @@
     "NO_SELECT_GAME": "Selecciona la partida que deseas transmitir.",
     "YES": "Sí",
     "NO": "No",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "CLOSE_CHECK_MESSAGE1": "Si cierras el sistema de transmisión, finalizará la transmisión de la partida.",
+    "CLOSE_CHECK_MESSAGE2": "¿Quieres cerrar la transmisión?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "LOGIN_GUIDE_NOTICE2": "Las cuentas de Facebook no se conectan en cibercafés a fin de proteger la información privada de los usuarios."
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -293,11 +293,11 @@
     "NO_SELECT_GAME": "Scegli il gioco di cui vuoi iniziare lo streaming.",
     "YES": "Sí",
     "NO": "No",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "CLOSE_CHECK_MESSAGE1": "Chiudendo il sistema di streaming lo streaming verrà terminato.",
+    "CLOSE_CHECK_MESSAGE2": "Chiudere streaming?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "LOGIN_GUIDE_NOTICE2": "Gli account Facebook non sono connessi ai PC cafes per la protezione delle informazioni private degli utenti."
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -343,11 +343,11 @@
     "NO_SELECT_GAME": "Wybierz grę, którą chcesz transmitować.",
     "YES": "Tak",
     "NO": "Nie",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "CLOSE_CHECK_MESSAGE1": "Zamknięcie systemu transmisyjnego spowoduje przerwanie transmisji gry.",
+    "CLOSE_CHECK_MESSAGE2": "Zamknąć transmisję?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "LOGIN_GUIDE_NOTICE2": "W kawiarenkach internetowych korzystanie z konta na Facebooku jest wyłączone, aby chronić dane osobowe użytkowników."
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -393,11 +393,11 @@
     "NO_SELECT_GAME": "Selecione o jogo que deseja transmitir.",
     "YES": "Sim",
     "NO": "Não",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "CLOSE_CHECK_MESSAGE1": "Fechar o Sistema de transmissão encerrará a transmissão do jogo.",
+    "CLOSE_CHECK_MESSAGE2": "Fechar transmissão?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "LOGIN_GUIDE_NOTICE2": "Não é possível conectar com contas de Facebook em cyber-cafés por questões de segurança de informações dos usuários."
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -443,11 +443,11 @@
     "NO_SELECT_GAME": "Yayınlamak istediğiniz oyunu seçin.",
     "YES": "Evet",
     "NO": "Hayır",
-    "CLOSE_CHECK_MESSAGE1": "방송 시스템을 종료하면 게임 방송도 종료됩니다.",
-    "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
+    "CLOSE_CHECK_MESSAGE1": "Yayın Sistemini kapatırsanız oyun yayını sona erer.",
+    "CLOSE_CHECK_MESSAGE2": "Yayın kapatılsın mı?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "",
-    "LOGIN_GUIDE_NOTICE2": ""
+    "LOGIN_GUIDE_NOTICE2": "Kullanıcıların özel bilgilerinin korunması için Facebook hesaplarına İnternet kafelerden bağlanılamaz."
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",

@@ -29,9 +29,8 @@ const cef = (function() {
       response: ['error'],
     },
     'streaming/start': {
-      request: ['source', 'userPage', 'privacy', 'title', 'description',
-                'mic'],
-      response: ['error'],
+      request: ['source', 'userPage', 'privacy', 'title', 'description'],
+      response: ['error', 'serviceProvider', 'streamUrl', 'postUrl'],
     },
     'streaming/stop': {
       request: [],
@@ -42,12 +41,16 @@ const cef = (function() {
       response: ['error'],
     },
     'settings/mic/on': {
-      request: [],
-      response: [],
+      request: ['volume'],
+      response: ['error', 'volume'],
     },
     'settings/mic/off': {
       request: [],
-      response: [],
+      response: ['error'],
+    },
+    'settings/mic/volume/update': {
+      request: ['volume'],
+      response: ['error', 'volume'],
     },
     'storage/user_page/update': {
       request: ['userPage'],
@@ -62,11 +65,13 @@ const cef = (function() {
       response: [],
     },
     'remote/start': {
-      request: ['requestKey', 'error'],
+      request: ['requestKey', 'error', 'source', 'userPage', 'privacy',
+                'description', 'mic', 'serviceProvider', 'streamUrl',
+                'postUrl'],
       response: [],
     },
     'remote/stop': {
-      request: ['requestKey', 'error'],
+      request: ['requestKey', 'error', 'source'],
       response: [],
     },
     'remote/quality/update': {
@@ -130,9 +135,9 @@ const cef = (function() {
 
 
 const remote = {
-  startRequestKey: null,
-  stopRequestKey: null,
-  qualityUpdateRequestKey: null,
+  startRequestKey: '',
+  stopRequestKey: '',
+  qualityUpdateRequestKey: '',
   onStreamingStatusRequest: function(requestKey) {
     const status = app.streaming.status;
     const sourceTitle = app.dom.gameSelect.children[0].textContent;
@@ -151,7 +156,7 @@ const remote = {
 
     const status = app.streaming.status;
     if (status != 'standby') {
-      const startTitle = getTitleFromSource(app.streaming.start.source);
+      const startTitle = getTitleFromSource(app.streaming.startInfo.source);
       const errorType = (sourceTitle == startTitle) ?
           'not standby: self' : 'not standby: other';
       cef.remoteStart.request(requestKey, errorType);
@@ -181,7 +186,7 @@ const remote = {
       return;
     }
 
-    const startTitle = getTitleFromSource(app.streaming.start.source);
+    const startTitle = getTitleFromSource(app.streaming.startInfo.source);
     if (sourceTitle != startTitle) {
       cef.remoteStop.request(requestKey, 'title mismatch');
       return;

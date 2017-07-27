@@ -13,7 +13,7 @@
 
 namespace ncstreamer {
 const char *FacebookApi::kScheme{"https"};
-const char *FacebookApi::kVersion{"v2.8"};
+const char *FacebookApi::kVersion{"v2.9"};
 
 
 const char *FacebookApi::Login::kAuthority{"www.facebook.com"};
@@ -85,8 +85,10 @@ const std::string &FacebookApi::Graph::Me::static_path() {
 
 
 Uri FacebookApi::Graph::LiveVideos::BuildUri(
-    const std::string &user_page_id) {
-  return {kScheme, kAuthority, BuildPath(user_page_id)};
+    const std::string &user_page_id,
+    const std::string &app_attribution_tag) {
+  return {kScheme, kAuthority, BuildPath(user_page_id),
+      Uri::Query{{{"app_attribution_tag", app_attribution_tag}}}};
 }
 
 
@@ -118,6 +120,22 @@ std::string FacebookApi::Graph::LiveVideos::BuildPath(
     const std::string &user_page_id) {
   std::stringstream ss;
   ss << "/" << user_page_id << "/live_videos";
+  return ss.str();
+}
+
+
+Uri FacebookApi::Graph::PostId::BuildUri(
+    const std::string &access_token,
+    const std::string &stream_id) {
+  return {kScheme, kAuthority, BuildPath(stream_id),
+      Uri::Query{{{"access_token", access_token}}}};
+}
+
+
+std::string FacebookApi::Graph::PostId::BuildPath(
+    const std::string &stream_id) {
+  std::stringstream ss;
+  ss << "/" << stream_id;
   return ss.str();
 }
 }  // namespace ncstreamer

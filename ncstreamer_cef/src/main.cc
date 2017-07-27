@@ -57,10 +57,10 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   HWND prev_instance = ::FindWindow(NULL, ncstreamer::kAppName);
   if (prev_instance != NULL) {
+    ::ShowWindow(prev_instance, SW_RESTORE);
+    ::SetForegroundWindow(prev_instance);
     return -1;
   }
-
-  auto app_data_path = CreateUserLocalAppDirectory();
 
   CefRefPtr<ncstreamer::BrowserApp> browser_app{new ncstreamer::BrowserApp{
       instance,
@@ -69,7 +69,21 @@ int APIENTRY wWinMain(HINSTANCE instance,
       cmd_line.shows_sources_all(),
       cmd_line.sources(),
       cmd_line.locale(),
-      cmd_line.ui_uri()}};
+      cmd_line.ui_uri(),
+      cmd_line.default_position()}};
+
+  ncstreamer::RemoteServer::SetUp(browser_app);
+  bool started = ncstreamer::RemoteServer::Get()->Start(cmd_line.remote_port());
+  if (started == false) {
+    return -1;
+  }
+
+  auto app_data_path = CreateUserLocalAppDirectory();
+  boost::filesystem::path storage_path{};
+  if (cmd_line.in_memory_local_storage() == false) {
+    storage_path = app_data_path / L"local_storage.json";
+  }
+  ncstreamer::LocalStorage::SetUp(storage_path.c_str());
 
   CefSettings settings;
   settings.no_sandbox = true;
@@ -79,18 +93,9 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
 
-  boost::filesystem::path storage_path{};
-  if (cmd_line.in_memory_local_storage() == false) {
-    storage_path = app_data_path / L"local_storage.json";
-  }
-
-  ncstreamer::LocalStorage::SetUp(storage_path.c_str());
   ncstreamer::WindowFrameRemover::SetUp();
   ncstreamer::Obs::SetUp();
-  ncstreamer::StreamingService::SetUp();
-  ncstreamer::RemoteServer::SetUp(
-      browser_app,
-      cmd_line.remote_port());
+  ncstreamer::StreamingService::SetUp(cmd_line.streaming_service_tag_ids());
 
   ncstreamer::DesignatedUser::SetUp(cmd_line.designated_user());
 

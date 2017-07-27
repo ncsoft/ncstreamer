@@ -10,6 +10,8 @@
 
 #include "windows.h"  //NOLINT
 
+#include "obs-studio/plugins/win-capture/graphics-hook-info.h"
+
 #include "ncstreamer_cef/src_imported/from_obs_studio_ui/obs-app.hpp"
 
 
@@ -59,16 +61,14 @@ bool Obs::StartStreaming(
     const std::string &source_info,
     const std::string &service_provider,
     const std::string &stream_url,
-    const bool &mic,
     const ObsOutput::OnStarted &on_streaming_started) {
+  UpdateCurrentSource(source_info);
   UpdateBaseResolution(source_info);
 
   ResetAudio();
   ResetVideo();
   obs_encoder_set_audio(audio_encoder_, obs_get_audio());
   obs_encoder_set_video(video_encoder_, obs_get_video());
-
-  UpdateCurrentSource(source_info, mic);
 
   std::string stream_server;
   std::string stream_key;
@@ -87,11 +87,11 @@ void Obs::StopStreaming(
 }
 
 
-void Obs::TurnOnMic() {
+bool Obs::TurnOnMic() {
   obs_source_t *video_source = obs_get_output_source(0);
-  if (!video_source)
-    return;
-
+  if (!video_source) {
+    return false;
+  }
   obs_data_t *settings = obs_data_create();
   obs_data_set_string(settings, "device_id", "default");
 
@@ -101,11 +101,13 @@ void Obs::TurnOnMic() {
 
   obs_set_output_source(3, source);
   obs_source_release(source);
+  return true;
 }
 
 
-void Obs::TurnOffMic() {
+bool Obs::TurnOffMic() {
   obs_set_output_source(3, nullptr);
+  return true;
 }
 
 
@@ -253,15 +255,15 @@ void Obs::ClearSceneData() {
 }
 
 
-void Obs::UpdateCurrentSource(const std::string &source_info,
-                              const bool &mic) {
+void Obs::UpdateCurrentSource(const std::string &source_info) {
   // video
   {
     obs_data_t *settings = obs_data_create();
     obs_data_set_string(settings, "window", source_info.c_str());
+    obs_data_set_string(settings, "capture_mode", "window");
 
     obs_source_t *source = obs_source_create(
-        "window_capture", "Window Capture", settings, nullptr);
+        "game_capture", "Game Capture", settings, nullptr);
     obs_data_release(settings);
 
     obs_set_output_source(0, source);
@@ -279,11 +281,6 @@ void Obs::UpdateCurrentSource(const std::string &source_info,
 
     obs_set_output_source(1, source);
     obs_source_release(source);
-  }
-
-  // mic
-  if (mic) {
-    TurnOnMic();
   }
 }
 
@@ -317,9 +314,9 @@ void Obs::ReleaseCurrentService() {
 
 void Obs::UpdateBaseResolution(const std::string &source_info) {
   std::string title_class = source_info.substr(
-    0, source_info.find_last_of(":"));
+      0, source_info.find_last_of(":"));
   std::string class_name = title_class.substr(
-    title_class.find_last_of(":") + 1, title_class.length());
+      title_class.find_last_of(":") + 1, title_class.length());
   std::string title = title_class.substr(0, title_class.find_last_of(":"));
 
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -327,12 +324,34 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
   std::wstring w_title = converter.from_bytes(title);
 
   HWND handle = ::FindWindowExW(
-    nullptr, nullptr, w_class_name.c_str(), w_title.c_str());
-  RECT rect;
-  GetClientRect(handle, &rect);
-  uint32_t width = rect.right - rect.left;
-  uint32_t height = rect.bottom - rect.top;
-  base_size_ = {width, height};
+      nullptr, nullptr, w_class_name.c_str(), w_title.c_str());
+  DWORD process_id;
+  GetWindowThreadProcessId(handle, &process_id);
+  std::wstring map_name = L"CaptureHook_HookInfo" + std::to_wstring(process_id);
+  for (int i = 0; i < 50; ++i) {
+    HANDLE hook_info_map = OpenFileMapping(
+        FILE_MAP_READ, false, map_name.c_str());
+    if (hook_info_map) {
+      struct hook_info *info = reinterpret_cast<struct hook_info *>(
+          MapViewOfFile(hook_info_map, FILE_MAP_READ, 0, 0, sizeof(info)));
+      if (info && info->cx != 0 && info->cy != 0) {
+        base_size_ = {info->cx, info->cy};
+        break;
+      }
+    }
+    Sleep(100);
+  }
+}
+
+
+bool Obs::UpdateMicVolume(float volume) {
+  obs_source_t *source = obs_get_output_source(3);
+  if (!source) {
+    return false;
+  }
+  obs_source_set_volume(source, volume);
+  obs_source_release(source);
+  return true;
 }
 
 

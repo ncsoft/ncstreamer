@@ -11,9 +11,10 @@
 
 
 namespace ncstreamer {
-void StreamingService::SetUp() {
+void StreamingService::SetUp(
+    const StreamingServiceTagMap &tag_ids) {
   assert(!static_instance);
-  static_instance = new StreamingService{};
+  static_instance = new StreamingService{tag_ids};
 }
 
 
@@ -30,8 +31,10 @@ StreamingService *StreamingService::Get() {
 }
 
 
-StreamingService::StreamingService()
-    : service_providers_{
+StreamingService::StreamingService(
+    const StreamingServiceTagMap &tag_ids)
+    : tag_ids_{tag_ids},
+      service_providers_{
           {"Facebook Live", std::shared_ptr<Facebook>{new Facebook{}}}},
       current_service_provider_id_{nullptr},
       current_service_provider_{} {
@@ -48,9 +51,12 @@ void StreamingService::LogIn(
     const std::wstring &locale,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
+  static const std::string kFunc{"LogIn"};
+
   auto i = service_providers_.find(service_provider_id);
   if (i == service_providers_.end()) {
-    on_failed(FailMessage::ToUnknownServiceProvider(service_provider_id));
+    HandleFail(on_failed, kFunc,
+        FailMessage::ToUnknownServiceProvider(service_provider_id));
     return;
   }
   current_service_provider_id_ = &(i->first);
@@ -59,7 +65,9 @@ void StreamingService::LogIn(
   current_service_provider_->LogIn(
       parent,
       locale,
-      on_failed,
+      [this, on_failed](const std::string &error) {
+        HandleFail(on_failed, kFunc, error);
+      },
       on_logged_in);
 }
 
@@ -68,16 +76,21 @@ void StreamingService::LogOut(
     const std::string &service_provider_id,
     const OnFailed &on_failed,
     const OnLoggedOut &on_logged_out) {
+  static const std::string kFunc{"LogOut"};
+
   auto i = service_providers_.find(service_provider_id);
   if (i == service_providers_.end()) {
-    on_failed(FailMessage::ToUnknownServiceProvider(service_provider_id));
+    HandleFail(on_failed, kFunc,
+        FailMessage::ToUnknownServiceProvider(service_provider_id));
     return;
   }
   current_service_provider_id_ = &(i->first);
   current_service_provider_ = i->second;
 
   current_service_provider_->LogOut(
-      on_failed,
+      [this, on_failed](const std::string &error) {
+        HandleFail(on_failed, kFunc, error);
+      },
       on_logged_out);
 }
 
@@ -87,23 +100,32 @@ void StreamingService::PostLiveVideo(
     const std::string &privacy,
     const std::string &title,
     const std::string &description,
+    const std::string &source,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
+  static const std::string kFunc{"PostLiveVideo"};
+
   if (!current_service_provider_) {
-    on_failed(FailMessage::ToNotLoggedIn());
+    HandleFail(on_failed, kFunc,
+        FailMessage::ToNotLoggedIn());
     return;
   }
 
   const std::string &service_provider_id = *current_service_provider_id_;
+  const std::string &tag_id = FindTagId(service_provider_id, source);
+
   current_service_provider_->PostLiveVideo(
       user_page_id,
       privacy,
       title,
       description,
-      on_failed,
+      tag_id,
+      [this, on_failed](const std::string &error) {
+        HandleFail(on_failed, kFunc, error);
+      },
       [on_live_video_posted, service_provider_id](
-          const std::string &stream_url) {
-        on_live_video_posted(service_provider_id, stream_url);
+          const std::string &stream_url, const std::string &post_url) {
+        on_live_video_posted(service_provider_id, stream_url, post_url);
       });
 }
 
@@ -131,6 +153,39 @@ std::string StreamingService::FailMessage::ToNotLoggedIn() {
   std::stringstream msg;
   msg << "not logged in";
   return msg.str();
+}
+
+
+const std::string &StreamingService::FindTagId(
+    const std::string &service_provider,
+    const std::string &source) const {
+  static const std::string kEmptyTagId{""};
+
+  auto source_tags_i = tag_ids_.find(service_provider);
+  if (source_tags_i == tag_ids_.end()) {
+    return kEmptyTagId;
+  }
+  const auto &source_tags = source_tags_i->second;
+  auto tag_i = source_tags.find(source);
+  if (tag_i == source_tags.end()) {
+    return kEmptyTagId;
+  }
+  return tag_i->second;
+}
+
+
+void StreamingService::HandleFail(
+    const OnFailed &on_failed,
+    const std::string &func,
+    const std::string &msg) {
+  std::stringstream ss;
+  ss << "StreamingService";
+  if (current_service_provider_id_) {
+    ss << "[" << *current_service_provider_id_ << "]";
+  }
+  ss << ": " << func
+     << ": " << msg;
+  on_failed(ss.str());
 }
 
 

@@ -11,6 +11,7 @@
 
 #include "boost/property_tree/json_parser.hpp"
 #include "boost/property_tree/ptree.hpp"
+#include "windows.h"  // NOLINT
 
 
 namespace ncstreamer {
@@ -20,11 +21,13 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       video_quality_{},
       shows_sources_all_{false},
       sources_{},
+      streaming_service_tag_ids_{},
       locale_{},
       ui_uri_{},
       remote_port_{0},
       in_memory_local_storage_{false},
-      designated_user_{} {
+      designated_user_{},
+      default_position_{CW_USEDEFAULT, CW_USEDEFAULT} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
   cef_cmd_line->InitFromString(cmd_line);
@@ -47,6 +50,12 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
     sources_ = ParseSourcesArgument(sources_arg);
   }
 
+  const std::wstring &tag_ids_arg =
+      cef_cmd_line->GetSwitchValue(L"tag-ids");
+  if (tag_ids_arg.empty() == false) {
+    streaming_service_tag_ids_ = ParseTagIdsArgument(tag_ids_arg);
+  }
+
   const std::wstring &locale =
       cef_cmd_line->GetSwitchValue(L"locale");
   locale_ = locale.empty() ? L"en-US" : locale;
@@ -65,6 +74,12 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       ReadBool(cef_cmd_line, L"in-memory-local-storage", false);
 
   designated_user_ = cef_cmd_line->GetSwitchValue(L"designated-user");
+
+  const std::wstring default_position =
+      cef_cmd_line->GetSwitchValue(L"default-position");
+  if (default_position.empty() == false) {
+    default_position_ = ParseDefaultPosition(default_position);
+  }
 }
 
 
@@ -114,5 +129,53 @@ std::vector<std::string>
     sources.clear();
   }
   return sources;
+}
+
+
+StreamingServiceTagMap
+    CommandLine::ParseTagIdsArgument(const std::wstring &arg) {
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  std::string utf8 = converter.to_bytes(arg);
+
+  StreamingServiceTagMap service_tag_ids;
+  boost::property_tree::ptree root;
+  std::stringstream root_ss{utf8};
+  try {
+    boost::property_tree::read_json(root_ss, root);
+    for (const auto &service_elem : root) {
+      const std::string &service_provider = service_elem.first;
+      const boost::property_tree::ptree &service_obj = service_elem.second;
+      SourceTagMap source_tag_ids;
+      for (const auto &source_elem : service_obj) {
+        const std::string &source_title = source_elem.first;
+        const std::string &tag_id = source_elem.second.get_value<std::string>();
+        source_tag_ids.emplace(source_title, tag_id);
+      }
+      service_tag_ids.emplace(service_provider, source_tag_ids);
+    }
+  } catch (const std::exception &/*e*/) {
+    service_tag_ids.clear();
+  }
+  return service_tag_ids;
+}
+
+
+Position<int> CommandLine::ParseDefaultPosition(const std::wstring &arg) {
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  std::string utf8 = converter.to_bytes(arg);
+  int x;
+  int y;
+  boost::property_tree::ptree root;
+  std::stringstream root_ss{utf8};
+  try {
+    boost::property_tree::read_json(root_ss, root);
+    x = root.get<int>("x");
+    y = root.get<int>("y");
+  }
+  catch (const std::exception &/*e*/) {
+    x = CW_USEDEFAULT;
+    y = CW_USEDEFAULT;
+  }
+  return {x, y};
 }
 }  // namespace ncstreamer

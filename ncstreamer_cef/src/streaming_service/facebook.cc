@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <functional>
+#include <regex>  // NOLINT
 #include <string>
 #include <unordered_map>
 
@@ -15,6 +16,7 @@
 #include "include/base/cef_bind.h"
 #include "include/cef_cookie.h"
 #include "include/cef_browser.h"
+#include "include/cef_parser.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
 
@@ -139,10 +141,12 @@ void Facebook::PostLiveVideo(
     const std::string &privacy,
     const std::string &title,
     const std::string &description,
+    const std::string &app_attribution_tag,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
-      user_page_id)};
+      user_page_id,
+      app_attribution_tag)};
 
   const std::string &access_token = (user_page_id == "me") ?
       GetAccessToken() : GetPageAccessToken(user_page_id);
@@ -166,12 +170,14 @@ void Facebook::PostLiveVideo(
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
     on_failed(msg);
-  }, [on_failed, on_live_video_posted](const std::string &str) {
+  }, [this, on_failed, on_live_video_posted](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
+    std::string stream_id{};
     std::string stream_url{};
     try {
       boost::property_tree::read_json(ss, tree);
+      stream_id = tree.get<std::string>("id");
       stream_url = tree.get<std::string>("stream_url");
     } catch (const std::exception &/*e*/) {
       stream_url = "";
@@ -186,7 +192,7 @@ void Facebook::PostLiveVideo(
 
     OutputDebugStringA((stream_url + "/stream_url\r\n").c_str());
 
-    on_live_video_posted(stream_url);
+    GetPostUrl(stream_id, stream_url, on_failed, on_live_video_posted);
   });
 }
 
@@ -256,6 +262,52 @@ void Facebook::GetMe(
     }
 
     on_me_gotten(me_id, me_name, me_link, me_accounts);
+  });
+}
+
+
+void Facebook::GetPostUrl(
+    const std::string &stream_id,
+    const std::string &stream_url,
+    const OnFailed &on_failed,
+    const OnLiveVideoPosted &on_live_video_posted) {
+  Uri post_id_uri{FacebookApi::Graph::PostId::BuildUri(
+      GetAccessToken(), stream_id)};
+
+  http_request_service_.Get(
+      post_id_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [stream_url, on_failed, on_live_video_posted](const std::string &str) {
+    boost::property_tree::ptree stream;
+    std::stringstream stream_ss{str};
+    std::string post_url{};
+    try {
+      boost::property_tree::read_json(stream_ss, stream);
+      std::string embed_html = stream.get<std::string>("embed_html");
+      std::smatch matches;
+      static const std::regex kUriPattern{R"(href=(.*?)(?:\&|\"))"};
+      bool found = std::regex_search(embed_html, matches, kUriPattern);
+      if (found) {
+        std::string encoded_url{matches[1]};
+        cef_uri_unescape_rule_t escape_rule =
+            static_cast<cef_uri_unescape_rule_t>(UU_PATH_SEPARATORS |
+                UU_URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS);
+        post_url = ::CefURIDecode(encoded_url, true, escape_rule);
+      }
+    } catch (const std::exception &/*e*/) {
+      post_url.empty();
+    }
+
+    if (post_url.empty() == true) {
+      std::stringstream msg;
+      msg << "could not get post_url from: " << str;
+      on_failed(msg.str());
+      return;
+    }
+
+    on_live_video_posted(stream_url, post_url);
   });
 }
 

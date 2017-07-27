@@ -25,6 +25,8 @@ class ClientLifeSpanHandler : public CefLifeSpanHandler {
   const CefRefPtr<CefBrowser> &main_browser() const;
 
  private:
+  void SaveWindowPosition(HWND handle);
+
   HICON icon_;
 
   std::unordered_map<int/*browser id*/, CefRefPtr<CefBrowser>> browsers_;

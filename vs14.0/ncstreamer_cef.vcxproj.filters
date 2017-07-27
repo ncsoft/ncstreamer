@@ -141,6 +141,12 @@
     <ClCompile Include="..\ncstreamer_cef\src\designated_user.cc">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\lib\position.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\lib\monitor_info.cpp">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -259,6 +265,15 @@
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\designated_user.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\lib\position.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\lib\monitor_info.h">
+      <Filter>src\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_types.h">
+      <Filter>src\streaming_service</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
