@@ -121,6 +121,49 @@ bool Obs::UpdateMicVolume(float volume) {
 }
 
 
+bool Obs::TurnOnWebcam() {
+  obs_scene_t *scene =
+      obs_scene_from_source(obs_get_source_by_name("Scene"));
+  if (scene == nullptr) {
+    return false;
+  }
+
+  DShow::Device::EnumVideoDevices(devices_);
+  if (devices_.size() < 1) {
+    return false;
+  }
+
+  std::wstring w_device{devices_.at(0).name + L":" + devices_.at(0).path};
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
+  std::string device = convert.to_bytes(w_device);
+
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "video_device_id", device.c_str());
+  obs_source_t *source = obs_source_create(
+      "dshow_input", "Video Capture Device", settings, nullptr);
+  obs_data_release(settings);
+  obs_scene_atomic_update(scene, Obs::AddSourceToScene, source);
+  obs_source_release(source);
+  obs_scene_release(scene);
+  return true;
+}
+
+
+bool Obs::TurnOffWebcam() {
+  obs_scene_t *scene =
+      obs_scene_from_source(obs_get_source_by_name("Scene"));
+  if (scene == nullptr) {
+    return false;
+  }
+  obs_sceneitem_t *item = obs_scene_find_source(scene, "Video Capture Device");
+  if (item == nullptr) {
+    return false;
+  }
+  obs_sceneitem_remove(item);
+  return true;
+}
+
+
 void Obs::UpdateVideoQuality(
     const Dimension<uint32_t> &output_size,
     uint32_t fps,
@@ -160,6 +203,13 @@ void Obs::UpdateCurrentServiceEncoders(
 }
 
 
+void Obs::AddSourceToScene(void *data, obs_scene_t *scene) {
+  obs_source_t *source = reinterpret_cast<obs_source_t *>(data);
+  obs_sceneitem_t *sceneitem = obs_scene_add(scene, source);
+  obs_sceneitem_set_visible(sceneitem, true);
+}
+
+
 Obs::Obs()
     : log_file_{},
       audio_encoder_{nullptr},
@@ -188,6 +238,7 @@ Obs::Obs()
 
 Obs::~Obs() {
   ReleaseCurrentService();
+  ClearSceneItems();
   ClearSceneData();
 
   stream_output_.reset();
@@ -250,8 +301,32 @@ obs_encoder_t *Obs::CreateVideoEncoder() {
 }
 
 
+void Obs::ClearSceneItems() {
+  obs_scene_t *scene =
+      obs_scene_from_source(obs_get_source_by_name("Scene"));
+  if (scene == nullptr) {
+    return;
+  }
+
+  std::vector<obs_sceneitem_t *> items;
+  obs_scene_enum_items(scene,
+      [](obs_scene_t *scene, obs_sceneitem_t *item, void *param) {
+    std::vector<obs_sceneitem_t *> &items =
+        *reinterpret_cast<std::vector<obs_sceneitem_t *> *>(param);
+    items.emplace_back(item);
+    return true;
+  }, &items);
+
+  for (auto &item : items) {
+    obs_sceneitem_remove(item);
+  }
+  obs_scene_release(scene);
+}
+
+
 void Obs::ClearSceneData() {
   obs_set_output_source(3, nullptr);
+  obs_set_output_source(2, nullptr);
   obs_set_output_source(1, nullptr);
   obs_set_output_source(0, nullptr);
 }
@@ -260,16 +335,19 @@ void Obs::ClearSceneData() {
 void Obs::UpdateCurrentSource(const std::string &source_info) {
   // video
   {
+    ClearSceneItems();
+    obs_scene_t *scene = obs_scene_create("Scene");
     obs_data_t *settings = obs_data_create();
     obs_data_set_string(settings, "window", source_info.c_str());
     obs_data_set_string(settings, "capture_mode", "window");
-
     obs_source_t *source = obs_source_create(
         "game_capture", "Game Capture", settings, nullptr);
     obs_data_release(settings);
-
-    obs_set_output_source(0, source);
+    obs_scene_atomic_update(scene, Obs::AddSourceToScene, source);
     obs_source_release(source);
+
+    obs_set_output_source(0, obs_get_source_by_name("Scene"));
+    obs_scene_release(scene);
   }
 
   // audio
