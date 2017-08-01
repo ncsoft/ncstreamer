@@ -713,6 +713,7 @@ cef.streamingStart.onResponse =
     app.streaming.startInfo = {};
     updateStreamingStatus('standby');
   } else {
+    onMicCheckboxChanged();
     app.streaming.postUrl = postUrl;
     updateStreamingStatus('onAir');
   }
@@ -746,11 +747,6 @@ cef.streamingStop.onResponse = function(error) {
     cef.remoteStop.request(remote.stopRequestKey, error, source);
     remote.stopRequestKey = '';
   })();
-};
-
-
-cef.remoteStart.onResponse = function() {
-  onMicCheckboxChanged();
 };
 
 

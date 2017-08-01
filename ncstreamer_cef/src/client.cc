@@ -701,7 +701,6 @@ void Client::OnCommandRemoteStart(
       service_provider,
       stream_url,
       post_url);
-  JsExecutor::Execute(browser, "cef.onResponse", cmd);
 }
 
 
