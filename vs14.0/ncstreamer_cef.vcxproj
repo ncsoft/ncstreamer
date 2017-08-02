@@ -105,7 +105,6 @@
     <ClCompile Include="..\ncstreamer_cef\src\client\client_display_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\client\client_life_span_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\client\client_load_handler.cc" />
-    <ClCompile Include="..\ncstreamer_cef\src\client\client_request_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\designated_user.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\js_executor.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\cef_fit_client.cc" />
@@ -131,6 +130,7 @@
     <ClCompile Include="..\ncstreamer_cef\src\remote_server.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_app.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_process\render_load_handler.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\render_process\render_v8_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_process_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_process_message_types.cpp" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\facebook.cc" />
@@ -146,7 +146,6 @@
     <ClInclude Include="..\ncstreamer_cef\src\client\client_display_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\client\client_life_span_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\client\client_load_handler.h" />
-    <ClInclude Include="..\ncstreamer_cef\src\client\client_request_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\designated_user.h" />
     <ClInclude Include="..\ncstreamer_cef\src\js_executor.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\cef_fit_client.h" />
@@ -173,6 +172,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\remote_server.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_app.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process\render_load_handler.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\render_process\render_v8_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process_message_types.h" />
     <ClInclude Include="..\ncstreamer_cef\src\resource.h" />

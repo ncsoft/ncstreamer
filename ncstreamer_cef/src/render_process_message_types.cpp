@@ -7,5 +7,6 @@
 
 
 namespace ncstreamer {
+const wchar_t *const RenderProcessMessage::kEvent = L"Event";
 const wchar_t *const RenderProcessMessage::kScrollGap = L"ScrollGap";
 }  // namespace ncstreamer

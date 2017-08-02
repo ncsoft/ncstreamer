@@ -20,6 +20,9 @@ class RenderProcessHandler : public CefRenderProcessHandler {
 
   // override CefRenderProcessHandler
   CefRefPtr<CefLoadHandler> GetLoadHandler() override;
+  void OnContextCreated(CefRefPtr<CefBrowser> browser,
+                        CefRefPtr<CefFrame> frame,
+                        CefRefPtr<CefV8Context> context) override;
 
  private:
   CefRefPtr<RenderLoadHandler> load_handler_;

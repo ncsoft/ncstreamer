@@ -10,6 +10,7 @@
 namespace ncstreamer {
 class RenderProcessMessage {
  public:
+  static const wchar_t *const kEvent;
   static const wchar_t *const kScrollGap;
 };
 }  // namespace ncstreamer
