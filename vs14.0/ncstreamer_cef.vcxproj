@@ -105,7 +105,6 @@
     <ClCompile Include="..\ncstreamer_cef\src\client\client_display_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\client\client_life_span_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\client\client_load_handler.cc" />
-    <ClCompile Include="..\ncstreamer_cef\src\client\client_request_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\designated_user.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\js_executor.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\cef_fit_client.cc" />
@@ -147,7 +146,6 @@
     <ClInclude Include="..\ncstreamer_cef\src\client\client_display_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\client\client_life_span_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\client\client_load_handler.h" />
-    <ClInclude Include="..\ncstreamer_cef\src\client\client_request_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\designated_user.h" />
     <ClInclude Include="..\ncstreamer_cef\src\js_executor.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\cef_fit_client.h" />

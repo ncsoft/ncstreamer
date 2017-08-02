@@ -45,9 +45,6 @@
     <ClCompile Include="..\ncstreamer_cef\src\client\client_load_handler.cc">
       <Filter>src\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\ncstreamer_cef\src\client\client_request_handler.cc">
-      <Filter>src\client</Filter>
-    </ClCompile>
     <ClCompile Include="..\ncstreamer_cef\src\main.cc">
       <Filter>src</Filter>
     </ClCompile>
@@ -168,9 +165,6 @@
       <Filter>src\client</Filter>
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\client\client_load_handler.h">
-      <Filter>src\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ncstreamer_cef\src\client\client_request_handler.h">
       <Filter>src\client</Filter>
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\resource.h">

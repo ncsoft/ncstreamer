@@ -128,8 +128,7 @@ const cef = (function() {
         argsArr.push([key, encodeURIComponent(args[key])].join('='));
       }
     }
-    const uri = ['cef://', type, '?', argsArr.join('&')].join('');
-    location.href = uri;
+    window.sendEvent(type, argsArr.join(','));
   }
 })();
 
