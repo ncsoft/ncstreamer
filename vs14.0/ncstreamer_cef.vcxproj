@@ -131,6 +131,7 @@
     <ClCompile Include="..\ncstreamer_cef\src\remote_server.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_app.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_process\render_load_handler.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\render_process\render_v8_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_process_handler.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\render_process_message_types.cpp" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\facebook.cc" />
@@ -173,6 +174,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\remote_server.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_app.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process\render_load_handler.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\render_process\render_v8_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process_handler.h" />
     <ClInclude Include="..\ncstreamer_cef\src\render_process_message_types.h" />
     <ClInclude Include="..\ncstreamer_cef\src\resource.h" />

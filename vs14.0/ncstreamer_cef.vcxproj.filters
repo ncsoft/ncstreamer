@@ -147,6 +147,9 @@
     <ClCompile Include="..\ncstreamer_cef\src\lib\monitor_info.cpp">
       <Filter>src\lib</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\render_process\render_v8_handler.cc">
+      <Filter>src\render_process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_types.h">
       <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\render_process\render_v8_handler.h">
+      <Filter>src\render_process</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
