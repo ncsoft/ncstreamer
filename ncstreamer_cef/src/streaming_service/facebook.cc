@@ -306,8 +306,14 @@ void Facebook::GetPostUrl(
       on_failed(msg.str());
       return;
     }
-
-    on_live_video_posted(stream_url, post_url);
+    std::string stream_server;
+    std::string stream_key;
+    std::tie(stream_server, stream_key) = [stream_url]() {
+      std::size_t key_index = stream_url.find_last_of('/') + 1;
+      return std::make_tuple(stream_url.substr(0, key_index),
+          stream_url.substr(key_index));
+    }();
+    on_live_video_posted(stream_server, stream_key, post_url);
   });
 }
 

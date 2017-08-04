@@ -124,8 +124,11 @@ void StreamingService::PostLiveVideo(
         HandleFail(on_failed, kFunc, error);
       },
       [on_live_video_posted, service_provider_id](
-          const std::string &stream_url, const std::string &post_url) {
-        on_live_video_posted(service_provider_id, stream_url, post_url);
+          const std::string &stream_server,
+          const std::string &stream_key,
+          const std::string &post_url) {
+        on_live_video_posted(
+            service_provider_id, stream_server, stream_key, post_url);
       });
 }
 

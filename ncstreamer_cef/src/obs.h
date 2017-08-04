@@ -31,7 +31,8 @@ class Obs {
   bool StartStreaming(
       const std::string &source_info,
       const std::string &service_provider,
-      const std::string &stream_url,
+      const std::string &stream_server,
+      const std::string &stream_key,
       const ObsOutput::OnStarted &on_streaming_started);
   void StopStreaming(
       const ObsOutput::OnStopped &on_streaming_stopped);
@@ -51,9 +52,6 @@ class Obs {
  private:
   Obs();
   virtual ~Obs();
-
-  static std::tuple<std::string /*server*/, std::string /*key*/>
-      Obs::SplitStreamUrl(const std::string &stream_url);
 
   bool SetUpLog();
   void ResetAudio();

@@ -26,7 +26,8 @@ class StreamingService {
   using OnLoggedOut = StreamingServiceProvider::OnLoggedOut;
   using OnLiveVideoPosted =
       std::function<void(const std::string &service_provider,
-                         const std::string &stream_url,
+                         const std::string &stream_server,
+                         const std::string &stream_key,
                          const std::string &post_url)>;
 
   static void SetUp(
