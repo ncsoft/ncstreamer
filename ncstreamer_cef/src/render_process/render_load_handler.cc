@@ -65,7 +65,7 @@ Dimension<int>
   Dimension<int> gap{0, 0};
 
   context->Enter();
-  bool success = context->Eval(kJsCode, returnValue, exception);
+  bool success = context->Eval(kJsCode, "", 0, returnValue, exception);
   if (success) {
     gap.set_width(returnValue->GetValue(L"w")->GetIntValue());
     gap.set_height(returnValue->GetValue(L"h")->GetIntValue());
