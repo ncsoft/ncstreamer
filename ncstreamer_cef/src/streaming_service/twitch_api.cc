@@ -112,4 +112,40 @@ const std::string &TwitchApi::Graph::Channel::static_path() {
   }()};
   return kPath;
 }
+
+
+Uri TwitchApi::Graph::UpdateChannel::BuildUri(
+    const std::string &channel_id,
+    const std::string &access_token) {
+  return {kScheme, kAuthority, BuildPath(channel_id), Uri::Query{{
+      {"oauth_token", access_token},
+      {"api_version", "5"}}}};
+}
+
+
+boost::property_tree::ptree
+    TwitchApi::Graph::UpdateChannel::BuildPostContent(
+        const std::string &description,
+        const std::string &game,
+        const bool &channel_feed_enabled) {
+  boost::property_tree::ptree channel_content;
+  channel_content.add<std::string>(
+      "status", description);
+  channel_content.add<std::string>(
+      "game", game);
+  channel_content.add<bool>(
+      "channel_feed_enabled", channel_feed_enabled);
+
+  boost::property_tree::ptree post_content;
+  post_content.add_child("channel", channel_content);
+  return std::move(post_content);
+}
+
+
+std::string TwitchApi::Graph::UpdateChannel::BuildPath(
+    const std::string &channel_id) {
+  std::stringstream ss;
+  ss << "/channels" << "/" << channel_id;
+  return ss.str();
+}
 }  // namespace ncstreamer

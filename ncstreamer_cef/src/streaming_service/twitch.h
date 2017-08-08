@@ -63,6 +63,16 @@ class Twitch : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnChannelGotten &on_channel_gotten);
 
+  void UpdateChannel(
+      const std::string &channel_id,
+      const std::string &description,
+      const std::string &game,
+      const std::string &stream_server,
+      const std::string &stream_key,
+      const std::string &post_url,
+      const OnFailed &on_failed,
+      const OnLiveVideoPosted &on_live_video_posted);
+
   void GetUserAccessToken(
       const std::string &code,
       const OnFailed &on_failed,

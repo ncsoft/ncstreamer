@@ -53,7 +53,7 @@ void Twitch::LogIn(
   static const Uri kLoginUri{TwitchApi::Login::Oauth::Code::BuildUri(
       kNcStreamerAppId,
       TwitchApi::Login::Redirect::static_uri(),
-      {"user_read", "channel_read"})};
+      {"user_read", "channel_read", "channel_editor"})};
 
   static const Dimension<int> kPopupDimension{429, 402};
 
@@ -133,12 +133,18 @@ void Twitch::PostLiveVideo(
   const std::string &app_attribution_tag,
   const OnFailed &on_failed,
   const OnLiveVideoPosted &on_live_video_posted) {
-  GetChannel(on_failed, [on_failed, on_live_video_posted](
+  GetChannel(on_failed, [this, description, on_failed, on_live_video_posted](
       const std::string &channel_id,
       const std::string &post_url,
       const std::string &stream_key) {
-    on_live_video_posted(
-        "rtmp://live-sel.twitch.tv/app", stream_key, post_url);
+    UpdateChannel(channel_id,
+                  description,
+                  "",
+                  "rtmp://live-sel.twitch.tv/app",
+                  stream_key,
+                  post_url,
+                  on_failed,
+                  on_live_video_posted);
   });
 }
 
@@ -213,6 +219,40 @@ void Twitch::GetChannel(
       return;
     }
     on_channel_gotten(channel_id, post_url, stream_key);
+  });
+}
+
+
+void Twitch::UpdateChannel(
+    const std::string &channel_id,
+    const std::string &description,
+    const std::string &game,
+    const std::string &stream_server,
+    const std::string &stream_key,
+    const std::string &post_url,
+    const OnFailed &on_failed,
+    const OnLiveVideoPosted &on_live_video_posted) {
+  Uri update_channel_uri{TwitchApi::Graph::UpdateChannel::BuildUri(
+      channel_id,
+      GetAccessToken())};
+
+  boost::property_tree::ptree post_content{
+      TwitchApi::Graph::UpdateChannel::BuildPostContent(
+          description,
+          game,
+          true)};
+
+  http_request_service_.Put(
+      update_channel_uri.uri_string(),
+      post_content,
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [stream_server,
+      stream_key,
+      post_url,
+      on_live_video_posted](const std::string &str) {
+    on_live_video_posted(stream_server, stream_key, post_url);
   });
 }
 

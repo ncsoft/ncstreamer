@@ -78,6 +78,7 @@ class TwitchApi::Graph {
  public:
   class User;
   class Channel;
+  class UpdateChannel;
 };
 
 
@@ -100,6 +101,23 @@ class TwitchApi::Graph::Channel {
 
  private:
   static const std::string &static_path();
+};
+
+
+class TwitchApi::Graph::UpdateChannel {
+ public:
+  static Uri BuildUri(
+      const std::string &channel_id,
+      const std::string &access_token);
+
+  static boost::property_tree::ptree BuildPostContent(
+      const std::string &description,
+      const std::string &game,
+      const bool &channel_feed_enabled);
+
+ private:
+  static std::string BuildPath(
+      const std::string &user_page_id);
 };
 }  // namespace ncstreamer
 
