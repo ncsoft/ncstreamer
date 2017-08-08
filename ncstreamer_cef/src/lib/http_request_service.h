@@ -49,6 +49,20 @@ class HttpRequestService {
       const HttpRequest::ErrorHandler &err_handler,
       const HttpRequest::ResponseCompleteHandler &complete_handler);
 
+  void Put(
+      const std::string &uri,
+      const boost::property_tree::ptree &post_content,
+      const HttpRequest::ErrorHandler &err_handler,
+      const HttpRequest::OpenHandler &open_handler,
+      const HttpRequest::ReadHandler &read_handler,
+      const HttpRequest::ResponseCompleteHandler &complete_handler);
+
+  void Put(
+      const std::string &uri,
+      const boost::property_tree::ptree &post_content,
+      const HttpRequest::ErrorHandler &err_handler,
+      const HttpRequest::ResponseCompleteHandler &complete_handler);
+
  private:
   boost::asio::io_service io_service_;
   boost::asio::io_service::work io_service_work_;

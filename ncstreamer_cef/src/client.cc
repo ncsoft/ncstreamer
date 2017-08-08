@@ -396,18 +396,25 @@ void Client::OnCommandStreamingStart(
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd, source](const std::string &service_provider,
-    const std::string &stream_url,
-    const std::string &post_url) {
+                            const std::string &stream_server,
+                            const std::string &stream_key,
+                            const std::string &post_url) {
     bool result = Obs::Get()->StartStreaming(
         source,
         service_provider,
-        stream_url,
-        [browser, cmd, service_provider, stream_url, post_url]() {
+        stream_server,
+        stream_key,
+        [browser,
+         cmd,
+         service_provider,
+         stream_server,
+         stream_key,
+         post_url]() {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
           JsExecutor::StringPairVector{
               {"error", ""},
               {"serviceProvider", service_provider},
-              {"streamUrl", stream_url},
+              {"streamUrl", stream_server + stream_key},
               {"postUrl", post_url}});
     });
     if (result == false) {

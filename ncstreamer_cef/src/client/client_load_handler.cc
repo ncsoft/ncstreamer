@@ -44,7 +44,8 @@ ClientLoadHandler::~ClientLoadHandler() {
 
 
 void ClientLoadHandler::OnLoadStart(CefRefPtr<CefBrowser> /*browser*/,
-                                    CefRefPtr<CefFrame> /*frame*/) {
+                                    CefRefPtr<CefFrame> /*frame*/,
+                                    TransitionType /*transition_type*/) {
 }
 
 

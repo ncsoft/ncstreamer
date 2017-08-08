@@ -65,6 +65,14 @@ class HttpRequest
       const ReadHandler &read_handler,
       const ResponseCompleteHandler &complete_handler);
 
+  void Put(
+      const urdl::url &url,
+      const boost::property_tree::ptree &post_content,
+      const ErrorHandler &err_handler,
+      const OpenHandler &open_handler,
+      const ReadHandler &read_handler,
+      const ResponseCompleteHandler &complete_handler);
+
  private:
   using CompleteHandler = std::function<void()>;
   using OstreamCloseHandler = std::function<void()>;

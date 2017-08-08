@@ -56,7 +56,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);$(URDL_PATH);$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);$(OPENSSL_ROOT)\include;$(WEBSOCKETPP_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);$(URDL_PATH);$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_3112_PATH);$(OPENSSL_ROOT)\include;$(WEBSOCKETPP_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=_WIN32_WINNT_WIN7;WIN32_LEAN_AND_MEAN;URDL_HEADER_ONLY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -68,7 +68,7 @@
       <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../ncstreamer_cef/src</Command>
     </PreBuildEvent>
     <Link>
-      <AdditionalDependencies>Shlwapi.lib;dwmapi.lib;$(CEF3_2704_PATH)$(Configuration)\libcef.lib;$(CEF3_2704_PATH)vs$(VisualStudioVersion)\libcef_dll_wrapper\$(Configuration)\libcef_dll_wrapper.lib;$(OBS_STUDIO_PATH)vs$(VisualStudioVersion)\libobs\$(Configuration)\obs.lib;$(OPENSSL_ROOT)\lib\libeay32.lib;$(OPENSSL_ROOT)\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;dwmapi.lib;$(CEF3_3112_PATH)$(Configuration)\libcef.lib;$(CEF3_3112_PATH)vs$(VisualStudioVersion)\libcef_dll_wrapper\$(Configuration)\libcef_dll_wrapper.lib;$(OBS_STUDIO_PATH)vs$(VisualStudioVersion)\libobs\$(Configuration)\obs.lib;$(OPENSSL_ROOT)\lib\libeay32.lib;$(OPENSSL_ROOT)\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(BOOST_PATH)lib32-msvc-14.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
@@ -80,7 +80,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);$(URDL_PATH);$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_2704_PATH);$(OPENSSL_ROOT)\include;$(WEBSOCKETPP_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;$(BOOST_PATH);$(URDL_PATH);$(OBS_STUDIO_PATH)..;$(OBS_STUDIO_PATH)libobs;$(CEF3_3112_PATH);$(OPENSSL_ROOT)\include;$(WEBSOCKETPP_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=_WIN32_WINNT_WIN7;WIN32_LEAN_AND_MEAN;URDL_HEADER_ONLY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -90,7 +90,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Shlwapi.lib;dwmapi.lib;$(CEF3_2704_PATH)$(Configuration)\libcef.lib;$(CEF3_2704_PATH)vs$(VisualStudioVersion)\libcef_dll_wrapper\$(Configuration)\libcef_dll_wrapper.lib;$(OBS_STUDIO_PATH)vs$(VisualStudioVersion)\libobs\$(Configuration)\obs.lib;$(OPENSSL_ROOT)\lib\libeay32.lib;$(OPENSSL_ROOT)\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;dwmapi.lib;$(CEF3_3112_PATH)$(Configuration)\libcef.lib;$(CEF3_3112_PATH)vs$(VisualStudioVersion)\libcef_dll_wrapper\$(Configuration)\libcef_dll_wrapper.lib;$(OBS_STUDIO_PATH)vs$(VisualStudioVersion)\libobs\$(Configuration)\obs.lib;$(OPENSSL_ROOT)\lib\libeay32.lib;$(OPENSSL_ROOT)\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(BOOST_PATH)lib32-msvc-14.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
@@ -137,6 +137,8 @@
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\facebook_api.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\streaming_service_provider.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_api.cc" />
     <ClCompile Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +183,8 @@
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_provider.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_types.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_api.h" />
     <ClInclude Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.hpp" />
   </ItemGroup>
   <ItemGroup>

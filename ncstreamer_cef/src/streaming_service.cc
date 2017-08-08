@@ -8,6 +8,7 @@
 #include <cassert>
 
 #include "ncstreamer_cef/src/streaming_service/facebook.h"
+#include "ncstreamer_cef/src/streaming_service/twitch.h"
 
 
 namespace ncstreamer {
@@ -35,7 +36,8 @@ StreamingService::StreamingService(
     const StreamingServiceTagMap &tag_ids)
     : tag_ids_{tag_ids},
       service_providers_{
-          {"Facebook Live", std::shared_ptr<Facebook>{new Facebook{}}}},
+          {"Facebook Live", std::shared_ptr<Facebook>{new Facebook{}}},
+          {"Twitch", std::shared_ptr<Twitch>{new Twitch{}}}},
       current_service_provider_id_{nullptr},
       current_service_provider_{} {
 }
@@ -124,8 +126,11 @@ void StreamingService::PostLiveVideo(
         HandleFail(on_failed, kFunc, error);
       },
       [on_live_video_posted, service_provider_id](
-          const std::string &stream_url, const std::string &post_url) {
-        on_live_video_posted(service_provider_id, stream_url, post_url);
+          const std::string &stream_server,
+          const std::string &stream_key,
+          const std::string &post_url) {
+        on_live_video_posted(
+            service_provider_id, stream_server, stream_key, post_url);
       });
 }
 

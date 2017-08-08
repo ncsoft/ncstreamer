@@ -93,4 +93,41 @@ void HttpRequestService::Post(
       kDefaultReadHandler,
       complete_handler);
 }
+
+
+void HttpRequestService::Put(
+    const std::string &uri,
+    const boost::property_tree::ptree &post_content,
+    const HttpRequest::ErrorHandler &err_handler,
+    const HttpRequest::OpenHandler &open_handler,
+    const HttpRequest::ReadHandler &read_handler,
+    const HttpRequest::ResponseCompleteHandler &complete_handler) {
+  http_request_->Put(
+      uri,
+      post_content,
+      err_handler,
+      open_handler,
+      read_handler,
+      complete_handler);
+}
+
+
+void HttpRequestService::Put(
+    const std::string &uri,
+    const boost::property_tree::ptree &post_content,
+    const HttpRequest::ErrorHandler &err_handler,
+    const HttpRequest::ResponseCompleteHandler &complete_handler) {
+  static const HttpRequest::OpenHandler kDefaultOpenHandler{
+        [](std::size_t /*file_size*/) {}};
+  static const HttpRequest::ReadHandler kDefaultReadHandler{
+        [](std::size_t /*read_size*/) {}};
+
+  Put(
+      uri,
+      post_content,
+      err_handler,
+      kDefaultOpenHandler,
+      kDefaultReadHandler,
+      complete_handler);
+}
 }  // namespace ncstreamer

@@ -28,7 +28,8 @@ class ClientLoadHandler : public CefLoadHandler {
   virtual ~ClientLoadHandler();
 
   void OnLoadStart(CefRefPtr<CefBrowser> browser,
-                   CefRefPtr<CefFrame> frame) override;
+                   CefRefPtr<CefFrame> frame,
+                   TransitionType transition_type) override;
 
   void OnLoadEnd(CefRefPtr<CefBrowser> browser,
                  CefRefPtr<CefFrame> frame,

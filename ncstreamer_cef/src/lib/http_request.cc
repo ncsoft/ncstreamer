@@ -131,6 +131,24 @@ void HttpRequest::Post(
 }
 
 
+void HttpRequest::Put(
+    const urdl::url &url,
+    const boost::property_tree::ptree &post_content,
+    const ErrorHandler &err_handler,
+    const OpenHandler &open_handler,
+    const ReadHandler &read_handler,
+    const ResponseCompleteHandler &complete_handler) {
+  Request(
+      url,
+      HttpRequestMethod::kPut,
+      post_content,
+      err_handler,
+      open_handler,
+      read_handler,
+      complete_handler);
+}
+
+
 void HttpRequest::Request(const urdl::url &url) {
   auto self{shared_from_this()};
   rstream_.async_open(

@@ -147,6 +147,12 @@
     <ClCompile Include="..\ncstreamer_cef\src\render_process\render_v8_handler.cc">
       <Filter>src\render_process</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch.cc">
+      <Filter>src\streaming_service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_api.cc">
+      <Filter>src\streaming_service</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -274,6 +280,12 @@
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\render_process\render_v8_handler.h">
       <Filter>src\render_process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch.h">
+      <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_api.h">
+      <Filter>src\streaming_service</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

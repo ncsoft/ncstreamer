@@ -60,7 +60,8 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
 bool Obs::StartStreaming(
     const std::string &source_info,
     const std::string &service_provider,
-    const std::string &stream_url,
+    const std::string &stream_server,
+    const std::string &stream_key,
     const ObsOutput::OnStarted &on_streaming_started) {
   UpdateCurrentSource(source_info);
   UpdateBaseResolution(source_info);
@@ -70,9 +71,6 @@ bool Obs::StartStreaming(
   obs_encoder_set_audio(audio_encoder_, obs_get_audio());
   obs_encoder_set_video(video_encoder_, obs_get_video());
 
-  std::string stream_server;
-  std::string stream_key;
-  std::tie(stream_server, stream_key) = SplitStreamUrl(stream_url);
   UpdateCurrentService(service_provider, stream_server, stream_key);
   UpdateCurrentServiceEncoders(audio_bitrate_, video_bitrate_);
 
@@ -185,14 +183,6 @@ Obs::~Obs() {
   obs_encoder_release(audio_encoder_);
 
   obs_shutdown();
-}
-
-
-std::tuple<std::string /*server*/, std::string /*key*/>
-    Obs::SplitStreamUrl(const std::string &stream_url) {
-  std::size_t key_index = stream_url.find_last_of('/') + 1;
-  return std::make_tuple(stream_url.substr(0, key_index),
-                         stream_url.substr(key_index));
 }
 
 

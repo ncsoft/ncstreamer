@@ -26,11 +26,13 @@ void RenderLoadHandler::OnLoadEnd(
     int httpStatusCode) {
   CEF_REQUIRE_RENDERER_THREAD();
 
-  if (frame->IsValid() == false) {
+  if (frame->IsValid() == false ||
+      frame->IsMain() == false ||
+      frame->IsFocused() == false) {
     return;
   }
 
-  const Dimension<int> &gap = GetScrollGap(browser->GetMainFrame());
+  const Dimension<int> &gap = GetScrollGap(frame);
   if (gap.empty() == true) {
     return;
   }
@@ -65,7 +67,7 @@ Dimension<int>
   Dimension<int> gap{0, 0};
 
   context->Enter();
-  bool success = context->Eval(kJsCode, returnValue, exception);
+  bool success = context->Eval(kJsCode, "", 0, returnValue, exception);
   if (success) {
     gap.set_width(returnValue->GetValue(L"w")->GetIntValue());
     gap.set_height(returnValue->GetValue(L"h")->GetIntValue());
