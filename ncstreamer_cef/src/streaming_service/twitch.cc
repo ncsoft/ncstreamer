@@ -53,7 +53,7 @@ void Twitch::LogIn(
   static const Uri kLoginUri{TwitchApi::Login::Oauth::Code::BuildUri(
       kNcStreamerAppId,
       TwitchApi::Login::Redirect::static_uri(),
-      {"user_read"})};
+      {"user_read", "channel_read"})};
 
   static const Dimension<int> kPopupDimension{429, 402};
 
@@ -133,6 +133,13 @@ void Twitch::PostLiveVideo(
   const std::string &app_attribution_tag,
   const OnFailed &on_failed,
   const OnLiveVideoPosted &on_live_video_posted) {
+  GetChannel(on_failed, [on_failed, on_live_video_posted](
+      const std::string &channel_id,
+      const std::string &post_url,
+      const std::string &stream_key) {
+    on_live_video_posted(
+        "rtmp://live-sel.twitch.tv/app", stream_key, post_url);
+  });
 }
 
 
@@ -166,6 +173,46 @@ void Twitch::GetUser(
       return;
     }
     on_user_gotten(name);
+  });
+}
+
+
+void Twitch::GetChannel(
+    const OnFailed &on_failed,
+    const OnChannelGotten &on_channel_gotten) {
+  Uri channel_uri{TwitchApi::Graph::Channel::BuildUri(
+      kNcStreamerAppId,
+      GetAccessToken())};
+
+  http_request_service_.Get(
+      channel_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [on_failed, on_channel_gotten](const std::string &str) {
+    boost::property_tree::ptree tree;
+    std::stringstream ss{str};
+    std::string channel_id;
+    std::string post_url{};
+    std::string stream_key{};
+    try {
+      boost::property_tree::read_json(ss, tree);
+      channel_id = tree.get<std::string>("_id");
+      post_url = tree.get<std::string>("url");
+      stream_key = tree.get<std::string>("stream_key");
+    } catch (const std::exception &/*e*/) {
+      channel_id = "";
+      post_url = "";
+      stream_key = "";
+    }
+
+    if (channel_id.empty() == true) {
+      std::stringstream msg;
+      msg << "could not get channel from: " << str;
+      on_failed(msg.str());
+      return;
+    }
+    on_channel_gotten(channel_id, post_url, stream_key);
   });
 }
 

@@ -93,4 +93,23 @@ const std::string &TwitchApi::Graph::User::static_path() {
   }()};
   return kPath;
 }
+
+
+Uri TwitchApi::Graph::Channel::BuildUri(
+    const std::string &client_id,
+    const std::string &access_token) {
+  return {kScheme, kAuthority, static_path(), Uri::Query{{
+      {"client_id", client_id},
+      {"oauth_token", access_token}}}};
+}
+
+
+const std::string &TwitchApi::Graph::Channel::static_path() {
+  static const std::string kPath{[]() {
+    std::stringstream ss;
+    ss << "/channel";
+    return ss.str();
+  }()};
+  return kPath;
+}
 }  // namespace ncstreamer

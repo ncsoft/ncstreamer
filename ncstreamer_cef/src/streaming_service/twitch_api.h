@@ -77,10 +77,22 @@ class TwitchApi::Login::Redirect {
 class TwitchApi::Graph {
  public:
   class User;
+  class Channel;
 };
 
 
 class TwitchApi::Graph::User {
+ public:
+  static Uri BuildUri(
+      const std::string &client_id,
+      const std::string &access_token);
+
+ private:
+  static const std::string &static_path();
+};
+
+
+class TwitchApi::Graph::Channel {
  public:
   static Uri BuildUri(
       const std::string &client_id,

@@ -48,11 +48,20 @@ class Twitch : public StreamingServiceProvider {
   using OnUserGotten = std::function<void(
       const std::string &name)>;
 
+  using OnChannelGotten = std::function<void(
+      const std::string &channel_id,
+      const std::string &post_url,
+      const std::string &stream_key)>;
+
   class LoginClient;
 
   void GetUser(
       const OnFailed &on_failed,
       const OnUserGotten &on_user_gotten);
+
+  void GetChannel(
+      const OnFailed &on_failed,
+      const OnChannelGotten &on_channel_gotten);
 
   void GetUserAccessToken(
       const std::string &code,
