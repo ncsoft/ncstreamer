@@ -11,23 +11,23 @@ for /r %TargetDir% %%f in (*.h *.cc) do (
   set /a Index+=1
   set Files=!Files! %%f
   if !Index! geq 50 (  rem command-line string limitation
-    pushd "%~dp0"
-    call python.exe "%CppLintDir%/cpplint.py" --output=vs7 !Files!
-    if %errorlevel% neq 0 (
-      echo Error: cpplint
-      exit /b %errorlevel%
-    )
-    popd
+    call:executeLint "%CppLintDir%/cpplint.py" "!Files!"
 	set Files=
 	set Index=0
   )
 )
 
+call:executeLint "%CppLintDir%/cpplint.py" "%Files%"
+echo cpplint ends.
+exit /b %errorlevel%
+
+
+:executeLint
 pushd "%~dp0"
-call python.exe "%CppLintDir%/cpplint.py" --output=vs7 %Files%
+call python.exe %1 --output=vs7 %~2
 if %errorlevel% neq 0 (
   echo Error: cpplint
   exit /b %errorlevel%
 )
 popd
-echo cpplint ends.
+exit /b %errorlevel%
