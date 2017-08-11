@@ -125,7 +125,7 @@ const cef = (function() {
     let argsArr = [];
     for (const key in args) {
       if (args.hasOwnProperty(key)) {
-        argsArr.push([key, encodeURIComponent(args[key])].join('='));
+        argsArr.push([key, args[key]].join('='));
       }
     }
     window.sendEvent(type, argsArr.join(','));

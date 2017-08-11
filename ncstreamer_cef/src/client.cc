@@ -126,29 +126,10 @@ Client::ParseVariables(const std::string &query) {
 
   for (std::sregex_iterator i = begin; i != end; ++i) {
     const auto &matches = *i;
-    args.emplace(matches[1], DecodeUri(matches[2]));
+    args.emplace(matches[1], matches[2]);
   }
 
   return std::move(args);
-}
-
-
-std::string Client::DecodeUri(const std::string &enc_string) {
-  static const std::size_t kMaxSize{2048};
-
-  if (enc_string.size() >= kMaxSize - 1) {
-    return enc_string;
-  }
-
-  char buf[kMaxSize];
-  std::strncpy(buf, enc_string.c_str(), enc_string.size() + 1);
-
-  HRESULT result = ::UrlUnescapeA(buf, NULL, NULL, URL_UNESCAPE_INPLACE);
-  if (result != S_OK) {
-    return enc_string;
-  }
-
-  return std::move(std::string{buf});
 }
 
 

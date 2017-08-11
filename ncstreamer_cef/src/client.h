@@ -56,7 +56,6 @@ class Client : public CefClient {
   using CommandArgumentMap = std::unordered_map<std::string, std::string>;
 
   static CommandArgumentMap ParseVariables(const std::string &query);
-  static std::string DecodeUri(const std::string &enc_string);
 
   void OnCommand(const std::string &cmd,
       const CommandArgumentMap &args,
