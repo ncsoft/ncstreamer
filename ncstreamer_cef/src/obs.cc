@@ -110,6 +110,17 @@ bool Obs::TurnOffMic() {
 }
 
 
+bool Obs::UpdateMicVolume(float volume) {
+  obs_source_t *source = obs_get_output_source(3);
+  if (!source) {
+    return false;
+  }
+  obs_source_set_volume(source, volume);
+  obs_source_release(source);
+  return true;
+}
+
+
 void Obs::UpdateVideoQuality(
     const Dimension<uint32_t> &output_size,
     uint32_t fps,
@@ -330,17 +341,6 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
     }
     Sleep(100);
   }
-}
-
-
-bool Obs::UpdateMicVolume(float volume) {
-  obs_source_t *source = obs_get_output_source(3);
-  if (!source) {
-    return false;
-  }
-  obs_source_set_volume(source, volume);
-  obs_source_release(source);
-  return true;
 }
 
 

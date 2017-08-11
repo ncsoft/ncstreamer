@@ -494,8 +494,7 @@ void Client::OnCommandSettingsMicOn(
   float volume{0.0};
   try {
     volume = std::stof(volume_i->second);
-  }
-  catch (...) {
+  } catch (...) {
     assert(false);
     return;
   }
@@ -536,8 +535,7 @@ void Client::OnCommandSettingsMicVolumeUpdate(
   float volume{0.0};
   try {
     volume = std::stof(volume_i->second);
-  }
-  catch (...) {
+  } catch (...) {
     assert(false);
     return;
   }
@@ -577,8 +575,7 @@ void Client::OnCommandSettingsVideoQualityUpdate(
     height = std::stoul(height_i->second);
     fps = std::stoul(fps_i->second);
     bitrate = std::stoul(bitrate_i->second);
-  }
-  catch (...) {
+  } catch (...) {
   }
 
   if (width == 0 ||
@@ -679,8 +676,7 @@ void Client::OnCommandRemoteStatus(
   int request_key{0};
   try {
     request_key = std::stoi(request_key_i->second);
-  }
-  catch (...) {
+  } catch (...) {
   }
 
   if (request_key == 0) {
@@ -739,8 +735,7 @@ void Client::OnCommandRemoteStart(
   int request_key{0};
   try {
     request_key = std::stoi(request_key_i->second);
-  }
-  catch (...) {
+  } catch (...) {
   }
 
   const std::string &error = error_i->second;
@@ -784,8 +779,7 @@ void Client::OnCommandRemoteStop(
   int request_key{0};
   try {
     request_key = std::stoi(request_key_i->second);
-  }
-  catch (...) {
+  } catch (...) {
   }
 
   const std::string &error = error_i->second;
@@ -813,8 +807,7 @@ void Client::OnCommandRemoteQualityUpdate(
   int request_key{0};
   try {
     request_key = std::stoi(request_key_i->second);
-  }
-  catch (...) {
+  } catch (...) {
   }
 
   const std::string &error = error_i->second;
