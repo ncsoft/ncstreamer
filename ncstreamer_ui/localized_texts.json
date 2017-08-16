@@ -493,7 +493,7 @@
     "NO_SELECT_GAME": "請選擇要直播視訊的遊戲",
     "YES": "是",
     "NO": "否",
-    "CLOSE_CHECK_MESSAGE1": "방關閉直播視訊時，遊戲直播也會一同關閉，",
+    "CLOSE_CHECK_MESSAGE1": "關閉直播視訊時，遊戲直播也會一同關閉，",
     "CLOSE_CHECK_MESSAGE2": "要維持直播視訊服務嗎?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "주의 사항",
