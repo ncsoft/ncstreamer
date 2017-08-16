@@ -495,7 +495,7 @@
     "NO": "否",
     "CLOSE_CHECK_MESSAGE1": "방關閉直播視訊時，遊戲直播也會一同關閉，",
     "CLOSE_CHECK_MESSAGE2": "要維持直播視訊服務嗎?",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "주의 사항",
     "LOGIN_GUIDE_NOTICE2": "방송(BETA)은 게임의 창 모드 또는 전체 창 모드만 지원합니다."
   },
@@ -545,7 +545,7 @@
     "NO": "いいえ",
     "CLOSE_CHECK_MESSAGE1": "配信システムを終了すると配信も終了します。",
     "CLOSE_CHECK_MESSAGE2": "配信システムを終了しますか？",
-    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
+    "LOGIN_GUIDE_NOTICE_VISIBILITY": "_0",
     "LOGIN_GUIDE_NOTICE1": "주의 사항",
     "LOGIN_GUIDE_NOTICE2": "방송(BETA)은 게임의 창 모드 또는 전체 창 모드만 지원합니다."
   }
