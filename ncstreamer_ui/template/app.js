@@ -966,7 +966,6 @@ cef.settingsMicOff.onResponse = function(error) {
     console.info(error);
     return;
   }
-  console.info('start volume' + volume);
   app.streaming.mic.use = false;
 };
 
