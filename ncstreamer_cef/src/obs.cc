@@ -10,6 +10,7 @@
 
 #include "windows.h"  //NOLINT
 
+#include "obs-studio/libobs/graphics/vec2.h"
 #include "obs-studio/plugins/win-capture/graphics-hook-info.h"
 
 #include "ncstreamer_cef/src/obs/obs_source_info.h"
@@ -136,9 +137,15 @@ bool Obs::TurnOnWebcam() {
   std::wstring w_device{devices_.at(0).name + L":" + devices_.at(0).path};
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
   std::string device = convert.to_bytes(w_device);
+  const int &width = devices_.at(0).caps.at(0).minCX;
+  const int &height = devices_.at(0).caps.at(0).minCY;
+  const std::string &default_resolution =
+      std::to_string(width) + "x" + std::to_string(height);
 
   obs_data_t *settings = obs_data_create();
   obs_data_set_string(settings, "video_device_id", device.c_str());
+  obs_data_set_int(settings, "res_type", 1);  // Type: Preferred(0), Custom(1)
+  obs_data_set_string(settings, "resolution", default_resolution.c_str());
   obs_source_t *source = obs_source_create(
       "dshow_input", "Video Capture Device", settings, nullptr);
   obs_data_release(settings);
@@ -160,6 +167,60 @@ bool Obs::TurnOffWebcam() {
     return false;
   }
   obs_sceneitem_remove(item);
+  obs_scene_release(scene);
+  return true;
+}
+
+
+bool Obs::UpdateWebcamSize(float normal_x, float normal_y) {
+  obs_source_t *scene_source = obs_get_source_by_name("Scene");
+  if (scene_source == nullptr) {
+    return false;
+  }
+  obs_scene_t *scene = obs_scene_from_source(scene_source);
+  obs_source_release(scene_source);
+  if (scene == nullptr) {
+    return false;
+  }
+  obs_sceneitem_t *item = obs_scene_find_source(scene, "Video Capture Device");
+  if (item == nullptr) {
+    return false;
+  }
+
+  obs_source_t *source = obs_sceneitem_get_source(item);
+  int width = obs_source_get_width(source);
+  int height = obs_source_get_height(source);
+  if (width == 0 || height == 0) {
+    width = devices_.at(0).caps.at(0).minCX;
+    height = devices_.at(0).caps.at(0).minCY;
+  }
+
+  vec2 from_size{static_cast<float>(width), static_cast<float>(height)};
+  vec2 to_size{base_size_.width() * normal_x, base_size_.height() * normal_y};
+  vec2 scale;
+  vec2_div(&scale, &to_size, &from_size);
+  obs_sceneitem_set_scale(item, &scale);
+  return true;
+}
+
+
+bool Obs::UpdateWebcamPosition(float normal_x, float normal_y) {
+  obs_source_t *scene_source = obs_get_source_by_name("Scene");
+  if (scene_source == nullptr) {
+    return false;
+  }
+  obs_scene_t *scene = obs_scene_from_source(scene_source);
+  obs_source_release(scene_source);
+  if (scene == nullptr) {
+    return false;
+  }
+  obs_sceneitem_t *item = obs_scene_find_source(scene, "Video Capture Device");
+  if (item == nullptr) {
+    return false;
+  }
+
+  vec2 position{base_size_.width() * normal_x, base_size_.height() * normal_y};
+  obs_sceneitem_set_pos(item, &position);
   return true;
 }
 
@@ -220,7 +281,8 @@ Obs::Obs()
       video_bitrate_{2500},
       base_size_{1920, 1080},
       output_size_{1280, 720},
-      fps_{30} {
+      fps_{30},
+      devices_{}  {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();

@@ -43,6 +43,8 @@ class Obs {
   bool UpdateMicVolume(float volume);
   bool TurnOnWebcam();
   bool TurnOffWebcam();
+  bool UpdateWebcamSize(float normal_x, float normal_y);
+  bool UpdateWebcamPosition(float normal_x, float normal_y);
   void UpdateVideoQuality(
       const Dimension<uint32_t> &output_size,
       uint32_t fps,
