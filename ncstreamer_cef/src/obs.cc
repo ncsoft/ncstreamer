@@ -12,6 +12,7 @@
 
 #include "obs-studio/plugins/win-capture/graphics-hook-info.h"
 
+#include "ncstreamer_cef/src/obs/obs_source_info.h"
 #include "ncstreamer_cef/src_imported/from_obs_studio_ui/obs-app.hpp"
 
 
@@ -303,14 +304,12 @@ void Obs::ReleaseCurrentService() {
 
 
 void Obs::UpdateBaseResolution(const std::string &source_info) {
-  std::string title_class = source_info.substr(
-      0, source_info.find_last_of(":"));
-  std::string class_name = title_class.substr(
-      title_class.find_last_of(":") + 1, title_class.length());
-  std::string title = title_class.substr(0, title_class.find_last_of(":"));
+  ObsSourceInfo source{source_info};
+  std::string clazz = source.clazz();
+  std::string title = source.title();
 
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  std::wstring w_class_name = converter.from_bytes(class_name);
+  std::wstring w_class_name = converter.from_bytes(clazz);
   std::wstring w_title = converter.from_bytes(title);
 
   HWND handle = ::FindWindowExW(
