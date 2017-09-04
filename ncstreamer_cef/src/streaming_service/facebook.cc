@@ -343,7 +343,7 @@ void Facebook::OnLoginSuccess(
     OutputDebugStringA(
         (std::to_string(me_accounts.size()) + "/accounts\r\n").c_str());
 
-    on_logged_in(me_name, me_link, me_accounts);
+    on_logged_in(me_name, me_link, me_accounts, {});
   });
 }
 

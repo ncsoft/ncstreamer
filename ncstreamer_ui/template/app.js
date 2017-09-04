@@ -612,7 +612,7 @@ function checkSelectValueValidation() {
 
 
 cef.serviceProviderLogIn.onResponse = function(
-    userName, userLink, userPages, userPage, privacy) {
+    userName, userLink, userPages, streamServers, userPage, privacy) {
   app.service.user = {
     name: userName,
     link: userLink,

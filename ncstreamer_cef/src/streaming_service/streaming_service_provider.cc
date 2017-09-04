@@ -17,6 +17,33 @@ StreamingServiceProvider::~StreamingServiceProvider() {
 }
 
 
+StreamingServiceProvider::StreamServer::StreamServer(
+    const std::string &id,
+    const std::string &name,
+    const std::string &url,
+    const std::string &availability)
+    : id_{id},
+      name_{name},
+      url_{url},
+      availability_{availability} {
+}
+
+
+StreamingServiceProvider::StreamServer::~StreamServer() {
+}
+
+
+boost::property_tree::ptree
+    StreamingServiceProvider::StreamServer::ToTree() const {
+  boost::property_tree::ptree tree;
+  tree.put("id", id_);
+  tree.put("name", name_);
+  tree.put("url", url_);
+  tree.put("availability", availability_);
+  return std::move(tree);
+}
+
+
 StreamingServiceProvider::UserPage::UserPage(
     const std::string &id,
     const std::string &name,

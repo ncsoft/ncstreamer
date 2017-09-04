@@ -292,16 +292,24 @@ void Client::OnCommandServiceProviderLogIn(
   }, [browser, cmd](
       const std::string &user_name,
       const std::string &user_link,
-      const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
+      const std::vector<StreamingServiceProvider::UserPage> &user_pages,
+      const std::vector<
+          StreamingServiceProvider::StreamServer> &stream_servers) {
     std::vector<boost::property_tree::ptree> tree_pages;
     for (const auto &page : user_pages) {
       tree_pages.emplace_back(page.ToTree());
+    }
+
+    std::vector<boost::property_tree::ptree> tree_servers;
+    for (const auto &server : stream_servers) {
+      tree_servers.emplace_back(server.ToTree());
     }
 
     boost::property_tree::ptree arg;
     arg.add("userName", user_name);
     arg.add("userLink", user_link);
     arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
+    arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));
     arg.add("userPage", LocalStorage::Get()->GetUserPage());
     arg.add("privacy", LocalStorage::Get()->GetPrivacy());
 

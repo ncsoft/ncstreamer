@@ -95,6 +95,23 @@ const std::string &TwitchApi::Graph::User::static_path() {
 }
 
 
+Uri TwitchApi::Graph::Ingests::BuildUri(
+    const std::string &client_id) {
+  return {kScheme, kAuthority, static_path(), Uri::Query{{
+    {"client_id", client_id}}}};
+}
+
+
+const std::string &TwitchApi::Graph::Ingests::static_path() {
+  static const std::string kPath{[]() {
+    std::stringstream ss;
+    ss << "/ingests";
+    return ss.str();
+  }()};
+  return kPath;
+}
+
+
 Uri TwitchApi::Graph::Channel::BuildUri(
     const std::string &client_id,
     const std::string &access_token) {

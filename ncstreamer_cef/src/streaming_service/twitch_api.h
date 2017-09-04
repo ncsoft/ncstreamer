@@ -78,6 +78,7 @@ class TwitchApi::Graph {
  public:
   class User;
   class Channel;
+  class Ingests;
   class UpdateChannel;
 };
 
@@ -98,6 +99,16 @@ class TwitchApi::Graph::Channel {
   static Uri BuildUri(
       const std::string &client_id,
       const std::string &access_token);
+
+ private:
+  static const std::string &static_path();
+};
+
+
+class TwitchApi::Graph::Ingests {
+ public:
+  static Uri BuildUri(
+      const std::string &client_id);
 
  private:
   static const std::string &static_path();
