@@ -52,6 +52,7 @@ const app = {
   },
   service: {
     user: null,
+    provider: null,
   },
   options: {
     hidesSettings: false,
@@ -80,16 +81,20 @@ document.addEventListener('DOMContentLoaded', function(event) {
     'setting-button',
     'minimize-button',
     'close-button',
-    'login-button',
+    'login-button-facebook',
+    'login-button-twitch',
     'provider-user-name',
     'connect-info-user-name',
     'connect-info-disconnect-button',
     'connect-info-msg',
     'connect-info-confirm-button',
     'provider-page-link',
+    'facebook-division',
     'me-page-select',
     'own-page-select',
     'privacy-select',
+    'twitch-division',
+    'stream-server-select',
     'game-select',
     'feed-description',
     'mic-checkbox',
@@ -112,8 +117,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onMinimizeButtonClicked);
   app.dom.closeButton.addEventListener(
       'click', onCloseButtonClicked);
-  app.dom.loginButton.addEventListener(
-      'click', onLoginButtonClicked);
+  app.dom.loginButtonFacebook.addEventListener(
+      'click', onLoginButtonFacebookClicked);
+  app.dom.loginButtonTwitch.addEventListener(
+      'click', onLoginButtonTwitchClicked);
   app.dom.connectInfoDisconnectButton.addEventListener(
       'click', onConnectInfoDisconnectButtonClicked);
   app.dom.providerPageLink.addEventListener(
@@ -124,6 +131,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'ncsoftSelectChange', onOwnPageSelectChanged);
   app.dom.privacySelect.addEventListener(
       'ncsoftSelectChange', onPrivacySelectChanged);
+  app.dom.streamServerSelect.addEventListener(
+      'ncsoftSelectChange', onStreamServerSelectChanged);
   app.dom.gameSelect.addEventListener(
       'ncsoftSelectChange', onGameSelectChanged);
   app.dom.micVolume.addEventListener(
@@ -216,7 +225,31 @@ function getCurrentUserPage() {
 }
 
 
-function setUpUserPage(userPage) {
+function setUpUserPage(userPages, userPage) {
+  const ownPageSelect = app.dom.ownPageSelect;
+  const display = ownPageSelect.children[0];
+  const contents = ownPageSelect.children[1];
+  while (contents.firstChild) {
+    contents.removeChild(contents.firstChild);
+  }
+
+  if (userPages.length == 0) {
+    ncsoft.select.disable(ownPageSelect);
+  } else {
+    ncsoft.select.enable(ownPageSelect);
+    for (const ownPage of userPages) {
+      const li = document.createElement('li');
+      const aTag = document.createElement('a');
+      aTag.textContent = ownPage.name;
+      li.setAttribute('data-value', ownPage.id);
+      li.appendChild(aTag);
+      contents.appendChild(li);
+    }
+    display.value = contents.firstChild.getAttribute('data-value');
+    display.innerHTML = contents.firstChild.firstChild.textContent +
+                        '<span class="caret"></span>';
+  }
+
   if (!userPage) {
     return;
   }
@@ -324,9 +357,17 @@ function onCloseButtonClicked() {
 }
 
 
-function onLoginButtonClicked() {
-  console.info('click loginButton');
-  cef.serviceProviderLogIn.request('Facebook Live');
+function onLoginButtonFacebookClicked() {
+  console.info('click loginButtonFacebook');
+  app.service.provider = 'Facebook Live';
+  cef.serviceProviderLogIn.request(app.service.provider);
+}
+
+
+function onLoginButtonTwitchClicked() {
+  console.info('click loginButtonTwitch');
+  app.service.provider = 'Twitch';
+  cef.serviceProviderLogIn.request(app.service.provider);
 }
 
 
@@ -392,6 +433,14 @@ function onPrivacySelectChanged() {
 
   const privacy = app.dom.privacySelect.children[0].value;
   cef.storagePrivacyUpdate.request(privacy);
+}
+
+
+function onStreamServerSelectChanged() {
+  console.info('change streamServerSelect');
+
+  const server = app.dom.streamServerSelect.children[0].value;
+  cef.storageStreamServerUpdate.request(server);
 }
 
 
@@ -553,6 +602,66 @@ function setUpMic() {
 }
 
 
+function setUpProviderUI(userPages, streamServers, userPage, privacy) {
+  const userName = app.dom.providerUserName;
+  const connectInfo = app.dom.connectInfoUserName;
+  switch (app.service.provider) {
+    case 'Facebook Live':
+      app.dom.facebookDivision.style.display = 'block';
+      app.dom.twitchDivision.style.display = 'none';
+      ncsoft.klass.remove(userName, 'twitch');
+      ncsoft.klass.add(userName, 'fb');
+      ncsoft.klass.remove(connectInfo, 'twitch');
+      ncsoft.klass.add(connectInfo, 'fb');
+      setUpUserPage(userPages, userPage);
+      setUpPrivacy(privacy);
+      break;
+    case 'Twitch':
+      app.dom.facebookDivision.style.display = 'none';
+      app.dom.twitchDivision.style.display = 'block';
+      ncsoft.klass.remove(userName, 'fb');
+      ncsoft.klass.add(userName, 'twitch');
+      ncsoft.klass.remove(connectInfo, 'fb');
+      ncsoft.klass.add(connectInfo, 'twitch');
+      setUpStreamServers(streamServers);
+      break;
+    default:
+      break;
+  }
+}
+
+
+function setUpStreamServers(streamServers) {
+  const serverSelect = app.dom.streamServerSelect;
+  const display = serverSelect.children[0];
+  const contents = serverSelect.children[1];
+  while (contents.firstChild) {
+    contents.removeChild(contents.firstChild);
+  }
+
+  if (streamServers.length == 0) {
+    return;
+  }
+
+  for (const server of streamServers) {
+    const li = document.createElement('li');
+    li.setAttribute('data-value', server.url);
+
+    if (server.availability == 0.0) {
+      li.innerHTML = '<span class="serverdown">' + server.name + '</span>';
+    } else {
+      const aTag = document.createElement('a');
+      aTag.innerHTML = server.name;
+      li.appendChild(aTag);
+    }
+    contents.appendChild(li);
+  }
+  display.value = contents.firstChild.getAttribute('data-value');
+  display.innerHTML = contents.firstChild.firstChild.innerHTML +
+                      '<span class="caret"></span>';
+}
+
+
 function setUpError(type) {
   app.errorType = type;
   showErrorText();
@@ -635,33 +744,7 @@ cef.serviceProviderLogIn.onResponse = function(
   app.dom.minimizeButton.style.display = 'inline';
 
   setProviderUserName(userName);
-
-  const ownPageSelect = app.dom.ownPageSelect;
-  const display = ownPageSelect.children[0];
-  const contents = ownPageSelect.children[1];
-  while (contents.firstChild) {
-    contents.removeChild(contents.firstChild);
-  }
-
-  if (userPages.length == 0) {
-    ncsoft.select.disable(ownPageSelect);
-  } else {
-    ncsoft.select.enable(ownPageSelect);
-    for (const ownPage of userPages) {
-      const li = document.createElement('li');
-      const aTag = document.createElement('a');
-      aTag.textContent = ownPage.name;
-      li.setAttribute('data-value', ownPage.id);
-      li.appendChild(aTag);
-      contents.appendChild(li);
-    }
-    display.value = contents.firstChild.getAttribute('data-value');
-    display.innerHTML = contents.firstChild.firstChild.textContent +
-                        '<span class="caret"></span>';
-  }
-
-  setUpUserPage(userPage);
-  setUpPrivacy(privacy);
+  setUpProviderUI(userPages, streamServers, userPage, privacy);
 
   app.dom.errorText.style.display = 'none';
 };

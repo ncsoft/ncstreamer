@@ -16,7 +16,7 @@ ncsoft.onDOMContentLoaded = function() {
 
   // custom select
   $(document).on('click', '.dropdown-menu li a', function(e) {
-    var selText = $(this).text();
+    var selText = $(this).html();
     $(this).parents('.dropdown').find('.dropdown-toggle').html(
         selText + ' <span class="caret"></span>');
     $(this).parents('.dropdown').find('.dropdown-toggle').val(
@@ -126,7 +126,7 @@ ncsoft.select.setByIndex = function(select, index) {
   }
 
   display.value = child.getAttribute('data-value');
-  display.innerHTML = child.textContent +
+  display.innerHTML = child.innerHTML +
                       '<span class="caret"></span>';
   return true;
 };
