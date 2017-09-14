@@ -291,7 +291,6 @@ void Client::OnCommandServiceProviderLogIn(
     // nothing to do.
   }, [browser, cmd](
       const std::string &user_name,
-      const std::string &user_link,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages,
       const std::vector<
           StreamingServiceProvider::StreamServer> &stream_servers) {
@@ -307,7 +306,6 @@ void Client::OnCommandServiceProviderLogIn(
 
     boost::property_tree::ptree arg;
     arg.add("userName", user_name);
-    arg.add("userLink", user_link);
     arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
     arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));
     arg.add("userPage", LocalStorage::Get()->GetUserPage());

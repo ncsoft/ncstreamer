@@ -346,7 +346,7 @@ void Twitch::OnLoginSuccess(
       const std::string &name) {
     GetStreamServers(on_failed, [name, on_logged_in](
         const std::vector<StreamServer> &stream_servers) {
-      on_logged_in(name, "", {}, stream_servers);
+      on_logged_in(name, {}, stream_servers);
     });
   });
 }
