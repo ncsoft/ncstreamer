@@ -643,6 +643,19 @@ function setUpStreamServers(streamServers) {
     return;
   }
 
+  streamServers.sort(function(a, b) {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    return 0;
+  });
+
   for (const server of streamServers) {
     const li = document.createElement('li');
     li.setAttribute('data-value', server.url);
