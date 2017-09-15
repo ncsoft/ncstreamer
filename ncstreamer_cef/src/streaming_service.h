@@ -49,6 +49,7 @@ class StreamingService {
       const OnLoggedOut &on_logged_out);
 
   void PostLiveVideo(
+      const std::string &stream_server,
       const std::string &user_page_id,
       const std::string &privacy,
       const std::string &title,

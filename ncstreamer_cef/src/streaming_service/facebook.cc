@@ -137,6 +137,7 @@ void Facebook::LogOut(
 
 
 void Facebook::PostLiveVideo(
+    const std::string &stream_server,
     const std::string &user_page_id,
     const std::string &privacy,
     const std::string &title,
@@ -144,6 +145,12 @@ void Facebook::PostLiveVideo(
     const std::string &app_attribution_tag,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
+  if (user_page_id.empty() == true ||
+      privacy.empty() == true) {
+    assert(false);
+    return;
+  }
+
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
       user_page_id,
       app_attribution_tag)};

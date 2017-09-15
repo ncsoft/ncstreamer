@@ -345,6 +345,7 @@ void Client::OnCommandStreamingStart(
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
   auto source_i = args.find("source");
+  auto stream_server_i = args.find("streamServer");
   auto user_page_i = args.find("userPage");
   auto privacy_i = args.find("privacy");
   auto title_i = args.find("title");
@@ -359,14 +360,13 @@ void Client::OnCommandStreamingStart(
   }
 
   const std::string &source = source_i->second;
+  const std::string &stream_server = stream_server_i->second;
   const std::string &user_page = user_page_i->second;
   const std::string &privacy = privacy_i->second;
   const std::string &title = title_i->second;
   const std::string &description = description_i->second;
 
-  if (source.empty() == true ||
-      user_page.empty() == true ||
-      privacy.empty() == true) {
+  if (source.empty() == true) {
     assert(false);
     return;
   }
@@ -374,6 +374,7 @@ void Client::OnCommandStreamingStart(
   ObsSourceInfo source_info{source};
 
   StreamingService::Get()->PostLiveVideo(
+      stream_server,
       user_page,
       privacy,
       title,

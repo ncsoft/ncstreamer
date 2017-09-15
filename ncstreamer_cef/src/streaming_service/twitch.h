@@ -37,6 +37,7 @@ class Twitch : public StreamingServiceProvider {
       const OnLoggedOut &on_logged_out) override;
 
   void PostLiveVideo(
+      const std::string &stream_server,
       const std::string &user_page_id,
       const std::string &privacy,
       const std::string &title,

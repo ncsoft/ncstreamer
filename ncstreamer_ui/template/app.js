@@ -494,11 +494,16 @@ function submitControl() {
 
       const source = app.dom.gameSelect.children[0].value;
       const userPage = getCurrentUserPage();
+      const streamServer = app.dom.streamServerSelect.children[0].value;
       const privacy = app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
 
-      cef.streamingStart.request(
-          source, userPage, privacy, '' /* title */, description);
+      cef.streamingStart.request(source,
+                                 streamServer,
+                                 userPage,
+                                 privacy,
+                                 '' /* title */,
+                                 description);
       app.streaming.startInfo = {
         source: source,
         userPage: userPage,
@@ -711,6 +716,10 @@ function showErrorText() {
 
 
 function checkSelectValueValidation() {
+  if (app.service.provider == 'Twitch') {
+    return '';
+  }
+
   const error = app.dom.errorText;
   if (app.dom.mePageSelect.children[0].value == '') {
     return 'mePage select empty';

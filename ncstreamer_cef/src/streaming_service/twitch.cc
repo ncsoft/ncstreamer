@@ -126,6 +126,7 @@ void Twitch::LogOut(
 
 
 void Twitch::PostLiveVideo(
+    const std::string &stream_server,
     const std::string &user_page_id,
     const std::string &privacy,
     const std::string &title,
@@ -133,14 +134,19 @@ void Twitch::PostLiveVideo(
     const std::string &app_attribution_tag,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
-  GetChannel(on_failed, [this, description, on_failed, on_live_video_posted](
+  if (stream_server.empty() == true) {
+    assert(false);
+    return;
+  }
+  GetChannel(on_failed, [this, stream_server, description, on_failed,
+                         on_live_video_posted](
       const std::string &channel_id,
       const std::string &post_url,
       const std::string &stream_key) {
     UpdateChannel(channel_id,
                   description,
                   "",
-                  "rtmp://live-sel.twitch.tv/app",
+                  stream_server,
                   stream_key,
                   post_url,
                   on_failed,

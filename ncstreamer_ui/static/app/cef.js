@@ -30,7 +30,8 @@ const cef = (function() {
       response: ['error'],
     },
     'streaming/start': {
-      request: ['source', 'userPage', 'privacy', 'title', 'description'],
+      request: ['source', 'streamServer', 'userPage', 'privacy', 'title',
+                'description'],
       response: ['error', 'serviceProvider', 'streamUrl', 'postUrl'],
     },
     'streaming/stop': {

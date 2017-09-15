@@ -98,6 +98,7 @@ void StreamingService::LogOut(
 
 
 void StreamingService::PostLiveVideo(
+    const std::string &stream_server,
     const std::string &user_page_id,
     const std::string &privacy,
     const std::string &title,
@@ -117,6 +118,7 @@ void StreamingService::PostLiveVideo(
   const std::string &tag_id = FindTagId(service_provider_id, source);
 
   current_service_provider_->PostLiveVideo(
+      stream_server,
       user_page_id,
       privacy,
       title,
