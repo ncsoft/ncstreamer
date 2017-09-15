@@ -41,6 +41,11 @@ std::string LocalStorage::GetPrivacy() const {
 }
 
 
+std::string LocalStorage::GetStreamServer() const {
+  return storage_.get(kStreamServer, "");
+}
+
+
 std::string LocalStorage::GetDesignatedUser() const {
   return storage_.get(kDesignatedUser, "");
 }
@@ -65,6 +70,11 @@ void LocalStorage::SetUserPage(const std::string &user_page) {
 
 void LocalStorage::SetPrivacy(const std::string &privacy) {
   SetValue(kPrivacy, privacy);
+}
+
+
+void LocalStorage::SetStreamServer(const std::string &stream_server) {
+  SetValue(kStreamServer, stream_server);
 }
 
 
@@ -149,6 +159,7 @@ void LocalStorage::SetValue(
 
 const char *LocalStorage::kUserPage{"userPage"};
 const char *LocalStorage::kPrivacy{"privacy"};
+const char *LocalStorage::kStreamServer{"streamServer"};
 const char *LocalStorage::kDesignatedUser{"designatedUser"};
 const char *LocalStorage::kWindowPosition{"windowPosition"};
 const char *LocalStorage::kWindowPositionX{"x"};

@@ -607,7 +607,8 @@ function setUpMic() {
 }
 
 
-function setUpProviderUI(userPages, streamServers, userPage, privacy) {
+function setUpProviderUI(
+    userPages, streamServers, userPage, privacy, streamServer) {
   const userName = app.dom.providerUserName;
   const connectInfo = app.dom.connectInfoUserName;
   switch (app.service.provider) {
@@ -628,7 +629,7 @@ function setUpProviderUI(userPages, streamServers, userPage, privacy) {
       ncsoft.klass.add(userName, 'twitch');
       ncsoft.klass.remove(connectInfo, 'fb');
       ncsoft.klass.add(connectInfo, 'twitch');
-      setUpStreamServers(streamServers);
+      setUpStreamServers(streamServers, streamServer);
       break;
     default:
       break;
@@ -636,7 +637,7 @@ function setUpProviderUI(userPages, streamServers, userPage, privacy) {
 }
 
 
-function setUpStreamServers(streamServers) {
+function setUpStreamServers(streamServers, streamServer) {
   const serverSelect = app.dom.streamServerSelect;
   const display = serverSelect.children[0];
   const contents = serverSelect.children[1];
@@ -677,6 +678,10 @@ function setUpStreamServers(streamServers) {
   display.value = contents.firstChild.getAttribute('data-value');
   display.innerHTML = contents.firstChild.firstChild.innerHTML +
                       '<span class="caret"></span>';
+
+  if (streamServer != '') {
+    ncsoft.select.setByValue(serverSelect, streamServer);
+  }
 }
 
 
@@ -743,7 +748,7 @@ function checkSelectValueValidation() {
 
 
 cef.serviceProviderLogIn.onResponse = function(
-    userName, userPages, streamServers, userPage, privacy) {
+    userName, userPages, streamServers, userPage, privacy, streamServer) {
   app.service.user = {
     name: userName,
     pages: {},
@@ -766,7 +771,7 @@ cef.serviceProviderLogIn.onResponse = function(
   app.dom.minimizeButton.style.display = 'inline';
 
   setProviderUserName(userName);
-  setUpProviderUI(userPages, streamServers, userPage, privacy);
+  setUpProviderUI(userPages, streamServers, userPage, privacy, streamServer);
 
   app.dom.errorText.style.display = 'none';
 };

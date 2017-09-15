@@ -204,6 +204,11 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"storage/stream_server/update",
+       std::bind(&This::OnCommandStorageStreamServerUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"remote/status",
        std::bind(&This::OnCommandRemoteStatus, this,
            std::placeholders::_1,
@@ -310,6 +315,7 @@ void Client::OnCommandServiceProviderLogIn(
     arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));
     arg.add("userPage", LocalStorage::Get()->GetUserPage());
     arg.add("privacy", LocalStorage::Get()->GetPrivacy());
+    arg.add("streamServer", LocalStorage::Get()->GetStreamServer());
 
     JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
   });
@@ -587,6 +593,27 @@ void Client::OnCommandStoragePrivacyUpdate(
   }
 
   LocalStorage::Get()->SetPrivacy(privacy);
+}
+
+
+void Client::OnCommandStorageStreamServerUpdate(
+  const std::string &cmd,
+  const CommandArgumentMap &args,
+  CefRefPtr<CefBrowser> /*browser*/) {
+  auto stream_server_i = args.find("streamServer");
+  if (stream_server_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::string &stream_server = stream_server_i->second;
+
+  if (stream_server.empty() == true) {
+    assert(false);
+    return;
+  }
+
+  LocalStorage::Get()->SetStreamServer(stream_server);
 }
 
 
