@@ -438,6 +438,9 @@ function onPrivacySelectChanged() {
 
 function onStreamServerSelectChanged() {
   console.info('change streamServerSelect');
+  if (app.errorType == 'select down server') {
+    app.dom.errorText.style.display = 'none';
+  }
 
   const server = app.dom.streamServerSelect.children[0].value;
   cef.storageStreamServerUpdate.request(server);
@@ -712,6 +715,9 @@ function showErrorText() {
     case 'game select empty':
       error.textContent = '%NO_SELECT_GAME%';
       break;
+    case 'select down server':
+      error.textContent = '%SELECT_DOWN_SERVER%';
+      break;
     default:
       error.TextContent = '%ERROR_MESSAGE%';
       break;
@@ -722,25 +728,29 @@ function showErrorText() {
 
 function checkSelectValueValidation() {
   if (app.service.provider == 'Twitch') {
-    return '';
-  }
+    const serverUrl = app.dom.streamServerSelect.children[0].value;
+    const server = app.service.user.streamServer[serverUrl];
+    if (server.availability == 0.0) {
+      return 'select down server';
+    }
+  } else {  // app.service.provider == facebook
+    if (app.dom.mePageSelect.children[0].value == '') {
+      return 'mePage select empty';
+    }
 
-  if (app.dom.mePageSelect.children[0].value == '') {
-    return 'mePage select empty';
-  }
+    if (app.dom.mePageSelect.children[0].value == 1 &&
+        app.dom.privacySelect.children[0].value == '') {
+      return 'privacy select empty';
+    }
 
-  if (app.dom.mePageSelect.children[0].value == 1 &&
-      app.dom.privacySelect.children[0].value == '') {
-    return 'privacy select empty';
-  }
+    if (app.dom.mePageSelect.children[0].value == 2 &&
+        app.dom.ownPageSelect.children[0].value == '') {
+      return 'ownPage select empty';
+    }
 
-  if (app.dom.mePageSelect.children[0].value == 2 &&
-      app.dom.ownPageSelect.children[0].value == '') {
-    return 'ownPage select empty';
-  }
-
-  if (app.dom.gameSelect.children[0].value == '') {
-    return 'game select empty';
+    if (app.dom.gameSelect.children[0].value == '') {
+      return 'game select empty';
+    }
   }
   return '';
 }
@@ -751,9 +761,14 @@ cef.serviceProviderLogIn.onResponse = function(
   app.service.user = {
     name: userName,
     pages: {},
+    streamServer: {},
   };
   for (const userPage of userPages) {
     app.service.user.pages[userPage.id] = userPage;
+  }
+
+  for (const server of streamServers) {
+    app.service.user.streamServer[server.url] = server;
   }
 
   for (const element of app.dom.loginPagePanel) {
@@ -786,6 +801,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
   app.service.user = {
     name: '',
     pages: {},
+    streamServer: {},
   };
 
   for (const element of app.dom.loginPagePanel) {
