@@ -725,7 +725,6 @@ function checkSelectValueValidation() {
     return '';
   }
 
-  const error = app.dom.errorText;
   if (app.dom.mePageSelect.children[0].value == '') {
     return 'mePage select empty';
   }
