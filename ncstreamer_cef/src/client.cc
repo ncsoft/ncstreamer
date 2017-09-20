@@ -350,10 +350,10 @@ void Client::OnCommandStreamingStart(
   auto title_i = args.find("title");
   auto description_i = args.find("description");
   if (source_i == args.end() ||
-    user_page_i == args.end() ||
-    privacy_i == args.end() ||
-    title_i == args.end() ||
-    description_i == args.end()) {
+      user_page_i == args.end() ||
+      privacy_i == args.end() ||
+      title_i == args.end() ||
+      description_i == args.end()) {
     assert(false);
     return;
   }
@@ -365,8 +365,8 @@ void Client::OnCommandStreamingStart(
   const std::string &description = description_i->second;
 
   if (source.empty() == true ||
-    user_page.empty() == true ||
-    privacy.empty() == true) {
+      user_page.empty() == true ||
+      privacy.empty() == true) {
     assert(false);
     return;
   }
@@ -513,9 +513,9 @@ void Client::OnCommandSettingsVideoQualityUpdate(
   auto fps_i = args.find("fps");
   auto bitrate_i = args.find("bitrate");
   if (width_i == args.end() ||
-    height_i == args.end() ||
-    fps_i == args.end() ||
-    bitrate_i == args.end()) {
+      height_i == args.end() ||
+      fps_i == args.end() ||
+      bitrate_i == args.end()) {
     assert(false);
     return;
   }
@@ -534,9 +534,9 @@ void Client::OnCommandSettingsVideoQualityUpdate(
   }
 
   if (width == 0 ||
-    height == 0 ||
-    fps == 0 ||
-    bitrate == 0) {
+      height == 0 ||
+      fps == 0 ||
+      bitrate == 0) {
     assert(false);
     return;
   }
@@ -599,10 +599,10 @@ void Client::OnCommandRemoteStatus(
   auto user_name_i = args.find("userName");
   auto quality_i = args.find("quality");
   if (request_key_i == args.end() ||
-    status_i == args.end() ||
-    source_title_i == args.end() ||
-    user_name_i == args.end() ||
-    quality_i == args.end()) {
+      status_i == args.end() ||
+      source_title_i == args.end() ||
+      user_name_i == args.end() ||
+      quality_i == args.end()) {
     assert(false);
     return;
   }
@@ -625,7 +625,7 @@ void Client::OnCommandRemoteStatus(
   const std::string &quality = quality_i->second;
 
   if (status.empty() == true ||
-    quality.empty() == true) {
+      quality.empty() == true) {
     assert(false);
     return;
   }
@@ -654,15 +654,15 @@ void Client::OnCommandRemoteStart(
   auto stream_url_i = args.find("streamUrl");
   auto post_url_i = args.find("postUrl");
   if (request_key_i == args.end() ||
-    error_i == args.end() ||
-    source_i == args.end() ||
-    user_page_i == args.end() ||
-    privacy_i == args.end() ||
-    description_i == args.end() ||
-    mic_i == args.end() ||
-    service_provider_i == args.end() ||
-    stream_url_i == args.end() ||
-    post_url_i == args.end()) {
+      error_i == args.end() ||
+      source_i == args.end() ||
+      user_page_i == args.end() ||
+      privacy_i == args.end() ||
+      description_i == args.end() ||
+      mic_i == args.end() ||
+      service_provider_i == args.end() ||
+      stream_url_i == args.end() ||
+      post_url_i == args.end()) {
     assert(false);
     return;
   }
@@ -706,8 +706,8 @@ void Client::OnCommandRemoteStop(
   auto error_i = args.find("error");
   auto source_i = args.find("source");
   if (request_key_i == args.end() ||
-    error_i == args.end() ||
-    source_i == args.end()) {
+      error_i == args.end() ||
+      source_i == args.end()) {
     assert(false);
     return;
   }
@@ -736,7 +736,7 @@ void Client::OnCommandRemoteQualityUpdate(
   auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
   if (request_key_i == args.end() ||
-    error_i == args.end()) {
+      error_i == args.end()) {
     assert(false);
     return;
   }
