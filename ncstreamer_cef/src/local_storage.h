@@ -24,11 +24,13 @@ class LocalStorage {
 
   std::string GetUserPage() const;
   std::string GetPrivacy() const;
+  std::string GetStreamServer() const;
   std::string GetDesignatedUser() const;
   boost::optional<Position<int>> GetWindowPosition() const;
 
   void SetUserPage(const std::string &user_page);
   void SetPrivacy(const std::string &privacy);
+  void SetStreamServer(const std::string &stream_server);
   void SetDesignatedUser(const std::string &designated_user);
   void SetWindowPosition(const Position<int> &window_position);
 
@@ -52,6 +54,7 @@ class LocalStorage {
 
   static const char *kUserPage;
   static const char *kPrivacy;
+  static const char *kStreamServer;
   static const char *kDesignatedUser;
   static const char *kWindowPosition;
   static const char *kWindowPositionX;

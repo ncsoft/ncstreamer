@@ -40,6 +40,7 @@ class Facebook : public StreamingServiceProvider {
       const OnLoggedOut &on_logged_out) override;
 
   void PostLiveVideo(
+      const std::string &stream_server,
       const std::string &user_page_id,
       const std::string &privacy,
       const std::string &title,
@@ -55,13 +56,11 @@ class Facebook : public StreamingServiceProvider {
   using MeInfo = std::tuple<
       std::string /*me_id*/,
       std::string /*me_name*/,
-      std::string /*me_link*/,
       AccountMap /*me_accounts*/>;
 
   using OnMeGotten = std::function<void(
       const std::string &me_id,
       const std::string &me_name,
-      const std::string &me_link,
       const std::vector<UserPage> &me_accounts)>;
 
   class LoginClient;

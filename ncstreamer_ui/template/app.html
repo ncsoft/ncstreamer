@@ -32,7 +32,7 @@
   <div class="nc-streamer-contents login-page-panel">
     <section class="connect-platform">
       <header>
-        <h2>%CONNECT_PLATFORM%</h2>
+        <h2>%SELECT_SERVICE%</h2>
       </header>
       <article>%LOGIN_GUIDE1%<br>
                %LOGIN_GUIDE2%<br>
@@ -43,9 +43,11 @@
       </div>
     </section>
   </div>
-  <div class="nc-streamer-footer login-page-panel">
-    <button id="login-button"
-            class="btn-connect">%CONNECT_FACEBOOK%</button>
+  <div class="nc-streamer-footer nc-streamer-footer-app login-page-panel">
+    <button id="login-button-facebook"
+            class="btn-connect-facebook">facebook</button>
+    <button id="login-button-twitch"
+            class="btn-connect-twitch">twitch</button>
   </div>
 
   <!-- main page -->
@@ -59,62 +61,82 @@
            href="#"
            class="btn-view-streaming">%WATCH_BROADCASTING%</a>
       </div>
-      <div id="me-page-select"
-           class="dropdown">
-        <button class="btn dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="true">
-          %REGISTER_PAGE%
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li data-value="1"><a>%REGISTER_TIMELINE%</a></li>
-          <li data-value="2"><a>%REGISTER_MANAGING_PAGE%</a></li>
-        </ul>
+      <div id="facebook-division">
+        <div id="me-page-select"
+             class="dropdown">
+          <button class="btn dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true">
+            %REGISTER_PAGE%
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li data-value="1"><a>%REGISTER_TIMELINE%</a></li>
+            <li data-value="2"><a>%REGISTER_MANAGING_PAGE%</a></li>
+          </ul>
+        </div>
+
+        <!-- feed to page -->
+        <div id="own-page-select"
+             class="dropdown">
+          <button class="btn dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true">
+            <!--page 1-->
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <!--<li><a>page 1</a></li>-->
+            <!--<li><a>page 2</a></li>-->
+          </ul>
+          <div class="message admin">%NO_MANAGING_PAGE%</div>
+        </div>
+
+        <!-- feed to user's timeline -->
+        <div id="privacy-select"
+             class="dropdown">
+          <button class="btn dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true">
+            %POST_PRIVACY_BOUND%
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li data-value="EVERYONE"><a>%PUBLIC_PRIVACY%</a></li>
+            <li data-value="FRIENDS_OF_FRIENDS">
+              <a>%FRIENDS_OF_FRIENDS_PRIVACY%</a>
+            </li>
+            <li data-value="ALL_FRIENDS"><a>%FRIENDS_PRIVACY%</a></li>
+            <li data-value="SELF"><a>%PRIVATE_PRIVACY%</a></li>
+          </ul>
+          <div class="message admin">%POST_PRIVACY_BOUND%</div>
+        </div>
       </div>
 
-      <!-- feed to page -->
-      <div id="own-page-select"
-           class="dropdown">
-        <button class="btn dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="true">
-          <!--page 1-->
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <!--<li><a>page 1</a></li>-->
-          <!--<li><a>page 2</a></li>-->
-        </ul>
-        <div class="message admin">%NO_MANAGING_PAGE%</div>
+      <div id="twitch-division">
+        <h3>%STREAM_SERVER%</h3>
+        <div id="stream-server-select"
+             class="dropdown">
+          <button class="btn dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true">
+            %STREAM_SERVER%
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu fix-height">
+            <!--li data-value="5"><a><span class="serverdown">
+              Asia : Tokyo, Japan</span></a></li-->
+          </ul>
+        </div>
       </div>
-
-      <!-- feed to user's timeline -->
-      <div id="privacy-select"
-           class="dropdown">
-        <button class="btn dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="true">
-          %POST_PRIVACY_BOUND%
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li data-value="EVERYONE"><a>%PUBLIC_PRIVACY%</a></li>
-          <li data-value="FRIENDS_OF_FRIENDS">
-            <a>%FRIENDS_OF_FRIENDS_PRIVACY%</a>
-          </li>
-          <li data-value="ALL_FRIENDS"><a>%FRIENDS_PRIVACY%</a></li>
-          <li data-value="SELF"><a>%PRIVATE_PRIVACY%</a></li>
-        </ul>
-        <div class="message admin">%POST_PRIVACY_BOUND%</div>
-      </div>
-
       <!--<div id="nctv-tooltip"
            class="nc-streamer-tooltip">
         <span class="layer-close"></span>

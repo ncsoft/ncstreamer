@@ -19,14 +19,15 @@
 namespace ncstreamer {
 class StreamingServiceProvider {
  public:
+  class StreamServer;
   class UserPage;
 
   using OnFailed =
       std::function<void(const std::string &fail)>;
   using OnLoggedIn =
       std::function<void(const std::string &user_name,
-                         const std::string &user_link,
-                         const std::vector<UserPage> &user_pages)>;
+                         const std::vector<UserPage> &user_pages,
+                         const std::vector<StreamServer> &stream_servers)>;
   using OnLoggedOut =
       std::function<void()>;
   using OnLiveVideoPosted =
@@ -48,6 +49,7 @@ class StreamingServiceProvider {
       const OnLoggedOut &on_logged_out) = 0;
 
   virtual void PostLiveVideo(
+      const std::string &stream_server,
       const std::string &user_page_id,
       const std::string &privacy,
       const std::string &title,
@@ -55,6 +57,30 @@ class StreamingServiceProvider {
       const std::string &app_attribution_tag,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted) = 0;
+};
+
+
+class StreamingServiceProvider::StreamServer {
+ public:
+  StreamServer(
+      const std::string &id_,
+      const std::string &name,
+      const std::string &url,
+      const std::string &availability);
+  virtual ~StreamServer();
+
+  const std::string &id() const { return id_; }
+  const std::string &name() const { return name_; }
+  const std::string &url() const { return url_; }
+  const std::string &availability() const { return availability_; }
+
+  boost::property_tree::ptree ToTree() const;
+
+ private:
+  const std::string id_;
+  const std::string name_;
+  const std::string url_;
+  const std::string availability_;
 };
 
 

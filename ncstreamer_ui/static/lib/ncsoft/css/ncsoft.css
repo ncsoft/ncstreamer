@@ -1,5 +1,5 @@
 /*
-  css Update : 2017-6-2 17:44:44
+  css Update : 2017-9-26 15:38:13
 */
 
 
@@ -288,6 +288,7 @@ button {
 }
 
 .nc-streamer-setting .nc-streamer-tooltip:before,
+.dropdown .dropdown-menu li a:hover:after,
 .nc-streamer-footer .msg.status-live:before,
 .nc-streamer-footer .btn-start.loading:before {
     content: '';
@@ -427,10 +428,23 @@ textarea::-webkit-scrollbar-thumb {
     background-color: #20232c
 }
 
+.dropdown .btn.dropdown-toggle .serverdown {
+    color: #b44334
+}
+
 .dropdown .btn.dropdown-toggle .caret {
     position: absolute;
     right: 10px;
     top: 50%
+}
+
+.dropdown .btn:disabled.dropdown-toggle {
+    color: rgba(255, 255, 255, 0.1);
+    opacity: 1
+}
+
+.dropdown .btn:disabled.dropdown-toggle .serverdown {
+    color: rgba(255, 255, 255, 0.1)
 }
 
 .dropdown .dropdown-menu {
@@ -441,16 +455,50 @@ textarea::-webkit-scrollbar-thumb {
     border-radius: 0;
     background-color: #20232c
 }
-
+.dropdown .dropdown-menu.fix-height {
+    height: 300px;
+    overflow: auto
+}
+.dropdown .dropdown-menu.fix-height::-webkit-scrollbar {
+    width: 6px
+}
+.dropdown .dropdown-menu.fix-height::-webkit-scrollbar-thumb {
+    background: #141414;
+    border-radius: 50px
+}
+.dropdown .dropdown-menu.fix-height::-webkit-scrollbar-track {
+    background: #20232c;
+    border-radius: 50px
+}
 .dropdown .dropdown-menu li a {
     padding: 5px 10px;
     font-size: 13px;
-    color: #b3baca !important
+    color: #b3baca !important;
+    position: relative
 }
 
 .dropdown .dropdown-menu li a:focus,
 .dropdown .dropdown-menu li a:hover {
     background: #353c4e none
+}
+
+.dropdown .dropdown-menu li a:hover:after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 9px;
+    vertical-align: middle;
+    background: url("../img/select-selected.png") no-repeat 0 0;
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 4.5px)
+}
+.dropdown .dropdown-menu li .serverdown {
+    display: block;
+    padding: 5px 10px;
+    font-size: 13px;
+    color: rgba(179, 186, 202, 0.1) !important;
+    position: relative
 }
 
 .dropdown .dropdown-menu li.disabled a {
@@ -612,6 +660,14 @@ body {
     color: #ffffff
 }
 
+.nc-streamer-container .nc-streamer-footer-app {
+    padding: 0 10px 10px
+}
+
+.nc-streamer-container .nc-streamer-footer-app button {
+    margin-top: 6px
+}
+
 .nc-streamer-modal .modal-dialog {
     position: absolute;
     top: 50%;
@@ -704,6 +760,19 @@ body {
     vertical-align: middle
 }
 
+.nc-streamer-modal .connect-info .name.twitch::before {
+    content: '';
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    vertical-align: middle;
+    background: url("../img/icon-twitch2.png") no-repeat 0 0;
+    margin-right: 9px;
+    vertical-align: middle;
+    width: 21px;
+    height: 21px
+}
+
 .nc-streamer-modal .connect-info .btn {
     float: right;
     display: inline-block;
@@ -789,14 +858,14 @@ body {
 .connect-platform .message {
     position: absolute;
     width: calc(100% - 26px);
-    bottom: 63px
+    bottom: 125px
 }
 
 .connect-platform .message.notice {
     padding: 20px 20px;
-    color: rgba(163, 163, 163, 0.5);
+    color: #42698b;
     text-align: center;
-    background-color: #20232c
+    border-top: 1px solid #333843
 }
 
 .connect-platform .message.notice strong {
@@ -806,12 +875,12 @@ body {
     color: #5e9dd1
 }
 
-.nc-streamer-footer .btn-connect {
+.nc-streamer-footer .btn-connect-facebook {
     font-size: 16px;
     background-color: #3b5998
 }
 
-.nc-streamer-footer .btn-connect::before {
+.nc-streamer-footer .btn-connect-facebook::before {
     content: '';
     display: block;
     width: 9px;
@@ -822,8 +891,29 @@ body {
     margin-right: 9px
 }
 
-.nc-streamer-footer .btn-connect:hover {
+.nc-streamer-footer .btn-connect-facebook:hover {
     background-color: #4264ab
+}
+
+.nc-streamer-footer .btn-connect-twitch {
+    font-size: 16px;
+    background-color: #6441a4
+}
+
+.nc-streamer-footer .btn-connect-twitch::before {
+    content: '';
+    display: block;
+    width: 9px;
+    height: 19px;
+    vertical-align: middle;
+    background: url("../img/icon-twitch.png") no-repeat 0 0;
+    width: 18px;
+    display: inline-block;
+    margin-right: 9px
+}
+
+.nc-streamer-footer .btn-connect-twitch:hover {
+    background-color: #714cb6
 }
 
 .nc-streamer-setting {
@@ -843,6 +933,10 @@ body {
     padding-bottom: 10px;
     color: #cad0df;
     font-size: 13px
+}
+
+.nc-streamer-setting h3.disabled {
+    color: rgba(202, 208, 223, 0.4)
 }
 
 .nc-streamer-setting .profile {
@@ -870,6 +964,19 @@ body {
     background: url("../img/icon-fb2.png") no-repeat 0 0;
     margin-right: 9px;
     vertical-align: bottom
+}
+
+.nc-streamer-setting .profile .twitch::before {
+    content: '';
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    vertical-align: middle;
+    background: url("../img/icon-twitch2.png") no-repeat 0 0;
+    margin-right: 9px;
+    vertical-align: bottom;
+    width: 21px;
+    height: 21px
 }
 
 .nc-streamer-setting .profile .btn-view-streaming {

@@ -115,7 +115,7 @@ void Facebook::LogOut(
 
     void OnComplete(int /*num_deleted*/) override {
       caller_->SetAccessToken("");
-      caller_->SetMeInfo({"", "", "", {}});
+      caller_->SetMeInfo({"", "", {}});
       on_logged_out_();
     }
 
@@ -137,6 +137,7 @@ void Facebook::LogOut(
 
 
 void Facebook::PostLiveVideo(
+    const std::string &stream_server,
     const std::string &user_page_id,
     const std::string &privacy,
     const std::string &title,
@@ -144,6 +145,12 @@ void Facebook::PostLiveVideo(
     const std::string &app_attribution_tag,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
+  if (user_page_id.empty() == true ||
+      privacy.empty() == true) {
+    assert(false);
+    return;
+  }
+
   Uri live_video_uri{FacebookApi::Graph::LiveVideos::BuildUri(
       user_page_id,
       app_attribution_tag)};
@@ -236,16 +243,13 @@ void Facebook::GetMe(
     std::stringstream me_ss{str};
     std::string me_id{};
     std::string me_name{};
-    std::string me_link{};
     try {
       boost::property_tree::read_json(me_ss, me);
       me_id = me.get<std::string>("id");
       me_name = me.get<std::string>("name");
-      me_link = me.get<std::string>("link");
     } catch (const std::exception &/*e*/) {
       me_id = "";
       me_name = "";
-      me_link = "";
     }
 
     if (me_id.empty() == true) {
@@ -261,7 +265,7 @@ void Facebook::GetMe(
     } catch (...) {
     }
 
-    on_me_gotten(me_id, me_name, me_link, me_accounts);
+    on_me_gotten(me_id, me_name, me_accounts);
   });
 }
 
@@ -327,7 +331,6 @@ void Facebook::OnLoginSuccess(
   GetMe(on_failed, [this, on_logged_in](
       const std::string &me_id,
       const std::string &me_name,
-      const std::string &me_link,
       const std::vector<UserPage> &me_accounts) {
     AccountMap me_accounts_as_map{};
     for (const auto &account : me_accounts) {
@@ -335,15 +338,14 @@ void Facebook::OnLoginSuccess(
     }
 
     SetMeInfo({
-        me_id, me_name, me_link, me_accounts_as_map});
+        me_id, me_name, me_accounts_as_map});
 
     OutputDebugStringA((me_id + "/id\r\n").c_str());
     OutputDebugStringA((me_name + "/name\r\n").c_str());
-    OutputDebugStringA((me_link + "/link\r\n").c_str());
     OutputDebugStringA(
         (std::to_string(me_accounts.size()) + "/accounts\r\n").c_str());
 
-    on_logged_in(me_name, me_link, me_accounts);
+    on_logged_in(me_name, me_accounts, {});
   });
 }
 
@@ -364,7 +366,7 @@ std::string Facebook::GetPageAccessToken(const std::string &page_id) const {
   {
     std::lock_guard<std::mutex> lock{me_info_mutex_};
 
-    const auto &me_accounts = std::get<3>(me_info_);;
+    const auto &me_accounts = std::get<2>(me_info_);;
     auto i = me_accounts.find(page_id);
     if (i != me_accounts.end()) {
       page_access_token = i->second.access_token();

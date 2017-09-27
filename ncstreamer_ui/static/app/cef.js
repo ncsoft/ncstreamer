@@ -22,14 +22,16 @@ const cef = (function() {
     },
     'service_provider/log_in': {
       request: ['serviceProvider'],
-      response: ['userName', 'userLink', 'userPages', 'userPage', 'privacy'],
+      response: ['userName', 'userPages', 'streamServers', 'userPage',
+                 'privacy', 'streamServer'],
     },
     'service_provider/log_out': {
       request: ['serviceProvider'],
       response: ['error'],
     },
     'streaming/start': {
-      request: ['source', 'userPage', 'privacy', 'title', 'description'],
+      request: ['source', 'streamServer', 'userPage', 'privacy', 'title',
+                'description'],
       response: ['error', 'serviceProvider', 'streamUrl', 'postUrl'],
     },
     'streaming/stop': {
@@ -58,6 +60,10 @@ const cef = (function() {
     },
     'storage/privacy/update': {
       request: ['privacy'],
+      response: [],
+    },
+    'storage/stream_server/update': {
+      request: ['streamServer'],
       response: [],
     },
     'remote/status': {

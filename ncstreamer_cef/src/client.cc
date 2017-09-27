@@ -204,6 +204,11 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"storage/stream_server/update",
+       std::bind(&This::OnCommandStorageStreamServerUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"remote/status",
        std::bind(&This::OnCommandRemoteStatus, this,
            std::placeholders::_1,
@@ -291,19 +296,26 @@ void Client::OnCommandServiceProviderLogIn(
     // nothing to do.
   }, [browser, cmd](
       const std::string &user_name,
-      const std::string &user_link,
-      const std::vector<StreamingServiceProvider::UserPage> &user_pages) {
+      const std::vector<StreamingServiceProvider::UserPage> &user_pages,
+      const std::vector<
+          StreamingServiceProvider::StreamServer> &stream_servers) {
     std::vector<boost::property_tree::ptree> tree_pages;
     for (const auto &page : user_pages) {
       tree_pages.emplace_back(page.ToTree());
     }
 
+    std::vector<boost::property_tree::ptree> tree_servers;
+    for (const auto &server : stream_servers) {
+      tree_servers.emplace_back(server.ToTree());
+    }
+
     boost::property_tree::ptree arg;
     arg.add("userName", user_name);
-    arg.add("userLink", user_link);
     arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
+    arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));
     arg.add("userPage", LocalStorage::Get()->GetUserPage());
     arg.add("privacy", LocalStorage::Get()->GetPrivacy());
+    arg.add("streamServer", LocalStorage::Get()->GetStreamServer());
 
     JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
   });
@@ -339,28 +351,28 @@ void Client::OnCommandStreamingStart(
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
   auto source_i = args.find("source");
+  auto stream_server_i = args.find("streamServer");
   auto user_page_i = args.find("userPage");
   auto privacy_i = args.find("privacy");
   auto title_i = args.find("title");
   auto description_i = args.find("description");
   if (source_i == args.end() ||
-    user_page_i == args.end() ||
-    privacy_i == args.end() ||
-    title_i == args.end() ||
-    description_i == args.end()) {
+      user_page_i == args.end() ||
+      privacy_i == args.end() ||
+      title_i == args.end() ||
+      description_i == args.end()) {
     assert(false);
     return;
   }
 
   const std::string &source = source_i->second;
+  const std::string &stream_server = stream_server_i->second;
   const std::string &user_page = user_page_i->second;
   const std::string &privacy = privacy_i->second;
   const std::string &title = title_i->second;
   const std::string &description = description_i->second;
 
-  if (source.empty() == true ||
-    user_page.empty() == true ||
-    privacy.empty() == true) {
+  if (source.empty() == true) {
     assert(false);
     return;
   }
@@ -368,6 +380,7 @@ void Client::OnCommandStreamingStart(
   ObsSourceInfo source_info{source};
 
   StreamingService::Get()->PostLiveVideo(
+      stream_server,
       user_page,
       privacy,
       title,
@@ -507,9 +520,9 @@ void Client::OnCommandSettingsVideoQualityUpdate(
   auto fps_i = args.find("fps");
   auto bitrate_i = args.find("bitrate");
   if (width_i == args.end() ||
-    height_i == args.end() ||
-    fps_i == args.end() ||
-    bitrate_i == args.end()) {
+      height_i == args.end() ||
+      fps_i == args.end() ||
+      bitrate_i == args.end()) {
     assert(false);
     return;
   }
@@ -528,9 +541,9 @@ void Client::OnCommandSettingsVideoQualityUpdate(
   }
 
   if (width == 0 ||
-    height == 0 ||
-    fps == 0 ||
-    bitrate == 0) {
+      height == 0 ||
+      fps == 0 ||
+      bitrate == 0) {
     assert(false);
     return;
   }
@@ -583,6 +596,27 @@ void Client::OnCommandStoragePrivacyUpdate(
 }
 
 
+void Client::OnCommandStorageStreamServerUpdate(
+  const std::string &cmd,
+  const CommandArgumentMap &args,
+  CefRefPtr<CefBrowser> /*browser*/) {
+  auto stream_server_i = args.find("streamServer");
+  if (stream_server_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::string &stream_server = stream_server_i->second;
+
+  if (stream_server.empty() == true) {
+    assert(false);
+    return;
+  }
+
+  LocalStorage::Get()->SetStreamServer(stream_server);
+}
+
+
 void Client::OnCommandRemoteStatus(
     const std::string &cmd,
     const CommandArgumentMap &args,
@@ -593,10 +627,10 @@ void Client::OnCommandRemoteStatus(
   auto user_name_i = args.find("userName");
   auto quality_i = args.find("quality");
   if (request_key_i == args.end() ||
-    status_i == args.end() ||
-    source_title_i == args.end() ||
-    user_name_i == args.end() ||
-    quality_i == args.end()) {
+      status_i == args.end() ||
+      source_title_i == args.end() ||
+      user_name_i == args.end() ||
+      quality_i == args.end()) {
     assert(false);
     return;
   }
@@ -619,7 +653,7 @@ void Client::OnCommandRemoteStatus(
   const std::string &quality = quality_i->second;
 
   if (status.empty() == true ||
-    quality.empty() == true) {
+      quality.empty() == true) {
     assert(false);
     return;
   }
@@ -648,15 +682,15 @@ void Client::OnCommandRemoteStart(
   auto stream_url_i = args.find("streamUrl");
   auto post_url_i = args.find("postUrl");
   if (request_key_i == args.end() ||
-    error_i == args.end() ||
-    source_i == args.end() ||
-    user_page_i == args.end() ||
-    privacy_i == args.end() ||
-    description_i == args.end() ||
-    mic_i == args.end() ||
-    service_provider_i == args.end() ||
-    stream_url_i == args.end() ||
-    post_url_i == args.end()) {
+      error_i == args.end() ||
+      source_i == args.end() ||
+      user_page_i == args.end() ||
+      privacy_i == args.end() ||
+      description_i == args.end() ||
+      mic_i == args.end() ||
+      service_provider_i == args.end() ||
+      stream_url_i == args.end() ||
+      post_url_i == args.end()) {
     assert(false);
     return;
   }
@@ -700,8 +734,8 @@ void Client::OnCommandRemoteStop(
   auto error_i = args.find("error");
   auto source_i = args.find("source");
   if (request_key_i == args.end() ||
-    error_i == args.end() ||
-    source_i == args.end()) {
+      error_i == args.end() ||
+      source_i == args.end()) {
     assert(false);
     return;
   }
@@ -730,7 +764,7 @@ void Client::OnCommandRemoteQualityUpdate(
   auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
   if (request_key_i == args.end() ||
-    error_i == args.end()) {
+      error_i == args.end()) {
     assert(false);
     return;
   }

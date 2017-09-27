@@ -126,21 +126,27 @@ void Twitch::LogOut(
 
 
 void Twitch::PostLiveVideo(
-  const std::string &user_page_id,
-  const std::string &privacy,
-  const std::string &title,
-  const std::string &description,
-  const std::string &app_attribution_tag,
-  const OnFailed &on_failed,
-  const OnLiveVideoPosted &on_live_video_posted) {
-  GetChannel(on_failed, [this, description, on_failed, on_live_video_posted](
+    const std::string &stream_server,
+    const std::string &user_page_id,
+    const std::string &privacy,
+    const std::string &title,
+    const std::string &description,
+    const std::string &app_attribution_tag,
+    const OnFailed &on_failed,
+    const OnLiveVideoPosted &on_live_video_posted) {
+  if (stream_server.empty() == true) {
+    assert(false);
+    return;
+  }
+  GetChannel(on_failed, [this, stream_server, description, on_failed,
+                         on_live_video_posted](
       const std::string &channel_id,
       const std::string &post_url,
       const std::string &stream_key) {
     UpdateChannel(channel_id,
                   description,
                   "",
-                  "rtmp://live-sel.twitch.tv/app",
+                  stream_server,
                   stream_key,
                   post_url,
                   on_failed,
@@ -257,6 +263,49 @@ void Twitch::UpdateChannel(
 }
 
 
+void Twitch::GetStreamServers(
+    const OnFailed &on_failed,
+    const OnServerListGotten &on_server_list_gotten) {
+  Uri get_server_list_uri{TwitchApi::Graph::Ingests::BuildUri(
+      kNcStreamerAppId)};
+
+  http_request_service_.Get(
+      get_server_list_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [on_failed, on_server_list_gotten](const std::string &str) {
+    boost::property_tree::ptree tree;
+    std::stringstream ss{str};
+    std::vector<StreamServer> stream_servers{};
+    try {
+      boost::property_tree::read_json(ss, tree);
+      const auto &list = tree.get_child("ingests");
+      for (const auto &elem : list) {
+        const auto &server = elem.second;
+        const auto &id = server.get<std::string>("_id");
+        const auto &name = server.get<std::string>("name");
+        const auto &availability = server.get<std::string>("availability");
+        const auto &url_template = server.get<std::string>("url_template");
+        const std::string &url =
+            url_template.substr(0, url_template.find_last_of("/"));
+        stream_servers.emplace_back(id, name, url, availability);
+      }
+    } catch (const std::exception &/*e*/) {
+      stream_servers.clear();
+    }
+
+    if (stream_servers.empty() == true) {
+      std::stringstream msg;
+      msg << "could not get stream servers from: " << str;
+      on_failed(msg.str());
+      return;
+    }
+    on_server_list_gotten(stream_servers);
+  });
+}
+
+
 void Twitch::GetUserAccessToken(
     const std::string &code,
     const OnFailed &on_failed,
@@ -299,9 +348,12 @@ void Twitch::GetUserAccessToken(
 void Twitch::OnLoginSuccess(
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
-  GetUser(on_failed, [on_logged_in](
+  GetUser(on_failed, [this, on_failed, on_logged_in](
       const std::string &name) {
-    on_logged_in(name, "", {});
+    GetStreamServers(on_failed, [name, on_logged_in](
+        const std::vector<StreamServer> &stream_servers) {
+      on_logged_in(name, {}, stream_servers);
+    });
   });
 }
 

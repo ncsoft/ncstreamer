@@ -9,6 +9,7 @@
 
 #include <mutex>  // NOLINT
 #include <string>
+#include <vector>
 
 #include "include/cef_life_span_handler.h"
 #include "include/cef_request_handler.h"
@@ -36,6 +37,7 @@ class Twitch : public StreamingServiceProvider {
       const OnLoggedOut &on_logged_out) override;
 
   void PostLiveVideo(
+      const std::string &stream_server,
       const std::string &user_page_id,
       const std::string &privacy,
       const std::string &title,
@@ -52,6 +54,9 @@ class Twitch : public StreamingServiceProvider {
       const std::string &channel_id,
       const std::string &post_url,
       const std::string &stream_key)>;
+
+  using OnServerListGotten = std::function<void(
+      const std::vector<StreamServer>)>;
 
   class LoginClient;
 
@@ -72,6 +77,10 @@ class Twitch : public StreamingServiceProvider {
       const std::string &post_url,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted);
+
+  void GetStreamServers(
+      const OnFailed &on_failed,
+      const OnServerListGotten &on_server_list_gotten);
 
   void GetUserAccessToken(
       const std::string &code,
