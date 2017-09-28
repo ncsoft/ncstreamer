@@ -540,7 +540,7 @@ function onConnectInfoDisconnectButtonClicked() {
   }
 
   app.dom.connectInfoConfirmButton.click();
-  cef.serviceProviderLogOut.request('Facebook Live');
+  cef.serviceProviderLogOut.request(app.service.provider);
 }
 
 
