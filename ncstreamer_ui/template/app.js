@@ -726,7 +726,7 @@ function showErrorText() {
       error.textContent = '%OBS_ERROR%';
       break;
     default:
-      error.TextContent = '%ERROR_MESSAGE%';
+      error.TextContent = '%OBS_ERROR%';
       break;
   }
   error.style.display = 'block';
