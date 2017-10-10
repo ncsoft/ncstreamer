@@ -698,7 +698,11 @@ function showErrorText() {
   const error = app.dom.errorText;
   switch (app.errorType) {
     case 'fail streaming':
-      error.textContent = '%ERROR_MESSAGE%';
+      if (app.service.provider == 'Twitch') {
+        error.textContent = '%TWITCH_ERROR%';
+      } else {
+        error.textContent = '%FACEBOOK_ERROR%';
+      }
       break;
     case 'stop streaming first':
       error.textContent = '%STOP_STREAMING_FIRST%';
@@ -718,8 +722,11 @@ function showErrorText() {
     case 'select down server':
       error.textContent = '%SELECT_DOWN_SERVER%';
       break;
+    case 'obs error':
+      error.textContent = '%OBS_ERROR%';
+      break;
     default:
-      error.TextContent = '%ERROR_MESSAGE%';
+      error.TextContent = '%OBS_ERROR%';
       break;
   }
   error.style.display = 'block';
@@ -832,7 +839,11 @@ cef.streamingStart.onResponse =
     function(error, serviceProvider, streamUrl, postUrl) {
   console.info(error);
   if (error != '') {
-    setUpError('fail streaming');
+    if (error == 'obs internal') {
+      setUpError('obs error');
+    } else {
+      setUpError('fail streaming');
+    }
     app.streaming.startInfo = {};
     updateStreamingStatus('standby');
   } else {
