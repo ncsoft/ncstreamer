@@ -698,7 +698,11 @@ function showErrorText() {
   const error = app.dom.errorText;
   switch (app.errorType) {
     case 'fail streaming':
-      error.textContent = '%ERROR_MESSAGE%';
+      if (app.service.provider == 'Twitch') {
+        error.textContent = '%TWITCH_ERROR%';
+      } else {
+        error.textContent = '%FACEBOOK_ERROR%';
+      }
       break;
     case 'stop streaming first':
       error.textContent = '%STOP_STREAMING_FIRST%';
