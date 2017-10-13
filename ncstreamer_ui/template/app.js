@@ -666,6 +666,10 @@ function setUpStreamServers(streamServers, streamServer) {
   });
 
   for (const server of streamServers) {
+    if (server.name.indexOf('deprecated') != -1) {
+      continue;
+    }
+
     const li = document.createElement('li');
     li.setAttribute('data-value', server.url);
 
@@ -678,8 +682,20 @@ function setUpStreamServers(streamServers, streamServer) {
     }
     contents.appendChild(li);
   }
-  display.value = contents.firstChild.getAttribute('data-value');
-  display.innerHTML = contents.firstChild.firstChild.innerHTML +
+
+  const defaultServer = (function() {
+    var content = app.dom.streamServerSelect.children[1].firstChild;
+    while (content) {
+      if (content.innerHTML.indexOf('Seoul') != -1) {
+        return content;
+      }
+      content = content.nextSibling;
+    }
+    return contents.firstChild;
+  })();
+
+  display.value = defaultServer.getAttribute('data-value');
+  display.innerHTML = defaultServer.firstChild.innerHTML +
                       '<span class="caret"></span>';
 
   if (streamServer != '') {
