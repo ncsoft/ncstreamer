@@ -666,6 +666,10 @@ function setUpStreamServers(streamServers, streamServer) {
   });
 
   for (const server of streamServers) {
+    if (server.name.indexOf('deprecated') != -1) {
+      continue;
+    }
+
     const li = document.createElement('li');
     li.setAttribute('data-value', server.url);
 
