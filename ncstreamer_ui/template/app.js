@@ -162,6 +162,26 @@ function toCamel(str) {
 }
 
 
+function enableAllContorls() {
+  ncsoft.select.enable(app.dom.mePageSelect);
+  ncsoft.select.enable(app.dom.ownPageSelect);
+  ncsoft.select.enable(app.dom.privacySelect);
+  ncsoft.select.enable(app.dom.streamServerSelect);
+  ncsoft.select.enable(app.dom.gameSelect);
+  ncsoft.textarea.enable(app.dom.feedDescription);
+}
+
+
+function disableAllControls() {
+  ncsoft.select.disable(app.dom.mePageSelect);
+  ncsoft.select.disable(app.dom.ownPageSelect);
+  ncsoft.select.disable(app.dom.privacySelect);
+  ncsoft.select.disable(app.dom.streamServerSelect);
+  ncsoft.select.disable(app.dom.gameSelect);
+  ncsoft.textarea.disable(app.dom.feedDescription);
+}
+
+
 function updateStreamingStatus(status) {
   console.info(JSON.stringify({status: status}));
 
@@ -175,18 +195,21 @@ function updateStreamingStatus(status) {
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
       ncsoft.klass.remove(app.dom.providerPageLink, 'live');
+      enableAllContorls();
       break;
     case 'setup':
       ncsoft.klass.remove(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       app.dom.cautionText.style.display = 'block';
+      disableAllControls();
       break;
     case 'starting':
       ncsoft.klass.add(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       app.dom.cautionText.style.display = 'block';
+      disableAllControls();
       break;
     case 'onAir':
       ncsoft.klass.remove(button, 'loading');
@@ -194,10 +217,12 @@ function updateStreamingStatus(status) {
       button.disabled = false;
       app.dom.liveImage.style.display = 'block';
       ncsoft.klass.add(app.dom.providerPageLink, 'live');
+      disableAllControls();
       break;
     case 'stopping':
       ncsoft.klass.add(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
+      disableAllControls();
       button.disabled = true;
       break;
   }
