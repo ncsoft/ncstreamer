@@ -147,7 +147,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onModalCloseClicked);
 
   ncsoft.select.disable(app.dom.privacySelect);
+  ncsoft.select.setText(app.dom.privacySelect, '%POST_PRIVACY_BOUND%');
   ncsoft.select.disable(app.dom.gameSelect);
+  ncsoft.select.setText(app.dom.gameSelect, '%NO_PLAYING_GAME%');
   setUpSteamingQuality();
   setUpMic();
 });
@@ -157,6 +159,26 @@ function toCamel(str) {
   return str.replace(/(\-[a-z])/g, function(match) {
     return match.toUpperCase().replace('-', '');
   });
+}
+
+
+function enableAllContorls() {
+  ncsoft.select.enable(app.dom.mePageSelect);
+  ncsoft.select.enable(app.dom.ownPageSelect);
+  ncsoft.select.enable(app.dom.privacySelect);
+  ncsoft.select.enable(app.dom.streamServerSelect);
+  ncsoft.select.enable(app.dom.gameSelect);
+  ncsoft.textarea.enable(app.dom.feedDescription);
+}
+
+
+function disableAllControls() {
+  ncsoft.select.disable(app.dom.mePageSelect);
+  ncsoft.select.disable(app.dom.ownPageSelect);
+  ncsoft.select.disable(app.dom.privacySelect);
+  ncsoft.select.disable(app.dom.streamServerSelect);
+  ncsoft.select.disable(app.dom.gameSelect);
+  ncsoft.textarea.disable(app.dom.feedDescription);
 }
 
 
@@ -173,18 +195,21 @@ function updateStreamingStatus(status) {
       button.textContent = '%START_BROADCASTING%';
       button.disabled = false;
       ncsoft.klass.remove(app.dom.providerPageLink, 'live');
+      enableAllContorls();
       break;
     case 'setup':
       ncsoft.klass.remove(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       app.dom.cautionText.style.display = 'block';
+      disableAllControls();
       break;
     case 'starting':
       ncsoft.klass.add(button, 'loading');
       button.textContent = '%START_BROADCASTING%';
       button.disabled = true;
       app.dom.cautionText.style.display = 'block';
+      disableAllControls();
       break;
     case 'onAir':
       ncsoft.klass.remove(button, 'loading');
@@ -192,10 +217,12 @@ function updateStreamingStatus(status) {
       button.disabled = false;
       app.dom.liveImage.style.display = 'block';
       ncsoft.klass.add(app.dom.providerPageLink, 'live');
+      disableAllControls();
       break;
     case 'stopping':
       ncsoft.klass.add(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
+      disableAllControls();
       button.disabled = true;
       break;
   }
@@ -235,6 +262,7 @@ function setUpUserPage(userPages, userPage) {
 
   if (userPages.length == 0) {
     ncsoft.select.disable(ownPageSelect);
+    ncsoft.select.setText(ownPageSelect, '%NO_MANAGING_PAGE%');
   } else {
     ncsoft.select.enable(ownPageSelect);
     for (const ownPage of userPages) {
@@ -289,6 +317,7 @@ function updateStreamingSources(obj) {
 
   if (sources.length == 0) {
     ncsoft.select.disable(gameSelect);
+    ncsoft.select.setText(gameSelect, '%NO_PLAYING_GAME%');
   } else {
     ncsoft.select.enable(gameSelect);
 

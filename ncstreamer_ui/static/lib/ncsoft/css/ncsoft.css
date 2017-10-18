@@ -1,5 +1,5 @@
 /*
-  css Update : 2017-9-26 15:38:13
+  css Update : 2017-10-17 16:57:33
 */
 
 
@@ -11,9 +11,11 @@ html {
     -webkit-text-size-adjust: 100%
 }
 
+
 body {
     margin: 0
 }
+
 
 article,
 aside,
@@ -30,6 +32,7 @@ summary {
     display: block
 }
 
+
 audio,
 canvas,
 progress,
@@ -37,28 +40,34 @@ video {
     display: inline-block
 }
 
+
 audio:not([controls]) {
     display: none;
     height: 0
 }
 
+
 progress {
     vertical-align: baseline
 }
+
 
 template,
 [hidden] {
     display: none
 }
 
+
 a {
     background-color: transparent
 }
+
 
 a:active,
 a:hover {
     outline-width: 0
 }
+
 
 abbr[title] {
     border-bottom: none;
@@ -66,33 +75,40 @@ abbr[title] {
     text-decoration: underline dotted
 }
 
+
 b,
 strong {
     font-weight: inherit
 }
+
 
 b,
 strong {
     font-weight: bolder
 }
 
+
 dfn {
     font-style: italic
 }
+
 
 h1 {
     font-size: 2em;
     margin: 0.67em 0
 }
 
+
 mark {
     background-color: #ff0;
     color: #000
 }
 
+
 small {
     font-size: 80%
 }
+
 
 sub,
 sup {
@@ -102,21 +118,26 @@ sup {
     vertical-align: baseline
 }
 
+
 sub {
     bottom: -0.25em
 }
+
 
 sup {
     top: -0.5em
 }
 
+
 img {
     border-style: none
 }
 
+
 svg:not(:root) {
     overflow: hidden
 }
+
 
 code,
 kbd,
@@ -126,15 +147,18 @@ samp {
     font-size: 1em
 }
 
+
 figure {
     margin: 1em 40px
 }
+
 
 hr {
     box-sizing: content-box;
     height: 0;
     overflow: visible
 }
+
 
 button,
 input,
@@ -143,15 +167,18 @@ textarea {
     font: inherit
 }
 
+
 optgroup {
     font-weight: bold
 }
+
 
 button,
 input,
 select {
     overflow: visible
 }
+
 
 button,
 input,
@@ -160,10 +187,12 @@ textarea {
     margin: 0
 }
 
+
 button,
 select {
     text-transform: none
 }
+
 
 button,
 [type="button"],
@@ -172,9 +201,11 @@ button,
     cursor: pointer
 }
 
+
 [disabled] {
     cursor: default
 }
+
 
 button,
 html [type="button"],
@@ -183,20 +214,24 @@ html [type="button"],
     -webkit-appearance: button
 }
 
+
 button::-moz-focus-inner,
 input::-moz-focus-inner {
     border: 0;
     padding: 0
 }
 
+
 button:-moz-focusring,
 input:-moz-focusring {
     outline: 1px dotted ButtonText
 }
 
+
 textarea {
     overflow: auto
 }
+
 
 [type="checkbox"],
 [type="radio"] {
@@ -204,23 +239,28 @@ textarea {
     padding: 0
 }
 
+
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
     height: auto
 }
 
+
 [type="search"] {
     -webkit-appearance: textfield
 }
+
 
 [type="search"]::-webkit-search-cancel-button,
 [type="search"]::-webkit-search-decoration {
     -webkit-appearance: none
 }
 
+
 * {
     box-sizing: border-box
 }
+
 
 input,
 textarea,
@@ -228,13 +268,16 @@ button {
     outline: 0
 }
 
+
 [class*=" is-show"] {
     display: block
 }
 
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, Roboto, "맑은 고딕", "Malgun Gothic", "Microsoft JhengHei", "meiryo", "MS PGothic", "돋움", Dotum, sans-serif
 }
+
 
 h1,
 h2,
@@ -246,6 +289,7 @@ h5 {
     font-weight: normal
 }
 
+
 dl,
 dt,
 dd,
@@ -253,6 +297,7 @@ p {
     margin: 0;
     padding: 0
 }
+
 
 ul,
 ol,
@@ -263,14 +308,17 @@ menu {
     padding: 0
 }
 
+
 a {
     text-decoration: none;
     color: inherit
 }
 
+
 img {
     vertical-align: top
 }
+
 
 button {
     outline: none;
@@ -281,11 +329,13 @@ button {
     background-color: transparent
 }
 
+
 .nc-streamer-modal .connect-info:after {
     content: '';
     display: table;
     clear: both
 }
+
 
 .nc-streamer-setting .nc-streamer-tooltip:before,
 .dropdown .dropdown-menu li a:hover:after,
@@ -295,6 +345,7 @@ button {
     display: block;
     vertical-align: middle
 }
+
 
 .nc-streamer-footer .btn-start.loading:before {
     display: inline-block;
@@ -308,6 +359,7 @@ button {
     animation: spin 1s infinite linear
 }
 
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
@@ -318,6 +370,7 @@ button {
         transform: rotate(360deg)
     }
 }
+
 
 @keyframes spin {
     0% {
@@ -330,6 +383,7 @@ button {
     }
 }
 
+
 .nc-streamer-footer .msg.status-live:before {
     display: inline-block;
     width: 67px;
@@ -338,6 +392,7 @@ button {
     -webkit-animation: pulse 1.5s infinite;
     animation: pulse 1.5s infinite
 }
+
 
 @-webkit-keyframes pulse {
     0% {
@@ -351,6 +406,7 @@ button {
     }
 }
 
+
 @keyframes pulse {
     0% {
         opacity: 0.4
@@ -363,19 +419,23 @@ button {
     }
 }
 
+
 textarea::-webkit-scrollbar-track {
     background-color: #20232c
 }
+
 
 textarea::-webkit-scrollbar {
     width: 6px;
     background-color: #272b36
 }
 
+
 textarea::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #272b36
 }
+
 
 .nc-streamer-setting .nc-streamer-tooltip {
     position: absolute;
@@ -384,6 +444,7 @@ textarea::-webkit-scrollbar-thumb {
     padding: 16px 0;
     background-color: #d8b17e
 }
+
 
 .nc-streamer-setting .nc-streamer-tooltip:before {
     content: '';
@@ -396,6 +457,7 @@ textarea::-webkit-scrollbar-thumb {
     border-left: 7px solid transparent
 }
 
+
 .nc-streamer-setting .nc-streamer-tooltip .layer-close {
     position: absolute;
     right: 10px;
@@ -407,15 +469,18 @@ textarea::-webkit-scrollbar-thumb {
     background: url("../img/btn-layer-close.png") no-repeat
 }
 
+
 .nc-streamer-setting .nc-streamer-tooltip p {
     text-align: center;
     color: #674235;
     font-size: 12px
 }
 
+
 .dropdown {
     margin-bottom: 8px
 }
+
 
 .dropdown .btn.dropdown-toggle {
     position: relative;
@@ -428,9 +493,11 @@ textarea::-webkit-scrollbar-thumb {
     background-color: #20232c
 }
 
+
 .dropdown .btn.dropdown-toggle .serverdown {
     color: #b44334
 }
+
 
 .dropdown .btn.dropdown-toggle .caret {
     position: absolute;
@@ -438,14 +505,17 @@ textarea::-webkit-scrollbar-thumb {
     top: 50%
 }
 
+
 .dropdown .btn:disabled.dropdown-toggle {
     color: rgba(255, 255, 255, 0.1);
     opacity: 1
 }
 
+
 .dropdown .btn:disabled.dropdown-toggle .serverdown {
     color: rgba(255, 255, 255, 0.1)
 }
+
 
 .dropdown .dropdown-menu {
     width: 100%;
@@ -455,21 +525,31 @@ textarea::-webkit-scrollbar-thumb {
     border-radius: 0;
     background-color: #20232c
 }
+
+
 .dropdown .dropdown-menu.fix-height {
     height: 300px;
     overflow: auto
 }
+
+
 .dropdown .dropdown-menu.fix-height::-webkit-scrollbar {
     width: 6px
 }
+
+
 .dropdown .dropdown-menu.fix-height::-webkit-scrollbar-thumb {
     background: #141414;
     border-radius: 50px
 }
+
+
 .dropdown .dropdown-menu.fix-height::-webkit-scrollbar-track {
     background: #20232c;
     border-radius: 50px
 }
+
+
 .dropdown .dropdown-menu li a {
     padding: 5px 10px;
     font-size: 13px;
@@ -477,10 +557,12 @@ textarea::-webkit-scrollbar-thumb {
     position: relative
 }
 
+
 .dropdown .dropdown-menu li a:focus,
 .dropdown .dropdown-menu li a:hover {
     background: #353c4e none
 }
+
 
 .dropdown .dropdown-menu li a:hover:after {
     content: '';
@@ -493,6 +575,8 @@ textarea::-webkit-scrollbar-thumb {
     right: 10px;
     top: calc(50% - 4.5px)
 }
+
+
 .dropdown .dropdown-menu li .serverdown {
     display: block;
     padding: 5px 10px;
@@ -501,11 +585,13 @@ textarea::-webkit-scrollbar-thumb {
     position: relative
 }
 
+
 .dropdown .dropdown-menu li.disabled a {
     color: #44464c !important;
     cursor: default !important;
     background-color: transparent !important
 }
+
 
 textarea {
     overflow-y: auto;
@@ -517,25 +603,36 @@ textarea {
     background-color: #20232c
 }
 
+
 textarea::-webkit-input-placeholder {
     color: #44464c
 }
+
 
 textarea::-moz-placeholder {
     color: #44464c
 }
 
+
 textarea:-ms-input-placeholder {
     color: #44464c
 }
+
 
 textarea::placeholder {
     color: #44464c
 }
 
+
 textarea:focus {
     color: #61a3d9
 }
+
+
+textarea:disabled {
+    color: rgba(255, 255, 255, 0.1)
+}
+
 
 input[type="checkbox"] {
     width: 18px;
@@ -550,13 +647,16 @@ input[type="checkbox"] {
     background-color: #20232c
 }
 
+
 input[type="checkbox"]:checked {
     background: url("../img/checkbox.png") no-repeat 50% 50%
 }
 
+
 input[type="checkbox"]:checked+label {
     color: #cad0df
 }
+
 
 html,
 body {
@@ -566,10 +666,12 @@ body {
     background-color: #292e38
 }
 
+
 .nc-streamer-container {
     height: 100%;
     border: 1px solid #393f4b
 }
+
 
 .nc-streamer-container .header {
     position: relative;
@@ -580,15 +682,18 @@ body {
     box-shadow: 0 3px 0 0 rgba(48, 53, 64, 0.1)
 }
 
+
 .nc-streamer-container .header h1.title {
     color: #ffffff;
     font-size: 18px;
     line-height: 18px
 }
 
+
 .nc-streamer-container .header h1.title strong {
     font-weight: normal
 }
+
 
 .nc-streamer-container .header h1.title .label-beta {
     display: inline-block;
@@ -602,11 +707,13 @@ body {
     border-radius: 15px
 }
 
+
 .nc-streamer-container .header .settings {
     position: absolute;
     right: 15px;
     top: 15px
 }
+
 
 .nc-streamer-container .header .settings button {
     width: 14px;
@@ -615,43 +722,52 @@ body {
     background: url("../img/btn-settings.png") no-repeat
 }
 
+
 .nc-streamer-container .header .settings .btn-setting {
     width: 16px;
     height: 16px;
     background-position: 0 0
 }
 
+
 .nc-streamer-container .header .settings .btn-setting:hover {
     background-position: -16px 0
 }
+
 
 .nc-streamer-container .header .settings .btn-minimum {
     margin: 0 7px;
     background-position: 0 -22px
 }
 
+
 .nc-streamer-container .header .settings .btn-minimum:hover {
     background-position: -14px -22px
 }
+
 
 .nc-streamer-container .header .settings .btn-close {
     background-position: 0 -42px
 }
 
+
 .nc-streamer-container .header .settings .btn-close:hover {
     background-position: -14px -42px
 }
+
 
 .nc-streamer-container .nc-streamer-contents {
     padding: 0 13px;
     border-top: 1px solid #303540
 }
 
+
 .nc-streamer-container .nc-streamer-footer {
     position: fixed;
     bottom: 0;
     width: 100%
 }
+
 
 .nc-streamer-container .nc-streamer-footer button {
     width: 100%;
@@ -660,13 +776,16 @@ body {
     color: #ffffff
 }
 
+
 .nc-streamer-container .nc-streamer-footer-app {
     padding: 0 10px 10px
 }
 
+
 .nc-streamer-container .nc-streamer-footer-app button {
     margin-top: 6px
 }
+
 
 .nc-streamer-modal .modal-dialog {
     position: absolute;
@@ -680,6 +799,7 @@ body {
     padding: 10px
 }
 
+
 .nc-streamer-modal .modal-content {
     padding-bottom: 20px;
     color: #c0d4e6;
@@ -689,11 +809,13 @@ body {
     background-color: #272b34
 }
 
+
 .nc-streamer-modal .modal-content .modal-header {
     position: relative;
     text-align: left;
     border-bottom: 0 none
 }
+
 
 .nc-streamer-modal .modal-content .modal-header .modal-title {
     position: absolute;
@@ -710,6 +832,7 @@ body {
     border-bottom: 1px solid #40434d
 }
 
+
 .nc-streamer-modal .modal-content .modal-header .close {
     position: relative;
     z-index: 99;
@@ -718,13 +841,16 @@ body {
     text-shadow: none
 }
 
+
 .nc-streamer-modal .modal-content .modal-header .close:hover {
     color: #BFC0C3
 }
 
+
 .nc-streamer-modal .modal-content .modal-body .message {
     padding-bottom: 20px
 }
+
 
 .nc-streamer-modal .modal-content .modal-footer {
     padding-top: 0;
@@ -732,10 +858,12 @@ body {
     border-top: 0 none
 }
 
+
 .nc-streamer-modal .connect-info {
     width: 100%;
     padding: 10px 10px 0 10px
 }
+
 
 .nc-streamer-modal .connect-info .name {
     float: left;
@@ -749,6 +877,7 @@ body {
     color: #d8b17e
 }
 
+
 .nc-streamer-modal .connect-info .name.fb::before {
     content: '';
     display: inline-block;
@@ -759,6 +888,7 @@ body {
     margin-right: 9px;
     vertical-align: middle
 }
+
 
 .nc-streamer-modal .connect-info .name.twitch::before {
     content: '';
@@ -773,6 +903,7 @@ body {
     height: 21px
 }
 
+
 .nc-streamer-modal .connect-info .btn {
     float: right;
     display: inline-block;
@@ -784,20 +915,24 @@ body {
     text-decoration: underline
 }
 
+
 .nc-streamer-modal .connect-info .btn:hover {
     color: #ffffff
 }
+
 
 .nc-streamer-modal .connect-info .btn.disabled {
     color: #595b5f;
     opacity: 1
 }
 
+
 .nc-streamer-modal .msg {
     padding-top: 10px;
     font-size: 12px;
     color: #42698b !important
 }
+
 
 .nc-streamer-modal .btn {
     width: 92px;
@@ -808,17 +943,20 @@ body {
     background: none
 }
 
+
 .nc-streamer-modal .btn-default {
     color: #8b9aaf;
     border: 1px solid rgba(56, 69, 81, 0.8);
     background: rgba(10, 20, 33, 0.2) none
 }
 
+
 .nc-streamer-modal .btn-default:hover,
 .nc-streamer-modal .btn-default:active {
     border: 1px solid rgba(56, 69, 81, 0.7);
     background: rgba(10, 20, 33, 0.3) none
 }
+
 
 .nc-streamer-modal .btn-primary {
     color: #ffffff;
@@ -827,11 +965,13 @@ body {
     background-image: linear-gradient(to bottom, #4382b3 0, #2e6d9e 100%)
 }
 
+
 .nc-streamer-modal .btn-primary:hover,
 .nc-streamer-modal .btn-primary:active {
     background-image: -webkit-linear-gradient(top, #5195c9 0, #3c7fb4 100%);
     background-image: linear-gradient(to bottom, #5195c9 0, #3c7fb4 100%)
 }
+
 
 .connect-platform header h2 {
     padding: 100px 0 40px 0;
@@ -839,6 +979,7 @@ body {
     font-size: 18px;
     text-align: center
 }
+
 
 .connect-platform header h2::before {
     content: '';
@@ -850,16 +991,19 @@ body {
     margin: 0 auto 15px auto
 }
 
+
 .connect-platform article {
     color: rgba(255, 255, 255, 0.5);
     text-align: center
 }
+
 
 .connect-platform .message {
     position: absolute;
     width: calc(100% - 26px);
     bottom: 125px
 }
+
 
 .connect-platform .message.notice {
     padding: 20px 20px;
@@ -868,6 +1012,7 @@ body {
     border-top: 1px solid #333843
 }
 
+
 .connect-platform .message.notice strong {
     display: block;
     padding-bottom: 10px;
@@ -875,10 +1020,12 @@ body {
     color: #5e9dd1
 }
 
+
 .nc-streamer-footer .btn-connect-facebook {
     font-size: 16px;
     background-color: #3b5998
 }
+
 
 .nc-streamer-footer .btn-connect-facebook::before {
     content: '';
@@ -891,14 +1038,17 @@ body {
     margin-right: 9px
 }
 
+
 .nc-streamer-footer .btn-connect-facebook:hover {
     background-color: #4264ab
 }
+
 
 .nc-streamer-footer .btn-connect-twitch {
     font-size: 16px;
     background-color: #6441a4
 }
+
 
 .nc-streamer-footer .btn-connect-twitch::before {
     content: '';
@@ -912,22 +1062,27 @@ body {
     margin-right: 9px
 }
 
+
 .nc-streamer-footer .btn-connect-twitch:hover {
     background-color: #714cb6
 }
+
 
 .nc-streamer-setting {
     padding: 15px 25px;
     border-bottom: 1px solid #333843
 }
 
+
 .nc-streamer-setting:nth-child(1) {
     padding-bottom: 15px
 }
 
+
 .nc-streamer-setting:nth-child(3) {
     border-bottom: 0 none
 }
+
 
 .nc-streamer-setting h3 {
     padding-bottom: 10px;
@@ -935,14 +1090,17 @@ body {
     font-size: 13px
 }
 
+
 .nc-streamer-setting h3.disabled {
     color: rgba(202, 208, 223, 0.4)
 }
+
 
 .nc-streamer-setting .profile {
     position: relative;
     padding-bottom: 15px
 }
+
 
 .nc-streamer-setting .profile .name {
     display: inline-block;
@@ -955,6 +1113,7 @@ body {
     font-size: 15px
 }
 
+
 .nc-streamer-setting .profile .fb::before {
     content: '';
     display: inline-block;
@@ -965,6 +1124,7 @@ body {
     margin-right: 9px;
     vertical-align: bottom
 }
+
 
 .nc-streamer-setting .profile .twitch::before {
     content: '';
@@ -979,12 +1139,14 @@ body {
     height: 21px
 }
 
+
 .nc-streamer-setting .profile .btn-view-streaming {
     position: absolute;
     right: 0;
     color: #7b808c;
     font-size: 12px
 }
+
 
 .nc-streamer-setting .profile .btn-view-streaming::after {
     content: '';
@@ -996,9 +1158,11 @@ body {
     margin-left: 5px
 }
 
+
 .nc-streamer-setting .profile .btn-view-streaming.live {
     color: #5b97c8 !important
 }
+
 
 .nc-streamer-setting .profile .btn-view-streaming.live::after {
     content: '';
@@ -1010,9 +1174,11 @@ body {
     margin-left: 5px
 }
 
+
 .nc-streamer-setting .profile .btn-view-streaming.live:hover {
     text-decoration: underline
 }
+
 
 .nc-streamer-setting .message {
     width: 100%;
@@ -1021,15 +1187,18 @@ body {
     background-color: #20232c
 }
 
+
 .nc-streamer-setting .message.admin,
 .nc-streamer-setting .message.game {
     color: #44464c
 }
 
+
 .nc-streamer-setting .message.button {
     padding: 30px 10px;
     background-color: #20232c
 }
+
 
 .nc-streamer-setting .message.button button {
     width: 100%;
@@ -1039,18 +1208,22 @@ body {
     background-color: #61a3d9
 }
 
+
 .nc-streamer-setting .nc-streamer-tooltip {
     display: none
 }
+
 
 .nc-streamer-setting .broadcast-title {
     padding: 5px 5px;
     background-color: #20232c
 }
 
+
 .nc-streamer-setting .form-checkbox {
     padding-bottom: 10px
 }
+
 
 .nc-streamer-setting .form-checkbox::before {
     content: '';
@@ -1062,6 +1235,7 @@ body {
     margin-right: 7px
 }
 
+
 .nc-streamer-setting .form-checkbox.mic::before {
     content: '';
     display: inline-block;
@@ -1072,11 +1246,13 @@ body {
     margin-right: 7px
 }
 
+
 .nc-streamer-setting .form-checkbox.mic .range-slider {
     display: inline-block;
     margin-left: 30px;
     vertical-align: middle
 }
+
 
 .nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range {
     height: 7px;
@@ -1090,6 +1266,7 @@ body {
     box-shadow: 1px 1px 1px #2f343f;
     background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #2f76ad), color-stop(0, #22252f))
 }
+
 
 .nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range::-webkit-slider-thumb {
     width: 8px;
@@ -1106,15 +1283,18 @@ body {
     transition: background .15s ease-in-out
 }
 
+
 .nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range::-webkit-slider-thumb:hover,
 .nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range::-webkit-slider-thumb:active {
     background: -webkit-linear-gradient(#9ddbf0, #1e63be);
     background: linear-gradient(#9ddbf0, #1e63be)
 }
 
+
 .nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range:disabled {
     background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #303440), color-stop(0, #303440))
 }
+
 
 .nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range:disabled::-webkit-slider-thumb {
     border: 1px solid #3c4048;
@@ -1122,16 +1302,19 @@ body {
     background: linear-gradient(#32363e, #32363e)
 }
 
+
 .nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range:disabled::-webkit-slider-thumb:hover,
 .nc-streamer-setting .form-checkbox.mic .range-slider .range-slider-range:disabled::-webkit-slider-thumb:active {
     background: -webkit-linear-gradient(#32363e, #32363e);
     background: linear-gradient(#32363e, #32363e)
 }
 
+
 .nc-streamer-setting .form-checkbox label {
     color: #7b808c;
     cursor: pointer
 }
+
 
 .nc-streamer-footer .msg {
     position: absolute;
@@ -1143,24 +1326,29 @@ body {
     vertical-align: text-bottom
 }
 
+
 .nc-streamer-footer .msg.status-ready {
     color: #42698b;
     cursor: default
 }
+
 
 .nc-streamer-footer .msg.status-error {
     color: #b44334;
     line-height: normal
 }
 
+
 .nc-streamer-footer .msg.status-live {
     font-size: 0
 }
+
 
 .nc-streamer-footer .msg.status-live:before {
     display: block;
     margin: 0 auto
 }
+
 
 .nc-streamer-footer .msg.status-warning {
     padding-top: 6px;
@@ -1169,19 +1357,23 @@ body {
     background-color: #9a3726
 }
 
+
 .nc-streamer-footer .btn-start {
     color: #2f76ad;
     font-size: 16px;
     background-color: #2f76ad
 }
 
+
 .nc-streamer-footer .btn-start.loading:before {
     margin-right: 10px
 }
 
+
 .nc-streamer-footer .btn-start:hover {
     background-color: #3b87c1
 }
+
 
 .nc-streamer-footer .btn-start:disabled {
     color: #595d6a;

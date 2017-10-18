@@ -6,6 +6,7 @@
 const ncsoft = {
   klass: {},
   select: {},
+  textarea: {},
   modal: {},
   slider: {},
 };
@@ -95,14 +96,22 @@ ncsoft.klass.remove = function(element, name) {
 
 
 ncsoft.select.enable = function(element) {
-  element.children[0].style.display = 'block';
-  element.children[2].style.display = 'none';
+  element.children[0].removeAttribute('disabled');
 };
 
 
 ncsoft.select.disable = function(element) {
-  element.children[0].style.display = 'none';
-  element.children[2].style.display = 'block';
+  element.children[0].setAttribute('disabled', '');
+};
+
+
+ncsoft.textarea.enable = function(element) {
+  element.removeAttribute('disabled');
+};
+
+
+ncsoft.textarea.disable = function(element) {
+  element.setAttribute('disabled', '');
 };
 
 
@@ -157,6 +166,12 @@ ncsoft.select.setByText = function(select, text) {
     }
   }
   return false;
+};
+
+
+ncsoft.select.setText = function(select, text) {
+  const display = select.children[0];
+  display.innerHTML = text + '<span class="caret"></span>';
 };
 
 
