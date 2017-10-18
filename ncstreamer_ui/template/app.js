@@ -147,7 +147,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
       'click', onModalCloseClicked);
 
   ncsoft.select.disable(app.dom.privacySelect);
+  ncsoft.select.setText(app.dom.privacySelect, '%POST_PRIVACY_BOUND%');
   ncsoft.select.disable(app.dom.gameSelect);
+  ncsoft.select.setText(app.dom.gameSelect, '%NO_PLAYING_GAME%');
   setUpSteamingQuality();
   setUpMic();
 });
@@ -235,6 +237,7 @@ function setUpUserPage(userPages, userPage) {
 
   if (userPages.length == 0) {
     ncsoft.select.disable(ownPageSelect);
+    ncsoft.select.setText(ownPageSelect, '%NO_MANAGING_PAGE%');
   } else {
     ncsoft.select.enable(ownPageSelect);
     for (const ownPage of userPages) {
@@ -289,6 +292,7 @@ function updateStreamingSources(obj) {
 
   if (sources.length == 0) {
     ncsoft.select.disable(gameSelect);
+    ncsoft.select.setText(gameSelect, '%NO_PLAYING_GAME%');
   } else {
     ncsoft.select.enable(gameSelect);
 
