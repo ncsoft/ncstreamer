@@ -6,6 +6,7 @@
 const ncsoft = {
   klass: {},
   select: {},
+  textarea: {},
   modal: {},
   slider: {},
 };
@@ -101,6 +102,16 @@ ncsoft.select.enable = function(element) {
 
 ncsoft.select.disable = function(element) {
   element.children[0].setAttribute('disabled', '');
+};
+
+
+ncsoft.textarea.enable = function(element) {
+  element.removeAttribute('disabled');
+};
+
+
+ncsoft.textarea.disable = function(element) {
+  element.setAttribute('disabled', '');
 };
 
 
