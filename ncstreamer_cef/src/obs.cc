@@ -305,15 +305,15 @@ void Obs::ReleaseCurrentService() {
 
 void Obs::UpdateBaseResolution(const std::string &source_info) {
   ObsSourceInfo source{source_info};
-  std::string clazz = source.clazz();
-  std::string title = source.title();
+  const std::string &clazz = source.clazz();
+  const std::string &title = source.title();
 
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  std::wstring w_class_name = converter.from_bytes(clazz);
-  std::wstring w_title = converter.from_bytes(title);
+  const std::wstring &w_class = converter.from_bytes(clazz);
+  const std::wstring &w_title = converter.from_bytes(title);
 
   HWND handle = ::FindWindowExW(
-      nullptr, nullptr, w_class_name.c_str(), w_title.c_str());
+      nullptr, nullptr, w_class.c_str(), w_title.c_str());
   DWORD process_id;
   GetWindowThreadProcessId(handle, &process_id);
   std::wstring map_name = L"CaptureHook_HookInfo" + std::to_wstring(process_id);
