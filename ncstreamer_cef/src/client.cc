@@ -17,13 +17,13 @@
 #include "Shellapi.h"  // NOLINT
 #include "Shlwapi.h"  // NOLINT
 
+#include "ncstreamer_cef/src/designated_user.h"
 #include "ncstreamer_cef/src/js_executor.h"
 #include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/obs.h"
 #include "ncstreamer_cef/src/obs/obs_source_info.h"
 #include "ncstreamer_cef/src/render_process_message_types.h"
-#include "ncstreamer_cef/src/streaming_service.h"
 
 
 namespace ncstreamer {
@@ -33,8 +33,12 @@ Client::Client(
     const std::wstring &video_quality,
     bool shows_sources_all,
     const std::vector<std::string> &sources,
-    const std::wstring &locale)
+    const std::wstring &locale,
+    const StreamingServiceTagMap &tag_ids,
+    const std::wstring &designated_user)
     : locale_{locale},
+      tag_ids_{tag_ids},
+      designated_user_{designated_user},
       display_handler_{new ClientDisplayHandler{}},
       life_span_handler_{new ClientLifeSpanHandler{instance}},
       load_handler_{new ClientLoadHandler{life_span_handler_,
@@ -164,6 +168,11 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"streaming/set_up",
+       std::bind(&This::OnCommandStreamingSetUp, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"streaming/start",
        std::bind(&This::OnCommandStreamingStart, this,
            std::placeholders::_1,
@@ -244,6 +253,8 @@ void Client::OnCommandWindowClose(
     const std::string &/*cmd*/,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
+  ncstreamer::StreamingService::ShutDown();
+  ncstreamer::Obs::ShutDown();
   browser->GetHost()->CloseBrowser(true);
 }
 
@@ -343,6 +354,20 @@ void Client::OnCommandServiceProviderLogOut(
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", ""}});
   });
+}
+
+
+void Client::OnCommandStreamingSetUp(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  ncstreamer::Obs::SetUp();
+  ncstreamer::StreamingService::SetUp(tag_ids_);
+  ncstreamer::DesignatedUser::SetUp(designated_user_);
+  load_handler_->UpdateSourcesPeriodically(1000);
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", ""}});
 }
 
 

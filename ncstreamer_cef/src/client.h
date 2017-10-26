@@ -18,6 +18,8 @@
 #include "ncstreamer_cef/src/client/client_display_handler.h"
 #include "ncstreamer_cef/src/client/client_life_span_handler.h"
 #include "ncstreamer_cef/src/client/client_load_handler.h"
+#include "ncstreamer_cef/src/streaming_service.h"
+#include "ncstreamer_cef/src/streaming_service/streaming_service_types.h"
 
 
 namespace ncstreamer {
@@ -29,7 +31,9 @@ class Client : public CefClient {
       const std::wstring &video_quality,
       bool shows_sources_all,
       const std::vector<std::string> &sources,
-      const std::wstring &locale);
+      const std::wstring &locale,
+      const StreamingServiceTagMap &tag_ids,
+      const std::wstring &designated_user);
 
   virtual ~Client();
 
@@ -83,6 +87,10 @@ class Client : public CefClient {
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
   void OnCommandServiceProviderLogOut(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandStreamingSetUp(
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
@@ -140,6 +148,8 @@ class Client : public CefClient {
       CefRefPtr<CefBrowser> browser);
 
   std::wstring locale_;
+  const StreamingServiceTagMap tag_ids_;
+  const std::wstring designated_user_;
   CefRefPtr<ClientDisplayHandler> display_handler_;
   CefRefPtr<ClientLifeSpanHandler> life_span_handler_;
   CefRefPtr<ClientLoadHandler> load_handler_;

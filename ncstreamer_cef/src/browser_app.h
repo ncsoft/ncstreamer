@@ -15,6 +15,7 @@
 
 #include "ncstreamer_cef/src/browser_process_handler.h"
 #include "ncstreamer_cef/src/lib/position.h"
+#include "ncstreamer_cef/src/streaming_service/streaming_service_types.h"
 
 
 namespace ncstreamer {
@@ -28,7 +29,9 @@ class BrowserApp : public CefApp {
       const std::vector<std::string> &sources,
       const std::wstring &locale,
       const std::wstring &ui_uri,
-      const Position<int> &default_position);
+      const Position<int> &default_position,
+      const StreamingServiceTagMap &tag_ids,
+      const std::wstring &designated_user);
   virtual ~BrowserApp();
 
   CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override;

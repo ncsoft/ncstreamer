@@ -27,7 +27,9 @@ BrowserProcessHandler::BrowserProcessHandler(
     const std::vector<std::string> &sources,
     const std::wstring &locale,
     const std::wstring &ui_uri,
-    const Position<int> &default_position)
+    const Position<int> &default_position,
+    const StreamingServiceTagMap &tag_ids,
+    const std::wstring &designated_user)
     : instance_{instance},
       hides_settings_{hides_settings},
       video_quality_{video_quality},
@@ -36,6 +38,8 @@ BrowserProcessHandler::BrowserProcessHandler(
       locale_{locale},
       ui_uri_{ui_uri},
       defalut_position_{default_position},
+      tag_ids_{tag_ids},
+      designated_user_{designated_user},
       client_{} {
 }
 
@@ -62,7 +66,9 @@ void BrowserProcessHandler::OnContextInitialized() {
       video_quality_,
       shows_sources_all_,
       sources_,
-      locale_};
+      locale_,
+      tag_ids_,
+      designated_user_};
 
   std::wstring uri{ui_uri_};
   if (uri.empty() == true) {
@@ -71,7 +77,6 @@ void BrowserProcessHandler::OnContextInitialized() {
   }
 
   CefBrowserSettings browser_settings;
-
   CefBrowserHost::CreateBrowser(
       window_info, client_, uri, browser_settings, NULL);
 }
