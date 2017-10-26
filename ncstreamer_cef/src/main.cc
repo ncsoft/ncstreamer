@@ -11,7 +11,6 @@
 
 #include "ncstreamer_cef/src/browser_app.h"
 #include "ncstreamer_cef/src/command_line.h"
-#include "ncstreamer_cef/src/designated_user.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
 #include "ncstreamer_cef/src/lib/windows_types.h"
 #include "ncstreamer_cef/src/local_storage.h"
@@ -19,7 +18,6 @@
 #include "ncstreamer_cef/src/obs.h"
 #include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/render_app.h"
-#include "ncstreamer_cef/src/streaming_service.h"
 
 
 namespace {
@@ -70,7 +68,9 @@ int APIENTRY wWinMain(HINSTANCE instance,
       cmd_line.sources(),
       cmd_line.locale(),
       cmd_line.ui_uri(),
-      cmd_line.default_position()}};
+      cmd_line.default_position(),
+      cmd_line.streaming_service_tag_ids(),
+      cmd_line.designated_user()}};
 
   ncstreamer::RemoteServer::SetUp(browser_app);
   bool started = ncstreamer::RemoteServer::Get()->Start(cmd_line.remote_port());
@@ -94,16 +94,10 @@ int APIENTRY wWinMain(HINSTANCE instance,
   ::CefInitialize(CefMainArgs{instance}, settings, browser_app, nullptr);
 
   ncstreamer::WindowFrameRemover::SetUp();
-  ncstreamer::Obs::SetUp();
-  ncstreamer::StreamingService::SetUp(cmd_line.streaming_service_tag_ids());
-
-  ncstreamer::DesignatedUser::SetUp(cmd_line.designated_user());
 
   ::CefRunMessageLoop();
 
   ncstreamer::RemoteServer::ShutDown();
-  ncstreamer::StreamingService::ShutDown();
-  ncstreamer::Obs::ShutDown();
   ncstreamer::WindowFrameRemover::ShutDown();
   ncstreamer::LocalStorage::ShutDown();
   ::CefShutdown();

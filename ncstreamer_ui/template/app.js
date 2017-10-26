@@ -150,8 +150,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
   ncsoft.select.setText(app.dom.privacySelect, '%POST_PRIVACY_BOUND%');
   ncsoft.select.disable(app.dom.gameSelect);
   ncsoft.select.setText(app.dom.gameSelect, '%NO_PLAYING_GAME%');
-  setUpSteamingQuality();
-  setUpMic();
 });
 
 
@@ -237,6 +235,7 @@ function setUp(args) {
   }
 
   ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
+  cef.streamingSetUp.request();
 }
 
 
@@ -877,6 +876,12 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
   setUpUserPage('me');
   setUpPrivacy('SELF');
+};
+
+
+cef.streamingSetUp.onResponse = function(error) {
+  setUpSteamingQuality();
+  setUpMic();
 };
 
 

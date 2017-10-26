@@ -46,15 +46,15 @@ class ClientLoadHandler : public CefLoadHandler {
                             bool canGoBack,
                             bool canGoForward) override;
 
+  void UpdateSourcesPeriodically(
+      int64_t millisec);
+
  private:
   static std::vector<std::string> FilterSources(
       const std::vector<std::string> &all,
       const std::vector<std::string> &filter);
 
   void OnMainPageLoaded(CefRefPtr<CefBrowser> browser);
-
-  void UpdateSourcesPeriodically(
-      int64_t millisec);
 
   const ClientLifeSpanHandler *const life_span_handler_;
 

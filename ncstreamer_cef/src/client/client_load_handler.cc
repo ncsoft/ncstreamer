@@ -133,8 +133,6 @@ void ClientLoadHandler::OnMainPageLoaded(
   args.add("videoQuality", converter.to_bytes(video_quality_));
 
   JsExecutor::Execute(browser, "setUp", args);
-
-  UpdateSourcesPeriodically(1000 /*millisec*/);
 }
 
 
