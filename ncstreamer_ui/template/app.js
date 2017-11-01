@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   ncsoft.onDOMContentLoaded();
 
   [
+    'nc-streamer-container',
     'login-page-panel',
     'main-page-panel',
   ].forEach(function(domCls) {
@@ -880,6 +881,9 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
 
 cef.streamingSetUp.onResponse = function(error) {
+  for (const element of app.dom.ncStreamerContainer) {
+    ncsoft.klass.remove(element, 'loading');
+  }
   setUpSteamingQuality();
   setUpMic();
 };
