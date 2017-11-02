@@ -57,6 +57,10 @@ class Client : public CefClient {
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefProcessMessage> message);
 
+  using OnInitialized = std::function<void()>;
+
+  void InitializeService(const OnInitialized on_initialized);
+
   using CommandArgumentMap = std::unordered_map<std::string, std::string>;
 
   static CommandArgumentMap ParseVariables(const std::string &query);

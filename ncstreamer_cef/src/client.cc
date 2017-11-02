@@ -12,6 +12,8 @@
 #include <utility>
 
 #include "boost/property_tree/ptree.hpp"
+#include "include/base/cef_bind.h"
+#include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
 
 #include "Shellapi.h"  // NOLINT
@@ -117,6 +119,14 @@ bool Client::OnRenderProcessEvent(
   std::string variables = args->GetString(1);
   OnCommand(type, ParseVariables(variables), browser);
   return true;
+}
+
+
+void Client::InitializeService(const OnInitialized on_initialized) {
+  ncstreamer::Obs::SetUp();
+  ncstreamer::StreamingService::SetUp(tag_ids_);
+  ncstreamer::DesignatedUser::SetUp(designated_user_);
+  on_initialized();
 }
 
 
@@ -357,17 +367,21 @@ void Client::OnCommandServiceProviderLogOut(
 }
 
 
+
 void Client::OnCommandStreamingSetUp(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
-  ncstreamer::Obs::SetUp();
-  ncstreamer::StreamingService::SetUp(tag_ids_);
-  ncstreamer::DesignatedUser::SetUp(designated_user_);
+  if (::CefCurrentlyOn(TID_FILE) == false) {
+    ::CefPostTask(TID_FILE,
+        base::Bind(&Client::InitializeService, base::Unretained(this),
+        [cmd, browser]() {
+      JsExecutor::Execute(browser, "cef.onResponse", cmd,
+          JsExecutor::StringPairVector{{"error", ""}});
+    }));
+    return;
+  }
   load_handler_->UpdateSourcesPeriodically(1000);
-
-  JsExecutor::Execute(browser, "cef.onResponse", cmd,
-        JsExecutor::StringPairVector{{"error", ""}});
 }
 
 
