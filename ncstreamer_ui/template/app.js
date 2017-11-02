@@ -228,7 +228,7 @@ function updateStreamingStatus(status) {
 }
 
 
-function setUp(args) {
+function setUpControls(args) {
   app.options.hidesSettings = (args.hidesSettings == 'true');
 
   if (app.options.hidesSettings == true) {
