@@ -375,13 +375,12 @@ void Client::OnCommandStreamingSetUp(
   if (::CefCurrentlyOn(TID_FILE) == false) {
     ::CefPostTask(TID_FILE,
         base::Bind(&Client::InitializeService, base::Unretained(this),
-        [cmd, browser]() {
+        [cmd, browser, this]() {
+      load_handler_->UpdateSourcesPeriodically(1000);
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
           JsExecutor::StringPairVector{{"error", ""}});
     }));
-    return;
   }
-  load_handler_->UpdateSourcesPeriodically(1000);
 }
 
 
