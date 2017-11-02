@@ -695,7 +695,8 @@ function setUpStreamServers(streamServers, streamServer) {
   });
 
   for (const server of streamServers) {
-    if (server.name.indexOf('deprecated') != -1) {
+    if (server.name.indexOf('deprecated') != -1 ||
+        server.name.indexOf('depracated') != -1) {
       continue;
     }
 
