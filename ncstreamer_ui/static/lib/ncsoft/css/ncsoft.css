@@ -668,25 +668,27 @@ body {
 
 
 .nc-streamer-container {
+    position: relative;
     height: 100%;
-    border: 1px solid #393f4b
+    border: 1px solid rgba(255, 255, 255, 0.15)
 }
 
 
 .nc-streamer-container .header {
     position: relative;
-    height: 48px;
-    padding: 15px 15px 15px 20px;
-    border-bottom: 1px solid #494d56;
-    background-color: #242831;
-    box-shadow: 0 3px 0 0 rgba(48, 53, 64, 0.1)
+    height: 49px;
+    padding: 12px 10px 0 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.02)
 }
 
 
 .nc-streamer-container .header h1.title {
-    color: #ffffff;
-    font-size: 18px;
-    line-height: 18px
+    display: inline-block;
+    color: #bcbcbc;
+    font-size: 16px;
+    line-height: 24px;
+    vertical-align: top
 }
 
 
@@ -696,29 +698,31 @@ body {
 
 
 .nc-streamer-container .header h1.title .label-beta {
+    content: '';
     display: inline-block;
-    margin-left: 7px;
-    padding: 1px 10px 0 10px;
-    color: #d8b17e;
-    font-size: 10px;
-    text-transform: uppercase;
+    width: 22px;
+    height: 16px;
     vertical-align: middle;
-    border: 1px solid rgba(202, 172, 128, 0.5);
-    border-radius: 15px
+    background: url("../img/beta-text.png") no-repeat 0 0;
+    overflow: hidden;
+    margin: 5px 0 0 8px;
+    text-indent: 101%;
+    white-space: nowrap;
+    vertical-align: top
 }
 
 
 .nc-streamer-container .header .settings {
     position: absolute;
     right: 15px;
-    top: 15px
+    top: 10px
 }
 
 
 .nc-streamer-container .header .settings button {
     width: 14px;
     height: 14px;
-    vertical-align: middle;
+    vertical-align: top;
     background: url("../img/btn-settings.png") no-repeat
 }
 
@@ -736,7 +740,7 @@ body {
 
 
 .nc-streamer-container .header .settings .btn-minimum {
-    margin: 0 7px;
+    margin: 3px 7px 0;
     background-position: 0 -22px
 }
 
@@ -757,8 +761,7 @@ body {
 
 
 .nc-streamer-container .nc-streamer-contents {
-    padding: 0 13px;
-    border-top: 1px solid #303540
+    padding: 0 13px
 }
 
 
@@ -784,6 +787,42 @@ body {
 
 .nc-streamer-container .nc-streamer-footer-app button {
     margin-top: 6px
+}
+
+
+.nc-streamer-container .nc-streamer-loader {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #292e38
+}
+
+
+.nc-streamer-container .nc-streamer-loader .icon-loader {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    background: url("../img/streaming_loader.gif") no-repeat 0 0;
+    overflow: hidden;
+    margin: 262px auto 0;
+    text-indent: 101%;
+    white-space: nowrap;
+    color: transparent
+}
+
+
+.nc-streamer-container.loading .nc-streamer-loader {
+    display: block
+}
+
+
+.nc-streamer-container.loading .nc-streamer-footer {
+    display: none
 }
 
 

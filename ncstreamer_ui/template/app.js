@@ -68,8 +68,86 @@ document.addEventListener('contextmenu', function(event) {
 
 document.addEventListener('DOMContentLoaded', function(event) {
   ncsoft.onDOMContentLoaded();
+});
 
+
+function toCamel(str) {
+  return str.replace(/(\-[a-z])/g, function(match) {
+    return match.toUpperCase().replace('-', '');
+  });
+}
+
+
+function enableAllContorls() {
+  ncsoft.select.enable(app.dom.mePageSelect);
+  ncsoft.select.enable(app.dom.ownPageSelect);
+  ncsoft.select.enable(app.dom.privacySelect);
+  ncsoft.select.enable(app.dom.streamServerSelect);
+  ncsoft.select.enable(app.dom.gameSelect);
+  ncsoft.textarea.enable(app.dom.feedDescription);
+}
+
+
+function disableAllControls() {
+  ncsoft.select.disable(app.dom.mePageSelect);
+  ncsoft.select.disable(app.dom.ownPageSelect);
+  ncsoft.select.disable(app.dom.privacySelect);
+  ncsoft.select.disable(app.dom.streamServerSelect);
+  ncsoft.select.disable(app.dom.gameSelect);
+  ncsoft.textarea.disable(app.dom.feedDescription);
+}
+
+
+function updateStreamingStatus(status) {
+  console.info(JSON.stringify({status: status}));
+
+  app.streaming.status = status;
+  app.dom.cautionText.style.display = 'none';
+  app.dom.liveImage.style.display = 'none';
+  const button = app.dom.controlButton;
+  switch (status) {
+    case 'standby':
+      ncsoft.klass.remove(button, 'loading');
+      button.textContent = '%START_BROADCASTING%';
+      button.disabled = false;
+      ncsoft.klass.remove(app.dom.providerPageLink, 'live');
+      enableAllContorls();
+      break;
+    case 'setup':
+      ncsoft.klass.remove(button, 'loading');
+      button.textContent = '%START_BROADCASTING%';
+      button.disabled = true;
+      app.dom.cautionText.style.display = 'block';
+      disableAllControls();
+      break;
+    case 'starting':
+      ncsoft.klass.add(button, 'loading');
+      button.textContent = '%START_BROADCASTING%';
+      button.disabled = true;
+      app.dom.cautionText.style.display = 'block';
+      disableAllControls();
+      break;
+    case 'onAir':
+      ncsoft.klass.remove(button, 'loading');
+      button.textContent = '%END_BROADCASTING%';
+      button.disabled = false;
+      app.dom.liveImage.style.display = 'block';
+      ncsoft.klass.add(app.dom.providerPageLink, 'live');
+      disableAllControls();
+      break;
+    case 'stopping':
+      ncsoft.klass.add(button, 'loading');
+      button.textContent = '%END_BROADCASTING%';
+      disableAllControls();
+      button.disabled = true;
+      break;
+  }
+}
+
+
+function setUpControls(args) {
   [
+    'nc-streamer-container',
     'login-page-panel',
     'main-page-panel',
   ].forEach(function(domCls) {
@@ -150,84 +228,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   ncsoft.select.setText(app.dom.privacySelect, '%POST_PRIVACY_BOUND%');
   ncsoft.select.disable(app.dom.gameSelect);
   ncsoft.select.setText(app.dom.gameSelect, '%NO_PLAYING_GAME%');
-});
 
-
-function toCamel(str) {
-  return str.replace(/(\-[a-z])/g, function(match) {
-    return match.toUpperCase().replace('-', '');
-  });
-}
-
-
-function enableAllContorls() {
-  ncsoft.select.enable(app.dom.mePageSelect);
-  ncsoft.select.enable(app.dom.ownPageSelect);
-  ncsoft.select.enable(app.dom.privacySelect);
-  ncsoft.select.enable(app.dom.streamServerSelect);
-  ncsoft.select.enable(app.dom.gameSelect);
-  ncsoft.textarea.enable(app.dom.feedDescription);
-}
-
-
-function disableAllControls() {
-  ncsoft.select.disable(app.dom.mePageSelect);
-  ncsoft.select.disable(app.dom.ownPageSelect);
-  ncsoft.select.disable(app.dom.privacySelect);
-  ncsoft.select.disable(app.dom.streamServerSelect);
-  ncsoft.select.disable(app.dom.gameSelect);
-  ncsoft.textarea.disable(app.dom.feedDescription);
-}
-
-
-function updateStreamingStatus(status) {
-  console.info(JSON.stringify({status: status}));
-
-  app.streaming.status = status;
-  app.dom.cautionText.style.display = 'none';
-  app.dom.liveImage.style.display = 'none';
-  const button = app.dom.controlButton;
-  switch (status) {
-    case 'standby':
-      ncsoft.klass.remove(button, 'loading');
-      button.textContent = '%START_BROADCASTING%';
-      button.disabled = false;
-      ncsoft.klass.remove(app.dom.providerPageLink, 'live');
-      enableAllContorls();
-      break;
-    case 'setup':
-      ncsoft.klass.remove(button, 'loading');
-      button.textContent = '%START_BROADCASTING%';
-      button.disabled = true;
-      app.dom.cautionText.style.display = 'block';
-      disableAllControls();
-      break;
-    case 'starting':
-      ncsoft.klass.add(button, 'loading');
-      button.textContent = '%START_BROADCASTING%';
-      button.disabled = true;
-      app.dom.cautionText.style.display = 'block';
-      disableAllControls();
-      break;
-    case 'onAir':
-      ncsoft.klass.remove(button, 'loading');
-      button.textContent = '%END_BROADCASTING%';
-      button.disabled = false;
-      app.dom.liveImage.style.display = 'block';
-      ncsoft.klass.add(app.dom.providerPageLink, 'live');
-      disableAllControls();
-      break;
-    case 'stopping':
-      ncsoft.klass.add(button, 'loading');
-      button.textContent = '%END_BROADCASTING%';
-      disableAllControls();
-      button.disabled = true;
-      break;
-  }
-}
-
-
-function setUp(args) {
   app.options.hidesSettings = (args.hidesSettings == 'true');
 
   if (app.options.hidesSettings == true) {
@@ -880,6 +881,9 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
 
 cef.streamingSetUp.onResponse = function(error) {
+  for (const element of app.dom.ncStreamerContainer) {
+    ncsoft.klass.remove(element, 'loading');
+  }
   setUpSteamingQuality();
   setUpMic();
 };

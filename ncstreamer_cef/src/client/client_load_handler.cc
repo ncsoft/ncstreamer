@@ -132,7 +132,7 @@ void ClientLoadHandler::OnMainPageLoaded(
   args.add("hidesSettings", hides_settings_);
   args.add("videoQuality", converter.to_bytes(video_quality_));
 
-  JsExecutor::Execute(browser, "setUp", args);
+  JsExecutor::Execute(browser, "setUpControls", args);
 }
 
 
