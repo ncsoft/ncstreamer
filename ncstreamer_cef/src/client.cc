@@ -367,20 +367,21 @@ void Client::OnCommandServiceProviderLogOut(
 }
 
 
-
 void Client::OnCommandStreamingSetUp(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
-  if (::CefCurrentlyOn(TID_FILE) == false) {
-    ::CefPostTask(TID_FILE,
-        base::Bind(&Client::InitializeService, base::Unretained(this),
-        [cmd, browser, this]() {
-      load_handler_->UpdateSourcesPeriodically(1000);
-      JsExecutor::Execute(browser, "cef.onResponse", cmd,
-          JsExecutor::StringPairVector{{"error", ""}});
-    }));
+  if (::CefCurrentlyOn(TID_FILE) == true) {
+    return;
   }
+
+  ::CefPostTask(TID_FILE,
+      base::Bind(&Client::InitializeService, base::Unretained(this),
+          [cmd, browser, this]() {
+    load_handler_->UpdateSourcesPeriodically(1000);
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", ""}});
+  }));
 }
 
 
