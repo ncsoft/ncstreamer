@@ -832,10 +832,6 @@ cef.serviceProviderLogIn.onResponse = function(
   }
 
   app.dom.connectInfoButton.style.display = 'inline';
-  if (app.options.hidesSettings == false) {
-    app.dom.settingButton.style.display = 'inline';
-  }
-  app.dom.minimizeButton.style.display = 'inline';
 
   setProviderUserName(userName);
   setUpProviderUI(userPages, streamServers, userPage, privacy, streamServer);
@@ -865,8 +861,6 @@ cef.serviceProviderLogOut.onResponse = function(error) {
   }
 
   app.dom.connectInfoButton.style.display = 'none';
-  app.dom.settingButton.style.display = 'none';
-  app.dom.minimizeButton.style.display = 'none';
 
   setProviderUserName('');
 
@@ -882,6 +876,11 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
 
 cef.streamingSetUp.onResponse = function(error) {
+  app.dom.closeButton.style.display = 'inline';
+  if (app.options.hidesSettings == false) {
+    app.dom.settingButton.style.display = 'inline';
+  }
+  app.dom.minimizeButton.style.display = 'inline';
   for (const element of app.dom.ncStreamerContainer) {
     ncsoft.klass.remove(element, 'loading');
   }
