@@ -110,7 +110,8 @@ div {
 
 #connect-info-button,
 #setting-button,
-#minimize-button {
+#minimize-button,
+#close-button {
   display: none;
 }
 
