@@ -230,12 +230,8 @@ function setUpControls(args) {
   ncsoft.select.setText(app.dom.gameSelect, '%NO_PLAYING_GAME%');
 
   app.options.hidesSettings = (args.hidesSettings == 'true');
-
-  if (app.options.hidesSettings == true) {
-    app.dom.settingButton.style.display = 'none';
-  }
-
   ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
+
   cef.streamingSetUp.request();
 }
 
