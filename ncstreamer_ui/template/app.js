@@ -800,10 +800,10 @@ function checkSelectValueValidation() {
         app.dom.ownPageSelect.children[0].value == '') {
       return 'ownPage select empty';
     }
+  }
 
-    if (app.dom.gameSelect.children[0].value == '') {
-      return 'game select empty';
-    }
+  if (app.dom.gameSelect.children[0].value == '') {
+    return 'game select empty';
   }
   return '';
 }
