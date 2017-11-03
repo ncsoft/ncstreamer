@@ -115,14 +115,14 @@ function updateStreamingStatus(status) {
       break;
     case 'setup':
       ncsoft.klass.remove(button, 'loading');
-      button.textContent = '%START_BROADCASTING%';
+      button.textContent = '%PREPARING_BROADCASTING%';
       button.disabled = true;
       app.dom.cautionText.style.display = 'block';
       disableAllControls();
       break;
     case 'starting':
       ncsoft.klass.add(button, 'loading');
-      button.textContent = '%START_BROADCASTING%';
+      button.textContent = '%PREPARING_BROADCASTING%';
       button.disabled = true;
       app.dom.cautionText.style.display = 'block';
       disableAllControls();
