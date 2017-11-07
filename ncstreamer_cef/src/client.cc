@@ -208,6 +208,26 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"settings/webcam/on",
+       std::bind(&This::OnCommandSettingsWebcamOn, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {"settings/webcam/off",
+       std::bind(&This::OnCommandSettingsWebcamOff, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {"settings/webcam/size/update",
+       std::bind(&This::OnCommandSettingsWebcamSizeUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {"settings/webcam/position/update",
+       std::bind(&This::OnCommandSettingsWebcamPositionUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"settings/video_quality/update",
        std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
            std::placeholders::_1,
@@ -547,6 +567,108 @@ void Client::OnCommandSettingsMicVolumeUpdate(
   JsExecutor::Execute(browser, "cef.onResponse", cmd,
       JsExecutor::StringPairVector{{"error", error},
                                    {"volume", volume_i->second}});
+}
+
+
+void Client::OnCommandSettingsWebcamOn(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  bool result = Obs::Get()->TurnOnWebcam();
+  if (!result) {
+    std::string error{"failed to turn webcam on"};
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
+    return;
+  }
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", ""}});
+}
+
+
+void Client::OnCommandSettingsWebcamOff(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  bool result = Obs::Get()->TurnOffWebcam();
+  if (!result) {
+    std::string error{"failed to turn webcam off"};
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
+    return;
+  }
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", ""}});
+}
+
+
+void Client::OnCommandSettingsWebcamSizeUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  auto normal_x_i = args.find("normalX");
+  auto normal_y_i = args.find("normalY");
+  if (normal_x_i == args.end() ||
+      normal_y_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  float normal_x{0.0};
+  float normal_y{0.0};
+  try {
+    normal_x = std::stof(normal_x_i->second);
+    normal_y = std::stof(normal_y_i->second);
+  } catch (...) {
+    assert(false);
+    return;
+  }
+
+  std::string error{};
+  bool result = Obs::Get()->UpdateWebcamSize(normal_x, normal_y);
+  if (!result) {
+    error = "failed to update webcam size";
+  }
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", error},
+                                   {"normalX", normal_x_i->second},
+                                   {"normalY", normal_y_i->second}});
+}
+
+
+void Client::OnCommandSettingsWebcamPositionUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  auto normal_x_i = args.find("normalX");
+  auto normal_y_i = args.find("normalY");
+  if (normal_x_i == args.end() ||
+      normal_y_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  float normal_x{0.0};
+  float normal_y{0.0};
+  try {
+    normal_x = std::stof(normal_x_i->second);
+    normal_y = std::stof(normal_y_i->second);
+  } catch (...) {
+    assert(false);
+    return;
+  }
+
+  std::string error{};
+  bool result = Obs::Get()->UpdateWebcamPosition(normal_x, normal_y);
+  if (!result) {
+    error = "failed to update webcam position";
+  }
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", error},
+                                   {"normalX", normal_x_i->second},
+                                   {"normalY", normal_y_i->second}});
 }
 
 
