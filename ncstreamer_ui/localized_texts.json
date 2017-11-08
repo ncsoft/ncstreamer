@@ -109,7 +109,7 @@
     "CLOSE_CHECK_MESSAGE2": "방송을 종료하겠습니까?",
     "LOGIN_GUIDE_NOTICE_VISIBILITY": "_1",
     "LOGIN_GUIDE_NOTICE1": "PC방에서는",
-    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해\r\n페이스북 계정 연결을 유지하지 않습니다."
+    "LOGIN_GUIDE_NOTICE2": "고객님의 개인 정보 보호를 위해\r\n로그인 정보를 저장하지 않습니다."
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
