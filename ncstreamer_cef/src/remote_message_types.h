@@ -22,6 +22,8 @@ class RemoteMessage {
     kStreamingStopEvent,
     kSettingsQualityUpdateRequest = 301,
     kSettingsQualityUpdateResponse,
+    kStreamingCommentsRequest = 401,
+    kStreamingCommentsResponse,
     kNcStreamerExitRequest = 901,
     kNcStreamerExitResponse,  // not used.
   };

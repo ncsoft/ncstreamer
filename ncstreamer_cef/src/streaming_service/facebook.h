@@ -49,6 +49,13 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted) override;
 
+  void GetComments(
+      const std::string &created_time,
+      const OnFailed &on_failed,
+      const OnCommentsGot &on_comments_got) override;
+
+  void StopLiveVideo() override;
+
  private:
   using AccountMap =
       std::unordered_map<std::string /*id*/, UserPage>;
@@ -85,9 +92,11 @@ class Facebook : public StreamingServiceProvider {
 
   std::string GetAccessToken() const;
   std::string GetPageAccessToken(const std::string &page_id) const;
+  std::string GetStreamId() const;
 
   void SetAccessToken(const std::string &access_token);
   void SetMeInfo(const MeInfo &me_info);
+  void SetStreamId(const std::string &stream_id);
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
@@ -99,6 +108,9 @@ class Facebook : public StreamingServiceProvider {
   // TODO(khpark): refactoring this by MeInfo class.
   mutable std::mutex me_info_mutex_;
   MeInfo me_info_;
+
+  mutable std::mutex stream_id_mutex_;
+  std::string stream_id_;
 };
 
 

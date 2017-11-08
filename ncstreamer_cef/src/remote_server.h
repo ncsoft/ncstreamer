@@ -41,6 +41,11 @@ class RemoteServer {
       const std::string &user_name,
       const std::string &quality);
 
+  void ResponseComments(
+      int request_key,
+      const std::string &error,
+      const std::string &comments);
+
   void NotifyStreamingStart(
       int request_key,
       const std::string &error,
@@ -115,6 +120,10 @@ class RemoteServer {
       const boost::property_tree::ptree &tree);
 
   void OnSettingsQualityUpdateRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
+  void OnCommentsRequest(
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 

@@ -155,6 +155,16 @@ void Twitch::PostLiveVideo(
 }
 
 
+void Twitch::GetComments(const std::string &created_time,
+    const OnFailed &on_failed,
+    const OnCommentsGot &on_comments_got) {
+}
+
+
+void Twitch::StopLiveVideo() {
+}
+
+
 void Twitch::GetUser(
     const OnFailed &on_failed,
     const OnUserGotten &on_user_gotten) {

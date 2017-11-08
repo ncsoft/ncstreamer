@@ -75,6 +75,35 @@ void RemoteServer::RespondStreamingStatus(
 }
 
 
+void RemoteServer::ResponseComments(
+    int request_key,
+    const std::string &error,
+    const std::string &comments) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("ResponseChatMessage: !connection.lock()");
+    return;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kStreamingCommentsResponse));
+    tree.put("error", error);
+    tree.put("comments", comments);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return;
+  }
+}
+
+
 void RemoteServer::NotifyStreamingStart(
     int request_key,
     const std::string &error,
@@ -304,6 +333,9 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kSettingsQualityUpdateRequest,
        std::bind(&RemoteServer::OnSettingsQualityUpdateRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kStreamingCommentsRequest,
+       std::bind(&RemoteServer::OnCommentsRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -394,6 +426,30 @@ void RemoteServer::OnSettingsQualityUpdateRequest(
       "remote.onSettingsQualityUpdateRequest",
       request_key,
       args);
+}
+
+
+void RemoteServer::OnCommentsRequest(
+  const websocketpp::connection_hdl &connection,
+  const boost::property_tree::ptree &tree) {
+  const std::string &created_time = tree.get("createdTime", "");
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  StreamingService::Get()->GetComments(
+      created_time,
+      [this, request_key](const std::string &error) {
+        std::stringstream msg;
+        {
+          boost::property_tree::ptree tree;
+          tree.put("data", "");
+          boost::property_tree::write_json(msg, tree, false);
+        }
+        ResponseComments(request_key, "comments error", msg.str());
+      },
+      [this, request_key](const std::string &comments) {
+        ResponseComments(request_key, "", comments);
+      });
 }
 
 
