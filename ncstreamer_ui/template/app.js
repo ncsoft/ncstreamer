@@ -82,8 +82,11 @@ function enableAllContorls() {
   ncsoft.select.enable(app.dom.mePageSelect);
   ncsoft.select.enable(app.dom.ownPageSelect);
   ncsoft.select.enable(app.dom.privacySelect);
+  ncsoft.heading.enable(app.dom.streamServerHead);
   ncsoft.select.enable(app.dom.streamServerSelect);
+  ncsoft.heading.enable(app.dom.broadcastingGameHead);
   ncsoft.select.enable(app.dom.gameSelect);
+  ncsoft.heading.enable(app.dom.broadcastingTitleHead);
   ncsoft.textarea.enable(app.dom.feedDescription);
 }
 
@@ -92,8 +95,11 @@ function disableAllControls() {
   ncsoft.select.disable(app.dom.mePageSelect);
   ncsoft.select.disable(app.dom.ownPageSelect);
   ncsoft.select.disable(app.dom.privacySelect);
+  ncsoft.heading.disable(app.dom.streamServerHead);
   ncsoft.select.disable(app.dom.streamServerSelect);
+  ncsoft.heading.disable(app.dom.broadcastingGameHead);
   ncsoft.select.disable(app.dom.gameSelect);
+  ncsoft.heading.disable(app.dom.broadcastingTitleHead);
   ncsoft.textarea.disable(app.dom.feedDescription);
 }
 
@@ -172,8 +178,11 @@ function setUpControls(args) {
     'own-page-select',
     'privacy-select',
     'twitch-division',
+    'stream-server-head',
     'stream-server-select',
+    'broadcasting-game-head',
     'game-select',
+    'broadcasting-title-head',
     'feed-description',
     'mic-checkbox',
     'mic-volume',
