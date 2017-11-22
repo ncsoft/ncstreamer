@@ -462,6 +462,8 @@ void Client::OnCommandStreamingStop(
     const std::string &cmd,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
+  StreamingService::Get()->StopLiveVideo();
+
   Obs::Get()->StopStreaming([browser, cmd]() {
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", ""}});

@@ -116,6 +116,7 @@ void Facebook::LogOut(
     void OnComplete(int /*num_deleted*/) override {
       caller_->SetAccessToken("");
       caller_->SetMeInfo({"", "", {}});
+      caller_->SetStreamId("");
       on_logged_out_();
     }
 
@@ -190,6 +191,7 @@ void Facebook::PostLiveVideo(
       stream_url = "";
     }
 
+    SetStreamId(stream_id);
     if (stream_url.empty() == true) {
       std::stringstream msg;
       msg << "could not get stream_url from: " << str;
@@ -201,6 +203,38 @@ void Facebook::PostLiveVideo(
 
     GetPostUrl(stream_id, stream_url, on_failed, on_live_video_posted);
   });
+}
+
+
+void Facebook::GetComments(const std::string &created_time,
+    const OnFailed &on_failed,
+    const OnCommentsGot &on_comments_got) {
+  Uri live_video_comments_uri{FacebookApi::Graph::LiveVideoComments::BuildUri(
+      GetAccessToken(), GetStreamId(), created_time)};
+
+  OutputDebugStringA(live_video_comments_uri.uri_string().c_str());
+  http_request_service_.Get(
+      live_video_comments_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+        std::string msg{ec.message()};
+        on_failed(msg);
+      },
+      [on_comments_got](const std::string &str) {
+        boost::property_tree::ptree chat;
+        std::stringstream chat_ss{str};
+        try {
+          boost::property_tree::read_json(chat_ss, chat);
+        } catch (const std::exception &/*e*/) {
+        }
+
+        OutputDebugStringA(chat_ss.str().c_str());
+        on_comments_got(chat_ss.str());
+  });
+}
+
+
+void Facebook::StopLiveVideo() {
+  SetStreamId("");
 }
 
 
@@ -377,6 +411,16 @@ std::string Facebook::GetPageAccessToken(const std::string &page_id) const {
 }
 
 
+std::string Facebook::GetStreamId() const {
+  std::string stream_id{};
+  {
+    std::lock_guard<std::mutex> lock{stream_id_mutex_};
+    stream_id = stream_id_;
+  }
+  return stream_id;
+}
+
+
 void Facebook::SetAccessToken(const std::string &access_token) {
   std::lock_guard<std::mutex> lock{access_token_mutex_};
   access_token_ = access_token;
@@ -388,6 +432,11 @@ void Facebook::SetMeInfo(const MeInfo &me_info) {
   me_info_ = me_info;
 }
 
+
+void Facebook::SetStreamId(const std::string &stream_id) {
+  std::lock_guard<std::mutex> lock{stream_id_mutex_};
+  stream_id_ = stream_id;
+}
 
 Facebook::LoginClient::LoginClient(
     Facebook *const owner,

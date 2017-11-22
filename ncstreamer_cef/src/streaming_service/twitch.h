@@ -46,6 +46,13 @@ class Twitch : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted) override;
 
+  void GetComments(
+      const std::string &created_time,
+      const OnFailed &on_failed,
+      const OnCommentsGot &on_comments_got) override;
+
+  void StopLiveVideo() override;
+
  private:
   using OnUserGotten = std::function<void(
       const std::string &name)>;

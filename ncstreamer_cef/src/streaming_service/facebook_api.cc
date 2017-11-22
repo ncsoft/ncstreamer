@@ -138,4 +138,24 @@ std::string FacebookApi::Graph::PostId::BuildPath(
   ss << "/" << stream_id;
   return ss.str();
 }
+
+
+Uri FacebookApi::Graph::LiveVideoComments::BuildUri(
+    const std::string &access_token,
+    const std::string &stream_id,
+    const std::string &created_time) {
+  return {kScheme, kAuthority, BuildPath(stream_id),
+      Uri::Query{{
+          {"access_token", access_token},
+          {"since", created_time},
+          {"order", "reverse_chronological"}}}};
+}
+
+
+std::string FacebookApi::Graph::LiveVideoComments::BuildPath(
+    const std::string &stream_id) {
+  std::stringstream ss;
+  ss << "/" << kVersion << "/" << stream_id << "/comments";
+  return ss.str();
+}
 }  // namespace ncstreamer

@@ -137,6 +137,36 @@ void StreamingService::PostLiveVideo(
 }
 
 
+void StreamingService::GetComments(
+    const std::string &created_time,
+    const OnFailed &on_failed,
+    const OnCommentsGot &on_comments_got) {
+  static const std::string kFunc{"GetComments"};
+
+  if (!current_service_provider_) {
+    return;
+  }
+
+  current_service_provider_->GetComments(
+      created_time,
+      [this, on_failed](const std::string &error) {
+        HandleFail(on_failed, kFunc, error);
+      },
+      [on_comments_got](
+          const std::string &comments) {
+    on_comments_got(comments);
+  });
+}
+
+
+void StreamingService::StopLiveVideo() {
+  for (const auto &elem : service_providers_) {
+    auto service_provider = elem.second;
+    service_provider->StopLiveVideo();
+  }
+}
+
+
 void StreamingService::LogOutAll() {
   for (const auto &elem : service_providers_) {
     auto service_provider = elem.second;
