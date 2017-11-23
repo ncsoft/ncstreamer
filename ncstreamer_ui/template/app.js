@@ -324,6 +324,9 @@ function getTitleFromSource(source) {
 
 
 function updateStreamingSources(obj) {
+  if (app.streaming.status != 'standby') {
+    return;
+  }
   if (!obj.hasOwnProperty('sources')) {
     return;
   }
