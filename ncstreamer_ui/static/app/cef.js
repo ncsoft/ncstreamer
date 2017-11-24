@@ -58,8 +58,12 @@ const cef = (function() {
       request: ['volume'],
       response: ['error', 'volume'],
     },
-    'settings/webcam/on': {
+    'settings/webcam/search': {
       request: [],
+      response: ['error', 'webcamList'],
+    },
+    'settings/webcam/on': {
+      request: ['deviceId'],
       response: ['error'],
     },
     'settings/webcam/off': {
