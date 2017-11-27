@@ -208,6 +208,11 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"settings/webcam/search",
+       std::bind(&This::OnCommandSettingsWebcamSearch, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"settings/webcam/on",
        std::bind(&This::OnCommandSettingsWebcamOn, this,
            std::placeholders::_1,
@@ -570,11 +575,37 @@ void Client::OnCommandSettingsMicVolumeUpdate(
 }
 
 
+void Client::OnCommandSettingsWebcamSearch(
+  const std::string &cmd,
+  const CommandArgumentMap &args,
+  CefRefPtr<CefBrowser> browser) {
+  std::vector<Obs::WebcamDevice> webcams = Obs::Get()->SearchWebcamDevices();
+
+  std::vector<boost::property_tree::ptree> tree_webcams;
+  for (const auto &webcam : webcams) {
+    tree_webcams.emplace_back(webcam.ToTree());
+  }
+
+  boost::property_tree::ptree arg;
+  arg.add("error", "");
+  arg.add_child("webcamList", JsExecutor::ToPtree(tree_webcams));
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
+}
+
+
 void Client::OnCommandSettingsWebcamOn(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
-  bool result = Obs::Get()->TurnOnWebcam();
+  auto device_id_i = args.find("deviceId");
+  if (device_id_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::string &device_id = device_id_i->second;
+  bool result = Obs::Get()->TurnOnWebcam(device_id);
   if (!result) {
     std::string error{"failed to turn webcam on"};
     JsExecutor::Execute(browser, "cef.onResponse", cmd,

@@ -25,6 +25,7 @@ const app = {
     },
     webcam: {
       use: false,
+      list: null,
       size: {
         x: 0,
         y: 0,
@@ -523,7 +524,7 @@ function onWebcamCheckboxChanged() {
   console.info('change webcamCheckbox');
   if (app.dom.webcamCheckbox.checked) {
     console.info('webcam on');
-    cef.settingsWebcamOn.request();
+    cef.settingsWebcamSearch.request();
   } else {
     console.info('webcam off');
     cef.settingsWebcamOff.request();
@@ -1006,6 +1007,17 @@ cef.settingsMicVolumeUpdate.onResponse = function(error, volume) {
     return;
   }
   app.streaming.mic.volume.value = volume;
+};
+
+
+cef.settingsWebcamSearch.onResponse = function(error, webcamList) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+
+  app.streaming.webcam.list = webcamList;
+  cef.settingsWebcamOn.request(app.streaming.webcam.list[0].id);
 };
 
 

@@ -13,6 +13,7 @@
 #include <tuple>
 #include <vector>
 
+#include "boost/property_tree/ptree.hpp"
 #include "obs-studio/libobs/obs.h"
 #include "obs-studio/plugins/win-dshow/libdshowcapture/dshowcapture.hpp"
 
@@ -23,6 +24,8 @@
 namespace ncstreamer {
 class Obs {
  public:
+  class WebcamDevice;
+
   static void SetUp();
   static void ShutDown();
   static Obs *Get();
@@ -41,7 +44,8 @@ class Obs {
   bool TurnOnMic();
   bool TurnOffMic();
   bool UpdateMicVolume(float volume);
-  bool TurnOnWebcam();
+  std::vector<Obs::WebcamDevice> SearchWebcamDevices();
+  bool TurnOnWebcam(const std::string device_id);
   bool TurnOffWebcam();
   bool UpdateWebcamSize(float normal_x, float normal_y);
   bool UpdateWebcamPosition(float normal_x, float normal_y);
@@ -76,6 +80,7 @@ class Obs {
       const std::string &stream_key);
   void ReleaseCurrentService();
   void UpdateBaseResolution(const std::string &source_info);
+  bool GetDevice(std::string device_id, DShow::VideoDevice *device);
 
   static Obs *static_instance;
 
@@ -91,6 +96,20 @@ class Obs {
   Dimension<uint32_t> output_size_;
   uint32_t fps_;
   std::vector<DShow::VideoDevice> devices_;
+};
+
+
+class Obs::WebcamDevice {
+ public:
+  WebcamDevice(const std::string &device_id,
+               const Dimension<uint32_t> &default_size);
+  virtual ~WebcamDevice();
+
+  boost::property_tree::ptree ToTree() const;
+
+ private:
+  std::string device_id_;
+  Dimension<uint32_t> default_size_;
 };
 }  // namespace ncstreamer
 

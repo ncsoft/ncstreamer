@@ -122,28 +122,41 @@ bool Obs::UpdateMicVolume(float volume) {
 }
 
 
-bool Obs::TurnOnWebcam() {
+std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
+  DShow::Device::EnumVideoDevices(devices_);
+  std::vector<Obs::WebcamDevice> webcams;
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
+  for (auto device : devices_) {
+    std::wstring w_device_id{device.name + L":" + device.path};
+    std::string device_id = convert.to_bytes(w_device_id);
+    Dimension<uint32_t> default_size {
+        static_cast<uint32_t>(device.caps[0].minCX),
+        static_cast<uint32_t>(device.caps[0].minCY)};
+    webcams.emplace_back(device_id, default_size);
+  }
+  return webcams;
+}
+
+
+bool Obs::TurnOnWebcam(const std::string device_id) {
   obs_scene_t *scene =
       obs_scene_from_source(obs_get_source_by_name("Scene"));
   if (scene == nullptr) {
     return false;
   }
 
-  DShow::Device::EnumVideoDevices(devices_);
-  if (devices_.size() < 1) {
+  DShow::VideoDevice device;
+  if (GetDevice(device_id, &device) == false) {
     return false;
   }
 
-  std::wstring w_device{devices_.at(0).name + L":" + devices_.at(0).path};
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
-  std::string device = convert.to_bytes(w_device);
-  const int &width = devices_.at(0).caps.at(0).minCX;
-  const int &height = devices_.at(0).caps.at(0).minCY;
+  const int &width = device.caps.at(0).minCX;
+  const int &height = device.caps.at(0).minCY;
   const std::string &default_resolution =
       std::to_string(width) + "x" + std::to_string(height);
 
   obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "video_device_id", device.c_str());
+  obs_data_set_string(settings, "video_device_id", device_id.c_str());
   obs_data_set_int(settings, "res_type", 1);  // Type: Preferred(0), Custom(1)
   obs_data_set_string(settings, "resolution", default_resolution.c_str());
   obs_source_t *source = obs_source_create(
@@ -484,5 +497,40 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
 }
 
 
+bool Obs::GetDevice(std::string device_id, DShow::VideoDevice *device) {
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
+  for (const auto &video_device : devices_) {
+    std::wstring w_device_str{video_device.name + L":" + video_device.path};
+    std::string device_str = convert.to_bytes(w_device_str);
+    if (device_str == device_id) {
+      *device = video_device;
+      return true;
+    }
+  }
+  return false;
+}
+
+
 Obs *Obs::static_instance{nullptr};
+
+
+Obs::WebcamDevice::WebcamDevice(const std::string &device_id,
+                                const Dimension<uint32_t> &default_size)
+    : device_id_{device_id},
+      default_size_{default_size} {
+}
+
+
+Obs::WebcamDevice::~WebcamDevice() {
+}
+
+
+boost::property_tree::ptree
+    Obs::WebcamDevice::ToTree() const {
+  boost::property_tree::ptree tree;
+  tree.put("id", device_id_);
+  tree.put("default_width", default_size_.width());
+  tree.put("default_height", default_size_.height());
+  return tree;
+}
 }  // namespace ncstreamer
