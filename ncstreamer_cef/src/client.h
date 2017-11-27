@@ -118,6 +118,22 @@ class Client : public CefClient {
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsWebcamOn(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsWebcamOff(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsWebcamSizeUpdate(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsWebcamPositionUpdate(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsVideoQualityUpdate(
       const std::string &cmd,
       const CommandArgumentMap &args,

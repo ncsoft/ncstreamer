@@ -58,6 +58,22 @@ const cef = (function() {
       request: ['volume'],
       response: ['error', 'volume'],
     },
+    'settings/webcam/on': {
+      request: [],
+      response: ['error'],
+    },
+    'settings/webcam/off': {
+      request: [],
+      response: ['error'],
+    },
+    'settings/webcam/size/update': {
+      request: ['normalX', 'normalY'],
+      response: ['error', 'normalX', 'normalY'],
+    },
+    'settings/webcam/position/update': {
+      request: ['normalX', 'normalY'],
+      response: ['error', 'normalX', 'normalY'],
+    },
     'storage/user_page/update': {
       request: ['userPage'],
       response: [],

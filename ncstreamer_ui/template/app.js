@@ -23,6 +23,17 @@ const app = {
         value: 0.5,
       }
     },
+    webcam: {
+      use: false,
+      size: {
+        x: 0,
+        y: 0,
+      },
+      position: {
+        x: 0,
+        y: 0,
+      },
+    },
     quality: {
       high: {
         resolution: {
@@ -186,6 +197,7 @@ function setUpControls(args) {
     'feed-description',
     'mic-checkbox',
     'mic-volume',
+    'webcam-checkbox',
     'error-text',
     'caution-text',
     'live-image',
@@ -226,6 +238,8 @@ function setUpControls(args) {
       'ncsoftSelectChange', onMicVolumeChanged);
   app.dom.micCheckbox.addEventListener(
       'change', onMicCheckboxChanged);
+  app.dom.webcamCheckbox.addEventListener(
+      'change', onWebcamCheckboxChanged);
   app.dom.controlButton.addEventListener(
       'click', onControlButtonClicked);
   app.dom.qualitySelect.addEventListener(
@@ -310,6 +324,9 @@ function getTitleFromSource(source) {
 
 
 function updateStreamingSources(obj) {
+  if (app.streaming.status != 'standby') {
+    return;
+  }
   if (!obj.hasOwnProperty('sources')) {
     return;
   }
@@ -498,6 +515,18 @@ function onMicCheckboxChanged() {
   } else {
     console.info('mic off');
     cef.settingsMicOff.request();
+  }
+}
+
+
+function onWebcamCheckboxChanged() {
+  console.info('change webcamCheckbox');
+  if (app.dom.webcamCheckbox.checked) {
+    console.info('webcam on');
+    cef.settingsWebcamOn.request();
+  } else {
+    console.info('webcam off');
+    cef.settingsWebcamOff.request();
   }
 }
 
@@ -907,6 +936,7 @@ cef.streamingStart.onResponse =
     updateStreamingStatus('standby');
   } else {
     onMicCheckboxChanged();
+    onWebcamCheckboxChanged();
     app.streaming.postUrl = postUrl;
     updateStreamingStatus('onAir');
   }
@@ -966,7 +996,6 @@ cef.settingsMicOff.onResponse = function(error) {
     console.info(error);
     return;
   }
-  console.info('start volume' + volume);
   app.streaming.mic.use = false;
 };
 
@@ -977,4 +1006,45 @@ cef.settingsMicVolumeUpdate.onResponse = function(error, volume) {
     return;
   }
   app.streaming.mic.volume.value = volume;
+};
+
+
+cef.settingsWebcamOn.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.webcam.use = true;
+  cef.settingsWebcamSizeUpdate.request(0.25, 0.25);
+  cef.settingsWebcamPositionUpdate.request(0.75, 0.75);
+};
+
+
+cef.settingsWebcamOff.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.webcam.use = false;
+};
+
+
+cef.settingsWebcamSizeUpdate.onResponse = function(error, normalX, normalY) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.webcam.size.x = normalX;
+  app.streaming.webcam.size.y = normalY;
+};
+
+
+cef.settingsWebcamPositionUpdate.onResponse =
+    function(error, normalX, normalY) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.webcam.position.x = normalX;
+  app.streaming.webcam.position.y = normalY;
 };

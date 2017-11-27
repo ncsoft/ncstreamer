@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "obs-studio/libobs/obs.h"
+#include "obs-studio/plugins/win-dshow/libdshowcapture/dshowcapture.hpp"
 
 #include "ncstreamer_cef/src/lib/dimension.h"
 #include "ncstreamer_cef/src/obs/obs_output.h"
@@ -40,6 +41,10 @@ class Obs {
   bool TurnOnMic();
   bool TurnOffMic();
   bool UpdateMicVolume(float volume);
+  bool TurnOnWebcam();
+  bool TurnOffWebcam();
+  bool UpdateWebcamSize(float normal_x, float normal_y);
+  bool UpdateWebcamPosition(float normal_x, float normal_y);
   void UpdateVideoQuality(
       const Dimension<uint32_t> &output_size,
       uint32_t fps,
@@ -50,6 +55,8 @@ class Obs {
       uint32_t video_bitrate);
 
  private:
+  static void AddSourceToScene(void *data, obs_scene_t *scene);
+
   Obs();
   virtual ~Obs();
 
@@ -58,6 +65,7 @@ class Obs {
   void ResetVideo();
   obs_encoder_t *CreateAudioEncoder();
   obs_encoder_t *CreateVideoEncoder();
+  void ClearSceneItems();
   void ClearSceneData();
 
   void UpdateCurrentSource(const std::string &source_info);
@@ -82,6 +90,7 @@ class Obs {
   Dimension<uint32_t> base_size_;
   Dimension<uint32_t> output_size_;
   uint32_t fps_;
+  std::vector<DShow::VideoDevice> devices_;
 };
 }  // namespace ncstreamer
 
