@@ -33,7 +33,7 @@ Twitch::~Twitch() {
 
 static const char *kNcStreamerAppId{[]() {
   static const char *kProduction{
-      "sonpcy8jy47t3sj5giedbm72qhuqg5"};
+      "c1q480zb66arf4rgaji54nh4bpn86o"};
   return kProduction;
 }()};
 
