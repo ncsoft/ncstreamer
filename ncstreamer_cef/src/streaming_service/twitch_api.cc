@@ -25,7 +25,7 @@ Uri TwitchApi::Login::Oauth::Code::BuildUri(
   return {kScheme, kAuthority, static_path(), Uri::Query{{
       {"client_id", client_id},
       {"redirect_uri", redirect_uri.uri_string()},
-      {"response_type", "code"},
+      {"response_type", "token"},
       {"scope", String::Join(scope, " ")}}}};
 }
 
@@ -70,9 +70,9 @@ const Uri &TwitchApi::Login::Redirect::static_uri() {
 }
 
 
-std::string TwitchApi::Login::Redirect::ExtractCode(
+std::string TwitchApi::Login::Redirect::ExtractAccessToken(
     const Uri::Query &query) {
-  return query.GetParameter("code");
+  return query.GetParameter("access_token");
 }
 
 

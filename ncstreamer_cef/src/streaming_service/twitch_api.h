@@ -70,7 +70,7 @@ class TwitchApi::Login::Redirect {
  public:
   static const Uri &static_uri();
 
-  static std::string ExtractCode(const Uri::Query &query);
+  static std::string ExtractAccessToken(const Uri::Query &query);
 };
 
 

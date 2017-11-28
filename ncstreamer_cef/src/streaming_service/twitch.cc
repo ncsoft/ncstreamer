@@ -350,14 +350,16 @@ void Twitch::GetUserAccessToken(
       return;
     }
     SetAccessToken(access_token);
-    OnLoginSuccess(on_failed, on_logged_in);
   });
 }
 
 
 void Twitch::OnLoginSuccess(
+    const std::string &access_token,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
+  SetAccessToken(access_token);
+
   GetUser(on_failed, [this, on_failed, on_logged_in](
       const std::string &name) {
     GetStreamServers(on_failed, [name, on_logged_in](
@@ -455,15 +457,14 @@ bool Twitch::LoginClient::OnLoginRedirected(
     const Uri &uri) {
   CEF_REQUIRE_UI_THREAD();
 
-  const std::string &code =
-    TwitchApi::Login::Redirect::ExtractCode(
-        Uri::Query{uri.query().query_string()});
+  const std::string &access_token =
+      TwitchApi::Login::Redirect::ExtractAccessToken(
+          Uri::Query{uri.fragment()});
 
-  if (code.empty() == true) {
+  if (access_token.empty() == true) {
     // login canceled.
   } else {
-    owner_->GetUserAccessToken(
-        code, on_failed_, on_logged_in_);
+    owner_->OnLoginSuccess(access_token, on_failed_, on_logged_in_);
   }
 
   browser->GetHost()->CloseBrowser(false);
