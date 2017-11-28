@@ -38,19 +38,12 @@ static const char *kNcStreamerAppId{[]() {
 }()};
 
 
-static const char *kNcStreamerAppSecret{[]() {
-  static const char *kProduction{
-      "51kz1gg9fywaovqnl92c8e3qcbs3f0"};
-  return kProduction;
-}()};
-
-
 void Twitch::LogIn(
     HWND parent,
     const std::wstring &locale,
     const OnFailed &on_failed,
     const OnLoggedIn &on_logged_in) {
-  static const Uri kLoginUri{TwitchApi::Login::Oauth::Code::BuildUri(
+  static const Uri kLoginUri{TwitchApi::Login::Oauth::Token::BuildUri(
       kNcStreamerAppId,
       TwitchApi::Login::Redirect::static_uri(),
       {"user_read", "channel_read", "channel_editor"})};
@@ -312,44 +305,6 @@ void Twitch::GetStreamServers(
       return;
     }
     on_server_list_gotten(stream_servers);
-  });
-}
-
-
-void Twitch::GetUserAccessToken(
-    const std::string &code,
-    const OnFailed &on_failed,
-    const OnLoggedIn &on_logged_in) {
-  Uri get_token_uri{TwitchApi::Login::Oauth::Token::BuildUri(
-      kNcStreamerAppId,
-      kNcStreamerAppSecret,
-      code,
-      TwitchApi::Login::Redirect::static_uri())};
-
-  http_request_service_.Post(
-      get_token_uri.uri_string(),
-      {},  // no need post content
-      [on_failed](const boost::system::error_code &ec) {
-    std::string msg{ec.message()};
-    on_failed(msg);
-  }, [this, on_failed, on_logged_in](const std::string &str) {
-    boost::property_tree::ptree tree;
-    std::stringstream ss{str};
-    std::string access_token{};
-    try {
-      boost::property_tree::read_json(ss, tree);
-      access_token = tree.get<std::string>("access_token");
-    } catch (const std::exception &/*e*/) {
-      access_token = "";
-    }
-
-    if (access_token.empty() == true) {
-      std::stringstream msg;
-      msg << "could not get access token from: " << str;
-      on_failed(msg.str());
-      return;
-    }
-    SetAccessToken(access_token);
   });
 }
 
