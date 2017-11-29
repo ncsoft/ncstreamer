@@ -36,12 +36,11 @@ class TwitchApi::Login {
 
 class TwitchApi::Login::Oauth {
  public:
-  class Code;
   class Token;
 };
 
 
-class TwitchApi::Login::Oauth::Code {
+class TwitchApi::Login::Oauth::Token {
  public:
   static Uri BuildUri(
       const std::string &client_id,
@@ -53,24 +52,11 @@ class TwitchApi::Login::Oauth::Code {
 };
 
 
-class TwitchApi::Login::Oauth::Token {
- public:
-  static Uri BuildUri(
-      const std::string &client_id,
-      const std::string &client_secret,
-      const std::string &code,
-      const Uri &redirect_uri);
-
- private:
-  static const std::string &static_path();
-};
-
-
 class TwitchApi::Login::Redirect {
  public:
   static const Uri &static_uri();
 
-  static std::string ExtractCode(const Uri::Query &query);
+  static std::string ExtractAccessToken(const Uri::Query &query);
 };
 
 

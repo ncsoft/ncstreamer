@@ -18,46 +18,22 @@ const char *TwitchApi::kScheme{"https"};
 const char *TwitchApi::kAuthority{"api.twitch.tv/kraken"};
 
 
-Uri TwitchApi::Login::Oauth::Code::BuildUri(
+Uri TwitchApi::Login::Oauth::Token::BuildUri(
     const std::string &client_id,
     const Uri &redirect_uri,
     const std::vector<std::string> &scope) {
   return {kScheme, kAuthority, static_path(), Uri::Query{{
       {"client_id", client_id},
       {"redirect_uri", redirect_uri.uri_string()},
-      {"response_type", "code"},
+      {"response_type", "token"},
       {"scope", String::Join(scope, " ")}}}};
-}
-
-
-const std::string &TwitchApi::Login::Oauth::Code::static_path() {
-  static const std::string kPath{[]() {
-    std::stringstream ss;
-    ss << "/oauth2/authorize";
-    return ss.str();
-  }()};
-  return kPath;
-}
-
-
-Uri TwitchApi::Login::Oauth::Token::BuildUri(
-    const std::string &client_id,
-    const std::string &client_secret,
-    const std::string &code,
-    const Uri &redirect_uri) {
-  return {kScheme, kAuthority, static_path(), Uri::Query{{
-      {"client_id", client_id},
-      {"client_secret", client_secret},
-      {"code", code},
-      {"grant_type", "authorization_code"},
-      {"redirect_uri", redirect_uri.uri_string()}}}};
 }
 
 
 const std::string &TwitchApi::Login::Oauth::Token::static_path() {
   static const std::string kPath{[]() {
     std::stringstream ss;
-    ss << "/oauth2/token";
+    ss << "/oauth2/authorize";
     return ss.str();
   }()};
   return kPath;
@@ -70,9 +46,9 @@ const Uri &TwitchApi::Login::Redirect::static_uri() {
 }
 
 
-std::string TwitchApi::Login::Redirect::ExtractCode(
+std::string TwitchApi::Login::Redirect::ExtractAccessToken(
     const Uri::Query &query) {
-  return query.GetParameter("code");
+  return query.GetParameter("access_token");
 }
 
 

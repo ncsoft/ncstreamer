@@ -89,12 +89,8 @@ class Twitch : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnServerListGotten &on_server_list_gotten);
 
-  void GetUserAccessToken(
-      const std::string &code,
-      const OnFailed &on_failed,
-      const OnLoggedIn &on_logged_in);
-
   void OnLoginSuccess(
+      const std::string &access_token,
       const OnFailed &on_failed,
       const OnLoggedIn &on_logged_in);
 
