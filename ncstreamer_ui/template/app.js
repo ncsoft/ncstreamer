@@ -26,9 +26,10 @@ const app = {
     webcam: {
       use: false,
       list: null,
+      curDeviceId: null,
       size: {
-        x: 0,
-        y: 0,
+        width: 0.25,
+        height: 0.25,
       },
       position: {
         x: 0,
@@ -937,7 +938,9 @@ cef.streamingStart.onResponse =
     updateStreamingStatus('standby');
   } else {
     onMicCheckboxChanged();
-    onWebcamCheckboxChanged();
+    if (app.dom.webcamCheckbox.checked) {
+      cef.settingsWebcamOn.request(app.streaming.webcam.curDeviceId);
+    }
     app.streaming.postUrl = postUrl;
     updateStreamingStatus('onAir');
   }
@@ -1017,7 +1020,8 @@ cef.settingsWebcamSearch.onResponse = function(error, webcamList) {
   }
 
   app.streaming.webcam.list = webcamList;
-  cef.settingsWebcamOn.request(app.streaming.webcam.list[0].id);
+  app.streaming.webcam.curDeviceId = app.streaming.webcam.list[0].id;
+  cef.settingsWebcamOn.request(app.streaming.webcam.curDeviceId);
 };
 
 
@@ -1027,8 +1031,10 @@ cef.settingsWebcamOn.onResponse = function(error) {
     return;
   }
   app.streaming.webcam.use = true;
-  cef.settingsWebcamSizeUpdate.request(0.25, 0.25);
-  cef.settingsWebcamPositionUpdate.request(0.75, 0.75);
+  cef.settingsWebcamSizeUpdate.request(app.streaming.webcam.size.width,
+                                       app.streaming.webcam.size.height);
+  cef.settingsWebcamPositionUpdate.request(app.streaming.webcam.position.x,
+                                           app.streaming.webcam.position.y);
 };
 
 
@@ -1046,8 +1052,6 @@ cef.settingsWebcamSizeUpdate.onResponse = function(error, normalX, normalY) {
     console.info(error);
     return;
   }
-  app.streaming.webcam.size.x = normalX;
-  app.streaming.webcam.size.y = normalY;
 };
 
 
@@ -1057,6 +1061,4 @@ cef.settingsWebcamPositionUpdate.onResponse =
     console.info(error);
     return;
   }
-  app.streaming.webcam.position.x = normalX;
-  app.streaming.webcam.position.y = normalY;
 };
