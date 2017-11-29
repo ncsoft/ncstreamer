@@ -336,6 +336,9 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kStreamingCommentsRequest,
        std::bind(&RemoteServer::OnCommentsRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsWebcamSearchRequest,
+       std::bind(&RemoteServer::OnSettingsWebcamSearchRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -453,6 +456,17 @@ void RemoteServer::OnCommentsRequest(
 }
 
 
+void RemoteServer::OnSettingsWebcamSearchRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree) {
+  int request_key = request_cache_.CheckIn(connection);
+
+  const std::vector<Obs::WebcamDevice> &webcams{
+      Obs::Get()->SearchWebcamDevices()};
+  RespondSettingsWebcamSearch(request_key, "", webcams);
+}
+
+
 void RemoteServer::OnNcStreamerExitRequest(
     const websocketpp::connection_hdl &/*connection*/,
     const boost::property_tree::ptree &/*tree*/) {
@@ -534,6 +548,43 @@ bool RemoteServer::RespondSettingsQualityUpdate(
     tree.put("type", static_cast<int>(
         RemoteMessage::MessageType::kSettingsQualityUpdateResponse));
     tree.put("error", error);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsWebcamSearch(
+      int request_key,
+      const std::string &error,
+      const std::vector<Obs::WebcamDevice> &webcams) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsWebcamSearch: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    std::vector<boost::property_tree::ptree> tree_webcams;
+    for (const auto &webcam : webcams) {
+      tree_webcams.emplace_back(webcam.ToTree());
+    }
+
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsWebcamSearchResponse));
+    tree.put("error", error);
+    tree.add_child("webcamList", JsExecutor::ToPtree(tree_webcams));
+
     boost::property_tree::write_json(msg, tree, false);
   }
 

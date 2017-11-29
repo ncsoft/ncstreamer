@@ -21,6 +21,7 @@
 #include "websocketpp/server.hpp"
 
 #include "ncstreamer_cef/src/browser_app.h"
+#include "ncstreamer_cef/src/obs.h"
 
 
 namespace ncstreamer {
@@ -127,6 +128,10 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void OnSettingsWebcamSearchRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
   void OnNcStreamerExitRequest(
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
@@ -142,6 +147,11 @@ class RemoteServer {
   bool RespondSettingsQualityUpdate(
       int request_key,
       const std::string &error);
+
+  bool RespondSettingsWebcamSearch(
+      int request_key,
+      const std::string &error,
+      const std::vector<Obs::WebcamDevice> &webcams);
 
   void BroadcastStreamingStart(
       const std::string &source,
