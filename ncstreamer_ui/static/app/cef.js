@@ -252,7 +252,6 @@ const remote = {
     remote.qualityUpdateRequestKey = requestKey;
   },
   onSettingsWebcamOnRequest: function(requestKey, args) {
-    console.info(JSON.stringify(args));
     app.streaming.webcam.curDeviceId = args.deviceId;
     app.streaming.webcam.size.width = args.normalWidth;
     app.streaming.webcam.size.height = args.normalHeight;
