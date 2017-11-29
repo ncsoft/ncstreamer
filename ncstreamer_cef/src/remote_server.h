@@ -136,6 +136,10 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void OnSettingsWebcamOffRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
   void OnNcStreamerExitRequest(
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
@@ -158,6 +162,10 @@ class RemoteServer {
       const std::vector<Obs::WebcamDevice> &webcams);
 
   bool RespondSettingsWebcamOn(
+      int request_key,
+      const std::string &error);
+
+  bool RespondSettingsWebcamOff(
       int request_key,
       const std::string &error);
 

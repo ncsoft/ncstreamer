@@ -252,7 +252,6 @@ const remote = {
     remote.qualityUpdateRequestKey = requestKey;
   },
   onSettingsWebcamOnRequest: function(requestKey, args) {
-    console.info(JSON.stringify(args));
     app.streaming.webcam.curDeviceId = args.deviceId;
     app.streaming.webcam.size.width = args.normalWidth;
     app.streaming.webcam.size.height = args.normalHeight;
@@ -261,5 +260,9 @@ const remote = {
 
     app.dom.webcamCheckbox.checked = true;
     cef.settingsWebcamOn.request(app.streaming.webcam.curDeviceId);
+  },
+  onSettingsWebcamOffRequest: function(requestKey) {
+    app.dom.webcamCheckbox.checked = false;
+    cef.settingsWebcamOff.request();
   },
 };
