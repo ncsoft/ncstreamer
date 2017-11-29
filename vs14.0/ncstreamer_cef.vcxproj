@@ -135,10 +135,12 @@
     <ClCompile Include="..\ncstreamer_cef\src\render_process_message_types.cpp" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\facebook.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\facebook_api.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\irc_service.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\streaming_service_provider.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_api.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_chat.cc" />
     <ClCompile Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -180,11 +182,13 @@
     <ClInclude Include="..\ncstreamer_cef\src\resource.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\facebook.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\facebook_api.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\irc_service.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_provider.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\streaming_service_types.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_api.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_chat.h" />
     <ClInclude Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.hpp" />
   </ItemGroup>
   <ItemGroup>

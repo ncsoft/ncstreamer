@@ -153,6 +153,12 @@
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_api.cc">
       <Filter>src\streaming_service</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\irc_service.cc">
+      <Filter>src\streaming_service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_chat.cc">
+      <Filter>src\streaming_service</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -285,6 +291,12 @@
       <Filter>src\streaming_service</Filter>
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_api.h">
+      <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\irc_service.h">
+      <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_chat.h">
       <Filter>src\streaming_service</Filter>
     </ClInclude>
   </ItemGroup>

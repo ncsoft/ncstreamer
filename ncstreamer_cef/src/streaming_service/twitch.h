@@ -18,6 +18,7 @@
 #include "ncstreamer_cef/src/lib/http_request_service.h"
 #include "ncstreamer_cef/src/lib/uri.h"
 #include "ncstreamer_cef/src/streaming_service/streaming_service_provider.h"
+#include "ncstreamer_cef/src/streaming_service/twitch_chat.h"
 
 
 namespace ncstreamer {
@@ -95,8 +96,10 @@ class Twitch : public StreamingServiceProvider {
       const OnLoggedIn &on_logged_in);
 
   std::string GetAccessToken() const;
-
   void SetAccessToken(const std::string &access_token);
+
+  std::string GetNickName() const;
+  void SetNickName(const std::string &nick_name);
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
@@ -104,6 +107,11 @@ class Twitch : public StreamingServiceProvider {
   // TODO(khpark): refactoring this by AccessToken class.
   mutable std::mutex access_token_mutex_;
   std::string access_token_;
+
+  mutable std::mutex nick_name_mutex_;
+  std::string nick_name_;
+
+  TwitchChat chat_;
 };
 
 

@@ -23,7 +23,9 @@ Twitch::Twitch()
     : login_client_{},
       http_request_service_{},
       access_token_mutex_{},
-      access_token_{} {
+      access_token_{},
+      nick_name_mutex_{},
+      nick_name_{} {
 }
 
 
@@ -38,6 +40,20 @@ static const char *kNcStreamerAppId{[]() {
 }()};
 
 
+static const char *kTwitchIrcHost{ []() {
+  static const char *kSSLHost{
+      "irc.chat.twitch.tv"};
+  return kSSLHost;
+}()};
+
+
+static const char *kTwitchIrcPort{ []() {
+  static const char *kSSLPort{
+      "6697"};
+  return kSSLPort;
+}()};
+
+
 void Twitch::LogIn(
     HWND parent,
     const std::wstring &locale,
@@ -46,7 +62,7 @@ void Twitch::LogIn(
   static const Uri kLoginUri{TwitchApi::Login::Oauth::Token::BuildUri(
       kNcStreamerAppId,
       TwitchApi::Login::Redirect::static_uri(),
-      {"user_read", "channel_read", "channel_editor"})};
+      {"user_read", "channel_read", "channel_editor", "chat_login"})};
 
   static const Dimension<int> kPopupDimension{429, 402};
 
@@ -155,6 +171,7 @@ void Twitch::GetComments(const std::string &created_time,
 
 
 void Twitch::StopLiveVideo() {
+  chat_.Close();
 }
 
 
@@ -170,7 +187,7 @@ void Twitch::GetUser(
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
     on_failed(msg);
-  }, [on_failed, on_user_gotten](const std::string &str) {
+  }, [this, on_failed, on_user_gotten](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
     std::string name{};
@@ -180,6 +197,7 @@ void Twitch::GetUser(
     } catch (const std::exception &/*e*/) {
       name = "";
     }
+    SetNickName(name);
 
     if (name.empty() == true) {
       std::stringstream msg;
@@ -250,6 +268,10 @@ void Twitch::UpdateChannel(
           description,
           game,
           true)};
+
+  chat_.Connect(kTwitchIrcHost, kTwitchIrcPort, GetAccessToken(),
+      GetNickName(), GetNickName(), [](const boost::system::error_code &ec) {
+  });
 
   http_request_service_.Put(
       update_channel_uri.uri_string(),
@@ -338,6 +360,22 @@ std::string Twitch::GetAccessToken() const {
 void Twitch::SetAccessToken(const std::string &access_token) {
   std::lock_guard<std::mutex> lock{access_token_mutex_};
   access_token_ = access_token;
+}
+
+
+std::string Twitch::GetNickName() const {
+  std::string nick_name{};
+  {
+    std::lock_guard<std::mutex> lock{nick_name_mutex_};
+    nick_name = nick_name_;
+  }
+  return nick_name;
+}
+
+
+void Twitch::SetNickName(const std::string &nick_name) {
+  std::lock_guard<std::mutex> lock{ nick_name_mutex_ };
+  nick_name_ = nick_name;
 }
 
 
