@@ -261,4 +261,8 @@ const remote = {
     app.dom.webcamCheckbox.checked = true;
     cef.settingsWebcamOn.request(app.streaming.webcam.curDeviceId);
   },
+  onSettingsWebcamOffRequest: function(requestKey) {
+    app.dom.webcamCheckbox.checked = false;
+    cef.settingsWebcamOff.request();
+  },
 };
