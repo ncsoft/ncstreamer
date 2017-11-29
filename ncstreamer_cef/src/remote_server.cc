@@ -339,6 +339,9 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kSettingsWebcamSearchRequest,
        std::bind(&RemoteServer::OnSettingsWebcamSearchRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsWebcamOnRequest,
+       std::bind(&RemoteServer::OnSettingsWebcamOnRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -457,13 +460,64 @@ void RemoteServer::OnCommentsRequest(
 
 
 void RemoteServer::OnSettingsWebcamSearchRequest(
-      const websocketpp::connection_hdl &connection,
-      const boost::property_tree::ptree &tree) {
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
   int request_key = request_cache_.CheckIn(connection);
 
   const std::vector<Obs::WebcamDevice> &webcams{
       Obs::Get()->SearchWebcamDevices()};
   RespondSettingsWebcamSearch(request_key, "", webcams);
+}
+
+
+void RemoteServer::OnSettingsWebcamOnRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  std::string error{};
+  std::string device_id{};
+  float width;
+  float height;
+  float x;
+  float y;
+  try {
+    device_id = tree.get<std::string>("device_id");
+    width = tree.get<float>("normal_width");
+    height = tree.get<float>("normal_height");
+    x = tree.get<float>("normal_x");
+    y = tree.get<float>("normal_y");
+  } catch (const std::exception &/*e*/) {
+    error = "webcam on error";
+  }
+
+  if (width > 1.0 || width <= 0.0 ||
+      height > 1.0 || height <= 0.0 ||
+      x > 1.0 || x < 0.0 ||
+      y > 1.0 || y < 0.0) {
+    error = "webcam on error";
+  }
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  if (error.empty() == false) {
+    LogError("OnSettingsWebcamOn: " + error);
+    RespondSettingsWebcamOn(request_key, error);
+    return;
+  }
+
+  boost::property_tree::ptree args;
+  args.add("deviceId", device_id);
+  args.add("normalWidth", width);
+  args.add("normalHeight", height);
+  args.add("normalX", x);
+  args.add("normalY", y);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsWebcamOnRequest",
+      request_key,
+      args);
+
+  RespondSettingsWebcamOn(request_key, error);
 }
 
 
@@ -563,9 +617,9 @@ bool RemoteServer::RespondSettingsQualityUpdate(
 
 
 bool RemoteServer::RespondSettingsWebcamSearch(
-      int request_key,
-      const std::string &error,
-      const std::vector<Obs::WebcamDevice> &webcams) {
+    int request_key,
+    const std::string &error,
+    const std::vector<Obs::WebcamDevice> &webcams) {
   websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     LogWarning("RespondSettingsWebcamSearch: !connection.lock()");
@@ -584,6 +638,36 @@ bool RemoteServer::RespondSettingsWebcamSearch(
         RemoteMessage::MessageType::kSettingsWebcamSearchResponse));
     tree.put("error", error);
     tree.add_child("webcamList", JsExecutor::ToPtree(tree_webcams));
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsWebcamOn(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsWebcamOn: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsWebcamOnResponse));
+    tree.put("error", error);
 
     boost::property_tree::write_json(msg, tree, false);
   }
