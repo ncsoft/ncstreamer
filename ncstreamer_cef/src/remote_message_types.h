@@ -26,6 +26,8 @@ class RemoteMessage {
     kStreamingCommentsResponse,
     kSettingsWebcamSearchRequest = 501,
     kSettingsWebcamSearchResponse,
+    kSettingsWebcamOnRequest = 511,
+    kSettingsWebcamOnResponse,
     kNcStreamerExitRequest = 901,
     kNcStreamerExitResponse,  // not used.
   };
