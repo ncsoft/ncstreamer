@@ -457,8 +457,8 @@ void RemoteServer::OnCommentsRequest(
 
 
 void RemoteServer::OnSettingsWebcamSearchRequest(
-      const websocketpp::connection_hdl &connection,
-      const boost::property_tree::ptree &tree) {
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
   int request_key = request_cache_.CheckIn(connection);
 
   const std::vector<Obs::WebcamDevice> &webcams{
@@ -563,9 +563,9 @@ bool RemoteServer::RespondSettingsQualityUpdate(
 
 
 bool RemoteServer::RespondSettingsWebcamSearch(
-      int request_key,
-      const std::string &error,
-      const std::vector<Obs::WebcamDevice> &webcams) {
+    int request_key,
+    const std::string &error,
+    const std::vector<Obs::WebcamDevice> &webcams) {
   websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     LogWarning("RespondSettingsWebcamSearch: !connection.lock()");
