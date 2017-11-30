@@ -122,6 +122,8 @@ void IrcService::ReadHandle(
           std::string{kIrcDelimiter}.size()};
 
   streambuf_.consume(size);
+  read_(command);
+
   DoRead();
 }
 }  // namespace ncstreamer

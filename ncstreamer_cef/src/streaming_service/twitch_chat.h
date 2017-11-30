@@ -9,6 +9,9 @@
 
 #include <deque>
 #include <string>
+#include <vector>
+
+#include "boost/tokenizer.hpp"
 
 #include "ncstreamer_cef/src/streaming_service/irc_service.h"
 
@@ -30,10 +33,33 @@ class TwitchChat {
   void ReadHandle(const std::string &msg);
 
  private:
+  class IrcMessage;
+
   IrcService irc_;
   IrcService::OnErrored on_errored_;
 };
+
+
+class TwitchChat::IrcMessage {
+ public:
+  explicit IrcMessage(const std::string &msg);
+
+  bool IsUserChat();
+  const std::string GetSender();
+  const std::string GetContent();
+
+ private:
+  void Tokenize(const std::string &msg);
+
+  std::vector<std::string> tokens_;
+};
 }  // namespace ncstreamer
+
+
+namespace irctypes {
+  typedef boost::char_separator<char> separator;
+  typedef boost::tokenizer<separator> tokenizer;
+}  // namespace irctypes
 
 
 #endif  // NCSTREAMER_CEF_SRC_STREAMING_SERVICE_TWITCH_CHAT_H_
