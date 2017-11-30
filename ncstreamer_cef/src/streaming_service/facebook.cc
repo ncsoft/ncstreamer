@@ -220,15 +220,8 @@ void Facebook::GetComments(const std::string &created_time,
         on_failed(msg);
       },
       [on_comments_got](const std::string &str) {
-        boost::property_tree::ptree chat;
-        std::stringstream chat_ss{str};
-        try {
-          boost::property_tree::read_json(chat_ss, chat);
-        } catch (const std::exception &/*e*/) {
-        }
-
-        OutputDebugStringA(chat_ss.str().c_str());
-        on_comments_got(chat_ss.str());
+        OutputDebugStringA(str.c_str());
+        on_comments_got(str);
   });
 }
 
