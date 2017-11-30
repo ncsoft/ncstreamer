@@ -1018,6 +1018,12 @@ cef.settingsWebcamSearch.onResponse = function(error, webcamList) {
     console.info(error);
     return;
   }
+  if (webcamList == '') {
+    console.info('no devices');
+    ncsoft.modal.show('#no-device-alert-modal');
+    app.dom.webcamCheckbox.checked = false;
+    return;
+  }
 
   app.streaming.webcam.list = webcamList;
   app.streaming.webcam.curDeviceId = app.streaming.webcam.list[0].id;

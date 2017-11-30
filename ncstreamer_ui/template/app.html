@@ -181,6 +181,12 @@
     <!-- quick settings -->
     <section class="nc-streamer-setting">
       <h3>%EASY_SETTING%</h3>
+      <div class="form-checkbox">
+        <input type="checkbox"
+               id="webcam-checkbox">
+        <label class="on"
+               for="webcam-checkbox">webcam</label>
+      </div>
       <div class="form-checkbox mic">
         <input type="checkbox"
                id="mic-checkbox">
@@ -191,12 +197,6 @@
                  type="range"
                  id="mic-volume"/>
         </div>
-      </div>
-      <div class="form-checkbox">
-        <input type="checkbox"
-               id="webcam-checkbox">
-        <label class="on"
-               for="webcam-checkbox">webcam</label>
       </div>
     </section>
   </div>
@@ -323,6 +323,35 @@
           </button>
           <button class="btn btn-default" data-dismiss="modal">
             %NO%
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- no device alert modal -->
+  <div id="no-device-alert-modal"
+       class="modal nc-streamer-modal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="confirmModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>no device alert<br/>go setting dialog...</p>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-close-button"
+                  class="btn btn-primary"
+                  data-dismiss="modal">
+            %CONFIRM%
           </button>
         </div>
       </div>
