@@ -265,4 +265,10 @@ const remote = {
     app.dom.webcamCheckbox.checked = false;
     cef.settingsWebcamOff.request();
   },
+  onSettingsWebcamSizeRequest: function(requestKey, args) {
+    app.streaming.webcam.size.width = args.normalWidth;
+    app.streaming.webcam.size.height = args.normalHeight;
+    cef.settingsWebcamSizeUpdate.request(app.streaming.webcam.size.width,
+                                         app.streaming.webcam.size.height);
+  },
 };
