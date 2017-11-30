@@ -271,4 +271,10 @@ const remote = {
     cef.settingsWebcamSizeUpdate.request(app.streaming.webcam.size.width,
                                          app.streaming.webcam.size.height);
   },
+  onSettingsWebcamPositionRequest: function(requestKey, args) {
+    app.streaming.webcam.position.x = args.normalX;
+    app.streaming.webcam.position.y = args.normalY;
+    cef.settingsWebcamPositionUpdate.request(app.streaming.webcam.position.x,
+                                             app.streaming.webcam.position.y);
+  },
 };
