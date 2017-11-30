@@ -563,7 +563,7 @@ void RemoteServer::OnSettingsWebcamSizeRequest(
 
   if (error.empty() == false) {
     LogError("OnSettingsWebcamSize: " + error);
-    RespondSettingsWebcamOn(request_key, error);
+    RespondSettingsWebcamSize(request_key, error);
     return;
   }
 
