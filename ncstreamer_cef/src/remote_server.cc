@@ -345,6 +345,9 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kSettingsWebcamOffRequest,
        std::bind(&RemoteServer::OnSettingsWebcamOffRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsWebcamSizeRequest,
+       std::bind(&RemoteServer::OnSettingsWebcamSizeRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -538,6 +541,46 @@ void RemoteServer::OnSettingsWebcamOffRequest(
 }
 
 
+void RemoteServer::OnSettingsWebcamSizeRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  std::string error{};
+  float width;
+  float height;
+  try {
+    width = tree.get<float>("normal_width");
+    height = tree.get<float>("normal_height");
+  } catch (const std::exception &/*e*/) {
+    error = "webcam size error";
+  }
+
+  if (width > 1.0 || width <= 0.0 ||
+      height > 1.0 || height <= 0.0) {
+    error = "webcam size error";
+  }
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  if (error.empty() == false) {
+    LogError("OnSettingsWebcamSize: " + error);
+    RespondSettingsWebcamOn(request_key, error);
+    return;
+  }
+
+  boost::property_tree::ptree args;
+  args.add("normalWidth", width);
+  args.add("normalHeight", height);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsWebcamSizeRequest",
+      request_key,
+      args);
+
+  RespondSettingsWebcamSize(request_key, error);
+}
+
+
 void RemoteServer::OnNcStreamerExitRequest(
     const websocketpp::connection_hdl &/*connection*/,
     const boost::property_tree::ptree &/*tree*/) {
@@ -714,6 +757,36 @@ bool RemoteServer::RespondSettingsWebcamOff(
     boost::property_tree::ptree tree;
     tree.put("type", static_cast<int>(
         RemoteMessage::MessageType::kSettingsWebcamOffResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsWebcamSize(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsWebcamSize: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsWebcamSizeResponse));
     tree.put("error", error);
 
     boost::property_tree::write_json(msg, tree, false);
