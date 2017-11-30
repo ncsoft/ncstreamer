@@ -13,6 +13,7 @@
 #include "obs-studio/libobs/graphics/vec2.h"
 #include "obs-studio/plugins/win-capture/graphics-hook-info.h"
 
+#include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/obs/obs_source_info.h"
 #include "ncstreamer_cef/src_imported/from_obs_studio_ui/obs-app.hpp"
 
@@ -139,6 +140,8 @@ std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
 
 
 bool Obs::TurnOnWebcam(const std::string device_id) {
+  LocalStorage::Get()->SetWebcamUse(true);
+
   obs_scene_t *scene =
       obs_scene_from_source(obs_get_source_by_name("Scene"));
   if (scene == nullptr) {
@@ -170,6 +173,8 @@ bool Obs::TurnOnWebcam(const std::string device_id) {
 
 
 bool Obs::TurnOffWebcam() {
+  LocalStorage::Get()->SetWebcamUse(false);
+
   obs_scene_t *scene =
       obs_scene_from_source(obs_get_source_by_name("Scene"));
   if (scene == nullptr) {

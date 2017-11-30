@@ -51,6 +51,11 @@ std::string LocalStorage::GetDesignatedUser() const {
 }
 
 
+bool LocalStorage::GetWebcamUse() const {
+  return storage_.get<bool>(kWebcamUse, false);
+}
+
+
 boost::optional<Position<int>> LocalStorage::GetWindowPosition() const {
   boost::optional<const boost::property_tree::ptree &> pos =
       storage_.get_child_optional(kWindowPosition);
@@ -80,6 +85,11 @@ void LocalStorage::SetStreamServer(const std::string &stream_server) {
 
 void LocalStorage::SetDesignatedUser(const std::string &designated_user) {
   SetValue(kDesignatedUser, designated_user);
+}
+
+
+void LocalStorage::SetWebcamUse(const bool &use) {
+  SetValue(kWebcamUse, use);
 }
 
 
@@ -161,6 +171,7 @@ const char *LocalStorage::kUserPage{"userPage"};
 const char *LocalStorage::kPrivacy{"privacy"};
 const char *LocalStorage::kStreamServer{"streamServer"};
 const char *LocalStorage::kDesignatedUser{"designatedUser"};
+const char *LocalStorage::kWebcamUse{"webcamUse"};
 const char *LocalStorage::kWindowPosition{"windowPosition"};
 const char *LocalStorage::kWindowPositionX{"x"};
 const char *LocalStorage::kWindowPositionY{"y"};

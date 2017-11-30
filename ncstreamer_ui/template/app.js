@@ -525,6 +525,7 @@ function onWebcamCheckboxChanged() {
   console.info('change webcamCheckbox');
   if (app.dom.webcamCheckbox.checked) {
     console.info('webcam on');
+    app.streaming.webcam.use = true;
     cef.settingsWebcamSearch.request();
   } else {
     console.info('webcam off');
@@ -911,7 +912,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 };
 
 
-cef.streamingSetUp.onResponse = function(error) {
+cef.streamingSetUp.onResponse = function(error, webcamUse) {
   app.dom.closeButton.style.display = 'inline';
   if (app.options.hidesSettings == false) {
     app.dom.settingButton.style.display = 'inline';
@@ -919,6 +920,10 @@ cef.streamingSetUp.onResponse = function(error) {
   app.dom.minimizeButton.style.display = 'inline';
   for (const element of app.dom.ncStreamerContainer) {
     ncsoft.klass.remove(element, 'loading');
+  }
+  app.dom.webcamCheckbox.checked = webcamUse;
+  if (app.dom.webcamCheckbox.checked) {
+    cef.settingsWebcamSearch.request();
   }
   setUpSteamingQuality();
   setUpMic();
@@ -1020,7 +1025,10 @@ cef.settingsWebcamSearch.onResponse = function(error, webcamList) {
   }
   if (webcamList == '') {
     console.info('no devices');
-    ncsoft.modal.show('#no-device-alert-modal');
+    if (app.streaming.webcam.use) {
+      ncsoft.modal.show('#no-device-alert-modal');
+      app.streaming.webcam.use = false;
+    }
     app.dom.webcamCheckbox.checked = false;
     return;
   }

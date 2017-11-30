@@ -31,7 +31,7 @@ const cef = (function() {
     },
     'streaming/set_up': {
       request: [],
-      response: ['error'],
+      response: ['error', 'webcamUse'],
     },
     'streaming/start': {
       request: ['source', 'streamServer', 'userPage', 'privacy', 'title',
