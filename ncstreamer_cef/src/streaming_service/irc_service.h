@@ -29,10 +29,16 @@ class IrcService {
       const std::string msg,
       const OnErrored &on_errored,
       const OnRead &on_read);
-  void DoRead();
   void Close();
 
  private:
+  void HandleConnect(const boost::system::error_code &ec);
+  void HandleHandshake(const boost::system::error_code &ec);
+  void HandleWrite(
+      const boost::system::error_code &ec,
+      const std::size_t &size);
+
+  void DoRead();
   void ReadHandle(
       const boost::system::error_code &ec,
       const std::size_t &size);
@@ -41,6 +47,7 @@ class IrcService {
   boost::asio::ssl::context ctx_;
   boost::asio::ssl::stream<boost::asio::ip::tcp::socket> socket_;
   boost::asio::streambuf streambuf_;
+  std::string msg_;
   OnErrored error_;
   OnRead read_;
   std::thread thread_;
