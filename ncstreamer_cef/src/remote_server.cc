@@ -348,6 +348,9 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kSettingsWebcamSizeRequest,
        std::bind(&RemoteServer::OnSettingsWebcamSizeRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsWebcamPositionRequest,
+       std::bind(&RemoteServer::OnSettingsWebcamPositionRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -581,6 +584,46 @@ void RemoteServer::OnSettingsWebcamSizeRequest(
 }
 
 
+void RemoteServer::OnSettingsWebcamPositionRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  std::string error{};
+  float x;
+  float y;
+  try {
+    x = tree.get<float>("normal_x");
+    y = tree.get<float>("normal_y");
+  } catch (const std::exception &/*e*/) {
+    error = "webcam position error";
+  }
+
+  if (x > 1.0 || x < 0.0 ||
+      y > 1.0 || y < 0.0) {
+    error = "webcam position error";
+  }
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  if (error.empty() == false) {
+    LogError("OnSettingsWebcamPosition: " + error);
+    RespondSettingsWebcamPosition(request_key, error);
+    return;
+  }
+
+  boost::property_tree::ptree args;
+  args.add("normalX", x);
+  args.add("normalY", y);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsWebcamPositionRequest",
+      request_key,
+      args);
+
+  RespondSettingsWebcamPosition(request_key, error);
+}
+
+
 void RemoteServer::OnNcStreamerExitRequest(
     const websocketpp::connection_hdl &/*connection*/,
     const boost::property_tree::ptree &/*tree*/) {
@@ -787,6 +830,36 @@ bool RemoteServer::RespondSettingsWebcamSize(
     boost::property_tree::ptree tree;
     tree.put("type", static_cast<int>(
         RemoteMessage::MessageType::kSettingsWebcamSizeResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsWebcamPosition(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsWebcamPosition: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsWebcamPositionResponse));
     tree.put("error", error);
 
     boost::property_tree::write_json(msg, tree, false);
