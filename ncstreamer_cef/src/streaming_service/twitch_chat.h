@@ -23,7 +23,7 @@ class TwitchChat {
       const std::string &host,
       const std::string &port,
       const std::string &oauth,
-      const std::string &user_id,
+      const std::string &nick_name,
       const std::string &channel_name,
       IrcService::OnErrored on_errored);
   void Close();

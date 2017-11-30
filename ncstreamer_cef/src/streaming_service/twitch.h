@@ -101,6 +101,9 @@ class Twitch : public StreamingServiceProvider {
   std::string GetNickName() const;
   void SetNickName(const std::string &nick_name);
 
+  std::string GetAccountNameLowerCase() const;
+  void SetAccountName(const std::string &account_name);
+
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
 
@@ -110,6 +113,9 @@ class Twitch : public StreamingServiceProvider {
 
   mutable std::mutex nick_name_mutex_;
   std::string nick_name_;
+
+  mutable std::mutex account_name_mutex_;
+  std::string account_name_;
 
   TwitchChat chat_;
 };

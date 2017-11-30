@@ -23,14 +23,14 @@ void TwitchChat::Connect(
     const std::string &host,
     const std::string &port,
     const std::string &oauth,
-    const std::string &user_id,
+    const std::string &nick_name,
     const std::string &channel_name,
     IrcService::OnErrored on_errored) {
   on_errored_ = on_errored;
 
   const std::string &msg = {
       "PASS oauth:" + oauth + "\r\n" +
-      "NICK " + user_id + "\r\n" +
+      "NICK " + nick_name + "\r\n" +
       "JOIN #" + channel_name + "\r\n" +
       "CAP REQ :twitch.tv/membership\r\n" +
       "CAP REQ :twitch.tv/tags\r\n" +
