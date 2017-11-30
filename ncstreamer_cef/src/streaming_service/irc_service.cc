@@ -16,6 +16,7 @@ IrcService::IrcService()
       ctx_(boost::asio::ssl::context::sslv23),
       socket_(io_service_, ctx_),
       streambuf_{},
+      msg_{},
       error_{},
       read_{},
       thread_{} {
@@ -28,36 +29,32 @@ IrcService::~IrcService() {
 }
 
 
+static const char *kIrcDelimiter{[]() {
+  static const char *kDelimiter{"\r\n"};
+  return kDelimiter;
+}()};
+
+
 void IrcService::Connect(
     const std::string host,
     const std::string port,
     const std::string msg,
     const OnErrored &on_errored,
     const OnRead &on_read) {
-  boost::asio::ip::tcp::resolver resolver(io_service_);
-  auto endpoint_iterator = resolver.resolve({host.c_str(), port.c_str()});
-
-  boost::asio::connect(socket_.lowest_layer(), endpoint_iterator);
-  socket_.handshake(boost::asio::ssl::stream_base::client);
-
-  boost::asio::write(socket_, boost::asio::buffer(msg.c_str(), msg.size()));
-
+  msg_ = msg;
   error_ = on_errored;
   read_ = on_read;
 
-  DoRead();
+  boost::asio::ip::tcp::resolver resolver(io_service_);
+  auto endpoint_iterator = resolver.resolve({host.c_str(), port.c_str()});
+
+  boost::asio::async_connect(
+      socket_.lowest_layer(),
+      endpoint_iterator,
+      boost::bind(&IrcService::HandleConnect, this,
+          boost::asio::placeholders::error));
 
   thread_ = std::thread([this]() {io_service_.run();});
-}
-
-
-void IrcService::DoRead() {
-  const std::string delimiter = "\r\n";
-
-  boost::asio::async_read_until(
-      socket_, streambuf_, delimiter,
-      std::bind(&IrcService::ReadHandle, this, std::placeholders::_1,
-          std::placeholders::_2));
 }
 
 
@@ -71,14 +68,58 @@ void IrcService::Close() {
 }
 
 
+void IrcService::HandleConnect(const boost::system::error_code &ec) {
+  if (!ec) {
+    socket_.async_handshake(
+        boost::asio::ssl::stream_base::client,
+        boost::bind(&IrcService::HandleHandshake, this,
+            boost::asio::placeholders::error));
+  } else {
+    error_(ec);
+  }
+}
+
+
+void IrcService::HandleHandshake(const boost::system::error_code &ec) {
+  if (!ec) {
+    boost::asio::async_write(
+      socket_,
+      boost::asio::buffer(msg_.c_str(), msg_.size()),
+      boost::bind(&IrcService::HandleWrite, this,
+          boost::asio::placeholders::error,
+          boost::asio::placeholders::bytes_transferred));
+  } else {
+    error_(ec);
+  }
+}
+
+
+void IrcService::HandleWrite(
+    const boost::system::error_code &ec,
+    const std::size_t &size) {
+  if (!ec) {
+    DoRead();
+  } else {
+    error_(ec);
+  }
+}
+
+
+void IrcService::DoRead() {
+  boost::asio::async_read_until(
+      socket_, streambuf_, kIrcDelimiter,
+      std::bind(&IrcService::ReadHandle, this, std::placeholders::_1,
+          std::placeholders::_2));
+}
+
+
 void IrcService::ReadHandle(
     const boost::system::error_code &ec,
     const std::size_t &size) {
-  const std::string delimiter = "\r\n";
-
   std::string command{
       buffers_begin(streambuf_.data()),
-      buffers_begin(streambuf_.data()) + size - delimiter.size()};
+      buffers_begin(streambuf_.data()) + size -
+          std::string{kIrcDelimiter}.size()};
 
   streambuf_.consume(size);
   DoRead();
