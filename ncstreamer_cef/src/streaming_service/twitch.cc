@@ -5,6 +5,7 @@
 
 #include "ncstreamer_cef/src/streaming_service/twitch.h"
 
+#include "boost/algorithm/string.hpp"
 #include "boost/property_tree/json_parser.hpp"
 #include "boost/property_tree/ptree.hpp"
 #include "include/base/cef_bind.h"
@@ -25,7 +26,9 @@ Twitch::Twitch()
       access_token_mutex_{},
       access_token_{},
       nick_name_mutex_{},
-      nick_name_{} {
+      nick_name_{},
+      account_name_mutex_{},
+      account_name_{} {
 }
 
 
@@ -190,22 +193,26 @@ void Twitch::GetUser(
   }, [this, on_failed, on_user_gotten](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
-    std::string name{};
+    std::string nick_name{};
+    std::string account_name{};
     try {
       boost::property_tree::read_json(ss, tree);
-      name = tree.get<std::string>("display_name");
+      nick_name = tree.get<std::string>("display_name");
+      account_name = tree.get<std::string>("name");
     } catch (const std::exception &/*e*/) {
-      name = "";
+      nick_name = "";
+      account_name = "";
     }
-    SetNickName(name);
+    SetNickName(nick_name);
+    SetAccountName(account_name);
 
-    if (name.empty() == true) {
+    if ((nick_name.empty() == true) || (account_name.empty() == true)) {
       std::stringstream msg;
       msg << "could not get user from: " << str;
       on_failed(msg.str());
       return;
     }
-    on_user_gotten(name);
+    on_user_gotten(nick_name);
   });
 }
 
@@ -270,7 +277,8 @@ void Twitch::UpdateChannel(
           true)};
 
   chat_.Connect(kTwitchIrcHost, kTwitchIrcPort, GetAccessToken(),
-      GetNickName(), GetNickName(), [](const boost::system::error_code &ec) {
+      GetNickName(), GetAccountNameLowerCase(),
+      [](const boost::system::error_code &ec) {
   });
 
   http_request_service_.Put(
@@ -374,8 +382,25 @@ std::string Twitch::GetNickName() const {
 
 
 void Twitch::SetNickName(const std::string &nick_name) {
-  std::lock_guard<std::mutex> lock{ nick_name_mutex_ };
+  std::lock_guard<std::mutex> lock{nick_name_mutex_};
   nick_name_ = nick_name;
+}
+
+
+std::string Twitch::GetAccountNameLowerCase() const {
+  std::string account_name{};
+  {
+    std::lock_guard<std::mutex> lock{account_name_mutex_};
+    account_name = account_name_;
+  }
+  boost::algorithm::to_lower(account_name);
+  return account_name;
+}
+
+
+void Twitch::SetAccountName(const std::string &account_name) {
+  std::lock_guard<std::mutex> lock{account_name_mutex_};
+  account_name_ = account_name;
 }
 
 
