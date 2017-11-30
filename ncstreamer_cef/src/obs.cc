@@ -529,8 +529,8 @@ boost::property_tree::ptree
     Obs::WebcamDevice::ToTree() const {
   boost::property_tree::ptree tree;
   tree.put("id", device_id_);
-  tree.put("default_width", default_size_.width());
-  tree.put("default_height", default_size_.height());
+  tree.put("defaultWidth", default_size_.width());
+  tree.put("defaultHeight", default_size_.height());
   return tree;
 }
 }  // namespace ncstreamer
