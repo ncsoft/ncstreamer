@@ -19,7 +19,9 @@ IrcService::IrcService()
       msg_{},
       error_{},
       read_{},
-      thread_{} {
+      thread_{},
+      ready_type_mutex_{},
+      ready_type_{IrcService::ReadyType::kNone} {
   ctx_.load_verify_file("cacert.pem");
 }
 
@@ -45,6 +47,8 @@ void IrcService::Connect(
   error_ = on_errored;
   read_ = on_read;
 
+  SetReadyType(IrcService::ReadyType::kConnecting);
+
   boost::asio::ip::tcp::resolver resolver(io_service_);
   auto endpoint_iterator = resolver.resolve({host.c_str(), port.c_str()});
 
@@ -65,6 +69,8 @@ void IrcService::Close() {
   }
   if (thread_.joinable() == true)
     thread_.join();
+
+  SetReadyType(IrcService::ReadyType::kNone);
 }
 
 
@@ -99,6 +105,7 @@ void IrcService::HandleWrite(
     const std::size_t &size) {
   if (!ec) {
     DoRead();
+    SetReadyType(IrcService::ReadyType::kCompleted);
   } else {
     error_(ec);
   }
@@ -125,5 +132,21 @@ void IrcService::ReadHandle(
   read_(command);
 
   DoRead();
+}
+
+
+IrcService::ReadyType IrcService::GetReadyType() {
+  IrcService::ReadyType ready_type{IrcService::ReadyType::kNone};
+  {
+    std::lock_guard<std::mutex> lock{ready_type_mutex_};
+    ready_type = ready_type_;
+  }
+  return ready_type;
+}
+
+
+void IrcService::SetReadyType(IrcService::ReadyType ready_type) {
+  std::lock_guard<std::mutex> lock{ready_type_mutex_};
+  ready_type_ = ready_type;
 }
 }  // namespace ncstreamer

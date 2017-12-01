@@ -150,8 +150,8 @@ void StreamingService::GetComments(
   current_service_provider_->GetComments(
       created_time,
       [this, on_failed](const std::string &error) {
-        HandleFail(on_failed, kFunc, error);
-      },
+    on_failed(error);
+  },
       [on_comments_got](
           const std::string &comments) {
     on_comments_got(comments);

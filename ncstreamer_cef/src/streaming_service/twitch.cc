@@ -170,7 +170,20 @@ void Twitch::PostLiveVideo(
 void Twitch::GetComments(const std::string &created_time,
     const OnFailed &on_failed,
     const OnCommentsGot &on_comments_got) {
-  on_comments_got(chat_.GetJson(created_time));
+
+  if (chat_.GetReady() == IrcService::ReadyType::kNone) {
+    chat_.Connect(kTwitchIrcHost, kTwitchIrcPort, GetAccessToken(),
+        GetNickName(), GetAccountNameLowerCase(),
+        [on_failed](const boost::system::error_code &ec) {
+      std::string msg{ec.message()};
+      on_failed(msg);
+    });
+    on_failed("not ready");
+  } else if (chat_.GetReady() == IrcService::ReadyType::kConnecting) {
+    on_failed("not ready");
+  } else {
+    on_comments_got(chat_.GetJson(created_time));
+  }
 }
 
 
@@ -276,11 +289,6 @@ void Twitch::UpdateChannel(
           description,
           game,
           true)};
-
-  chat_.Connect(kTwitchIrcHost, kTwitchIrcPort, GetAccessToken(),
-      GetNickName(), GetAccountNameLowerCase(),
-      [](const boost::system::error_code &ec) {
-  });
 
   http_request_service_.Put(
       update_channel_uri.uri_string(),
