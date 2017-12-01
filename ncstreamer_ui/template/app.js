@@ -35,6 +35,11 @@ const app = {
         x: 0,
         y: 0,
       },
+      chromaKey: {
+        use: false,
+        color: 0x00FF00,  // 0x00BGR
+        similarity: 400,
+      },
     },
     quality: {
       high: {
@@ -205,6 +210,7 @@ function setUpControls(args) {
     'live-image',
     'control-button',
     'quality-select',
+    'chroma-key-checkbox',
     'modal-close-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
@@ -246,6 +252,8 @@ function setUpControls(args) {
       'click', onControlButtonClicked);
   app.dom.qualitySelect.addEventListener(
       'ncsoftSelectChange', onQualitySelectChanged);
+  app.dom.chromaKeyCheckbox.addEventListener(
+      'change', onchromaKeyCheckboxChanged);
   app.dom.modalCloseButton.addEventListener(
       'click', onModalCloseClicked);
 
@@ -612,6 +620,17 @@ function onConnectInfoDisconnectButtonClicked() {
 
 function onQualitySelectChanged() {
   updateQualitySelect();
+}
+
+
+function onchromaKeyCheckboxChanged() {
+  if (app.dom.chromaKeyCheckbox.checked) {
+    const color = app.streaming.webcam.chromaKey.color;
+    const similarity = app.streaming.webcam.chromaKey.similarity;
+    cef.settingsChromaKeyOn.request(color, similarity);
+  } else {
+    cef.settingsChromaKeyOff.request();
+  }
 }
 
 
@@ -1049,6 +1068,11 @@ cef.settingsWebcamOn.onResponse = function(error) {
                                        app.streaming.webcam.size.height);
   cef.settingsWebcamPositionUpdate.request(app.streaming.webcam.position.x,
                                            app.streaming.webcam.position.y);
+  if (app.dom.chromaKeyCheckbox.checked) {
+    const color = app.streaming.webcam.chromaKey.color;
+    const similarity = app.streaming.webcam.chromaKey.similarity;
+    cef.settingsChromaKeyOn.request(color, similarity);
+  }
 };
 
 
@@ -1071,6 +1095,40 @@ cef.settingsWebcamSizeUpdate.onResponse = function(error, normalX, normalY) {
 
 cef.settingsWebcamPositionUpdate.onResponse =
     function(error, normalX, normalY) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+};
+
+
+cef.settingsChromaKeyOn.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.webcam.chromaKey.use = true;
+};
+
+
+cef.settingsChromaKeyOff.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  app.streaming.webcam.chromaKey.use = false;
+};
+
+
+cef.settingsChromaKeyColorUpdate.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+};
+
+
+cef.settingsChromaKeySimilarityUpdate.onResponse = function(error) {
   if (error != '') {
     console.info(error);
     return;

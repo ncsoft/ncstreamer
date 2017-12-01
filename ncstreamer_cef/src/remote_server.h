@@ -148,6 +148,22 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void OnSettingsChromaKeyOnRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
+  void OnSettingsChromaKeyOffRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
+  void OnSettingsChromaKeyColorRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
+  void OnSettingsChromaKeySimilarityRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
   void OnNcStreamerExitRequest(
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
@@ -182,6 +198,22 @@ class RemoteServer {
       const std::string &error);
 
   bool RespondSettingsWebcamPosition(
+      int request_key,
+      const std::string &error);
+
+  bool RespondSettingsChromaKeyOn(
+      int request_key,
+      const std::string &error);
+
+  bool RespondSettingsChromaKeyOff(
+      int request_key,
+      const std::string &error);
+
+  bool RespondSettingsChromaKeyColor(
+      int request_key,
+      const std::string &error);
+
+  bool RespondSettingsChromaKeySimilarity(
       int request_key,
       const std::string &error);
 

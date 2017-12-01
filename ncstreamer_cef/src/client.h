@@ -138,6 +138,22 @@ class Client : public CefClient {
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsChromaKeyOn(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsChromaKeyOff(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsChromaKeyColorUpdate(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsChromaKeySimilarityUpdate(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsVideoQualityUpdate(
       const std::string &cmd,
       const CommandArgumentMap &args,

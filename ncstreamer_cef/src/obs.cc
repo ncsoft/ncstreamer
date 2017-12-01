@@ -139,7 +139,7 @@ std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
 }
 
 
-bool Obs::TurnOnWebcam(const std::string device_id) {
+bool Obs::TurnOnWebcam(const std::string &device_id) {
   LocalStorage::Get()->SetWebcamUse(true);
 
   obs_scene_t *scene =
@@ -190,7 +190,7 @@ bool Obs::TurnOffWebcam() {
 }
 
 
-bool Obs::UpdateWebcamSize(float normal_x, float normal_y) {
+bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
   obs_source_t *scene_source = obs_get_source_by_name("Scene");
   if (scene_source == nullptr) {
     return false;
@@ -222,7 +222,7 @@ bool Obs::UpdateWebcamSize(float normal_x, float normal_y) {
 }
 
 
-bool Obs::UpdateWebcamPosition(float normal_x, float normal_y) {
+bool Obs::UpdateWebcamPosition(const float normal_x, const float normal_y) {
   obs_source_t *scene_source = obs_get_source_by_name("Scene");
   if (scene_source == nullptr) {
     return false;
@@ -239,6 +239,89 @@ bool Obs::UpdateWebcamPosition(float normal_x, float normal_y) {
 
   vec2 position{base_size_.width() * normal_x, base_size_.height() * normal_y};
   obs_sceneitem_set_pos(item, &position);
+  return true;
+}
+
+
+bool Obs::TurnOnChromaKey(const uint32_t color, const int similarity) {
+  obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+  if (source == nullptr) {
+    return false;
+  }
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "key_color_type", "custom");
+  obs_data_set_int(settings, "key_color", color);
+  obs_data_set_int(settings, "similarity", similarity);
+  obs_data_set_int(settings, "smoothness", 80);
+  obs_data_set_int(settings, "spill", 100);
+  obs_data_set_int(settings, "opacity", 100);
+  obs_data_set_double(settings, "contrast", 0.0);
+  obs_data_set_double(settings, "brightness", 0.0);
+  obs_data_set_double(settings, "gamma", 0.0);
+
+  obs_source_t *filter = obs_source_create(
+    "chroma_key_filter", "ChromaKeyFileter", settings, nullptr);
+  obs_source_filter_add(source, filter);
+  obs_source_release(filter);
+  obs_source_release(source);
+  return true;
+}
+
+
+bool Obs::TurnOffChromaKey() {
+  obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+  if (source == nullptr) {
+    return false;
+  }
+  obs_source_t *filter =
+      obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+  if (filter == nullptr) {
+    return false;
+  }
+  obs_source_filter_remove(source, filter);
+  obs_source_release(source);
+  return true;
+}
+
+
+bool Obs::UpdateChromaKeyColor(const uint32_t color) {
+  obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+  if (source == nullptr) {
+    return false;
+  }
+  obs_source_t *filter =
+    obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+  if (filter == nullptr) {
+    return false;
+  }
+  obs_source_release(source);
+
+  obs_data_t *settings = obs_source_get_settings(filter);
+  obs_data_set_int(settings, "key_color", color);
+  obs_source_update(filter, settings);
+  obs_data_release(settings);
+  obs_source_release(filter);
+  return true;
+}
+
+
+bool Obs::UpdateChromaKeySimilarity(const int similarity) {
+  obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+  if (source == nullptr) {
+    return false;
+  }
+  obs_source_t *filter =
+    obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+  if (filter == nullptr) {
+    return false;
+  }
+  obs_source_release(source);
+
+  obs_data_t *settings = obs_source_get_settings(filter);
+  obs_data_set_int(settings, "similarity", similarity);
+  obs_source_update(filter, settings);
+  obs_data_release(settings);
+  obs_source_release(filter);
   return true;
 }
 
