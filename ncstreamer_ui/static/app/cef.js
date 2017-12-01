@@ -86,6 +86,14 @@ const cef = (function() {
       request: [],
       response: ['error'],
     },
+    'settings/chroma_key/color/update': {
+      request: ['color'],
+      response: ['error'],
+    },
+    'settings/chroma_key/similarity/update': {
+      request: ['similarity'],
+      response: ['error'],
+    },
     'storage/user_page/update': {
       request: ['userPage'],
       response: [],

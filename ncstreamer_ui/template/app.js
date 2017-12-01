@@ -37,7 +37,7 @@ const app = {
       },
       chromaKey: {
         use: false,
-        color: 0x00FF00,
+        color: 0x00FF00,  // 0x00BGR
         similarity: 400,
       },
     },
@@ -1117,4 +1117,20 @@ cef.settingsChromaKeyOff.onResponse = function(error) {
     return;
   }
   app.streaming.webcam.chromaKey.use = false;
+};
+
+
+cef.settingsChromaKeyColorUpdate.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+};
+
+
+cef.settingsChromaKeySimilarityUpdate.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
 };

@@ -284,6 +284,48 @@ bool Obs::TurnOffChromaKey() {
 }
 
 
+bool Obs::UpdateChromaKeyColor(const uint32_t color) {
+  obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+  if (source == nullptr) {
+    return false;
+  }
+  obs_source_t *filter =
+    obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+  if (filter == nullptr) {
+    return false;
+  }
+  obs_source_release(source);
+
+  obs_data_t *settings = obs_source_get_settings(filter);
+  obs_data_set_int(settings, "key_color", color);
+  obs_source_update(filter, settings);
+  obs_data_release(settings);
+  obs_source_release(filter);
+  return true;
+}
+
+
+bool Obs::UpdateChromaKeySimilarity(const int similarity) {
+  obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+  if (source == nullptr) {
+    return false;
+  }
+  obs_source_t *filter =
+    obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+  if (filter == nullptr) {
+    return false;
+  }
+  obs_source_release(source);
+
+  obs_data_t *settings = obs_source_get_settings(filter);
+  obs_data_set_int(settings, "similarity", similarity);
+  obs_source_update(filter, settings);
+  obs_data_release(settings);
+  obs_source_release(filter);
+  return true;
+}
+
+
 void Obs::UpdateVideoQuality(
     const Dimension<uint32_t> &output_size,
     uint32_t fps,

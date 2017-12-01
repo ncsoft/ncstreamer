@@ -243,6 +243,16 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"settings/chroma_key/color/update",
+       std::bind(&This::OnCommandSettingsChromaKeyColorUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {"settings/chroma_key/similarity/update",
+       std::bind(&This::OnCommandSettingsChromaKeySimilarityUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"settings/video_quality/update",
        std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
            std::placeholders::_1,
@@ -760,6 +770,70 @@ void Client::OnCommandSettingsChromaKeyOff(
   bool result = Obs::Get()->TurnOffChromaKey();
   if (!result) {
     std::string error{"failed to turn chroma key off"};
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
+    return;
+  }
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", ""}});
+}
+
+
+void Client::OnCommandSettingsChromaKeyColorUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  auto color_i = args.find("color");
+  if (color_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  uint32_t color{0};
+  try {
+    color = std::stoul(color_i->second);
+  }
+  catch (...) {
+    assert(false);
+    return;
+  }
+
+  bool result = Obs::Get()->UpdateChromaKeyColor(color);
+  if (!result) {
+    std::string error{"failed to update chroma key color"};
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
+    return;
+  }
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", ""}});
+}
+
+
+void Client::OnCommandSettingsChromaKeySimilarityUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  auto similarity_i = args.find("similarity");
+  if (similarity_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  int similarity{0};
+  try {
+    similarity = std::stoi(similarity_i->second);
+  }
+  catch (...) {
+    assert(false);
+    return;
+  }
+
+  bool result = Obs::Get()->UpdateChromaKeyColor(similarity);
+  if (!result) {
+    std::string error{"failed to update chroma key similarity"};
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});
     return;
