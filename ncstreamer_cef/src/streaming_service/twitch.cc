@@ -170,6 +170,7 @@ void Twitch::PostLiveVideo(
 void Twitch::GetComments(const std::string &created_time,
     const OnFailed &on_failed,
     const OnCommentsGot &on_comments_got) {
+  on_comments_got(chat_.GetJson(created_time));
 }
 
 
