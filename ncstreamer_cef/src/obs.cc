@@ -139,7 +139,7 @@ std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
 }
 
 
-bool Obs::TurnOnWebcam(const std::string device_id) {
+bool Obs::TurnOnWebcam(const std::string &device_id) {
   LocalStorage::Get()->SetWebcamUse(true);
 
   obs_scene_t *scene =
@@ -190,7 +190,7 @@ bool Obs::TurnOffWebcam() {
 }
 
 
-bool Obs::UpdateWebcamSize(float normal_x, float normal_y) {
+bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
   obs_source_t *scene_source = obs_get_source_by_name("Scene");
   if (scene_source == nullptr) {
     return false;
@@ -222,7 +222,7 @@ bool Obs::UpdateWebcamSize(float normal_x, float normal_y) {
 }
 
 
-bool Obs::UpdateWebcamPosition(float normal_x, float normal_y) {
+bool Obs::UpdateWebcamPosition(const float normal_x, const float normal_y) {
   obs_source_t *scene_source = obs_get_source_by_name("Scene");
   if (scene_source == nullptr) {
     return false;

@@ -45,10 +45,10 @@ class Obs {
   bool TurnOffMic();
   bool UpdateMicVolume(float volume);
   std::vector<Obs::WebcamDevice> SearchWebcamDevices();
-  bool TurnOnWebcam(const std::string device_id);
+  bool TurnOnWebcam(const std::string &device_id);
   bool TurnOffWebcam();
-  bool UpdateWebcamSize(float normal_x, float normal_y);
-  bool UpdateWebcamPosition(float normal_x, float normal_y);
+  bool UpdateWebcamSize(const float normal_x, const float normal_y);
+  bool UpdateWebcamPosition(const float normal_x, const float normal_y);
   void UpdateVideoQuality(
       const Dimension<uint32_t> &output_size,
       uint32_t fps,
