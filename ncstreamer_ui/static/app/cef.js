@@ -78,6 +78,14 @@ const cef = (function() {
       request: ['normalX', 'normalY'],
       response: ['error', 'normalX', 'normalY'],
     },
+    'settings/chroma_key/on': {
+      request: ['color', 'similarity'],
+      response: ['error'],
+    },
+    'settings/chroma_key/off': {
+      request: [],
+      response: ['error'],
+    },
     'storage/user_page/update': {
       request: ['userPage'],
       response: [],

@@ -233,6 +233,16 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"settings/chroma_key/on",
+       std::bind(&This::OnCommandSettingsChromaKeyOn, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
+      {"settings/chroma_key/off",
+       std::bind(&This::OnCommandSettingsChromaKeyOff, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"settings/video_quality/update",
        std::bind(&This::OnCommandSettingsVideoQualityUpdate, this,
            std::placeholders::_1,
@@ -704,6 +714,59 @@ void Client::OnCommandSettingsWebcamPositionUpdate(
       JsExecutor::StringPairVector{{"error", error},
                                    {"normalX", normal_x_i->second},
                                    {"normalY", normal_y_i->second}});
+}
+
+
+void Client::OnCommandSettingsChromaKeyOn(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  auto color_i = args.find("color");
+  auto similarity_i = args.find("similarity");
+  if (color_i == args.end() ||
+      similarity_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  uint32_t color{0};
+  int similarity{0};
+  try {
+    color = std::stoul(color_i->second);
+    similarity = std::stoi(similarity_i->second);
+  }
+  catch (...) {
+    assert(false);
+    return;
+  }
+
+  bool result = Obs::Get()->TurnOnChromaKey(color, similarity);
+  if (!result) {
+    std::string error{"failed to turn chroma key on"};
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
+    return;
+  }
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", ""}});
+}
+
+
+void Client::OnCommandSettingsChromaKeyOff(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> browser) {
+  bool result = Obs::Get()->TurnOffChromaKey();
+  if (!result) {
+    std::string error{"failed to turn chroma key off"};
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
+    return;
+  }
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", ""}});
 }
 
 
