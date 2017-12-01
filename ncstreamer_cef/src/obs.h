@@ -49,6 +49,8 @@ class Obs {
   bool TurnOffWebcam();
   bool UpdateWebcamSize(const float normal_x, const float normal_y);
   bool UpdateWebcamPosition(const float normal_x, const float normal_y);
+  bool TurnOnChromaKey(const uint32_t color, const int similarity);
+  bool TurnOffChromaKey();
   void UpdateVideoQuality(
       const Dimension<uint32_t> &output_size,
       uint32_t fps,

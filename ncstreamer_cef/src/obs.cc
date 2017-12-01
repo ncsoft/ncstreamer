@@ -243,6 +243,47 @@ bool Obs::UpdateWebcamPosition(const float normal_x, const float normal_y) {
 }
 
 
+bool Obs::TurnOnChromaKey(const uint32_t color, const int similarity) {
+  obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+  if (source == nullptr) {
+    return false;
+  }
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "key_color_type", "custom");
+  obs_data_set_int(settings, "key_color", color);
+  obs_data_set_int(settings, "similarity", similarity);
+  obs_data_set_int(settings, "smoothness", 80);
+  obs_data_set_int(settings, "spill", 100);
+  obs_data_set_int(settings, "opacity", 100);
+  obs_data_set_double(settings, "contrast", 0.0);
+  obs_data_set_double(settings, "brightness", 0.0);
+  obs_data_set_double(settings, "gamma", 0.0);
+
+  obs_source_t *filter = obs_source_create(
+    "chroma_key_filter", "ChromaKeyFileter", settings, nullptr);
+  obs_source_filter_add(source, filter);
+  obs_source_release(filter);
+  obs_source_release(source);
+  return true;
+}
+
+
+bool Obs::TurnOffChromaKey() {
+  obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+  if (source == nullptr) {
+    return false;
+  }
+  obs_source_t *filter =
+      obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+  if (filter == nullptr) {
+    return false;
+  }
+  obs_source_filter_remove(source, filter);
+  obs_source_release(source);
+  return true;
+}
+
+
 void Obs::UpdateVideoQuality(
     const Dimension<uint32_t> &output_size,
     uint32_t fps,
