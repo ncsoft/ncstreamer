@@ -8,6 +8,7 @@
 
 
 #include <deque>
+#include <mutex>  // NOLINT
 #include <string>
 #include <tuple>
 #include <vector>
@@ -35,6 +36,8 @@ class TwitchChat {
   void ReadHandle(const std::string &msg);
   const std::string GetJson(const std::string &time);
 
+  IrcService::ReadyType GetReady();
+
  private:
   class IrcMessage;
 
@@ -42,6 +45,7 @@ class TwitchChat {
   IrcService::OnErrored on_errored_;
 
   // chats reservoir 0:id, 1:time, 2:nick, 3:msg
+  mutable std::mutex reservoir_mutex_;
   std::deque<std::tuple<std::string, std::string, std::string,
       std::string>> reservoir_;
   unsigned int id_generated_;

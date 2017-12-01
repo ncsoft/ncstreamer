@@ -466,17 +466,14 @@ void RemoteServer::OnCommentsRequest(
   StreamingService::Get()->GetComments(
       created_time,
       [this, request_key](const std::string &error) {
-        std::stringstream msg;
-        {
-          boost::property_tree::ptree tree;
-          tree.put("data", "");
-          boost::property_tree::write_json(msg, tree, false);
-        }
-        ResponseComments(request_key, "comments error", msg.str());
-      },
+    if (error == "not ready") {
+      ResponseComments(request_key, "comments not ready", "");
+    } else {
+      ResponseComments(request_key, "comments error", "");
+    }},
       [this, request_key](const std::string &comments) {
-        ResponseComments(request_key, "", comments);
-      });
+    ResponseComments(request_key, "", comments);
+  });
 }
 
 

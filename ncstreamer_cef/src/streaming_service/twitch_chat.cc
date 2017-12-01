@@ -17,7 +17,8 @@ namespace ncstreamer {
 TwitchChat::TwitchChat()
     : irc_{},
       on_errored_{},
-      id_generated_{} {
+      id_generated_{},
+      reservoir_mutex_{} {
 }
 
 
@@ -70,7 +71,10 @@ void TwitchChat::ReadHandle(const std::string &msg) {
     const std::string sender = irc_msg.GetSender();
     const std::string content = irc_msg.GetContent();
 
-    reservoir_.emplace_front(id, time, sender, content);
+    {
+      std::lock_guard<std::mutex> lock{reservoir_mutex_};
+      reservoir_.emplace_front(id, time, sender, content);
+    }
 
     // set max size to 10
     if (reservoir_.size() > 10)
@@ -87,36 +91,45 @@ const std::string TwitchChat::GetJson(const std::string &time) {
 
   ptree root;
   ptree datas;
-  for (const auto &chat : reservoir_) {
-    const std::string ctime = std::get<1>(chat);
+  {
+    std::lock_guard<std::mutex> lock{ reservoir_mutex_ };
 
-    ptime chat_time = time_from_string(ctime);
-    if (time.length() > 4) {
-      ptime user_time = time_from_string(time);
-      if (chat_time < user_time)
-        break;
+    for (const auto &chat : reservoir_) {
+      const std::string ctime = std::get<1>(chat);
+
+      ptime chat_time = time_from_string(ctime);
+      if (time.length() > 4) {
+        ptime user_time = time_from_string(time);
+        if (chat_time < user_time)
+          break;
+      }
+
+      const std::string id = std::get<0>(chat);
+      const std::string nick = std::get<2>(chat);
+      const std::string msg = std::get<3>(chat);
+
+      ptree from;
+      from.add<std::string>("name", nick);
+
+      ptree data;
+      data.add<std::string>("created_time", ctime);
+      data.add_child("from", from);
+      data.add <std::string>("message", msg);
+      data.add <std::string>("id", id);
+
+      datas.push_back(std::make_pair("", data));
     }
-
-    const std::string id = std::get<0>(chat);
-    const std::string nick = std::get<2>(chat);
-    const std::string msg = std::get<3>(chat);
-
-    ptree from;
-    from.add<std::string>("name", nick);
-
-    ptree data;
-    data.add<std::string>("created_time", ctime);
-    data.add_child("from", from);
-    data.add <std::string>("message", msg);
-    data.add <std::string>("id", id);
-
-    datas.push_back(std::make_pair("", data));
   }
   root.add_child("data", datas);
 
   std::ostringstream oss;
   write_json(oss, root);
   return oss.str();
+}
+
+
+IrcService::ReadyType TwitchChat::GetReady() {
+  return irc_.GetReadyType();
 }
 
 
