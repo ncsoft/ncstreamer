@@ -9,6 +9,7 @@
 
 #include <deque>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "boost/tokenizer.hpp"
@@ -30,13 +31,20 @@ class TwitchChat {
       const std::string &channel_name,
       IrcService::OnErrored on_errored);
   void Close();
+
   void ReadHandle(const std::string &msg);
+  const std::string GetJson(const std::string &time);
 
  private:
   class IrcMessage;
 
   IrcService irc_;
   IrcService::OnErrored on_errored_;
+
+  // chats reservoir 0:id, 1:time, 2:nick, 3:msg
+  std::deque<std::tuple<std::string, std::string, std::string,
+      std::string>> reservoir_;
+  unsigned int id_generated_;
 };
 
 
