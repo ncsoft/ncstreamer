@@ -34,6 +34,14 @@ class RemoteMessage {
     kSettingsWebcamSizeResponse,
     kSettingsWebcamPositionRequest = 541,
     kSettingsWebcamPositionResponse,
+    kSettingsChromaKeyOnRequest = 601,
+    kSettingsChromaKeyOnResponse,
+    kSettingsChromaKeyOffRequest = 611,
+    kSettingsChromaKeyOffResponse,
+    kSettingsChromaKeyColorRequest = 621,
+    kSettingsChromaKeyColorResponse,
+    kSettingsChromaKeySimilarityRequest = 631,
+    kSettingsChromaKeySimilarityResponse,
     kNcStreamerExitRequest = 901,
     kNcStreamerExitResponse,  // not used.
   };

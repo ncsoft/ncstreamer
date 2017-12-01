@@ -293,4 +293,27 @@ const remote = {
     cef.settingsWebcamPositionUpdate.request(app.streaming.webcam.position.x,
                                              app.streaming.webcam.position.y);
   },
+  onSettingsChromaKeyOnRequest: function(requestKey, args) {
+    app.streaming.webcam.chromaKey.color = args.color;
+    app.streaming.webcam.chromaKey.similarity = args.similarity;
+
+    app.dom.chromaKeyCheckbox.checked = true;
+    const color = app.streaming.webcam.chromaKey.color;
+    const similarity = app.streaming.webcam.chromaKey.similarity;
+    cef.settingsChromaKeyOn.request(color, similarity);
+  },
+  onSettingsChromaKeyOffRequest: function(requestKey) {
+    app.dom.chromaKeyCheckbox.checked = false;
+    cef.settingsChromaKeyOff.request();
+  },
+  onSettingsChromaKeyColorRequest: function(requestKey, args) {
+    app.streaming.webcam.chromaKey.color = args.color;
+    cef.settingsChromaKeyColor.request(
+        app.streaming.webcam.chromaKey.color);
+  },
+  onSettingsChromaKeySimilarityRequest: function(requestKey, args) {
+    app.streaming.webcam.chromaKey.similarity = args.similarity;
+    cef.settingsChromaKeySimilarity.request(
+        app.streaming.webcam.chromaKey.similarity);
+  },
 };

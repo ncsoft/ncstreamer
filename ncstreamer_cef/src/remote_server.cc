@@ -351,6 +351,18 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kSettingsWebcamPositionRequest,
        std::bind(&RemoteServer::OnSettingsWebcamPositionRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsChromaKeyOnRequest,
+       std::bind(&RemoteServer::OnSettingsChromaKeyOnRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsChromaKeyOffRequest,
+       std::bind(&RemoteServer::OnSettingsChromaKeyOffRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsChromaKeyColorRequest,
+       std::bind(&RemoteServer::OnSettingsChromaKeyColorRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsChromaKeySimilarityRequest,
+       std::bind(&RemoteServer::OnSettingsChromaKeySimilarityRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -624,6 +636,127 @@ void RemoteServer::OnSettingsWebcamPositionRequest(
 }
 
 
+void RemoteServer::OnSettingsChromaKeyOnRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  std::string error{};
+  uint32_t color{0};
+  int similarity{0};
+  try {
+    color = tree.get<uint32_t>("color");
+    similarity = tree.get<int>("similarity");
+  } catch (const std::exception &/*e*/) {
+    error = "chroma key on error";
+  }
+
+  if (similarity > 1000 || similarity < 0) {
+    error = "chroma key on error";
+  }
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  if (error.empty() == false) {
+    LogError("OnSettingsChromaKeyOn: " + error);
+    RespondSettingsChromaKeyOn(request_key, error);
+    return;
+  }
+
+  boost::property_tree::ptree args;
+  args.add("color", color);
+  args.add("similarity", similarity);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsChromaKeyOnRequest",
+      request_key,
+      args);
+
+  RespondSettingsChromaKeyOn(request_key, error);
+}
+
+
+void RemoteServer::OnSettingsChromaKeyOffRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  int request_key = request_cache_.CheckIn(connection);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsChromaKeyOffRequest",
+      request_key);
+
+  RespondSettingsChromaKeyOff(request_key, "");
+}
+
+
+void RemoteServer::OnSettingsChromaKeyColorRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  std::string error{};
+  uint32_t color{0};
+  try {
+    color = tree.get<uint32_t>("color");
+  } catch (const std::exception &/*e*/) {
+    error = "chroma key color error";
+  }
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  if (error.empty() == false) {
+    LogError("OnSettingsChromaKeyColor: " + error);
+    RespondSettingsChromaKeyOn(request_key, error);
+    return;
+  }
+
+  boost::property_tree::ptree args;
+  args.add("color", color);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsChromaKeyColorRequest",
+      request_key,
+      args);
+
+  RespondSettingsChromaKeyColor(request_key, error);
+}
+
+
+void RemoteServer::OnSettingsChromaKeySimilarityRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  std::string error{};
+  int similarity{0};
+  try {
+    similarity = tree.get<int>("similarity");
+  } catch (const std::exception &/*e*/) {
+    error = "chroma key similarity error";
+  }
+
+  if (similarity > 1000 || similarity < 0) {
+    error = "chroma key similarity error";
+  }
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  if (error.empty() == false) {
+    LogError("OnSettingsChromaKeySimilarity: " + error);
+    RespondSettingsChromaKeyOn(request_key, error);
+    return;
+  }
+
+  boost::property_tree::ptree args;
+  args.add("similarity", similarity);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsChromaKeySimilarityRequest",
+      request_key,
+      args);
+
+  RespondSettingsChromaKeySimilarity(request_key, error);
+}
+
+
 void RemoteServer::OnNcStreamerExitRequest(
     const websocketpp::connection_hdl &/*connection*/,
     const boost::property_tree::ptree &/*tree*/) {
@@ -860,6 +993,126 @@ bool RemoteServer::RespondSettingsWebcamPosition(
     boost::property_tree::ptree tree;
     tree.put("type", static_cast<int>(
         RemoteMessage::MessageType::kSettingsWebcamPositionResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsChromaKeyOn(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsChromaKeyOn: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsChromaKeyOnResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsChromaKeyOff(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsChromaKeyOff: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsChromaKeyOffResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsChromaKeyColor(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsChromaKeyColor: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsChromaKeyColorResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsChromaKeySimilarity(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsChromaKeySimilarity: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsChromaKeySimilarityResponse));
     tree.put("error", error);
 
     boost::property_tree::write_json(msg, tree, false);
