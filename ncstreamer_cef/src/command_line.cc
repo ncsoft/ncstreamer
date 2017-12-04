@@ -58,7 +58,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
 
   const std::wstring &locale =
       cef_cmd_line->GetSwitchValue(L"locale");
-  locale_ = locale.empty() ? L"en-US" : locale;
+  locale_ = locale.empty() ? L"ko-KR" : locale;
 
   ui_uri_ = cef_cmd_line->GetSwitchValue(L"ui-uri");
 

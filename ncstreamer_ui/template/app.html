@@ -185,7 +185,7 @@
         <input type="checkbox"
                id="webcam-checkbox">
         <label class="on"
-               for="webcam-checkbox">webcam</label>
+               for="webcam-checkbox">%USE_WEBCAM%</label>
       </div>
       <div class="form-checkbox mic">
         <input type="checkbox"
@@ -344,6 +344,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          %EASY_SETTING%
           <button class="close"
                   data-dismiss="modal"
                   aria-label="Close">
@@ -351,7 +352,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>no device alert<br/>go setting dialog...</p>
+          <p>%NO_DEVICE_MESSAGE1%<br/><br/>%NO_DEVICE_MESSAGE2%</p>
         </div>
         <div class="modal-footer">
           <button id="modal-close-button"
