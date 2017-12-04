@@ -106,6 +106,8 @@ function enableAllContorls() {
   ncsoft.select.enable(app.dom.gameSelect);
   ncsoft.heading.enable(app.dom.broadcastingTitleHead);
   ncsoft.textarea.enable(app.dom.feedDescription);
+  ncsoft.checkbox.enable(app.dom.webcamCheckbox);
+  ncsoft.checkbox.enable(app.dom.micCheckbox);
 }
 
 
@@ -119,6 +121,8 @@ function disableAllControls() {
   ncsoft.select.disable(app.dom.gameSelect);
   ncsoft.heading.disable(app.dom.broadcastingTitleHead);
   ncsoft.textarea.disable(app.dom.feedDescription);
+  ncsoft.checkbox.disable(app.dom.webcamCheckbox);
+  ncsoft.checkbox.disable(app.dom.micCheckbox);
 }
 
 
@@ -158,6 +162,8 @@ function updateStreamingStatus(status) {
       app.dom.liveImage.style.display = 'block';
       ncsoft.klass.add(app.dom.providerPageLink, 'live');
       disableAllControls();
+      ncsoft.checkbox.enable(app.dom.webcamCheckbox);
+      ncsoft.checkbox.enable(app.dom.micCheckbox);
       break;
     case 'stopping':
       ncsoft.klass.add(button, 'loading');
