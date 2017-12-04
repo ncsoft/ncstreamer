@@ -43,8 +43,9 @@ void TwitchChat::Connect(
       "CAP REQ :twitch.tv/tags\r\n" +
       "CAP REQ :twitch.tv/commands\r\n"};
 
-  // clear chats reservoir
+  // clear chats reservoir & index
   reservoir_.clear();
+  id_generated_ = 0;
 
   irc_.Connect(host, port, msg,
       [this](const boost::system::error_code &ec) {
@@ -92,7 +93,7 @@ const std::string TwitchChat::GetJson(const std::string &time) {
   ptree root;
   ptree datas;
   {
-    std::lock_guard<std::mutex> lock{ reservoir_mutex_ };
+    std::lock_guard<std::mutex> lock{reservoir_mutex_};
 
     for (const auto &chat : reservoir_) {
       const std::string ctime = std::get<1>(chat);

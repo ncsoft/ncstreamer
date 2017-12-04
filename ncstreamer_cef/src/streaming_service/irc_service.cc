@@ -96,6 +96,7 @@ void IrcService::HandleHandshake(const boost::system::error_code &ec) {
           boost::asio::placeholders::bytes_transferred));
   } else {
     error_(ec);
+    socket_.lowest_layer().close();
   }
 }
 
@@ -108,6 +109,7 @@ void IrcService::HandleWrite(
     SetReadyType(IrcService::ReadyType::kCompleted);
   } else {
     error_(ec);
+    socket_.lowest_layer().close();
   }
 }
 
@@ -123,15 +125,20 @@ void IrcService::DoRead() {
 void IrcService::ReadHandle(
     const boost::system::error_code &ec,
     const std::size_t &size) {
-  std::string command{
-      buffers_begin(streambuf_.data()),
-      buffers_begin(streambuf_.data()) + size -
-          std::string{kIrcDelimiter}.size()};
+  if (!ec) {
+    std::string command{
+        buffers_begin(streambuf_.data()),
+        buffers_begin(streambuf_.data()) + size -
+            std::string{kIrcDelimiter}.size()};
 
-  streambuf_.consume(size);
-  read_(command);
+    streambuf_.consume(size);
+    read_(command);
 
-  DoRead();
+    DoRead();
+  } else {
+    error_(ec);
+    Close();
+  }
 }
 
 
