@@ -10,6 +10,7 @@ const ncsoft = {
   heading: {},
   modal: {},
   slider: {},
+  checkbox: {},
 };
 
 
@@ -122,6 +123,16 @@ ncsoft.textarea.enable = function(element) {
 
 
 ncsoft.textarea.disable = function(element) {
+  element.setAttribute('disabled', '');
+};
+
+
+ncsoft.checkbox.enable = function(element) {
+  element.removeAttribute('disabled');
+};
+
+
+ncsoft.checkbox.disable = function(element) {
   element.setAttribute('disabled', '');
 };
 
