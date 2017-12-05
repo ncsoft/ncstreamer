@@ -42,6 +42,10 @@ class RemoteMessage {
     kSettingsChromaKeyColorResponse,
     kSettingsChromaKeySimilarityRequest = 631,
     kSettingsChromaKeySimilarityResponse,
+    kSettingsMicOnRequest = 701,
+    kSettingsMicOnResponse,
+    kSettingsMicOffRequest = 711,
+    kSettingsMicOffResponse,
     kNcStreamerExitRequest = 901,
     kNcStreamerExitResponse,  // not used.
   };

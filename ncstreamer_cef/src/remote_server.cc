@@ -363,6 +363,12 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kSettingsChromaKeySimilarityRequest,
        std::bind(&RemoteServer::OnSettingsChromaKeySimilarityRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsMicOnRequest,
+       std::bind(&RemoteServer::OnSettingsMicOnRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsMicOffRequest,
+       std::bind(&RemoteServer::OnSettingsMicOffRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -754,6 +760,34 @@ void RemoteServer::OnSettingsChromaKeySimilarityRequest(
 }
 
 
+void RemoteServer::OnSettingsMicOnRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  int request_key = request_cache_.CheckIn(connection);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsMicOnRequest",
+      request_key);
+
+  RespondSettingsMicOn(request_key, "");
+}
+
+
+void RemoteServer::OnSettingsMicOffRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  int request_key = request_cache_.CheckIn(connection);
+
+  JsExecutor::Execute(
+      browser_app_->GetMainBrowser(),
+      "remote.onSettingsMicOffRequest",
+      request_key);
+
+  RespondSettingsMicOff(request_key, "");
+}
+
+
 void RemoteServer::OnNcStreamerExitRequest(
     const websocketpp::connection_hdl &/*connection*/,
     const boost::property_tree::ptree &/*tree*/) {
@@ -1110,6 +1144,66 @@ bool RemoteServer::RespondSettingsChromaKeySimilarity(
     boost::property_tree::ptree tree;
     tree.put("type", static_cast<int>(
         RemoteMessage::MessageType::kSettingsChromaKeySimilarityResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsMicOn(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsMicOn: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsMicOnResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsMicOff(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsMicOff: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsMicOffResponse));
     tree.put("error", error);
 
     boost::property_tree::write_json(msg, tree, false);

@@ -164,6 +164,14 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void OnSettingsMicOnRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
+  void OnSettingsMicOffRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
   void OnNcStreamerExitRequest(
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
@@ -214,6 +222,14 @@ class RemoteServer {
       const std::string &error);
 
   bool RespondSettingsChromaKeySimilarity(
+      int request_key,
+      const std::string &error);
+
+  bool RespondSettingsMicOn(
+      int request_key,
+      const std::string &error);
+
+  bool RespondSettingsMicOff(
       int request_key,
       const std::string &error);
 

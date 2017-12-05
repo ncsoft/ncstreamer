@@ -320,4 +320,12 @@ const remote = {
     cef.settingsChromaKeySimilarity.request(
         app.streaming.webcam.chromaKey.similarity);
   },
+  onSettingsMicOnRequest: function(requestKey) {
+    setMicCheckBox(true);
+    cef.settingsMicOn.request();
+  },
+  onSettingsMicOffRequest: function(requestKey) {
+    setMicCheckBox(false);
+    cef.settingsMicOff.request();
+  },
 };
