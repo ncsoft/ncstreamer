@@ -124,10 +124,10 @@ bool Obs::UpdateMicVolume(float volume) {
 
 
 std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
-  DShow::Device::EnumVideoDevices(devices_);
+  DShow::Device::EnumVideoDevices(video_devices_);
   std::vector<Obs::WebcamDevice> webcams;
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
-  for (auto device : devices_) {
+  for (auto device : video_devices_) {
     std::wstring w_device_id{device.name + L":" + device.path};
     std::string device_id = convert.to_bytes(w_device_id);
     Dimension<uint32_t> default_size {
@@ -209,8 +209,8 @@ bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
   int width = obs_source_get_width(source);
   int height = obs_source_get_height(source);
   if (width == 0 || height == 0) {
-    width = devices_.at(0).caps.at(0).minCX;
-    height = devices_.at(0).caps.at(0).minCY;
+    width = video_devices_.at(0).caps.at(0).minCX;
+    height = video_devices_.at(0).caps.at(0).minCY;
   }
 
   vec2 from_size{static_cast<float>(width), static_cast<float>(height)};
@@ -383,7 +383,7 @@ Obs::Obs()
       base_size_{1920, 1080},
       output_size_{1280, 720},
       fps_{30},
-      devices_{}  {
+      video_devices_{} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
@@ -587,7 +587,7 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
 
 bool Obs::GetDevice(std::string device_id, DShow::VideoDevice *device) {
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
-  for (const auto &video_device : devices_) {
+  for (const auto &video_device : video_devices_) {
     std::wstring w_device_str{video_device.name + L":" + video_device.path};
     std::string device_str = convert.to_bytes(w_device_str);
     if (device_str == device_id) {

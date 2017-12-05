@@ -99,7 +99,7 @@ class Obs {
   Dimension<uint32_t> base_size_;
   Dimension<uint32_t> output_size_;
   uint32_t fps_;
-  std::vector<DShow::VideoDevice> devices_;
+  std::vector<DShow::VideoDevice> video_devices_;
 };
 
 
