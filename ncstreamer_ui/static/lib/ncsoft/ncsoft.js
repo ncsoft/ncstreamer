@@ -137,6 +137,16 @@ ncsoft.checkbox.disable = function(element) {
 };
 
 
+ncsoft.slider.enable = function(element) {
+  element.removeAttribute('disabled');
+};
+
+
+ncsoft.slider.disable = function(element) {
+  element.setAttribute('disabled', 'disabled');
+};
+
+
 ncsoft.select.clear = function(element) {
   const display = element.children[0];
   const contents = element.children[1];
