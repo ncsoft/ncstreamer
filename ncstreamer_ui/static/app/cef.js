@@ -324,4 +324,8 @@ const remote = {
     setMicCheckBox(true);
     cef.settingsMicOn.request();
   },
+  onSettingsMicOffRequest: function(requestKey) {
+    setMicCheckBox(false);
+    cef.settingsMicOff.request();
+  },
 };
