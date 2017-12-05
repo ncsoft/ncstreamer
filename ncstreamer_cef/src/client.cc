@@ -193,6 +193,11 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"settings/mic/search",
+       std::bind(&This::OnCommandSettingsMicSearch, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"settings/mic/on",
        std::bind(&This::OnCommandSettingsMicOn, this,
            std::placeholders::_1,
@@ -520,14 +525,30 @@ void Client::OnCommandStreamingStop(
 }
 
 
+void Client::OnCommandSettingsMicSearch(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser) {
+  const bool ret = Obs::Get()->SearchMicDevices();
+  if (ret) {
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", ""},
+                                     {"mic", "true"}});
+  } else {
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", ""},
+                                     {"mic", "false"}});
+  }
+}
+
+
 void Client::OnCommandSettingsMicOn(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
   std::string error{};
-  bool result = Obs::Get()->TurnOnMic();
+  bool result = Obs::Get()->TurnOnMic(&error);
   if (!result) {
-    error = "turn on after start streaming";
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error},
                                      {"volume", ""}});

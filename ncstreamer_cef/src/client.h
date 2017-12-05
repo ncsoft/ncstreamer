@@ -106,6 +106,10 @@ class Client : public CefClient {
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
+  void OnCommandSettingsMicSearch(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandSettingsMicOn(
       const std::string &cmd,
       const CommandArgumentMap &args,

@@ -46,6 +46,10 @@ const cef = (function() {
       request: ['width', 'height', 'fps', 'bitrate'],
       response: ['error'],
     },
+    'settings/mic/search': {
+      request: [],
+      response: ['error', 'mic'],
+    },
     'settings/mic/on': {
       request: ['volume'],
       response: ['error', 'volume'],

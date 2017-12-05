@@ -15,7 +15,7 @@ const app = {
     popupBrowserId: 0,
     postUrl: null,
     mic: {
-      use: true,
+      use: false,
       volume: {
         max: 1,
         min: 0,
@@ -690,14 +690,26 @@ function setUpSteamingQuality() {
 }
 
 
-function setUpMic() {
+function setUpMic(check) {
   const mic = app.streaming.mic;
-  app.dom.micCheckbox.checked = mic.use;
+  setMicCheckBox(check);
   app.dom.micVolume.max = mic.volume.max;
   app.dom.micVolume.min = mic.volume.min;
   app.dom.micVolume.step = mic.volume.step;
   app.dom.micVolume.value = mic.volume.value;
-  ncsoft.slider.adjustRange(app.dom.micVolume);
+  if (check == true) {
+    ncsoft.slider.adjustRange(app.dom.micVolume);
+  }
+}
+
+
+function setMicCheckBox(check) {
+  app.dom.micCheckbox.checked = check;
+  if (check == true) {
+    ncsoft.slider.enable(app.dom.micVolume);
+  } else {
+    ncsoft.slider.disable(app.dom.micVolume);
+  }
 }
 
 
@@ -951,7 +963,7 @@ cef.streamingSetUp.onResponse = function(error, webcamUse) {
     cef.settingsWebcamSearch.request();
   }
   setUpSteamingQuality();
-  setUpMic();
+  cef.settingsMicSearch.request();
 };
 
 
@@ -1015,9 +1027,23 @@ cef.settingsVideoQualityUpdate.onResponse = function(error) {
 };
 
 
+cef.settingsMicSearch.onResponse = function(error, mic) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+
+  setUpMic(mic == 'true' ? true : false);
+};
+
+
 cef.settingsMicOn.onResponse = function(error, volume) {
   if (error != '') {
     console.info(error);
+    if (error == 'there is no audio device') {
+      ncsoft.modal.show('#no-device-alert-modal');
+      setMicCheckBox(false);
+    }
     return;
   }
   app.streaming.mic.use = true;
