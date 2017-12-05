@@ -10,7 +10,6 @@
 #include <memory>
 
 #include "boost/property_tree/json_parser.hpp"
-#include "boost/property_tree/ptree.hpp"
 #include "windows.h"  // NOLINT
 
 
@@ -27,7 +26,8 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       remote_port_{0},
       in_memory_local_storage_{false},
       designated_user_{},
-      default_position_{CW_USEDEFAULT, CW_USEDEFAULT} {
+      default_position_{CW_USEDEFAULT, CW_USEDEFAULT},
+      device_settings_{} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
   cef_cmd_line->InitFromString(cmd_line);
@@ -79,6 +79,20 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       cef_cmd_line->GetSwitchValue(L"default-position");
   if (default_position.empty() == false) {
     default_position_ = ParseDefaultPosition(default_position);
+  }
+
+  const std::wstring device_settings =
+      cef_cmd_line->GetSwitchValue(L"device-settings");
+  if (device_settings.empty() == false) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::string utf8 = converter.to_bytes(device_settings);
+    std::stringstream root_ss{utf8};
+    try {
+      boost::property_tree::read_json(root_ss, device_settings_);
+    } catch (const std::exception &/*e*/) {
+      assert(false);
+      return;
+    }
   }
 }
 

@@ -29,7 +29,8 @@ BrowserProcessHandler::BrowserProcessHandler(
     const std::wstring &ui_uri,
     const Position<int> &default_position,
     const StreamingServiceTagMap &tag_ids,
-    const std::wstring &designated_user)
+    const std::wstring &designated_user,
+    const boost::property_tree::ptree &device_settings)
     : instance_{instance},
       hides_settings_{hides_settings},
       video_quality_{video_quality},
@@ -40,7 +41,8 @@ BrowserProcessHandler::BrowserProcessHandler(
       defalut_position_{default_position},
       tag_ids_{tag_ids},
       designated_user_{designated_user},
-      client_{} {
+      client_{},
+      device_settings_{device_settings} {
 }
 
 
@@ -68,7 +70,8 @@ void BrowserProcessHandler::OnContextInitialized() {
       sources_,
       locale_,
       tag_ids_,
-      designated_user_};
+      designated_user_,
+      device_settings_};
 
   std::wstring uri{ui_uri_};
   if (uri.empty() == true) {

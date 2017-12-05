@@ -270,7 +270,13 @@ function setUpControls(args) {
 
   app.options.hidesSettings = (args.hidesSettings == 'true');
   ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
-
+  if (args.deviceSettings.hasOwnProperty('webcam')) {
+    setUpWebcam(args.deviceSettings.webcam);
+  }
+  if (args.deviceSettings.hasOwnProperty('mic') &&
+      args.deviceSettings.mic.hasOwnProperty('use')) {
+    setUpMic(args.deviceSettings.mic.use == 'true' ? true : false);
+  }
   cef.streamingSetUp.request();
 }
 
@@ -690,6 +696,39 @@ function setUpSteamingQuality() {
 }
 
 
+function setUpWebcam(webcamSettings) {
+  const webcam = app.streaming.webcam;
+  if (webcamSettings.hasOwnProperty('use')) {
+    app.dom.webcamCheckbox.checked =
+        webcamSettings.use == 'true' ? true : false;
+  }
+  if (webcamSettings.hasOwnProperty('deviceId')) {
+    webcam.curDeviceId = webcamSettings.deviceId;
+  }
+  if (webcamSettings.hasOwnProperty('size')) {
+    webcam.size.width = webcamSettings.size.width;
+    webcam.size.height = webcamSettings.size.height;
+  }
+  if (webcamSettings.hasOwnProperty('position')) {
+    webcam.position.x = webcamSettings.position.x;
+    webcam.position.y = webcamSettings.position.y;
+  }
+  if (webcamSettings.hasOwnProperty('chromaKey')) {
+    const chromaKeySettings = webcamSettings.chromaKey;
+    if (chromaKeySettings.hasOwnProperty('use')) {
+      app.dom.chromaKeyCheckbox.checked =
+          chromaKey.use == 'true' ? true : false;
+    }
+    if (chromaKeySettings.hasOwnProperty('color')) {
+      webcam.chromaKey.color = chromaKeySettings.color;
+    }
+    if (chromaKeySettings.hasOwnProperty('similarity')) {
+      webcam.chromaKey.similarity = chromaKeySettings.similarity;
+    }
+  }
+}
+
+
 function setUpMic(check) {
   const mic = app.streaming.mic;
   setMicCheckBox(check);
@@ -958,12 +997,7 @@ cef.streamingSetUp.onResponse = function(error, webcamUse) {
   for (const element of app.dom.ncStreamerContainer) {
     ncsoft.klass.remove(element, 'loading');
   }
-  app.dom.webcamCheckbox.checked = webcamUse;
-  if (app.dom.webcamCheckbox.checked) {
-    cef.settingsWebcamSearch.request();
-  }
   setUpSteamingQuality();
-  cef.settingsMicSearch.request();
 };
 
 

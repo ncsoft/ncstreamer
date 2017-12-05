@@ -11,7 +11,6 @@
 #include <regex>  // NOLINT
 #include <utility>
 
-#include "boost/property_tree/ptree.hpp"
 #include "include/base/cef_bind.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
@@ -37,7 +36,8 @@ Client::Client(
     const std::vector<std::string> &sources,
     const std::wstring &locale,
     const StreamingServiceTagMap &tag_ids,
-    const std::wstring &designated_user)
+    const std::wstring &designated_user,
+    const boost::property_tree::ptree &device_settings)
     : locale_{locale},
       tag_ids_{tag_ids},
       designated_user_{designated_user},
@@ -47,7 +47,8 @@ Client::Client(
                                           hides_settings,
                                           video_quality,
                                           shows_sources_all,
-                                          sources}} {
+                                          sources,
+                                          device_settings}} {
 }
 
 

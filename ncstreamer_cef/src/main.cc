@@ -70,7 +70,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
       cmd_line.ui_uri(),
       cmd_line.default_position(),
       cmd_line.streaming_service_tag_ids(),
-      cmd_line.designated_user()}};
+      cmd_line.designated_user(),
+      cmd_line.device_settings()}};
 
   ncstreamer::RemoteServer::SetUp(browser_app);
   bool started = ncstreamer::RemoteServer::Get()->Start(cmd_line.remote_port());

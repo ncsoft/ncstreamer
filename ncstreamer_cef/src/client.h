@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "boost/property_tree/ptree.hpp"
 #include "include/cef_client.h"
 #include "windows.h"  // NOLINT
 
@@ -33,7 +34,8 @@ class Client : public CefClient {
       const std::vector<std::string> &sources,
       const std::wstring &locale,
       const StreamingServiceTagMap &tag_ids,
-      const std::wstring &designated_user);
+      const std::wstring &designated_user,
+      const boost::property_tree::ptree &device_settings);
 
   virtual ~Client();
 

@@ -11,7 +11,6 @@
 #include <sstream>
 #include <unordered_map>
 
-#include "boost/property_tree/ptree.hpp"
 #include "include/base/cef_bind.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
@@ -27,12 +26,14 @@ ClientLoadHandler::ClientLoadHandler(
     bool hides_settings,
     const std::wstring &video_quality,
     bool shows_sources_all,
-    const std::vector<std::string> &sources)
+    const std::vector<std::string> &sources,
+    const boost::property_tree::ptree &device_setting)
     : life_span_handler_{life_span_handler},
       hides_settings_{hides_settings},
       video_quality_{video_quality},
       shows_sources_all_{shows_sources_all},
       white_sources_{sources},
+      device_settings_{device_setting},
       prev_sources_{},
       main_page_loaded_{false} {
   assert(life_span_handler);
@@ -131,6 +132,7 @@ void ClientLoadHandler::OnMainPageLoaded(
   boost::property_tree::ptree args;
   args.add("hidesSettings", hides_settings_);
   args.add("videoQuality", converter.to_bytes(video_quality_));
+  args.add_child("deviceSettings", device_settings_);
 
   JsExecutor::Execute(browser, "setUpControls", args);
 }
