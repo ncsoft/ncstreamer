@@ -88,9 +88,23 @@ void Obs::StopStreaming(
 }
 
 
-bool Obs::TurnOnMic() {
+bool Obs::SearchMicDevices() {
+  DShow::Device::EnumAudioDevices(audio_devices_);
+  if (audio_devices_.size() == 0) {
+    return false;
+  }
+  return true;
+}
+
+
+bool Obs::TurnOnMic(std::string *error) {
+  if (SearchMicDevices() == false) {
+    *error = "there is no audio device";
+    return false;
+  }
   obs_source_t *video_source = obs_get_output_source(0);
   if (!video_source) {
+    *error = "turn on after start streaming";
     return false;
   }
   obs_data_t *settings = obs_data_create();
@@ -383,7 +397,8 @@ Obs::Obs()
       base_size_{1920, 1080},
       output_size_{1280, 720},
       fps_{30},
-      video_devices_{} {
+      video_devices_{},
+      audio_devices_{} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();

@@ -525,9 +525,8 @@ void Client::OnCommandSettingsMicOn(
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
   std::string error{};
-  bool result = Obs::Get()->TurnOnMic();
+  bool result = Obs::Get()->TurnOnMic(&error);
   if (!result) {
-    error = "turn on after start streaming";
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error},
                                      {"volume", ""}});

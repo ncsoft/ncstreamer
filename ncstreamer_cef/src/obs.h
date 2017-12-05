@@ -41,7 +41,8 @@ class Obs {
   void StopStreaming(
       const ObsOutput::OnStopped &on_streaming_stopped);
 
-  bool TurnOnMic();
+  bool SearchMicDevices();
+  bool TurnOnMic(std::string *error);
   bool TurnOffMic();
   bool UpdateMicVolume(float volume);
   std::vector<Obs::WebcamDevice> SearchWebcamDevices();
@@ -100,6 +101,7 @@ class Obs {
   Dimension<uint32_t> output_size_;
   uint32_t fps_;
   std::vector<DShow::VideoDevice> video_devices_;
+  std::vector<DShow::AudioDevice> audio_devices_;
 };
 
 

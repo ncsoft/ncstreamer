@@ -1018,6 +1018,10 @@ cef.settingsVideoQualityUpdate.onResponse = function(error) {
 cef.settingsMicOn.onResponse = function(error, volume) {
   if (error != '') {
     console.info(error);
+    if (error == 'there is no audio device') {
+      ncsoft.modal.show('#no-device-alert-modal');
+      app.dom.micCheckbox.checked = false;
+    }
     return;
   }
   app.streaming.mic.use = true;
