@@ -431,11 +431,8 @@ void Client::OnCommandStreamingSetUp(
           [cmd, browser, this]() {
     load_handler_->UpdateSourcesPeriodically(1000);
 
-    const std::string &webcam_use{
-        LocalStorage::Get()->GetWebcamUse() ? "true" : "false"};
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
-        JsExecutor::StringPairVector{{"error", ""},
-                                     {"webcamUse", webcam_use}});
+        JsExecutor::StringPairVector{{"error", ""}});
   }));
 }
 

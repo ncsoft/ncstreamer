@@ -988,7 +988,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 };
 
 
-cef.streamingSetUp.onResponse = function(error, webcamUse) {
+cef.streamingSetUp.onResponse = function(error) {
   app.dom.closeButton.style.display = 'inline';
   if (app.options.hidesSettings == false) {
     app.dom.settingButton.style.display = 'inline';
