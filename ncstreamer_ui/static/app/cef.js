@@ -322,7 +322,7 @@ const remote = {
   },
   onSettingsMicOnRequest: function(requestKey) {
     setMicCheckBox(true);
-    cef.settingsMicOn.request();
+    cef.settingsMicOn.request(app.streaming.mic.volume);
   },
   onSettingsMicOffRequest: function(requestKey) {
     setMicCheckBox(false);
