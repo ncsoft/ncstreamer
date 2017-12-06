@@ -277,6 +277,7 @@ function setUpControls(args) {
       args.deviceSettings.mic.hasOwnProperty('use')) {
     setUpMic(args.deviceSettings.mic.use == 'true' ? true : false);
   }
+  setUpSteamingQuality();
   cef.streamingSetUp.request();
 }
 
@@ -649,13 +650,11 @@ function onchromaKeyCheckboxChanged() {
 function updateQualitySelect() {
   const curValue = app.dom.qualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
-  console.info(JSON.stringify({ streamingQuality: curValue }));
   cef.settingsVideoQualityUpdate.request(
       curQuality.resolution.width,
       curQuality.resolution.height,
       curQuality.fps,
       curQuality.bitrate);
-  return true;
 }
 
 
@@ -692,7 +691,6 @@ function setUpSteamingQuality() {
   display.value = contents.firstChild.getAttribute('data-value');
   display.innerHTML = contents.firstChild.firstChild.textContent +
                       '<span class="caret"></span>';
-  onQualitySelectChanged();
 }
 
 
@@ -989,6 +987,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
 
 cef.streamingSetUp.onResponse = function(error) {
+  updateQualitySelect();
   app.dom.closeButton.style.display = 'inline';
   if (app.options.hidesSettings == false) {
     app.dom.settingButton.style.display = 'inline';
@@ -997,7 +996,6 @@ cef.streamingSetUp.onResponse = function(error) {
   for (const element of app.dom.ncStreamerContainer) {
     ncsoft.klass.remove(element, 'loading');
   }
-  setUpSteamingQuality();
 };
 
 
