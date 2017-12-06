@@ -154,8 +154,6 @@ std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
 
 
 bool Obs::TurnOnWebcam(const std::string &device_id) {
-  LocalStorage::Get()->SetWebcamUse(true);
-
   obs_scene_t *scene =
       obs_scene_from_source(obs_get_source_by_name("Scene"));
   if (scene == nullptr) {
@@ -187,8 +185,6 @@ bool Obs::TurnOnWebcam(const std::string &device_id) {
 
 
 bool Obs::TurnOffWebcam() {
-  LocalStorage::Get()->SetWebcamUse(false);
-
   obs_scene_t *scene =
       obs_scene_from_source(obs_get_source_by_name("Scene"));
   if (scene == nullptr) {
@@ -601,6 +597,7 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
 
 
 bool Obs::GetDevice(std::string device_id, DShow::VideoDevice *device) {
+  SearchWebcamDevices();
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
   for (const auto &video_device : video_devices_) {
     std::wstring w_device_str{video_device.name + L":" + video_device.path};

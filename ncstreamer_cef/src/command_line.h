@@ -7,9 +7,12 @@
 #define NCSTREAMER_CEF_SRC_COMMAND_LINE_H_
 
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#include "boost/property_tree/ptree.hpp"
 
 #include "include/cef_command_line.h"
 #include "ncstreamer_cef/src/lib/position.h"
@@ -38,6 +41,9 @@ class CommandLine {
   const Position<int> &default_position() const {
     return default_position_;
   }
+  const boost::property_tree::ptree &device_settings() const {
+      return device_settings_;
+  }
 
  private:
   static bool ReadBool(
@@ -65,6 +71,7 @@ class CommandLine {
   bool in_memory_local_storage_;
   std::wstring designated_user_;
   Position<int> default_position_;
+  boost::property_tree::ptree device_settings_;
 };
 }  // namespace ncstreamer
 

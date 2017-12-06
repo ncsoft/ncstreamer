@@ -270,7 +270,14 @@ function setUpControls(args) {
 
   app.options.hidesSettings = (args.hidesSettings == 'true');
   ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
-
+  if (args.deviceSettings.hasOwnProperty('webcam')) {
+    setUpWebcam(args.deviceSettings.webcam);
+  }
+  if (args.deviceSettings.hasOwnProperty('mic') &&
+      args.deviceSettings.mic.hasOwnProperty('use')) {
+    setUpMic(args.deviceSettings.mic.use == 'true' ? true : false);
+  }
+  setUpSteamingQuality();
   cef.streamingSetUp.request();
 }
 
@@ -643,13 +650,11 @@ function onchromaKeyCheckboxChanged() {
 function updateQualitySelect() {
   const curValue = app.dom.qualitySelect.children[0].value;
   const curQuality = app.streaming.quality[curValue];
-  console.info(JSON.stringify({ streamingQuality: curValue }));
   cef.settingsVideoQualityUpdate.request(
       curQuality.resolution.width,
       curQuality.resolution.height,
       curQuality.fps,
       curQuality.bitrate);
-  return true;
 }
 
 
@@ -686,7 +691,39 @@ function setUpSteamingQuality() {
   display.value = contents.firstChild.getAttribute('data-value');
   display.innerHTML = contents.firstChild.firstChild.textContent +
                       '<span class="caret"></span>';
-  onQualitySelectChanged();
+}
+
+
+function setUpWebcam(webcamSettings) {
+  const webcam = app.streaming.webcam;
+  if (webcamSettings.hasOwnProperty('use')) {
+    app.dom.webcamCheckbox.checked =
+        webcamSettings.use == 'true' ? true : false;
+  }
+  if (webcamSettings.hasOwnProperty('deviceId')) {
+    webcam.curDeviceId = webcamSettings.deviceId;
+  }
+  if (webcamSettings.hasOwnProperty('size')) {
+    webcam.size.width = webcamSettings.size.width;
+    webcam.size.height = webcamSettings.size.height;
+  }
+  if (webcamSettings.hasOwnProperty('position')) {
+    webcam.position.x = webcamSettings.position.x;
+    webcam.position.y = webcamSettings.position.y;
+  }
+  if (webcamSettings.hasOwnProperty('chromaKey')) {
+    const chromaKeySettings = webcamSettings.chromaKey;
+    if (chromaKeySettings.hasOwnProperty('use')) {
+      app.dom.chromaKeyCheckbox.checked =
+          chromaKey.use == 'true' ? true : false;
+    }
+    if (chromaKeySettings.hasOwnProperty('color')) {
+      webcam.chromaKey.color = chromaKeySettings.color;
+    }
+    if (chromaKeySettings.hasOwnProperty('similarity')) {
+      webcam.chromaKey.similarity = chromaKeySettings.similarity;
+    }
+  }
 }
 
 
@@ -949,7 +986,8 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 };
 
 
-cef.streamingSetUp.onResponse = function(error, webcamUse) {
+cef.streamingSetUp.onResponse = function(error) {
+  updateQualitySelect();
   app.dom.closeButton.style.display = 'inline';
   if (app.options.hidesSettings == false) {
     app.dom.settingButton.style.display = 'inline';
@@ -958,12 +996,6 @@ cef.streamingSetUp.onResponse = function(error, webcamUse) {
   for (const element of app.dom.ncStreamerContainer) {
     ncsoft.klass.remove(element, 'loading');
   }
-  app.dom.webcamCheckbox.checked = webcamUse;
-  if (app.dom.webcamCheckbox.checked) {
-    cef.settingsWebcamSearch.request();
-  }
-  setUpSteamingQuality();
-  cef.settingsMicSearch.request();
 };
 
 

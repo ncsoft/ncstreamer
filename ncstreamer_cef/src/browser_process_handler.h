@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "boost/property_tree/ptree.hpp"
 #include "include/cef_browser_process_handler.h"
 #include "windows.h"  // NOLINT
 
@@ -32,7 +33,8 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
       const std::wstring &ui_uri,
       const Position<int> &default_position,
       const StreamingServiceTagMap &tag_ids,
-      const std::wstring &designated_user);
+      const std::wstring &designated_user,
+      const boost::property_tree::ptree &device_settings);
   virtual ~BrowserProcessHandler();
 
   // override CefBrowserProcessHandler
@@ -53,6 +55,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const Position<int> defalut_position_;
   const StreamingServiceTagMap tag_ids_;
   const std::wstring designated_user_;
+  const boost::property_tree::ptree device_settings_;
 
   CefRefPtr<Client> client_;
 

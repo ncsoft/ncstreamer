@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "boost/property_tree/ptree.hpp"
 #include "include/cef_load_handler.h"
 
 #include "ncstreamer_cef/src/client/client_life_span_handler.h"
@@ -23,7 +24,8 @@ class ClientLoadHandler : public CefLoadHandler {
       bool hides_settings,
       const std::wstring &video_quality,
       bool shows_sources_all,
-      const std::vector<std::string> &sources);
+      const std::vector<std::string> &sources,
+      const boost::property_tree::ptree &device_setting);
 
   virtual ~ClientLoadHandler();
 
@@ -62,6 +64,7 @@ class ClientLoadHandler : public CefLoadHandler {
   const std::wstring video_quality_;
   const bool shows_sources_all_;
   const std::vector<std::string> white_sources_;
+  const boost::property_tree::ptree device_settings_;
   std::vector<std::string> prev_sources_;
 
   bool main_page_loaded_;

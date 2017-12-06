@@ -17,7 +17,8 @@ BrowserApp::BrowserApp(
     const std::wstring &ui_uri,
     const Position<int> &default_position,
     const StreamingServiceTagMap &tag_ids,
-    const std::wstring &designated_user)
+    const std::wstring &designated_user,
+    const boost::property_tree::ptree &device_setting)
     : browser_process_handler_{new BrowserProcessHandler{
           instance,
           hides_settings,
@@ -28,7 +29,8 @@ BrowserApp::BrowserApp(
           ui_uri,
           default_position,
           tag_ids,
-          designated_user}} {
+          designated_user,
+          device_setting}} {
 }
 
 
