@@ -84,6 +84,7 @@ bool Obs::StartStreaming(
 
 void Obs::StopStreaming(
     const ObsOutput::OnStopped &on_streaming_stopped) {
+  ClearSceneItems();
   stream_output_->Stop(on_streaming_stopped);
 }
 
@@ -475,7 +476,6 @@ void Obs::ClearSceneData() {
 void Obs::UpdateCurrentSource(const std::string &source_info) {
   // video
   {
-    ClearSceneItems();
     obs_data_t *settings = obs_data_create();
     obs_data_set_string(settings, "window", source_info.c_str());
     obs_data_set_string(settings, "capture_mode", "window");
