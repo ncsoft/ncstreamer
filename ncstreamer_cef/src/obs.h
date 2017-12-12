@@ -93,6 +93,7 @@ class Obs {
   obs_encoder_t *audio_encoder_;
   obs_encoder_t *video_encoder_;
   std::unique_ptr<ObsOutput> stream_output_;
+  obs_scene_t *scene_;
 
   obs_service_t *current_service_;
   int audio_bitrate_;

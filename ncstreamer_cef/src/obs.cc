@@ -154,12 +154,6 @@ std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
 
 
 bool Obs::TurnOnWebcam(const std::string &device_id) {
-  obs_scene_t *scene =
-      obs_scene_from_source(obs_get_source_by_name("Scene"));
-  if (scene == nullptr) {
-    return false;
-  }
-
   DShow::VideoDevice device;
   if (GetDevice(device_id, &device) == false) {
     return false;
@@ -177,40 +171,24 @@ bool Obs::TurnOnWebcam(const std::string &device_id) {
   obs_source_t *source = obs_source_create(
       "dshow_input", "Video Capture Device", settings, nullptr);
   obs_data_release(settings);
-  obs_scene_atomic_update(scene, Obs::AddSourceToScene, source);
+  obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
   obs_source_release(source);
-  obs_scene_release(scene);
   return true;
 }
 
 
 bool Obs::TurnOffWebcam() {
-  obs_scene_t *scene =
-      obs_scene_from_source(obs_get_source_by_name("Scene"));
-  if (scene == nullptr) {
-    return false;
-  }
-  obs_sceneitem_t *item = obs_scene_find_source(scene, "Video Capture Device");
+  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
   if (item == nullptr) {
     return false;
   }
   obs_sceneitem_remove(item);
-  obs_scene_release(scene);
   return true;
 }
 
 
 bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
-  obs_source_t *scene_source = obs_get_source_by_name("Scene");
-  if (scene_source == nullptr) {
-    return false;
-  }
-  obs_scene_t *scene = obs_scene_from_source(scene_source);
-  obs_source_release(scene_source);
-  if (scene == nullptr) {
-    return false;
-  }
-  obs_sceneitem_t *item = obs_scene_find_source(scene, "Video Capture Device");
+  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
   if (item == nullptr) {
     return false;
   }
@@ -233,16 +211,7 @@ bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
 
 
 bool Obs::UpdateWebcamPosition(const float normal_x, const float normal_y) {
-  obs_source_t *scene_source = obs_get_source_by_name("Scene");
-  if (scene_source == nullptr) {
-    return false;
-  }
-  obs_scene_t *scene = obs_scene_from_source(scene_source);
-  obs_source_release(scene_source);
-  if (scene == nullptr) {
-    return false;
-  }
-  obs_sceneitem_t *item = obs_scene_find_source(scene, "Video Capture Device");
+  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
   if (item == nullptr) {
     return false;
   }
@@ -387,6 +356,7 @@ Obs::Obs()
       audio_encoder_{nullptr},
       video_encoder_{nullptr},
       stream_output_{},
+      scene_{nullptr},
       current_service_{nullptr},
       audio_bitrate_{160},
       video_bitrate_{2500},
@@ -405,6 +375,8 @@ Obs::Obs()
 
   stream_output_.reset(new ObsOutput{});
 
+  scene_ = obs_scene_create("Scene");
+
   ResetAudio();
   ResetVideo();
 }
@@ -415,6 +387,7 @@ Obs::~Obs() {
   ClearSceneItems();
   ClearSceneData();
 
+  obs_scene_release(scene_);
   stream_output_.reset();
   obs_encoder_release(video_encoder_);
   obs_encoder_release(audio_encoder_);
@@ -476,14 +449,8 @@ obs_encoder_t *Obs::CreateVideoEncoder() {
 
 
 void Obs::ClearSceneItems() {
-  obs_scene_t *scene =
-      obs_scene_from_source(obs_get_source_by_name("Scene"));
-  if (scene == nullptr) {
-    return;
-  }
-
   std::vector<obs_sceneitem_t *> items;
-  obs_scene_enum_items(scene,
+  obs_scene_enum_items(scene_,
       [](obs_scene_t *scene, obs_sceneitem_t *item, void *param) {
     std::vector<obs_sceneitem_t *> &items =
         *reinterpret_cast<std::vector<obs_sceneitem_t *> *>(param);
@@ -494,7 +461,6 @@ void Obs::ClearSceneItems() {
   for (auto &item : items) {
     obs_sceneitem_remove(item);
   }
-  obs_scene_release(scene);
 }
 
 
@@ -510,18 +476,16 @@ void Obs::UpdateCurrentSource(const std::string &source_info) {
   // video
   {
     ClearSceneItems();
-    obs_scene_t *scene = obs_scene_create("Scene");
     obs_data_t *settings = obs_data_create();
     obs_data_set_string(settings, "window", source_info.c_str());
     obs_data_set_string(settings, "capture_mode", "window");
     obs_source_t *source = obs_source_create(
         "game_capture", "Game Capture", settings, nullptr);
     obs_data_release(settings);
-    obs_scene_atomic_update(scene, Obs::AddSourceToScene, source);
+    obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
     obs_source_release(source);
 
     obs_set_output_source(0, obs_get_source_by_name("Scene"));
-    obs_scene_release(scene);
   }
 
   // audio
