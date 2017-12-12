@@ -103,8 +103,8 @@ bool Obs::TurnOnMic(std::string *error) {
     *error = "there is no audio device";
     return false;
   }
-  obs_source_t *video_source = obs_get_output_source(0);
-  if (!video_source) {
+  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Game Capture");
+  if (item == nullptr) {
     *error = "turn on after start streaming";
     return false;
   }
@@ -155,6 +155,10 @@ std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
 
 
 bool Obs::TurnOnWebcam(const std::string &device_id) {
+  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Game Capture");
+  if (item == nullptr) {
+    return false;
+  }
   DShow::VideoDevice device;
   if (GetDevice(device_id, &device) == false) {
     return false;
