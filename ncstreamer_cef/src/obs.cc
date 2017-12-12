@@ -199,11 +199,15 @@ bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
   }
 
   obs_source_t *source = obs_sceneitem_get_source(item);
-  int width = obs_source_get_width(source);
-  int height = obs_source_get_height(source);
-  if (width == 0 || height == 0) {
-    width = video_devices_.at(0).caps.at(0).minCX;
-    height = video_devices_.at(0).caps.at(0).minCY;
+  int width{0};
+  int height{0};
+  for (int i = 0; i < 50; ++i) {  // setting webcam source size timing issue.
+    width = obs_source_get_width(source);
+    height = obs_source_get_height(source);
+    if (width != 0 && height != 0) {
+      break;
+    }
+    Sleep(100);
   }
 
   vec2 from_size{static_cast<float>(width), static_cast<float>(height)};
