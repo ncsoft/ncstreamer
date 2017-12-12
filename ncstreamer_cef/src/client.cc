@@ -449,6 +449,7 @@ void Client::OnCommandStreamingStart(
   auto description_i = args.find("description");
   if (source_i == args.end() ||
       user_page_i == args.end() ||
+      privacy_i == args.end() ||
       title_i == args.end() ||
       description_i == args.end()) {
     assert(false);

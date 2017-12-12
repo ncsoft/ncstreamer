@@ -585,7 +585,8 @@ function submitControl() {
       const source = app.dom.gameSelect.children[0].value;
       const userPage = getCurrentUserPage();
       const streamServer = app.dom.streamServerSelect.children[0].value;
-      const privacy = app.dom.privacySelect.children[0].value;
+      const privacy = app.dom.mePageSelect.children[0].value == 2 ?
+          'SELF' : app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
 
       cef.streamingStart.request(source,
