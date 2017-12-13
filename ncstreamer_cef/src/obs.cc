@@ -154,13 +154,15 @@ std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
 }
 
 
-bool Obs::TurnOnWebcam(const std::string &device_id) {
+bool Obs::TurnOnWebcam(
+    const std::string &device_id, std::string *const error) {
   obs_sceneitem_t *item = obs_scene_find_source(scene_, "Game Capture");
   if (item == nullptr) {
     return false;
   }
   DShow::VideoDevice device;
   if (GetDevice(device_id, &device) == false) {
+    *error = "no device ID";
     return false;
   }
 

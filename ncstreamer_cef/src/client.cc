@@ -648,9 +648,12 @@ void Client::OnCommandSettingsWebcamOn(
   }
 
   const std::string &device_id = device_id_i->second;
-  bool result = Obs::Get()->TurnOnWebcam(device_id);
+  std::string error{};
+  bool result = Obs::Get()->TurnOnWebcam(device_id, &error);
   if (!result) {
-    std::string error{"failed to turn webcam on"};
+    if (error.empty()) {
+      error = "failed to turn webcam on";
+    }
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});
     return;

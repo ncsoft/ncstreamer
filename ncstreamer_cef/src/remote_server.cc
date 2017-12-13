@@ -573,19 +573,44 @@ void RemoteServer::OnSettingsWebcamOnRequest(
     return;
   }
 
+  const bool &result = Obs::Get()->TurnOnWebcam(device_id, &error);
+  if (result == false) {
+    if (error != "no device ID") {
+      boost::property_tree::ptree args;
+      args.add("deviceId", device_id);
+      args.add("normalWidth", width);
+      args.add("normalHeight", height);
+      args.add("normalX", x);
+      args.add("normalY", y);
+
+      JsExecutor::Execute(
+          browser_app_->GetMainBrowser(),
+          "remote.onSettingsWebcamOnRequest",
+          args);
+    }
+    // pretend to success if error is empty.
+    RespondSettingsWebcamOn(request_key, error);
+    return;
+  }
+
+  if (Obs::Get()->UpdateWebcamSize(width, height) == false) {
+    error = "webcam size error";
+  }
+
+  if (Obs::Get()->UpdateWebcamPosition(x, y) == false) {
+    error = "webcam position error";
+  }
+
   boost::property_tree::ptree args;
   args.add("deviceId", device_id);
   args.add("normalWidth", width);
   args.add("normalHeight", height);
   args.add("normalX", x);
   args.add("normalY", y);
-
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
       "remote.onSettingsWebcamOnRequest",
-      request_key,
       args);
-
   RespondSettingsWebcamOn(request_key, error);
 }
 
@@ -595,10 +620,10 @@ void RemoteServer::OnSettingsWebcamOffRequest(
     const boost::property_tree::ptree &tree) {
   int request_key = request_cache_.CheckIn(connection);
 
+  Obs::Get()->TurnOffWebcam();
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
-      "remote.onSettingsWebcamOffRequest",
-      request_key);
+      "remote.onSettingsWebcamOffRequest");
 
   RespondSettingsWebcamOff(request_key, "");
 }
@@ -630,6 +655,8 @@ void RemoteServer::OnSettingsWebcamSizeRequest(
     return;
   }
 
+  Obs::Get()->UpdateWebcamSize(width, height);
+
   boost::property_tree::ptree args;
   args.add("normalWidth", width);
   args.add("normalHeight", height);
@@ -637,7 +664,6 @@ void RemoteServer::OnSettingsWebcamSizeRequest(
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
       "remote.onSettingsWebcamSizeRequest",
-      request_key,
       args);
 
   RespondSettingsWebcamSize(request_key, error);
@@ -670,6 +696,8 @@ void RemoteServer::OnSettingsWebcamPositionRequest(
     return;
   }
 
+  Obs::Get()->UpdateWebcamPosition(x, y);
+
   boost::property_tree::ptree args;
   args.add("normalX", x);
   args.add("normalY", y);
@@ -677,7 +705,6 @@ void RemoteServer::OnSettingsWebcamPositionRequest(
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
       "remote.onSettingsWebcamPositionRequest",
-      request_key,
       args);
 
   RespondSettingsWebcamPosition(request_key, error);
