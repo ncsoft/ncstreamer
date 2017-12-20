@@ -34,8 +34,11 @@ class StreamingServiceProvider {
       std::function<void(const std::string &stream_server,
                          const std::string &stream_key,
                          const std::string &post_url)>;
+
   using OnCommentsGot =
       std::function<void(const std::string &comments)>;
+  using OnLiveVideoViewers =
+      std::function<void(const std::string &viewers)>;
 
   StreamingServiceProvider();
   virtual ~StreamingServiceProvider() = 0;
@@ -64,6 +67,10 @@ class StreamingServiceProvider {
       const std::string &created_time,
       const OnFailed &on_failed,
       const OnCommentsGot &on_comments_got) = 0;
+
+  virtual void GetLiveVideoViewers(
+      const OnFailed &on_failed,
+      const OnLiveVideoViewers &on_live_video_viewers) = 0;
 
   virtual void StopLiveVideo() = 0;
 };

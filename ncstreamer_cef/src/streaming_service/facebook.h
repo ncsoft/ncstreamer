@@ -54,6 +54,10 @@ class Facebook : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnCommentsGot &on_comments_got) override;
 
+  void GetLiveVideoViewers(
+      const OnFailed &on_failed,
+      const OnLiveVideoViewers &on_live_video_viewers) override;
+
   void StopLiveVideo() override;
 
  private:

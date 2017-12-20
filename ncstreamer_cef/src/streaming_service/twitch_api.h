@@ -66,6 +66,7 @@ class TwitchApi::Graph {
   class Channel;
   class Ingests;
   class UpdateChannel;
+  class LiveStream;
 };
 
 
@@ -115,6 +116,19 @@ class TwitchApi::Graph::UpdateChannel {
  private:
   static std::string BuildPath(
       const std::string &user_page_id);
+};
+
+
+class TwitchApi::Graph::LiveStream {
+ public:
+  static Uri BuildUri(
+      const std::string &client_id,
+      const std::string &channel_id,
+      const std::string &access_token);
+
+ private:
+  static std::string BuildPath(
+      const std::string &channel_id);
 };
 }  // namespace ncstreamer
 

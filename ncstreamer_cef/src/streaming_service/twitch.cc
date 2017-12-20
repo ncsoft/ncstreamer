@@ -28,7 +28,9 @@ Twitch::Twitch()
       nick_name_mutex_{},
       nick_name_{},
       account_name_mutex_{},
-      account_name_{} {
+      account_name_{},
+      channel_id_mutex_{},
+      channel_id_{} {
 }
 
 
@@ -187,6 +189,48 @@ void Twitch::GetComments(const std::string &created_time,
 }
 
 
+void Twitch::GetLiveVideoViewers(
+    const OnFailed &on_failed,
+    const OnLiveVideoViewers &on_live_video_viewers) {
+  using boost::property_tree::json_parser::write_json;
+
+  Uri live_stream_uri{TwitchApi::Graph::LiveStream::BuildUri(
+      kNcStreamerAppId,
+      GetChannelId(),
+      GetAccessToken())};
+
+  http_request_service_.Get(
+      live_stream_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [on_live_video_viewers](const std::string &str) {
+    OutputDebugStringA(str.c_str());
+
+    std::string cnt = "0";
+    try {
+      boost::property_tree::ptree root;
+      std::stringstream root_ss{str};
+      boost::property_tree::read_json(root_ss, root);
+
+      const auto &stream = root.get<std::string>("stream");
+      if (stream != "null") {
+        const auto &child = root.get_child("stream", {});
+        cnt = child.get<std::string>("viewers");
+      }
+    } catch (const std::exception &/*e*/) {
+      cnt = "0";
+    }
+
+    boost::property_tree::ptree wroot;
+    wroot.add<std::string>("live_views", cnt);
+    std::ostringstream oss;
+    write_json(oss, wroot);
+    on_live_video_viewers(oss.str());
+  });
+}
+
+
 void Twitch::StopLiveVideo() {
   chat_.Close();
 }
@@ -243,7 +287,7 @@ void Twitch::GetChannel(
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
     on_failed(msg);
-  }, [on_failed, on_channel_gotten](const std::string &str) {
+  }, [this, on_failed, on_channel_gotten](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
     std::string channel_id;
@@ -266,6 +310,8 @@ void Twitch::GetChannel(
       on_failed(msg.str());
       return;
     }
+
+    SetChannelId(channel_id);
     on_channel_gotten(channel_id, post_url, stream_key);
   });
 }
@@ -410,6 +456,22 @@ std::string Twitch::GetAccountNameLowerCase() const {
 void Twitch::SetAccountName(const std::string &account_name) {
   std::lock_guard<std::mutex> lock{account_name_mutex_};
   account_name_ = account_name;
+}
+
+
+std::string Twitch::GetChannelId() const {
+  std::string channel_id{};
+  {
+    std::lock_guard<std::mutex> lock{channel_id_mutex_};
+    channel_id = channel_id_;
+  }
+  return channel_id;
+}
+
+
+void Twitch::SetChannelId(const std::string &channel_id) {
+  std::lock_guard<std::mutex> lock{channel_id_mutex_};
+  channel_id_ = channel_id;
 }
 
 

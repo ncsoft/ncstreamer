@@ -63,7 +63,8 @@ void Facebook::LogIn(
       "popup",
       {"pages_show_list",
        "publish_actions",
-       "publish_pages"})};
+       "publish_pages",
+       "manage_pages"})};
 
   static const Dimension<int> kPopupDimension{429, 402};
 
@@ -222,6 +223,25 @@ void Facebook::GetComments(const std::string &created_time,
       [on_comments_got](const std::string &str) {
         OutputDebugStringA(str.c_str());
         on_comments_got(str);
+  });
+}
+
+
+void Facebook::GetLiveVideoViewers(
+    const OnFailed &on_failed,
+    const OnLiveVideoViewers &on_live_video_viewers) {
+  Uri live_video_info_uri{FacebookApi::Graph::LiveVideoInfo::BuildUri(
+      GetAccessToken(), GetStreamId(), {"live_views"})};
+
+  OutputDebugStringA(live_video_info_uri.uri_string().c_str());
+  http_request_service_.Get(
+      live_video_info_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [on_live_video_viewers](const std::string &str) {
+    OutputDebugStringA(str.c_str());
+    on_live_video_viewers(str);
   });
 }
 
