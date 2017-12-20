@@ -250,7 +250,7 @@ bool Obs::TurnOnChromaKey(const uint32_t color, const int similarity) {
   obs_data_set_double(settings, "gamma", 0.0);
 
   obs_source_t *filter = obs_source_create(
-    "chroma_key_filter", "ChromaKeyFileter", settings, nullptr);
+      "chroma_key_filter", "ChromaKeyFileter", settings, nullptr);
   obs_source_filter_add(source, filter);
   obs_source_release(filter);
   obs_source_release(source);
@@ -280,7 +280,7 @@ bool Obs::UpdateChromaKeyColor(const uint32_t color) {
     return false;
   }
   obs_source_t *filter =
-    obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+      obs_source_get_filter_by_name(source, "ChromaKeyFileter");
   if (filter == nullptr) {
     return false;
   }
@@ -301,7 +301,7 @@ bool Obs::UpdateChromaKeySimilarity(const int similarity) {
     return false;
   }
   obs_source_t *filter =
-    obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+      obs_source_get_filter_by_name(source, "ChromaKeyFileter");
   if (filter == nullptr) {
     return false;
   }
