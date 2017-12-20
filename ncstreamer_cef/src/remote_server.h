@@ -47,6 +47,11 @@ class RemoteServer {
       const std::string &error,
       const std::string &comments);
 
+  void ResponseViewers(
+      int request_key,
+      const std::string &error,
+      const std::string &viewers);
+
   void NotifyStreamingStart(
       int request_key,
       const std::string &error,
@@ -125,6 +130,10 @@ class RemoteServer {
       const boost::property_tree::ptree &tree);
 
   void OnCommentsRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
+  void OnViewersRequest(
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 

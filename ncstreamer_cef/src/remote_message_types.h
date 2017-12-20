@@ -46,6 +46,8 @@ class RemoteMessage {
     kSettingsMicOnResponse,
     kSettingsMicOffRequest = 711,
     kSettingsMicOffResponse,
+    kStreamingViewersRequest = 801,
+    kStreamingViewersResponse,
     kNcStreamerExitRequest = 901,
     kNcStreamerExitResponse,  // not used.
   };

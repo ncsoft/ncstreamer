@@ -141,20 +141,32 @@ void StreamingService::GetComments(
     const std::string &created_time,
     const OnFailed &on_failed,
     const OnCommentsGot &on_comments_got) {
-  static const std::string kFunc{"GetComments"};
-
   if (!current_service_provider_) {
     return;
   }
 
   current_service_provider_->GetComments(
       created_time,
-      [this, on_failed](const std::string &error) {
+      [on_failed](const std::string &error) {
     on_failed(error);
-  },
-      [on_comments_got](
-          const std::string &comments) {
+  }, [on_comments_got](const std::string &comments) {
     on_comments_got(comments);
+  });
+}
+
+
+void StreamingService::GetLiveVideoViewers(
+    const OnFailed &on_failed,
+    const OnLiveVideoViewers &on_live_video_viewers) {
+  if (!current_service_provider_) {
+    return;
+  }
+
+  current_service_provider_->GetLiveVideoViewers(
+      [on_failed](const std::string &error) {
+    on_failed(error);
+  }, [on_live_video_viewers](const std::string &viewers) {
+    on_live_video_viewers(viewers);
   });
 }
 

@@ -67,8 +67,6 @@ void IrcService::Close() {
     io_service_.stop();
     socket_.lowest_layer().close();
   }
-  if (thread_.joinable() == true)
-    thread_.join();
 
   SetReadyType(IrcService::ReadyType::kNone);
 }

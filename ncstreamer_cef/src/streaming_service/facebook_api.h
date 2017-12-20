@@ -64,6 +64,7 @@ class FacebookApi::Graph {
   class Me;
   class LiveVideos;
   class PostId;
+  class LiveVideoInfo;
   class LiveVideoComments;
 
  private:
@@ -106,6 +107,18 @@ class FacebookApi::Graph::PostId {
   static Uri BuildUri(
       const std::string &access_token,
       const std::string &stream_id);
+ private:
+  static std::string BuildPath(
+      const std::string &stream_id);
+};
+
+
+class FacebookApi::Graph::LiveVideoInfo {
+ public:
+  static Uri BuildUri(
+      const std::string &access_token,
+      const std::string &stream_id,
+      const std::vector<std::string> &fields);
  private:
   static std::string BuildPath(
       const std::string &stream_id);

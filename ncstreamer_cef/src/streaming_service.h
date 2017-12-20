@@ -31,6 +31,8 @@ class StreamingService {
                          const std::string &post_url)>;
   using OnCommentsGot =
       std::function<void(const std::string &comments)>;
+  using OnLiveVideoViewers =
+      std::function<void(const std::string &viewers)>;
 
   static void SetUp(
       const StreamingServiceTagMap &tag_ids);
@@ -64,6 +66,10 @@ class StreamingService {
       const std::string &created_time,
       const OnFailed &on_failed,
       const OnCommentsGot &on_comments_got);
+
+  void GetLiveVideoViewers(
+      const OnFailed &on_failed,
+      const OnLiveVideoViewers &on_live_video_viewers);
 
   void StopLiveVideo();
 

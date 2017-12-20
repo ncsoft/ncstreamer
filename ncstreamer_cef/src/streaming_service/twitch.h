@@ -52,6 +52,10 @@ class Twitch : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnCommentsGot &on_comments_got) override;
 
+  void GetLiveVideoViewers(
+      const OnFailed &on_failed,
+      const OnLiveVideoViewers &on_live_video_viewers) override;
+
   void StopLiveVideo() override;
 
  private:
@@ -104,6 +108,9 @@ class Twitch : public StreamingServiceProvider {
   std::string GetAccountNameLowerCase() const;
   void SetAccountName(const std::string &account_name);
 
+  std::string GetChannelId() const;
+  void SetChannelId(const std::string &channel_id);
+
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
 
@@ -116,6 +123,9 @@ class Twitch : public StreamingServiceProvider {
 
   mutable std::mutex account_name_mutex_;
   std::string account_name_;
+
+  mutable std::mutex channel_id_mutex_;
+  std::string channel_id_;
 
   TwitchChat chat_;
 };

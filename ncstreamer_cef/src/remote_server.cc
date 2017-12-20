@@ -104,6 +104,35 @@ void RemoteServer::ResponseComments(
 }
 
 
+void RemoteServer::ResponseViewers(
+    int request_key,
+    const std::string &error,
+    const std::string &viewers) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("ResponseViewersMessage: !connection.lock()");
+    return;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kStreamingViewersResponse));
+    tree.put("error", error);
+    tree.put("viewers", viewers);
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return;
+  }
+}
+
+
 void RemoteServer::NotifyStreamingStart(
     int request_key,
     const std::string &error,
@@ -336,6 +365,9 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kStreamingCommentsRequest,
        std::bind(&RemoteServer::OnCommentsRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kStreamingViewersRequest,
+       std::bind(&RemoteServer::OnViewersRequest,
+           this, std::placeholders::_1, std::placeholders::_2) },
       {RemoteMessage::MessageType::kSettingsWebcamSearchRequest,
        std::bind(&RemoteServer::OnSettingsWebcamSearchRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
@@ -476,9 +508,22 @@ void RemoteServer::OnCommentsRequest(
       ResponseComments(request_key, "comments not ready", "");
     } else {
       ResponseComments(request_key, "comments error", "");
-    }},
-      [this, request_key](const std::string &comments) {
+    }}, [this, request_key](const std::string &comments) {
     ResponseComments(request_key, "", comments);
+  });
+}
+
+
+void RemoteServer::OnViewersRequest(
+  const websocketpp::connection_hdl &connection,
+  const boost::property_tree::ptree &tree) {
+  int request_key = request_cache_.CheckIn(connection);
+
+  StreamingService::Get()->GetLiveVideoViewers(
+      [this, request_key](const std::string &error) {
+    ResponseViewers(request_key, error, "");
+  }, [this, request_key](const std::string& viewers) {
+    ResponseViewers(request_key, "", viewers);
   });
 }
 

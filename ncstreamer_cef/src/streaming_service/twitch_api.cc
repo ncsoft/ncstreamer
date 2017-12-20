@@ -141,4 +141,23 @@ std::string TwitchApi::Graph::UpdateChannel::BuildPath(
   ss << "/channels" << "/" << channel_id;
   return ss.str();
 }
+
+
+Uri TwitchApi::Graph::LiveStream::BuildUri(
+    const std::string &client_id,
+    const std::string &channel_id,
+    const std::string &access_token) {
+  return {kScheme, kAuthority, BuildPath(channel_id), Uri::Query{{
+      {"client_id", client_id},
+      {"oauth_token", access_token},
+      {"api_version", "5"}}}};
+}
+
+
+std::string TwitchApi::Graph::LiveStream::BuildPath(
+    const std::string &channel_id) {
+  std::stringstream ss;
+  ss << "/streams" << "/" << channel_id;
+  return ss.str();
+}
 }  // namespace ncstreamer

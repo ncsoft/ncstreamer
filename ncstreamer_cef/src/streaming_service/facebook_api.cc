@@ -140,6 +140,25 @@ std::string FacebookApi::Graph::PostId::BuildPath(
 }
 
 
+Uri FacebookApi::Graph::LiveVideoInfo::BuildUri(
+    const std::string &access_token,
+    const std::string &stream_id,
+    const std::vector<std::string> &fields) {
+  return {kScheme, kAuthority, BuildPath(stream_id),
+      Uri::Query{{
+          {"access_token", access_token},
+          {"fields", String::Join(fields, ",")}}}};
+}
+
+
+std::string FacebookApi::Graph::LiveVideoInfo::BuildPath(
+    const std::string &stream_id) {
+  std::stringstream ss;
+  ss << "/" << kVersion << "/" << stream_id;
+  return ss.str();
+}
+
+
 Uri FacebookApi::Graph::LiveVideoComments::BuildUri(
     const std::string &access_token,
     const std::string &stream_id,
