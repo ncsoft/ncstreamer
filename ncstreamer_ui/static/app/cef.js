@@ -76,8 +76,8 @@ const cef = (function() {
       response: ['error'],
     },
     'settings/webcam/size/update': {
-      request: ['normalX', 'normalY'],
-      response: ['error', 'normalX', 'normalY'],
+      request: ['normalWidth', 'normalHeight'],
+      response: ['error', 'normalWidth', 'normalHeight'],
     },
     'settings/webcam/position/update': {
       request: ['normalX', 'normalY'],

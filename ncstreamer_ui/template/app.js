@@ -1164,7 +1164,8 @@ cef.settingsWebcamOff.onResponse = function(error) {
 };
 
 
-cef.settingsWebcamSizeUpdate.onResponse = function(error, normalX, normalY) {
+cef.settingsWebcamSizeUpdate.onResponse =
+    function(error, normalWidth, normalHeight) {
   if (error != '') {
     console.info(error);
     return;
