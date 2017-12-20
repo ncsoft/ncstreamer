@@ -642,12 +642,34 @@ void Client::OnCommandSettingsWebcamOn(
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
   auto device_id_i = args.find("deviceId");
-  if (device_id_i == args.end()) {
+  auto normal_width_i = args.find("normalWidth");
+  auto normal_height_i = args.find("normalHeight");
+  auto normal_x_i = args.find("normalX");
+  auto normal_y_i = args.find("normalY");
+  if (device_id_i == args.end() ||
+      normal_width_i == args.end() ||
+      normal_height_i == args.end() ||
+      normal_x_i == args.end() ||
+      normal_y_i == args.end()) {
     assert(false);
     return;
   }
 
   const std::string &device_id = device_id_i->second;
+  float normal_width{0.0};
+  float normal_height{0.0};
+  float normal_x{0.0};
+  float normal_y{0.0};
+  try {
+    normal_width = std::stof(normal_width_i->second);
+    normal_height = std::stof(normal_height_i->second);
+    normal_x = std::stof(normal_x_i->second);
+    normal_y = std::stof(normal_y_i->second);
+  } catch (...) {
+    assert(false);
+    return;
+  }
+
   std::string error{};
   bool result = Obs::Get()->TurnOnWebcam(device_id, &error);
   if (!result) {
@@ -659,8 +681,16 @@ void Client::OnCommandSettingsWebcamOn(
     return;
   }
 
+  if (Obs::Get()->UpdateWebcamSize(normal_width, normal_height) == false) {
+    error = "webcam size error";
+  }
+
+  if (Obs::Get()->UpdateWebcamPosition(normal_x, normal_y) == false) {
+    error = "webcam position error";
+  }
+
   JsExecutor::Execute(browser, "cef.onResponse", cmd,
-      JsExecutor::StringPairVector{{"error", ""}});
+      JsExecutor::StringPairVector{{"error", error}});
 }
 
 

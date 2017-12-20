@@ -67,7 +67,8 @@ const cef = (function() {
       response: ['error', 'webcamList'],
     },
     'settings/webcam/on': {
-      request: ['deviceId'],
+      request: ['deviceId', 'normalWidth', 'normalHeight',
+                'normalX', 'normalY'],
       response: ['error'],
     },
     'settings/webcam/off': {
