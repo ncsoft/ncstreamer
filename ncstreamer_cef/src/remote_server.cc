@@ -736,6 +736,8 @@ void RemoteServer::OnSettingsChromaKeyOnRequest(
     return;
   }
 
+  Obs::Get()->TurnOnChromaKey(color, similarity);
+
   boost::property_tree::ptree args;
   args.add("color", color);
   args.add("similarity", similarity);
@@ -743,7 +745,6 @@ void RemoteServer::OnSettingsChromaKeyOnRequest(
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
       "remote.onSettingsChromaKeyOnRequest",
-      request_key,
       args);
 
   RespondSettingsChromaKeyOn(request_key, error);
@@ -755,11 +756,11 @@ void RemoteServer::OnSettingsChromaKeyOffRequest(
     const boost::property_tree::ptree &tree) {
   int request_key = request_cache_.CheckIn(connection);
 
+  Obs::Get()->TurnOffChromaKey();
+
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
-      "remote.onSettingsChromaKeyOffRequest",
-      request_key);
-
+      "remote.onSettingsChromaKeyOffRequest");
   RespondSettingsChromaKeyOff(request_key, "");
 }
 
@@ -783,15 +784,14 @@ void RemoteServer::OnSettingsChromaKeyColorRequest(
     return;
   }
 
+  Obs::Get()->UpdateChromaKeyColor(color);
+
   boost::property_tree::ptree args;
   args.add("color", color);
-
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
       "remote.onSettingsChromaKeyColorRequest",
-      request_key,
       args);
-
   RespondSettingsChromaKeyColor(request_key, error);
 }
 
@@ -819,15 +819,14 @@ void RemoteServer::OnSettingsChromaKeySimilarityRequest(
     return;
   }
 
+  Obs::Get()->UpdateChromaKeySimilarity(similarity);
+
   boost::property_tree::ptree args;
   args.add("similarity", similarity);
-
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
       "remote.onSettingsChromaKeySimilarityRequest",
-      request_key,
       args);
-
   RespondSettingsChromaKeySimilarity(request_key, error);
 }
 

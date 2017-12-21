@@ -291,28 +291,19 @@ const remote = {
     app.streaming.webcam.position.x = args.normalX;
     app.streaming.webcam.position.y = args.normalY;
   },
-  onSettingsChromaKeyOnRequest: function(requestKey, args) {
+  onSettingsChromaKeyOnRequest: function(args) {
     app.streaming.webcam.chromaKey.color = args.color;
     app.streaming.webcam.chromaKey.similarity = args.similarity;
-
     app.dom.chromaKeyCheckbox.checked = true;
-    const color = app.streaming.webcam.chromaKey.color;
-    const similarity = app.streaming.webcam.chromaKey.similarity;
-    cef.settingsChromaKeyOn.request(color, similarity);
   },
-  onSettingsChromaKeyOffRequest: function(requestKey) {
+  onSettingsChromaKeyOffRequest: function() {
     app.dom.chromaKeyCheckbox.checked = false;
-    cef.settingsChromaKeyOff.request();
   },
-  onSettingsChromaKeyColorRequest: function(requestKey, args) {
+  onSettingsChromaKeyColorRequest: function(args) {
     app.streaming.webcam.chromaKey.color = args.color;
-    cef.settingsChromaKeyColor.request(
-        app.streaming.webcam.chromaKey.color);
   },
-  onSettingsChromaKeySimilarityRequest: function(requestKey, args) {
+  onSettingsChromaKeySimilarityRequest: function(args) {
     app.streaming.webcam.chromaKey.similarity = args.similarity;
-    cef.settingsChromaKeySimilarity.request(
-        app.streaming.webcam.chromaKey.similarity);
   },
   onSettingsMicOnRequest: function(requestKey) {
     setMicCheckBox(true);
