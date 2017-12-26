@@ -46,7 +46,7 @@ class Obs {
   bool TurnOffMic();
   bool UpdateMicVolume(float volume);
   std::vector<Obs::WebcamDevice> SearchWebcamDevices();
-  bool TurnOnWebcam(const std::string &device_id);
+  bool TurnOnWebcam(const std::string &device_id, std::string *const error);
   bool TurnOffWebcam();
   bool UpdateWebcamSize(const float normal_x, const float normal_y);
   bool UpdateWebcamPosition(const float normal_x, const float normal_y);
@@ -93,6 +93,7 @@ class Obs {
   obs_encoder_t *audio_encoder_;
   obs_encoder_t *video_encoder_;
   std::unique_ptr<ObsOutput> stream_output_;
+  obs_scene_t *scene_;
 
   obs_service_t *current_service_;
   int audio_bitrate_;

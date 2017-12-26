@@ -67,7 +67,8 @@ const cef = (function() {
       response: ['error', 'webcamList'],
     },
     'settings/webcam/on': {
-      request: ['deviceId'],
+      request: ['deviceId', 'normalWidth', 'normalHeight',
+                'normalX', 'normalY'],
       response: ['error'],
     },
     'settings/webcam/off': {
@@ -75,8 +76,8 @@ const cef = (function() {
       response: ['error'],
     },
     'settings/webcam/size/update': {
-      request: ['normalX', 'normalY'],
-      response: ['error', 'normalX', 'normalY'],
+      request: ['normalWidth', 'normalHeight'],
+      response: ['error', 'normalWidth', 'normalHeight'],
     },
     'settings/webcam/position/update': {
       request: ['normalX', 'normalY'],
@@ -271,54 +272,38 @@ const remote = {
 
     remote.qualityUpdateRequestKey = requestKey;
   },
-  onSettingsWebcamOnRequest: function(requestKey, args) {
+  onSettingsWebcamOnRequest: function(args) {
     app.streaming.webcam.curDeviceId = args.deviceId;
     app.streaming.webcam.size.width = args.normalWidth;
     app.streaming.webcam.size.height = args.normalHeight;
     app.streaming.webcam.position.x = args.normalX;
     app.streaming.webcam.position.y = args.normalY;
-
     app.dom.webcamCheckbox.checked = true;
-    cef.settingsWebcamOn.request(app.streaming.webcam.curDeviceId);
   },
-  onSettingsWebcamOffRequest: function(requestKey) {
+  onSettingsWebcamOffRequest: function() {
     app.dom.webcamCheckbox.checked = false;
-    cef.settingsWebcamOff.request();
   },
-  onSettingsWebcamSizeRequest: function(requestKey, args) {
+  onSettingsWebcamSizeRequest: function(args) {
     app.streaming.webcam.size.width = args.normalWidth;
     app.streaming.webcam.size.height = args.normalHeight;
-    cef.settingsWebcamSizeUpdate.request(app.streaming.webcam.size.width,
-                                         app.streaming.webcam.size.height);
   },
-  onSettingsWebcamPositionRequest: function(requestKey, args) {
+  onSettingsWebcamPositionRequest: function(args) {
     app.streaming.webcam.position.x = args.normalX;
     app.streaming.webcam.position.y = args.normalY;
-    cef.settingsWebcamPositionUpdate.request(app.streaming.webcam.position.x,
-                                             app.streaming.webcam.position.y);
   },
-  onSettingsChromaKeyOnRequest: function(requestKey, args) {
+  onSettingsChromaKeyOnRequest: function(args) {
     app.streaming.webcam.chromaKey.color = args.color;
     app.streaming.webcam.chromaKey.similarity = args.similarity;
-
     app.dom.chromaKeyCheckbox.checked = true;
-    const color = app.streaming.webcam.chromaKey.color;
-    const similarity = app.streaming.webcam.chromaKey.similarity;
-    cef.settingsChromaKeyOn.request(color, similarity);
   },
-  onSettingsChromaKeyOffRequest: function(requestKey) {
+  onSettingsChromaKeyOffRequest: function() {
     app.dom.chromaKeyCheckbox.checked = false;
-    cef.settingsChromaKeyOff.request();
   },
-  onSettingsChromaKeyColorRequest: function(requestKey, args) {
+  onSettingsChromaKeyColorRequest: function(args) {
     app.streaming.webcam.chromaKey.color = args.color;
-    cef.settingsChromaKeyColor.request(
-        app.streaming.webcam.chromaKey.color);
   },
-  onSettingsChromaKeySimilarityRequest: function(requestKey, args) {
+  onSettingsChromaKeySimilarityRequest: function(args) {
     app.streaming.webcam.chromaKey.similarity = args.similarity;
-    cef.settingsChromaKeySimilarity.request(
-        app.streaming.webcam.chromaKey.similarity);
   },
   onSettingsMicOnRequest: function(requestKey) {
     setMicCheckBox(true);

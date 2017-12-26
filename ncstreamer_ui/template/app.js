@@ -546,6 +546,7 @@ function onWebcamCheckboxChanged() {
   console.info('change webcamCheckbox');
   if (app.dom.webcamCheckbox.checked) {
     console.info('webcam on');
+    ncsoft.checkbox.disable(app.dom.webcamCheckbox);
     app.streaming.webcam.use = true;
     cef.settingsWebcamSearch.request();
   } else {
@@ -1014,7 +1015,12 @@ cef.streamingStart.onResponse =
   } else {
     onMicCheckboxChanged();
     if (app.dom.webcamCheckbox.checked) {
-      cef.settingsWebcamOn.request(app.streaming.webcam.curDeviceId);
+      const deviceId = app.streaming.webcam.curDeviceId;
+      const width = app.streaming.webcam.size.width;
+      const height = app.streaming.webcam.size.height;
+      const x = app.streaming.webcam.position.x;
+      const y = app.streaming.webcam.position.y;
+      cef.settingsWebcamOn.request(deviceId, width, height, x, y);
     }
     app.streaming.postUrl = postUrl;
     updateStreamingStatus('onAir');
@@ -1105,6 +1111,7 @@ cef.settingsMicVolumeUpdate.onResponse = function(error, volume) {
 cef.settingsWebcamSearch.onResponse = function(error, webcamList) {
   if (error != '') {
     console.info(error);
+    ncsoft.checkbox.enable(app.dom.webcamCheckbox);
     return;
   }
   if (webcamList == '') {
@@ -1114,25 +1121,32 @@ cef.settingsWebcamSearch.onResponse = function(error, webcamList) {
       app.streaming.webcam.use = false;
     }
     app.dom.webcamCheckbox.checked = false;
+    ncsoft.checkbox.enable(app.dom.webcamCheckbox);
     return;
   }
 
   app.streaming.webcam.list = webcamList;
   app.streaming.webcam.curDeviceId = app.streaming.webcam.list[0].id;
-  cef.settingsWebcamOn.request(app.streaming.webcam.curDeviceId);
+  const deviceId = app.streaming.webcam.curDeviceId;
+  const width = app.streaming.webcam.size.width;
+  const height = app.streaming.webcam.size.height;
+  const x = app.streaming.webcam.position.x;
+  const y = app.streaming.webcam.position.y;
+  cef.settingsWebcamOn.request(deviceId, width, height, x, y);
 };
 
 
 cef.settingsWebcamOn.onResponse = function(error) {
+  ncsoft.checkbox.enable(app.dom.webcamCheckbox);
+
   if (error != '') {
     console.info(error);
-    return;
+    if (error != 'webcam size error' ||
+        error != 'webcam position error') {
+      return;
+    }
   }
   app.streaming.webcam.use = true;
-  cef.settingsWebcamSizeUpdate.request(app.streaming.webcam.size.width,
-                                       app.streaming.webcam.size.height);
-  cef.settingsWebcamPositionUpdate.request(app.streaming.webcam.position.x,
-                                           app.streaming.webcam.position.y);
   if (app.dom.chromaKeyCheckbox.checked) {
     const color = app.streaming.webcam.chromaKey.color;
     const similarity = app.streaming.webcam.chromaKey.similarity;
@@ -1150,7 +1164,8 @@ cef.settingsWebcamOff.onResponse = function(error) {
 };
 
 
-cef.settingsWebcamSizeUpdate.onResponse = function(error, normalX, normalY) {
+cef.settingsWebcamSizeUpdate.onResponse =
+    function(error, normalWidth, normalHeight) {
   if (error != '') {
     console.info(error);
     return;
