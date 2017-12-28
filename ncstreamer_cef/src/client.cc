@@ -796,8 +796,7 @@ void Client::OnCommandSettingsChromaKeyOn(
   try {
     color = std::stoul(color_i->second);
     similarity = std::stoi(similarity_i->second);
-  }
-  catch (...) {
+  } catch (...) {
     assert(false);
     return;
   }
@@ -845,8 +844,7 @@ void Client::OnCommandSettingsChromaKeyColorUpdate(
   uint32_t color{0};
   try {
     color = std::stoul(color_i->second);
-  }
-  catch (...) {
+  } catch (...) {
     assert(false);
     return;
   }
@@ -877,8 +875,7 @@ void Client::OnCommandSettingsChromaKeySimilarityUpdate(
   int similarity{0};
   try {
     similarity = std::stoi(similarity_i->second);
-  }
-  catch (...) {
+  } catch (...) {
     assert(false);
     return;
   }
