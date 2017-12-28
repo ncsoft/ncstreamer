@@ -835,11 +835,16 @@ void RemoteServer::OnSettingsMicOnRequest(
     const websocketpp::connection_hdl &connection,
     const boost::property_tree::ptree &tree) {
   int request_key = request_cache_.CheckIn(connection);
+  std::string error{};
+  Obs::Get()->TurnOnMic(&error);
+
+  if (error == "there is no audio device") {
+    RespondSettingsMicOn(request_key, error);
+  }
 
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
-      "remote.onSettingsMicOnRequest",
-      request_key);
+      "remote.onSettingsMicOnRequest");
 
   RespondSettingsMicOn(request_key, "");
 }
@@ -849,11 +854,11 @@ void RemoteServer::OnSettingsMicOffRequest(
     const websocketpp::connection_hdl &connection,
     const boost::property_tree::ptree &tree) {
   int request_key = request_cache_.CheckIn(connection);
+  Obs::Get()->TurnOffMic();
 
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
-      "remote.onSettingsMicOffRequest",
-      request_key);
+      "remote.onSettingsMicOffRequest");
 
   RespondSettingsMicOff(request_key, "");
 }
