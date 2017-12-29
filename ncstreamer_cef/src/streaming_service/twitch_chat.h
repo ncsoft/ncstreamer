@@ -36,7 +36,7 @@ class TwitchChat {
   void ReadHandle(const std::string &msg);
   const std::string GetJson(const std::string &time);
 
-  IrcService::ReadyType GetReady();
+  IrcService::ReadyStatus GetReadyStatus();
 
  private:
   class IrcMessage;

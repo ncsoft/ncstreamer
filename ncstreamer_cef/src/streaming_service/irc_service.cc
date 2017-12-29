@@ -14,20 +14,47 @@ namespace ncstreamer {
 IrcService::IrcService()
     : io_service_{},
       ctx_(boost::asio::ssl::context::sslv23),
-      socket_(io_service_, ctx_),
+      stream_(io_service_, ctx_),
+      io_service_cv_{},
+      io_service_request_{IoServiceRequest::kNone},
+      io_service_mutex_{},
       streambuf_{},
       msg_{},
       error_{},
       read_{},
       thread_{},
-      ready_type_mutex_{},
-      ready_type_{IrcService::ReadyType::kNone} {
+      ready_status_mutex_{},
+      ready_status_{IrcService::ReadyStatus::kNone} {
   ctx_.load_verify_file("cacert.pem");
+
+  thread_ = std::thread([this]() {
+    for (;;) {
+      std::unique_lock<std::mutex> lk(io_service_mutex_);
+      io_service_cv_.wait(lk);
+
+      if (io_service_request_ == IoServiceRequest::kRun) {
+        io_service_.reset();
+        io_service_.run();
+      } else if (io_service_request_ == IoServiceRequest::kBreak) {
+        break;
+      }
+    }
+  });
 }
 
 
 IrcService::~IrcService() {
   Close();
+
+  {
+    std::lock_guard<std::mutex> lk(io_service_mutex_);
+    io_service_request_ = IoServiceRequest::kBreak;
+  }
+  io_service_cv_.notify_all();
+
+  if (thread_.joinable() == true) {
+    thread_.join();
+  }
 }
 
 
@@ -47,39 +74,40 @@ void IrcService::Connect(
   error_ = on_errored;
   read_ = on_read;
 
-  SetReadyType(IrcService::ReadyType::kConnecting);
+  SetReadyStatus(IrcService::ReadyStatus::kConnecting);
 
   boost::asio::ip::tcp::resolver resolver(io_service_);
   auto endpoint_iterator = resolver.resolve({host.c_str(), port.c_str()});
 
   boost::asio::async_connect(
-      socket_.lowest_layer(),
+      stream_.lowest_layer(),
       endpoint_iterator,
       boost::bind(&IrcService::HandleConnect, this,
           boost::asio::placeholders::error));
 
-  thread_ = std::thread([this]() {io_service_.run();});
+  {
+    std::lock_guard<std::mutex> lk(io_service_mutex_);
+    io_service_request_ = IoServiceRequest::kRun;
+  }
+  io_service_cv_.notify_all();
 }
 
 
 void IrcService::Close() {
-  if (io_service_.stopped() == false) {
-    io_service_.stop();
-    socket_.lowest_layer().close();
-  }
-
-  SetReadyType(IrcService::ReadyType::kNone);
+  io_service_.stop();
+  SetReadyStatus(IrcService::ReadyStatus::kNone);
 }
 
 
 void IrcService::HandleConnect(const boost::system::error_code &ec) {
   if (!ec) {
-    socket_.async_handshake(
+    stream_.async_handshake(
         boost::asio::ssl::stream_base::client,
         boost::bind(&IrcService::HandleHandshake, this,
             boost::asio::placeholders::error));
   } else {
     error_(ec);
+    Close();
   }
 }
 
@@ -87,14 +115,14 @@ void IrcService::HandleConnect(const boost::system::error_code &ec) {
 void IrcService::HandleHandshake(const boost::system::error_code &ec) {
   if (!ec) {
     boost::asio::async_write(
-      socket_,
+      stream_,
       boost::asio::buffer(msg_.c_str(), msg_.size()),
       boost::bind(&IrcService::HandleWrite, this,
           boost::asio::placeholders::error,
           boost::asio::placeholders::bytes_transferred));
   } else {
     error_(ec);
-    socket_.lowest_layer().close();
+    Close();
   }
 }
 
@@ -104,17 +132,17 @@ void IrcService::HandleWrite(
     const std::size_t &size) {
   if (!ec) {
     DoRead();
-    SetReadyType(IrcService::ReadyType::kCompleted);
+    SetReadyStatus(IrcService::ReadyStatus::kCompleted);
   } else {
     error_(ec);
-    socket_.lowest_layer().close();
+    Close();
   }
 }
 
 
 void IrcService::DoRead() {
   boost::asio::async_read_until(
-      socket_, streambuf_, kIrcDelimiter,
+      stream_, streambuf_, kIrcDelimiter,
       std::bind(&IrcService::ReadHandle, this, std::placeholders::_1,
           std::placeholders::_2));
 }
@@ -140,18 +168,18 @@ void IrcService::ReadHandle(
 }
 
 
-IrcService::ReadyType IrcService::GetReadyType() {
-  IrcService::ReadyType ready_type{IrcService::ReadyType::kNone};
+IrcService::ReadyStatus IrcService::GetReadyStatus() {
+  IrcService::ReadyStatus ready_status{IrcService::ReadyStatus::kNone};
   {
-    std::lock_guard<std::mutex> lock{ready_type_mutex_};
-    ready_type = ready_type_;
+    std::lock_guard<std::mutex> lock{ready_status_mutex_};
+    ready_status = ready_status_;
   }
-  return ready_type;
+  return ready_status;
 }
 
 
-void IrcService::SetReadyType(IrcService::ReadyType ready_type) {
-  std::lock_guard<std::mutex> lock{ready_type_mutex_};
-  ready_type_ = ready_type;
+void IrcService::SetReadyStatus(IrcService::ReadyStatus ready_status) {
+  std::lock_guard<std::mutex> lock{ready_status_mutex_};
+  ready_status_ = ready_status;
 }
 }  // namespace ncstreamer
