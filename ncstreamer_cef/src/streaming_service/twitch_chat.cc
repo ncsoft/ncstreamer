@@ -129,8 +129,8 @@ const std::string TwitchChat::GetJson(const std::string &time) {
 }
 
 
-IrcService::ReadyType TwitchChat::GetReady() {
-  return irc_.GetReadyType();
+IrcService::ReadyStatus TwitchChat::GetReadyStatus() {
+  return irc_.GetReadyStatus();
 }
 
 

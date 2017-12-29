@@ -166,25 +166,27 @@ void Twitch::PostLiveVideo(
                   on_failed,
                   on_live_video_posted);
   });
+
+  chat_.Connect(kTwitchIrcHost, kTwitchIrcPort, GetAccessToken(),
+      GetNickName(), GetAccountNameLowerCase(),
+      [](const boost::system::error_code &/*ec*/) {});
 }
 
 
 void Twitch::GetComments(const std::string &created_time,
     const OnFailed &on_failed,
     const OnCommentsGot &on_comments_got) {
-
-  if (chat_.GetReady() == IrcService::ReadyType::kNone) {
-    chat_.Connect(kTwitchIrcHost, kTwitchIrcPort, GetAccessToken(),
-        GetNickName(), GetAccountNameLowerCase(),
-        [on_failed](const boost::system::error_code &ec) {
-      std::string msg{ec.message()};
-      on_failed(msg);
-    });
+  switch (chat_.GetReadyStatus()) {
+  case IrcService::ReadyStatus::kNone:
+  case IrcService::ReadyStatus::kConnecting:
     on_failed("not ready");
-  } else if (chat_.GetReady() == IrcService::ReadyType::kConnecting) {
-    on_failed("not ready");
-  } else {
+    break;
+  case IrcService::ReadyStatus::kCompleted:
     on_comments_got(chat_.GetJson(created_time));
+    break;
+  default:
+    assert(false);
+    break;
   }
 }
 
