@@ -171,15 +171,11 @@ void HttpRequest::Request(const urdl::url &url) {
 
 
 void HttpRequest::OnRead(const boost::system::error_code &ec,
-                            std::size_t length) {
+                         std::size_t length) {
   if (ec) {
     rstream_.close();
     ostream_close_handler_();
-    if (ec == boost::asio::error::eof) {
-      complete_handler_();
-    } else {
-      err_handler_(ec);
-    }
+    complete_handler_();
     return;
   }
   read_handler_(length);
