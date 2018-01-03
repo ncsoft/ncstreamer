@@ -9,6 +9,7 @@
 
 #include "ncstreamer_cef/src/streaming_service/facebook.h"
 #include "ncstreamer_cef/src/streaming_service/twitch.h"
+#include "ncstreamer_cef/src/streaming_service/youtube.h"
 
 
 namespace ncstreamer {
@@ -37,7 +38,8 @@ StreamingService::StreamingService(
     : tag_ids_{tag_ids},
       service_providers_{
           {"Facebook Live", std::shared_ptr<Facebook>{new Facebook{}}},
-          {"Twitch", std::shared_ptr<Twitch>{new Twitch{}}}},
+          {"Twitch", std::shared_ptr<Twitch>{new Twitch{}}},
+          {"YouTube", std::shared_ptr<YouTube>{new YouTube{}}}},
       current_service_provider_id_{nullptr},
       current_service_provider_{} {
 }
