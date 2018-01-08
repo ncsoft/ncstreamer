@@ -107,7 +107,6 @@ void IrcService::HandleConnect(const boost::system::error_code &ec) {
             boost::asio::placeholders::error));
   } else {
     error_(ec);
-    Close();
   }
 }
 
@@ -122,7 +121,6 @@ void IrcService::HandleHandshake(const boost::system::error_code &ec) {
           boost::asio::placeholders::bytes_transferred));
   } else {
     error_(ec);
-    Close();
   }
 }
 
@@ -135,7 +133,6 @@ void IrcService::HandleWrite(
     SetReadyStatus(IrcService::ReadyStatus::kCompleted);
   } else {
     error_(ec);
-    Close();
   }
 }
 
@@ -163,7 +160,6 @@ void IrcService::ReadHandle(
     DoRead();
   } else {
     error_(ec);
-    Close();
   }
 }
 
