@@ -60,7 +60,8 @@ void HttpRequest::Download(
 void HttpRequest::Request(
     const urdl::url &url,
     const urdl::http::request_method &method,
-    const boost::property_tree::ptree &post_content,
+    const HttpHeaderContentType &content_type,
+    const std::string &post_content,
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
@@ -73,8 +74,16 @@ void HttpRequest::Request(
   }
 
   rstream_.set_option(method);
-  if (post_content.empty() == false) {
-    HttpRequestContent::SetJson(post_content, &rstream_);
+  switch (content_type) {
+    case HttpHeaderContentType::kApplicationJson:
+      HttpRequestContent::SetJson(post_content, &rstream_);
+      break;
+    case HttpHeaderContentType::kWwwFormUrlEncoded:
+      HttpRequestContent::SetWwwFormUrlEncoded(post_content, &rstream_);
+      break;
+    default:
+      HttpRequestContent::SetEmpty(&rstream_);
+      break;
   }
 
   std::stringstream *stringstream{new std::stringstream{}};
@@ -100,11 +109,12 @@ void HttpRequest::Get(
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
     const ResponseCompleteHandler &complete_handler) {
-  static const boost::property_tree::ptree kEmptyPostContent;
+  static const std::string kEmptyPostContent;
 
   Request(
       url,
       HttpRequestMethod::kGet,
+      HttpHeaderContentType::kNone,
       kEmptyPostContent,
       err_handler,
       open_handler,
@@ -115,7 +125,8 @@ void HttpRequest::Get(
 
 void HttpRequest::Post(
     const urdl::url &url,
-    const boost::property_tree::ptree &post_content,
+    const HttpHeaderContentType &content_type,
+    const std::string &post_content,
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
@@ -123,6 +134,7 @@ void HttpRequest::Post(
   Request(
       url,
       HttpRequestMethod::kPost,
+      content_type,
       post_content,
       err_handler,
       open_handler,
@@ -133,7 +145,8 @@ void HttpRequest::Post(
 
 void HttpRequest::Put(
     const urdl::url &url,
-    const boost::property_tree::ptree &post_content,
+    const HttpHeaderContentType &content_type,
+    const std::string &post_content,
     const ErrorHandler &err_handler,
     const OpenHandler &open_handler,
     const ReadHandler &read_handler,
@@ -141,6 +154,7 @@ void HttpRequest::Put(
   Request(
       url,
       HttpRequestMethod::kPut,
+      HttpHeaderContentType::kApplicationJson,
       post_content,
       err_handler,
       open_handler,

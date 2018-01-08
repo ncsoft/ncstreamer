@@ -25,6 +25,12 @@ namespace ncstreamer {
 class HttpRequest
     : public std::enable_shared_from_this<HttpRequest> {
  public:
+  enum class HttpHeaderContentType {
+    kNone = 0,
+    kApplicationJson,
+    kWwwFormUrlEncoded,
+  };
+
   using ErrorHandler = std::function<void(const boost::system::error_code &ec)>;
   using OpenHandler = std::function<void(std::size_t file_size)>;
   using ReadHandler = std::function<void(std::size_t read_size)>;
@@ -44,7 +50,8 @@ class HttpRequest
   void Request(
       const urdl::url &url,
       const urdl::http::request_method &method,
-      const boost::property_tree::ptree &post_content,
+      const HttpHeaderContentType &content_type,
+      const std::string &post_content,
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,
@@ -59,7 +66,8 @@ class HttpRequest
 
   void Post(
       const urdl::url &url,
-      const boost::property_tree::ptree &post_content,
+      const HttpHeaderContentType &content_type,
+      const std::string &post_content,
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,
@@ -67,7 +75,8 @@ class HttpRequest
 
   void Put(
       const urdl::url &url,
-      const boost::property_tree::ptree &post_content,
+      const HttpHeaderContentType &content_type,
+      const std::string &post_content,
       const ErrorHandler &err_handler,
       const OpenHandler &open_handler,
       const ReadHandler &read_handler,

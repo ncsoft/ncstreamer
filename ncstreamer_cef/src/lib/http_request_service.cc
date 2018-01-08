@@ -5,6 +5,8 @@
 
 #include "ncstreamer_cef/src/lib/http_request_service.h"
 
+#include "boost/property_tree/json_parser.hpp"
+
 
 namespace ncstreamer {
 HttpRequestService::HttpRequestService()
@@ -65,9 +67,31 @@ void HttpRequestService::Post(
     const HttpRequest::OpenHandler &open_handler,
     const HttpRequest::ReadHandler &read_handler,
     const HttpRequest::ResponseCompleteHandler &complete_handler) {
+  std::stringstream json;
+  boost::property_tree::write_json(json, post_content, false);
+
   http_request_->Post(
       uri,
-      post_content,
+      HttpRequest::HttpHeaderContentType::kApplicationJson,
+      json.str(),
+      err_handler,
+      open_handler,
+      read_handler,
+      complete_handler);
+}
+
+
+void HttpRequestService::Post(
+    const std::string &uri,
+    const Uri::Query &post_content,
+    const HttpRequest::ErrorHandler &err_handler,
+    const HttpRequest::OpenHandler &open_handler,
+    const HttpRequest::ReadHandler &read_handler,
+    const HttpRequest::ResponseCompleteHandler &complete_handler) {
+  http_request_->Post(
+      uri,
+      HttpRequest::HttpHeaderContentType::kWwwFormUrlEncoded,
+      post_content.query_string(),
       err_handler,
       open_handler,
       read_handler,
@@ -95,6 +119,26 @@ void HttpRequestService::Post(
 }
 
 
+void HttpRequestService::Post(
+    const std::string &uri,
+    const Uri::Query &post_content,
+    const HttpRequest::ErrorHandler &err_handler,
+    const HttpRequest::ResponseCompleteHandler &complete_handler) {
+  static const HttpRequest::OpenHandler kDefaultOpenHandler{
+        [](std::size_t /*file_size*/) {}};
+  static const HttpRequest::ReadHandler kDefaultReadHandler{
+        [](std::size_t /*read_size*/) {}};
+
+  Post(
+      uri,
+      post_content,
+      err_handler,
+      kDefaultOpenHandler,
+      kDefaultReadHandler,
+      complete_handler);
+}
+
+
 void HttpRequestService::Put(
     const std::string &uri,
     const boost::property_tree::ptree &post_content,
@@ -102,9 +146,13 @@ void HttpRequestService::Put(
     const HttpRequest::OpenHandler &open_handler,
     const HttpRequest::ReadHandler &read_handler,
     const HttpRequest::ResponseCompleteHandler &complete_handler) {
+  std::stringstream json;
+  boost::property_tree::write_json(json, post_content, false);
+
   http_request_->Put(
       uri,
-      post_content,
+      HttpRequest::HttpHeaderContentType::kApplicationJson,
+      json.str(),
       err_handler,
       open_handler,
       read_handler,

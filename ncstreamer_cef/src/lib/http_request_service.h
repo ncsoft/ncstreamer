@@ -15,6 +15,7 @@
 #include "boost/property_tree/ptree.hpp"
 
 #include "ncstreamer_cef/src/lib/http_request.h"
+#include "ncstreamer_cef/src/lib/uri.h"
 
 
 namespace ncstreamer {
@@ -45,7 +46,21 @@ class HttpRequestService {
 
   void Post(
       const std::string &uri,
+      const Uri::Query &post_content,
+      const HttpRequest::ErrorHandler &err_handler,
+      const HttpRequest::OpenHandler &open_handler,
+      const HttpRequest::ReadHandler &read_handler,
+      const HttpRequest::ResponseCompleteHandler &complete_handler);
+
+  void Post(
+      const std::string &uri,
       const boost::property_tree::ptree &post_content,
+      const HttpRequest::ErrorHandler &err_handler,
+      const HttpRequest::ResponseCompleteHandler &complete_handler);
+
+  void Post(
+      const std::string &uri,
+      const Uri::Query &post_content,
       const HttpRequest::ErrorHandler &err_handler,
       const HttpRequest::ResponseCompleteHandler &complete_handler);
 
