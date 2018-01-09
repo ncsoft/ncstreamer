@@ -347,15 +347,15 @@ function getTitleFromSource(source) {
 
 
 function updateStreamingSources(obj) {
-  if (app.streaming.status != 'standby') {
-    return;
-  }
   if (!obj.hasOwnProperty('sources')) {
     return;
   }
   const sources = obj.sources;
-
   stopInvalidSource(sources);
+
+  if (app.streaming.status != 'standby') {
+    return;
+  }
 
   const gameSelect = app.dom.gameSelect;
   ncsoft.select.clear(gameSelect);
