@@ -110,4 +110,80 @@ const std::string &YouTubeApi::Graph::Channel::static_path() {
   }()};
   return kPath;
 }
+
+
+Uri YouTubeApi::Graph::BroadcastList::BuildUri(
+    const std::string &access_token) {
+  return {kScheme, kAuthority, static_path(), Uri::Query{{
+      {"part", "contentDetails"},
+      {"broadcastType", "persistent"},
+      {"mine", "true"},
+      {"access_token", access_token}}}};
+}
+
+
+const std::string &YouTubeApi::Graph::BroadcastList::static_path() {
+  static const std::string kPath{[]() {
+    std::stringstream ss;
+    ss << "/liveBroadcasts";
+    return ss.str();
+  }()};
+  return kPath;
+}
+
+
+Uri YouTubeApi::Graph::StreamList::BuildUri(
+    const std::string &stream_id,
+    const std::string &access_token) {
+  return {kScheme, kAuthority, static_path(), Uri::Query{{
+      {"part", "cdn"},
+      {"id", stream_id},
+      {"access_token", access_token}}}};
+}
+
+
+const std::string &YouTubeApi::Graph::StreamList::static_path() {
+  static const std::string kPath{[]() {
+    std::stringstream ss;
+    ss << "/liveStreams";
+    return ss.str();
+  }()};
+  return kPath;
+}
+
+
+Uri YouTubeApi::Graph::VideoUpdate::BuildUri(
+    const std::string &access_token) {
+  return {kScheme, kAuthority, static_path(), Uri::Query{{
+      {"part", "snippet,status"},
+      {"access_token", access_token}}}};
+}
+
+
+boost::property_tree::ptree YouTubeApi::Graph::VideoUpdate::BuildPostContent(
+      const std::string &broadcast_id,
+      const std::string &title,
+      const std::string &privacy_status) {
+  boost::property_tree::ptree snippet;
+  snippet.add<std::string>("categoryId", "20");
+  snippet.add<std::string>("title", title);
+
+  boost::property_tree::ptree status;
+  status.add<std::string>("privacyStatus", privacy_status);
+
+  boost::property_tree::ptree post_content;
+  post_content.add<std::string>("id", broadcast_id);
+  post_content.add_child("snippet", snippet);
+  post_content.add_child("status", status);
+  return post_content;
+}
+
+const std::string &YouTubeApi::Graph::VideoUpdate::static_path() {
+  static const std::string kPath{[]() {
+    std::stringstream ss;
+    ss << "/videos";
+    return ss.str();
+  }()};
+  return kPath;
+}
 }  // namespace ncstreamer

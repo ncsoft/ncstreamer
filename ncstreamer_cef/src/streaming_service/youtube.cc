@@ -5,6 +5,9 @@
 
 #include "ncstreamer_cef/src/streaming_service/youtube.h"
 
+#include <regex>  // NOLINT
+#include <tuple>
+#include <unordered_map>
 #include <vector>
 
 #include "boost/algorithm/string.hpp"
@@ -52,7 +55,8 @@ void YouTube::LogIn(
       kNcStreamerAppId,
       YouTubeApi::Login::Redirect::static_uri(),
       {"https://www.googleapis.com/auth/youtube.force-ssl",
-       "https://www.googleapis.com/auth/youtube.readonly"})};
+       "https://www.googleapis.com/auth/youtube.readonly",
+       "https://www.googleapis.com/auth/youtubepartner"})};
 
   static const Dimension<int> kPopupDimension{429, 402};
 
@@ -94,6 +98,33 @@ void YouTube::PostLiveVideo(
     const std::string &app_attribution_tag,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
+  GetBroadcast(
+      on_failed, [this,
+                  description,
+                  privacy,
+                  on_failed,
+                  on_live_video_posted](const std::string &broadcast_id,
+                                        const std::string &stream_id,
+                                        const std::string &page_link) {
+    UpdateBroadcast(
+        broadcast_id,
+        description,
+        privacy,
+        on_failed, [this,
+                    on_failed,
+                    stream_id,
+                    page_link,
+                    on_live_video_posted]() {
+      GetStream(
+          stream_id,
+          on_failed,
+          [page_link,
+           on_live_video_posted](const std::string &stream_server,
+                                 const std::string &stream_key) {
+        on_live_video_posted(stream_server, stream_key, page_link);
+      });
+    });
+  });
 }
 
 
@@ -194,6 +225,139 @@ void YouTube::GetChannel(
 }
 
 
+void YouTube::GetBroadcast(
+    const OnFailed &on_failed,
+    const OnBroadcastGotten &on_braodcast_gotten) {
+  Uri broadcast_list_uri{YouTubeApi::Graph::BroadcastList::BuildUri(
+      GetAccessToken())};
+
+  http_request_service_.Get(
+      broadcast_list_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [this, on_failed, on_braodcast_gotten](const std::string &str) {
+    boost::property_tree::ptree tree;
+    std::stringstream ss{str};
+    using Broadcast = std::tuple<std::string, std::string, std::string>;
+    std::vector<Broadcast> broadcasts;
+    try {
+      boost::property_tree::read_json(ss, tree);
+      const auto &items{tree.get_child("items")};
+      if (items.size() < 1) {
+        on_failed("no broadcast items");
+        return;
+      }
+      for (const auto &broadcast : items) {
+        const std::string &broadcast_id =
+            broadcast.second.get<std::string>("id");
+        const std::string &stream_id =
+            broadcast.second.get<std::string>(
+                "contentDetails.boundStreamId");
+        const std::string &embed_html =
+            broadcast.second.get<std::string>(
+                "contentDetails.monitorStream.embedHtml");
+        const std::string link = ExtractLinkFromHtml(embed_html);
+
+        broadcasts.emplace_back(
+            std::make_tuple(broadcast_id, stream_id, link));
+      }
+    } catch (const std::exception &/*e*/) {
+      broadcasts.clear();
+    }
+
+    if (broadcasts.empty() == true) {
+      std::stringstream msg;
+      msg << "could not broadcast list from: " << str;
+      on_failed(msg.str());
+      return;
+    }
+
+    const std::string &broadcast_id = std::get<0>(broadcasts[0]);
+    const std::string &stream_id = std::get<1>(broadcasts[0]);
+    const std::string &page_link = std::get<2>(broadcasts[0]);
+    on_braodcast_gotten(broadcast_id, stream_id, page_link);
+  });
+}
+
+
+void YouTube::GetStream(
+      const std::string &stream_id,
+      const OnFailed &on_failed,
+      const OnStreamGotten &on_stream_gotten) {
+  Uri stream_name_uri{YouTubeApi::Graph::StreamList::BuildUri(
+      stream_id,
+      GetAccessToken())};
+
+  http_request_service_.Get(
+      stream_name_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [this, on_failed, on_stream_gotten](const std::string &str) {
+    boost::property_tree::ptree tree;
+    std::stringstream ss{str};
+    using Stream = std::tuple<std::string, std::string>;
+    std::vector<Stream> streams;
+    try {
+      boost::property_tree::read_json(ss, tree);
+      const auto &items{tree.get_child("items")};
+      if (items.size() < 1) {
+        on_failed("no stream items");
+        return;
+      }
+
+      for (const auto &stream : items) {
+        const std::string &stream_server =
+            stream.second.get<std::string>(
+                "cdn.ingestionInfo.ingestionAddress");
+        const std::string &stream_key =
+            stream.second.get<std::string>(
+                "cdn.ingestionInfo.streamName");
+        streams.emplace_back(std::make_tuple(stream_server, stream_key));
+      }
+    } catch (const std::exception &/*e*/) {
+      streams.clear();
+    }
+
+    if (streams.empty() == true) {
+      std::stringstream msg;
+      msg << "could not get stream server, key from: " << str;
+      on_failed(msg.str());
+      return;
+    }
+    on_stream_gotten(std::get<0>(streams[0]), std::get<1>(streams[0]));
+  });
+}
+
+
+void YouTube::UpdateBroadcast(
+    const std::string &broadcast_id,
+    const std::string &title,
+    const std::string &privacy_status,
+    const OnFailed &on_failed,
+    const OnBroadcastUpdated &on_broadcast_updated) {
+  Uri video_update_uri{YouTubeApi::Graph::VideoUpdate::BuildUri(
+      GetAccessToken())};
+
+  boost::property_tree::ptree post_content{
+      YouTubeApi::Graph::VideoUpdate::BuildPostContent(
+          broadcast_id,
+          title,
+          privacy_status)};
+
+  http_request_service_.Put(
+      video_update_uri.uri_string(),
+      post_content,
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [on_broadcast_updated](const std::string &str) {
+    on_broadcast_updated();
+  });
+}
+
+
 void YouTube::OnLoginSuccess(
     const std::string &code,
     const OnFailed &on_failed,
@@ -264,6 +428,17 @@ std::string YouTube::GetAccessToken() const {
 void YouTube::SetAccessToken(const std::string &access_token) {
   std::lock_guard<std::mutex> lock{access_token_mutex_};
   access_token_ = access_token;
+}
+
+
+const std::string YouTube::ExtractLinkFromHtml(const std::string &html) {
+  static const std::string kEmptyString;
+  static const std::regex kUriPattern{R"(src=(\")(.*?)(\"))"};
+
+  std::smatch matches;
+  const bool &found = std::regex_search(html, matches, kUriPattern);
+
+  return found == true ? matches[2] : kEmptyString;
 }
 
 

@@ -56,6 +56,19 @@ class YouTube : public StreamingServiceProvider {
   using OnChannelGotten = std::function<void(
       const std::string &user_name)>;
 
+  using OnBroadcastGotten = std::function<void(
+      const std::string &broadcast_id,
+      const std::string &stream_id,
+      const std::string &page_link)>;
+
+  using OnStreamGotten = std::function<void(
+      const std::string &stream_server,
+      const std::string &stream_key)>;
+
+  using OnBroadcastUpdated = std::function<void()>;
+
+  using OnStreamActiveChecked = std::function<void()>;
+
   class LoginClient;
 
   void GetRefreshToken();
@@ -64,6 +77,22 @@ class YouTube : public StreamingServiceProvider {
       const OnFailed &on_failed,
       const OnChannelGotten &on_channel_gotten);
 
+  void GetBroadcast(
+      const OnFailed &on_failed,
+      const OnBroadcastGotten &on_braodcast_gotten);
+
+  void GetStream(
+      const std::string &stream_id,
+      const OnFailed &on_failed,
+      const OnStreamGotten &on_stream_gotten);
+
+  void UpdateBroadcast(
+      const std::string &broadcast_id,
+      const std::string &title,
+      const std::string &privacy_status,
+      const OnFailed &on_failed,
+      const OnBroadcastUpdated &on_broadcast_updated);
+
   void OnLoginSuccess(
       const std::string &code,
       const OnFailed &on_failed,
@@ -71,6 +100,8 @@ class YouTube : public StreamingServiceProvider {
 
   std::string GetAccessToken() const;
   void SetAccessToken(const std::string &access_token);
+
+  const std::string ExtractLinkFromHtml(const std::string &html);
 
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;

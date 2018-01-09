@@ -86,6 +86,9 @@ class YouTubeApi::Login::Redirect {
 class YouTubeApi::Graph {
  public:
   class Channel;
+  class BroadcastList;
+  class StreamList;
+  class VideoUpdate;
 
  private:
   static const char *kAuthority;
@@ -96,6 +99,42 @@ class YouTubeApi::Graph::Channel {
  public:
   static Uri BuildUri(
       const std::string &access_token);
+
+ private:
+  static const std::string &static_path();
+};
+
+
+class YouTubeApi::Graph::BroadcastList {
+ public:
+  static Uri BuildUri(
+      const std::string &access_token);
+
+ private:
+  static const std::string &static_path();
+};
+
+
+class YouTubeApi::Graph::StreamList {
+ public:
+  static Uri BuildUri(
+      const std::string &steam_id,
+      const std::string &access_token);
+
+ private:
+  static const std::string &static_path();
+};
+
+
+class YouTubeApi::Graph::VideoUpdate {
+ public:
+  static Uri BuildUri(
+      const std::string &access_token);
+
+  static boost::property_tree::ptree BuildPostContent(
+      const std::string &broadcast_id,
+      const std::string &title,
+      const std::string &privacy_status);
 
  private:
   static const std::string &static_path();
