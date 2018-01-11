@@ -351,9 +351,10 @@ function updateStreamingSources(obj) {
     return;
   }
   const sources = obj.sources;
-  stopInvalidSource(sources);
+  const streamingStop = stopInvalidSource(sources);
 
-  if (app.streaming.status != 'standby') {
+  if (app.streaming.status != 'standby' &&
+      streamingStop == false) {
     return;
   }
 
@@ -390,16 +391,17 @@ function updateStreamingSources(obj) {
 
 function stopInvalidSource(sources) {
   if (app.streaming.status != 'onAir') {
-    return;
+    return false;
   }
 
   const currentSource = app.streaming.startInfo.source;
   if (sources.includes(currentSource) == true) {
-    return;
+    return false;
   }
 
   console.info('stop invalid source: ' + currentSource);
   app.dom.controlButton.click();
+  return true;
 }
 
 
