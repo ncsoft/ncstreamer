@@ -922,6 +922,16 @@ function checkSelectValueValidation() {
 }
 
 
+function checkCurrentWebcamExist() {
+  for (const webcam of app.streaming.webcam.list) {
+    if (app.streaming.webcam.curDeviceId == webcam.id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 cef.serviceProviderLogIn.onResponse = function(
     userName, userPages, streamServers, userPage, privacy, streamServer) {
   app.service.user = {
@@ -1126,7 +1136,9 @@ cef.settingsWebcamSearch.onResponse = function(error, webcamList) {
   }
 
   app.streaming.webcam.list = webcamList;
-  app.streaming.webcam.curDeviceId = app.streaming.webcam.list[0].id;
+  if (checkCurrentWebcamExist() == false) {
+    app.streaming.webcam.curDeviceId = app.streaming.webcam.list[0].id;
+  }
   const deviceId = app.streaming.webcam.curDeviceId;
   const width = app.streaming.webcam.size.width;
   const height = app.streaming.webcam.size.height;
