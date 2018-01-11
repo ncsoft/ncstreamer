@@ -388,6 +388,7 @@ void Client::OnCommandServiceProviderLogIn(
     arg.add("userPage", LocalStorage::Get()->GetUserPage());
     arg.add("privacy", LocalStorage::Get()->GetPrivacy());
     arg.add("streamServer", LocalStorage::Get()->GetStreamServer());
+    arg.add("description", LocalStorage::Get()->GetDescription());
 
     JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
   });
@@ -468,8 +469,8 @@ void Client::OnCommandStreamingStart(
     return;
   }
 
+  LocalStorage::Get()->SetDescription(description);
   ObsSourceInfo source_info{source};
-
   StreamingService::Get()->PostLiveVideo(
       stream_server,
       user_page,

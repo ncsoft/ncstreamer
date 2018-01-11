@@ -937,7 +937,8 @@ function checkCurrentWebcamExist() {
 
 
 cef.serviceProviderLogIn.onResponse = function(
-    userName, userPages, streamServers, userPage, privacy, streamServer) {
+    userName, userPages, streamServers, userPage,
+    privacy, streamServer, description) {
   app.service.user = {
     name: userName,
     pages: {},
@@ -950,6 +951,8 @@ cef.serviceProviderLogIn.onResponse = function(
   for (const server of streamServers) {
     app.service.user.streamServer[server.url] = server;
   }
+
+  app.dom.feedDescription.value = description;
 
   for (const element of app.dom.loginPagePanel) {
     element.style.display = 'none';
