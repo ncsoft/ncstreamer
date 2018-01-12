@@ -49,6 +49,9 @@ class TwitchChat {
   std::deque<std::tuple<std::string, std::string, std::string,
       std::string>> reservoir_;
   unsigned int id_generated_;
+
+  // used for user msg parsing
+  std::string channel_name_;
 };
 
 
@@ -58,12 +61,13 @@ class TwitchChat::IrcMessage {
 
   bool IsUserChat();
   const std::string GetSender();
-  const std::string GetContent();
+  const std::string GetContent(const std::string &channel_name);
 
  private:
   void Tokenize(const std::string &msg);
 
   std::vector<std::string> tokens_;
+  std::string msg_;
 };
 }  // namespace ncstreamer
 
