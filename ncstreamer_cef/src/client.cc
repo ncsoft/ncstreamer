@@ -364,8 +364,9 @@ void Client::OnCommandServiceProviderLogIn(
       service_provider,
       browser->GetHost()->GetWindowHandle(),
       locale_,
-      [](const std::string &/*error*/) {
-    // nothing to do.
+      [browser, cmd](const std::string &error) {
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd](
       const std::string &user_name,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages,
@@ -382,6 +383,7 @@ void Client::OnCommandServiceProviderLogIn(
     }
 
     boost::property_tree::ptree arg;
+    arg.add("error", "");
     arg.add("userName", user_name);
     arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
     arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));

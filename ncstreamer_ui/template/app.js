@@ -76,6 +76,9 @@ const app = {
     hidesSettings: false,
   },
   errorType: null,
+  authorizationUrlForYouTube: 'https://www.youtube.com/signin?' +
+      'next=/live_streaming_signup&app=desktop&' +
+      'action_prompt_identity=true',
 };
 
 
@@ -937,8 +940,15 @@ function checkCurrentWebcamExist() {
 
 
 cef.serviceProviderLogIn.onResponse = function(
-    userName, userPages, streamServers, userPage,
+    error, userName, userPages, streamServers, userPage,
     privacy, streamServer, description) {
+  if (error != '') {
+    if (error.includes('no channel or streaming service')) {
+      // popup url: app.authorizationUrlForYouTube
+      console.info(error);
+    }
+    return;
+  }
   app.service.user = {
     name: userName,
     pages: {},

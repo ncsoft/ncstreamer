@@ -235,7 +235,11 @@ void YouTube::GetBroadcast(
       broadcast_list_uri.uri_string(),
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
-    on_failed(msg);
+    if (msg == "Forbidden") {
+      on_failed("no channel or streaming service");
+    } else {
+      on_failed(msg);
+    }
   }, [this, on_failed, on_braodcast_gotten](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
@@ -407,9 +411,14 @@ void YouTube::OnLoginSuccess(
                    base::Unretained(this)),
         (expires_in - 10) * 1000);
 
-    GetChannel(on_failed, [on_logged_in](
+    GetChannel(on_failed, [this, on_failed, on_logged_in](
         const std::string &user_name) {
-      on_logged_in(user_name, {}, {});
+      GetBroadcast(on_failed, [on_logged_in, user_name](
+          const std::string &broadcast_id,
+          const std::string &stream_id,
+          const std::string &page_link) {
+        on_logged_in(user_name, {}, {});
+      });
     });
   });
 }
