@@ -107,7 +107,7 @@
     "NO_SELECT_GAME": "방송할 게임을 선택해 주세요.",
     "SELECT_DOWN_SERVER": "선택한 서버 위치는 일시적으로 이용할 수 없습니다.\r\n다른 서버 위치를 선택해 주세요.",
     "OBS_ERROR": "시스템 오류로 방송 서비스를 이용할 수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "FACEBOOK_ERROR": "facebook연결이 원활하지 않습니다.\r\n후 다시 시도해 주세요.",
+    "FACEBOOK_ERROR": "facebook연결이 원활하지 않습니다.\r\n확인 후 다시 시도해 주세요.",
     "TWITCH_ERROR": "twitch연결이 원활하지 않습니다.\r\n확인 후 다시 시도해 주세요.",
     "YES": "예",
     "NO": "아니요",
