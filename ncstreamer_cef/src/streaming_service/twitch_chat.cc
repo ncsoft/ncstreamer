@@ -47,7 +47,10 @@ void TwitchChat::Connect(
       "CAP REQ :twitch.tv/commands\r\n"};
 
   // clear chats reservoir & index
-  reservoir_.clear();
+  {
+    std::lock_guard<std::mutex> lock{reservoir_mutex_};
+    reservoir_.clear();
+  }
   id_generated_ = 0;
 
   irc_.Connect(host, port, msg,
@@ -78,11 +81,11 @@ void TwitchChat::ReadHandle(const std::string &msg) {
       {
         std::lock_guard<std::mutex> lock{reservoir_mutex_};
         reservoir_.emplace_front(id, time, sender, content);
-      }
 
-      // set max size to 10
-      if (reservoir_.size() > 10)
-        reservoir_.pop_back();
+        // set max size to 20
+        if (reservoir_.size() > 20)
+          reservoir_.pop_back();
+      }
     }
   } catch(...) {
     assert(false);
