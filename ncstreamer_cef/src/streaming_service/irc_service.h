@@ -44,6 +44,7 @@ class IrcService {
       const OnErrored &on_errored,
       const OnRead &on_read);
   void Close();
+  void SendPongMessage();
   ReadyStatus GetReadyStatus();
 
  private:

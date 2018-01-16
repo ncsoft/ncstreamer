@@ -64,6 +64,12 @@ static const char *kIrcDelimiter{[]() {
 }()};
 
 
+static const char *kPongMessage{[]() {
+  static const char *kMessage{"PONG :tmi.twitch.tv\n"};
+  return kMessage;
+}()};
+
+
 void IrcService::Connect(
     const std::string host,
     const std::string port,
@@ -96,6 +102,18 @@ void IrcService::Connect(
 void IrcService::Close() {
   io_service_.stop();
   SetReadyStatus(IrcService::ReadyStatus::kNone);
+}
+
+
+void IrcService::SendPongMessage() {
+  boost::asio::async_write(stream_,
+      boost::asio::buffer(kPongMessage, strlen(kPongMessage)),
+      [this](const boost::system::error_code &ec,
+          const std::size_t &/*size*/) {
+    if (ec) {
+      error_(ec);
+    }
+  });
 }
 
 

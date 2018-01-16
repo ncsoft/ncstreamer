@@ -60,6 +60,7 @@ class TwitchChat::IrcMessage {
   explicit IrcMessage(const std::string &msg);
 
   bool IsUserChat();
+  bool IsPingMessage();
   const std::string GetSender();
   const std::string GetContent(const std::string &channel_name);
 
