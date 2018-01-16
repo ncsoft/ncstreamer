@@ -85,7 +85,7 @@ class Obs {
       const std::string &stream_key);
   void ReleaseCurrentService();
   void UpdateBaseResolution(const std::string &source_info);
-  bool GetDevice(std::string device_id, DShow::VideoDevice *device);
+  WebcamDevice *GetDevice(std::string device_id);
 
   static Obs *static_instance;
 
@@ -101,8 +101,6 @@ class Obs {
   Dimension<uint32_t> base_size_;
   Dimension<uint32_t> output_size_;
   uint32_t fps_;
-  std::vector<DShow::VideoDevice> video_devices_;
-  std::vector<DShow::AudioDevice> audio_devices_;
 };
 
 
@@ -111,6 +109,9 @@ class Obs::WebcamDevice {
   WebcamDevice(const std::string &device_id,
                const Dimension<uint32_t> &default_size);
   virtual ~WebcamDevice();
+
+  const std::string &device_id() { return device_id_; }
+  const Dimension<uint32_t> default_size() { return default_size_; }
 
   boost::property_tree::ptree ToTree() const;
 

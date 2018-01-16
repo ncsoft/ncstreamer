@@ -90,8 +90,9 @@ void Obs::StopStreaming(
 
 
 bool Obs::SearchMicDevices() {
-  DShow::Device::EnumAudioDevices(audio_devices_);
-  if (audio_devices_.size() == 0) {
+  std::vector<DShow::AudioDevice> audio_devices;
+  DShow::Device::EnumAudioDevices(audio_devices);
+  if (audio_devices.size() == 0) {
     return false;
   }
   return true;
@@ -139,10 +140,11 @@ bool Obs::UpdateMicVolume(float volume) {
 
 
 std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
-  DShow::Device::EnumVideoDevices(video_devices_);
+  std::vector<DShow::VideoDevice> video_devices;
+  DShow::Device::EnumVideoDevices(video_devices);
   std::vector<Obs::WebcamDevice> webcams;
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
-  for (auto device : video_devices_) {
+  for (auto device : video_devices) {
     std::wstring w_device_id{device.name + L":" + device.path};
     std::string device_id = convert.to_bytes(w_device_id);
     Dimension<uint32_t> default_size {
@@ -160,14 +162,14 @@ bool Obs::TurnOnWebcam(
   if (item == nullptr) {
     return false;
   }
-  DShow::VideoDevice device;
-  if (GetDevice(device_id, &device) == false) {
+  std::unique_ptr<WebcamDevice> device{GetDevice(device_id)};
+  if (device == nullptr) {
     *error = "no device ID";
     return false;
   }
 
-  const int &width = device.caps.at(0).minCX;
-  const int &height = device.caps.at(0).minCY;
+  const int &width = device->default_size().width();
+  const int &height = device->default_size().height();
   const std::string &default_resolution =
       std::to_string(width) + "x" + std::to_string(height);
 
@@ -373,9 +375,7 @@ Obs::Obs()
       video_bitrate_{2500},
       base_size_{1920, 1080},
       output_size_{1280, 720},
-      fps_{30},
-      video_devices_{},
-      audio_devices_{} {
+      fps_{30} {
   SetUpLog();
   obs_startup("en-US", nullptr, nullptr);
   obs_load_all_modules();
@@ -570,18 +570,14 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
 }
 
 
-bool Obs::GetDevice(std::string device_id, DShow::VideoDevice *device) {
-  SearchWebcamDevices();
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
-  for (const auto &video_device : video_devices_) {
-    std::wstring w_device_str{video_device.name + L":" + video_device.path};
-    std::string device_str = convert.to_bytes(w_device_str);
-    if (device_str == device_id) {
-      *device = video_device;
-      return true;
+Obs::WebcamDevice *Obs::GetDevice(std::string device_id) {
+  const std::vector<Obs::WebcamDevice> &webcams{SearchWebcamDevices()};
+  for (auto webcam : webcams) {
+    if (webcam.device_id() == device_id) {
+      return new Obs::WebcamDevice{webcam.device_id(), webcam.default_size()};
     }
   }
-  return false;
+  return nullptr;
 }
 
 
