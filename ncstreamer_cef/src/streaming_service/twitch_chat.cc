@@ -86,6 +86,8 @@ void TwitchChat::ReadHandle(const std::string &msg) {
         if (reservoir_.size() > 20)
           reservoir_.pop_back();
       }
+    } else if (irc_msg.IsPingMessage()) {
+      irc_.SendPongMessage();
     }
   } catch(...) {
     assert(false);
@@ -163,6 +165,14 @@ bool TwitchChat::IrcMessage::IsUserChat() {
         return true;
     }
   }
+  return false;
+}
+
+
+bool TwitchChat::IrcMessage::IsPingMessage() {
+    if (msg_ == "PING :tmi.twitch.tv")
+      return true;
+
   return false;
 }
 
