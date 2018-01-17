@@ -269,7 +269,6 @@ function setUpControls(args) {
   ncsoft.select.setText(app.dom.gameSelect, '%NO_PLAYING_GAME%');
 
   app.options.hidesSettings = (args.hidesSettings == 'true');
-  ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
   if (args.deviceSettings.hasOwnProperty('webcam')) {
     setUpWebcam(args.deviceSettings.webcam);
   }
@@ -278,6 +277,7 @@ function setUpControls(args) {
     setUpMic(args.deviceSettings.mic.use == 'true' ? true : false);
   }
   setUpSteamingQuality();
+  ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
   cef.streamingSetUp.request();
 }
 
