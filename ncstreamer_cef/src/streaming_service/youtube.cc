@@ -5,9 +5,11 @@
 
 #include "ncstreamer_cef/src/streaming_service/youtube.h"
 
+#include <deque>
 #include <regex>  // NOLINT
 #include <tuple>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include "boost/algorithm/string.hpp"
@@ -31,7 +33,11 @@ YouTube::YouTube()
       http_request_service_{},
       access_token_mutex_{},
       access_token_{},
-      refresh_token_{} {
+      refresh_token_{},
+      video_id_mutex_{},
+      video_id_{},
+      live_chat_id_mutex_{},
+      live_chat_id_{} {
 }
 
 
@@ -131,12 +137,103 @@ void YouTube::PostLiveVideo(
 void YouTube::GetComments(const std::string &created_time,
     const OnFailed &on_failed,
     const OnCommentsGot &on_comments_got) {
+  Uri chat_messages_list_uri {YouTubeApi::Graph::ChatMessagesList::BuildUri(
+      GetLiveChatId(), GetAccessToken())};
+
+  OutputDebugStringA(chat_messages_list_uri.uri_string().c_str());
+  http_request_service_.Get(
+      chat_messages_list_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [this, created_time, on_comments_got](const std::string &str) {
+    OutputDebugStringA(str.c_str());
+
+    // read json result
+    std::deque<std::tuple<std::string, std::string, std::string,
+        std::string>> reservoir;
+    boost::property_tree::ptree tree;
+    std::stringstream ss{str};
+    try {
+      boost::property_tree::read_json(ss, tree);
+      const auto &items{tree.get_child("items")};
+
+      for (const auto &item : items) {
+        const std::string &id{
+            item.second.get<std::string>("id")};
+        const std::string &time{
+            item.second.get<std::string>("snippet.publishedAt")};
+        const std::string &msg{
+          item.second.get<std::string>("snippet.displayMessage")};
+        const std::string &nick{
+          item.second.get<std::string>("authorDetails.displayName")};
+
+        reservoir.emplace_front(id, time, nick, msg);
+      }
+    } catch (const std::exception &/*e*/) {
+      reservoir.clear();
+    }
+
+    // make facebook result format json
+    boost::property_tree::ptree root;
+    boost::property_tree::ptree datas;
+    for (const auto &chat : reservoir) {
+      const std::string str_time = std::get<1>(chat);
+
+      boost::posix_time::ptime chat_time = RefineISOTimeString(str_time);
+      if (created_time.length() > 4) {
+        boost::posix_time::ptime user_time =
+            RefineISOTimeString(created_time);
+        if (chat_time < user_time)
+          break;
+      }
+
+      const std::string id = std::get<0>(chat);
+      const std::string nick = std::get<2>(chat);
+      const std::string msg = std::get<3>(chat);
+
+      boost::property_tree::ptree from;
+      from.add<std::string>("name", nick);
+
+      boost::property_tree::ptree data;
+      data.add<std::string>("created_time", str_time);
+      data.add_child("from", from);
+      data.add<std::string>("message", msg);
+      data.add<std::string>("id", id);
+
+      datas.push_back(std::make_pair("", data));
+    }
+    root.add_child("data", datas);
+    root.add_child("paging", boost::property_tree::ptree());
+
+    std::ostringstream oss;
+    write_json(oss, root);
+    on_comments_got(oss.str());
+  });
 }
 
 
 void YouTube::GetLiveVideoViewers(
     const OnFailed &on_failed,
     const OnLiveVideoViewers &on_live_video_viewers) {
+  Uri live_video_viewers_uri =
+      YouTubeApi::Graph::CurrentViewerCount::BuildUrl(GetVideoId());
+
+  OutputDebugStringA(live_video_viewers_uri.uri_string().c_str());
+  http_request_service_.Get(
+      live_video_viewers_uri.uri_string(),
+      [on_failed](const boost::system::error_code &ec) {
+    std::string msg{ec.message()};
+    on_failed(msg);
+  }, [on_live_video_viewers](const std::string &str) {
+    OutputDebugStringA(str.c_str());
+
+    boost::property_tree::ptree root;
+    root.add<std::string>("live_views", str);
+    std::ostringstream oss;
+    write_json(oss, root);
+    on_live_video_viewers(oss.str());
+  });
 }
 
 
@@ -243,7 +340,8 @@ void YouTube::GetBroadcast(
   }, [this, on_failed, on_braodcast_gotten](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
-    using Broadcast = std::tuple<std::string, std::string, std::string>;
+    using Broadcast = std::tuple<std::string, std::string, std::string,
+        std::string>;
     std::vector<Broadcast> broadcasts;
     try {
       boost::property_tree::read_json(ss, tree);
@@ -262,9 +360,11 @@ void YouTube::GetBroadcast(
             broadcast.second.get<std::string>(
                 "contentDetails.monitorStream.embedHtml");
         const std::string link = ExtractLinkFromHtml(embed_html);
+        const std::string &live_chat_id =
+            broadcast.second.get<std::string>("snippet.liveChatId");
 
         broadcasts.emplace_back(
-            std::make_tuple(broadcast_id, stream_id, link));
+            std::make_tuple(broadcast_id, stream_id, link, live_chat_id));
       }
     } catch (const std::exception &/*e*/) {
       broadcasts.clear();
@@ -280,6 +380,11 @@ void YouTube::GetBroadcast(
     const std::string &broadcast_id = std::get<0>(broadcasts[0]);
     const std::string &stream_id = std::get<1>(broadcasts[0]);
     const std::string &page_link = std::get<2>(broadcasts[0]);
+    const std::string &live_chat_id = std::get<3>(broadcasts[0]);
+
+    SetLiveChatId(live_chat_id);
+    SetVideoId(broadcast_id);
+
     on_braodcast_gotten(broadcast_id, stream_id, page_link);
   });
 }
@@ -437,6 +542,49 @@ std::string YouTube::GetAccessToken() const {
 void YouTube::SetAccessToken(const std::string &access_token) {
   std::lock_guard<std::mutex> lock{access_token_mutex_};
   access_token_ = access_token;
+}
+
+
+std::string YouTube::GetLiveChatId() const {
+  std::string live_chat_id{};
+  {
+    std::lock_guard<std::mutex> lock{live_chat_id_mutex_};
+    live_chat_id = live_chat_id_;
+  }
+  return live_chat_id;
+}
+
+
+void YouTube::SetLiveChatId(const std::string &live_chat_id) {
+  std::lock_guard<std::mutex> lock{live_chat_id_mutex_};
+  live_chat_id_ = live_chat_id;
+}
+
+
+std::string YouTube::GetVideoId() const {
+  std::string video_id{};
+  {
+    std::lock_guard<std::mutex> lock{video_id_mutex_};
+    video_id = video_id_;
+  }
+  return video_id;
+}
+
+
+void YouTube::SetVideoId(const std::string &video_id) {
+  std::lock_guard<std::mutex> lock{video_id_mutex_};
+  video_id_ = video_id;
+}
+
+
+boost::posix_time::ptime YouTube::RefineISOTimeString(
+    const std::string &time) const {
+  size_t endpos = time.find_first_of(".");
+  std::string refined = time.substr(0, endpos);
+  boost::erase_all(refined, "-");
+  boost::erase_all(refined, ":");
+
+  return boost::posix_time::from_iso_string(refined);
 }
 
 
