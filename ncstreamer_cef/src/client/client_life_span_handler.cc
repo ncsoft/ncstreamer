@@ -87,14 +87,15 @@ void ClientLifeSpanHandler::SaveWindowPosition(HWND handle) {
   WINDOWPLACEMENT wp;
   GetWindowPlacement(handle, &wp);
   UINT state = wp.showCmd;
-  if (state != SW_HIDE &&
-      state != SW_MINIMIZE &&
-      state != SW_SHOWMINIMIZED &&
-      state != SW_SHOWMINNOACTIVE) {
-    int x = wp.rcNormalPosition.left;
-    int y = wp.rcNormalPosition.top;
-    LocalStorage::Get()->SetWindowPosition({x, y});
+  if (state == SW_HIDE ||
+      state == SW_MINIMIZE ||
+      state == SW_SHOWMINIMIZED ||
+      state == SW_SHOWMINNOACTIVE) {
+    return;
   }
+  int x = wp.rcNormalPosition.left;
+  int y = wp.rcNormalPosition.top;
+  LocalStorage::Get()->SetWindowPosition({x, y});
 }
 
 

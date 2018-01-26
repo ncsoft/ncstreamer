@@ -6,6 +6,7 @@
 #ifndef NCSTREAMER_CEF_SRC_LIB_HTTP_TYPES_H_
 #define NCSTREAMER_CEF_SRC_LIB_HTTP_TYPES_H_
 
+#include <string>
 
 #include "boost/property_tree/ptree.hpp"
 
@@ -26,16 +27,17 @@ class HttpRequestMethod {
 };
 
 
-class HttpRequestContentType {
- public:
-  static const urdl::http::request_content_type kApplicationJson;
-};
-
-
 class HttpRequestContent {
  public:
+  static void SetEmpty(
+      urdl::read_stream *out);
+
   static void SetJson(
-      const boost::property_tree::ptree &content,
+      const std::string &content,
+      urdl::read_stream *out);
+
+  static void SetWwwFormUrlEncoded(
+      const std::string &content,
       urdl::read_stream *out);
 };
 }  // namespace ncstreamer

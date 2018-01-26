@@ -141,6 +141,8 @@
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_api.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_chat.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\youtube.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\youtube_api.cc" />
     <ClCompile Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +191,9 @@
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_api.h" />
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_chat.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\youtube.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\youtube_api.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\youtube_app_secret.h" />
     <ClInclude Include="..\ncstreamer_cef\src_imported\from_obs_studio_ui\obs-app.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -51,6 +51,10 @@ std::string LocalStorage::GetDesignatedUser() const {
 }
 
 
+std::string LocalStorage::GetDescription() const {
+  return storage_.get(kDescription, "");
+}
+
 bool LocalStorage::GetWebcamUse() const {
   return storage_.get<bool>(kWebcamUse, false);
 }
@@ -87,6 +91,10 @@ void LocalStorage::SetDesignatedUser(const std::string &designated_user) {
   SetValue(kDesignatedUser, designated_user);
 }
 
+
+void LocalStorage::SetDescription(const std::string &description) {
+  SetValue(kDescription, description);
+}
 
 void LocalStorage::SetWebcamUse(const bool &use) {
   SetValue(kWebcamUse, use);
@@ -171,6 +179,7 @@ const char *LocalStorage::kUserPage{"userPage"};
 const char *LocalStorage::kPrivacy{"privacy"};
 const char *LocalStorage::kStreamServer{"streamServer"};
 const char *LocalStorage::kDesignatedUser{"designatedUser"};
+const char *LocalStorage::kDescription{"description"};
 const char *LocalStorage::kWebcamUse{"webcamUse"};
 const char *LocalStorage::kWindowPosition{"windowPosition"};
 const char *LocalStorage::kWindowPositionX{"x"};

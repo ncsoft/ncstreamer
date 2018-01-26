@@ -159,6 +159,12 @@
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\twitch_chat.cc">
       <Filter>src\streaming_service</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\youtube_api.cc">
+      <Filter>src\streaming_service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\streaming_service\youtube.cc">
+      <Filter>src\streaming_service</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -297,6 +303,15 @@
       <Filter>src\streaming_service</Filter>
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\twitch_chat.h">
+      <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\youtube_api.h">
+      <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\youtube.h">
+      <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\streaming_service\youtube_app_secret.h">
       <Filter>src\streaming_service</Filter>
     </ClInclude>
   </ItemGroup>
