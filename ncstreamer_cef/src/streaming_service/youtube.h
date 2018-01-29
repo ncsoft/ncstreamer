@@ -9,6 +9,8 @@
 #include <mutex>  // NOLINT
 #include <string>
 
+#include "boost/date_time/posix_time/posix_time.hpp"
+
 #include "ncstreamer_cef/src/lib/cef_fit_client.h"
 #include "ncstreamer_cef/src/lib/http_request_service.h"
 #include "ncstreamer_cef/src/lib/uri.h"
@@ -101,6 +103,14 @@ class YouTube : public StreamingServiceProvider {
   std::string GetAccessToken() const;
   void SetAccessToken(const std::string &access_token);
 
+  std::string GetVideoId() const;
+  void SetVideoId(const std::string &video_id);
+
+  std::string GetLiveChatId() const;
+  void SetLiveChatId(const std::string &live_chat_id);
+
+  boost::posix_time::ptime RefineISOTimeString(const std::string &time) const;
+
   const std::string ExtractLinkFromHtml(const std::string &html);
 
   CefRefPtr<LoginClient> login_client_;
@@ -110,6 +120,12 @@ class YouTube : public StreamingServiceProvider {
   std::string access_token_;
 
   std::string refresh_token_;
+
+  mutable std::mutex live_chat_id_mutex_;
+  std::string live_chat_id_;
+
+  mutable std::mutex video_id_mutex_;
+  std::string video_id_;
 };
 
 

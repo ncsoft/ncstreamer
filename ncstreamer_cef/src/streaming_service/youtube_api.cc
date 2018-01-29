@@ -115,7 +115,7 @@ const std::string &YouTubeApi::Graph::Channel::static_path() {
 Uri YouTubeApi::Graph::BroadcastList::BuildUri(
     const std::string &access_token) {
   return {kScheme, kAuthority, static_path(), Uri::Query{{
-      {"part", "contentDetails"},
+      {"part", "contentDetails,snippet"},
       {"broadcastType", "persistent"},
       {"mine", "true"},
       {"access_token", access_token}}}};
@@ -182,6 +182,43 @@ const std::string &YouTubeApi::Graph::VideoUpdate::static_path() {
   static const std::string kPath{[]() {
     std::stringstream ss;
     ss << "/videos";
+    return ss.str();
+  }()};
+  return kPath;
+}
+
+Uri YouTubeApi::Graph::ChatMessagesList::BuildUri(
+    const std::string &live_chat_id,
+    const std::string &access_token) {
+  return {kScheme, kAuthority, static_path(), Uri::Query{{
+      {"liveChatId", live_chat_id},
+      {"part", "id, snippet,authorDetails"},
+      {"access_token", access_token}}}};
+}
+
+
+const std::string &YouTubeApi::Graph::ChatMessagesList::static_path() {
+  static const std::string kPath{ []() {
+    std::stringstream ss;
+    ss << "/liveChat/messages";
+    return ss.str();
+  }()};
+  return kPath;
+}
+
+
+Uri YouTubeApi::Graph::CurrentViewerCount::BuildUrl(
+    const std::string &video_id) {
+  static const char *kPublicAuthority{"www.youtube.com"};
+  return {kScheme, kPublicAuthority, static_path(), Uri::Query{{
+      {"v", video_id}}}};
+}
+
+
+const std::string &YouTubeApi::Graph::CurrentViewerCount::static_path() {
+  static const std::string kPath{ []() {
+    std::stringstream ss;
+    ss << "/live_stats";
     return ss.str();
   }()};
   return kPath;

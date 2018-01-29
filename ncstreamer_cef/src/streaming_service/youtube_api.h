@@ -89,6 +89,8 @@ class YouTubeApi::Graph {
   class BroadcastList;
   class StreamList;
   class VideoUpdate;
+  class ChatMessagesList;
+  class CurrentViewerCount;
 
  private:
   static const char *kAuthority;
@@ -135,6 +137,26 @@ class YouTubeApi::Graph::VideoUpdate {
       const std::string &broadcast_id,
       const std::string &title,
       const std::string &privacy_status);
+
+ private:
+  static const std::string &static_path();
+};
+
+
+class YouTubeApi::Graph::ChatMessagesList {
+ public:
+  static Uri BuildUri(
+    const std::string &live_chat_id,
+    const std::string &access_token);
+
+ private:
+  static const std::string &static_path();
+};
+
+
+class YouTubeApi::Graph::CurrentViewerCount {
+ public:
+  static Uri BuildUrl(const std::string &video_id);
 
  private:
   static const std::string &static_path();
