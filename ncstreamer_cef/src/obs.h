@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 #include "boost/property_tree/ptree.hpp"
@@ -41,7 +42,7 @@ class Obs {
   void StopStreaming(
       const ObsOutput::OnStopped &on_streaming_stopped);
 
-  bool SearchMicDevices();
+  std::unordered_map<std::string, std::string> SearchMicDevices();
   bool TurnOnMic(std::string *error);
   bool TurnOffMic();
   bool UpdateMicVolume(const float &volume);

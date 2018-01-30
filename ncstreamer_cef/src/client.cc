@@ -530,8 +530,9 @@ void Client::OnCommandSettingsMicSearch(
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser) {
-  const bool ret = Obs::Get()->SearchMicDevices();
-  if (ret) {
+  std::unordered_map<std::string /*value*/, std::string /*name*/> ret =
+      Obs::Get()->SearchMicDevices();
+  if (ret.size() != 0) {
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", ""},
                                      {"mic", "true"}});

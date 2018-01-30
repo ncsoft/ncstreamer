@@ -89,18 +89,26 @@ void Obs::StopStreaming(
 }
 
 
-bool Obs::SearchMicDevices() {
-  std::vector<DShow::AudioDevice> audio_devices;
-  DShow::Device::EnumAudioDevices(audio_devices);
-  if (audio_devices.size() == 0) {
-    return false;
+std::unordered_map<std::string, std::string> Obs::SearchMicDevices() {
+  obs_properties_t *input_props = obs_get_source_properties(
+      "wasapi_input_capture");
+  obs_property_t *prop = obs_properties_get(
+      input_props, "device_id");
+  size_t count = obs_property_list_item_count(prop);
+  std::unordered_map<std::string, std::string> mic_map;
+  for (size_t i = 0; i < count; i++) {
+    const char *val = obs_property_list_item_string(prop, i);
+    const char *name = obs_property_list_item_name(prop, i);
+    mic_map.emplace(val, name);
   }
-  return true;
+  obs_properties_destroy(input_props);
+  return mic_map;
 }
 
 
 bool Obs::TurnOnMic(std::string *error) {
-  if (SearchMicDevices() == false) {
+  std::unordered_map<std::string, std::string> mics = SearchMicDevices();
+  if (mics.size() == 0) {
     *error = "there is no audio device";
     return false;
   }
