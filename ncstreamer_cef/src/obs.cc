@@ -106,19 +106,21 @@ std::unordered_map<std::string, std::string> Obs::SearchMicDevices() {
 }
 
 
-bool Obs::TurnOnMic(std::string *error) {
-  std::unordered_map<std::string, std::string> mics = SearchMicDevices();
-  if (mics.size() == 0) {
-    *error = "there is no audio device";
-    return false;
-  }
+bool Obs::TurnOnMic(const std::string &device_id, std::string *const error) {
   obs_sceneitem_t *item = obs_scene_find_source(scene_, "Game Capture");
   if (item == nullptr) {
-    *error = "turn on after start streaming";
     return false;
   }
+
+  std::unordered_map<std::string, std::string> mic_devices = SearchMicDevices();
+  const auto &iterator = mic_devices.find(device_id);
+  if (iterator == mic_devices.end()) {
+    *error = "no device ID";
+    return false;
+  }
+
   obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "device_id", "default");
+  obs_data_set_string(settings, "device_id", device_id.c_str());
 
   obs_source_t *source = obs_source_create(
       "wasapi_input_capture", "Mic/Aux", settings, nullptr);

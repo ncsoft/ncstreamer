@@ -43,7 +43,7 @@ class Obs {
       const ObsOutput::OnStopped &on_streaming_stopped);
 
   std::unordered_map<std::string, std::string> SearchMicDevices();
-  bool TurnOnMic(std::string *error);
+  bool TurnOnMic(const std::string &device_id, std::string *const error);
   bool TurnOffMic();
   bool UpdateMicVolume(const float &volume);
   std::vector<Obs::WebcamDevice> SearchWebcamDevices();

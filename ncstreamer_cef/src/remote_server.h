@@ -173,6 +173,10 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void OnSettingsMicSearchRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
   void OnSettingsMicOnRequest(
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
@@ -233,6 +237,11 @@ class RemoteServer {
   bool RespondSettingsChromaKeySimilarity(
       int request_key,
       const std::string &error);
+
+  bool RespondSettingsMicSearch(
+      int request_key,
+      const std::string &error,
+      const std::unordered_map<std::string, std::string> &mic_devices);
 
   bool RespondSettingsMicOn(
       int request_key,
