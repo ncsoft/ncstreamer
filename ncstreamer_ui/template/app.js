@@ -16,6 +16,8 @@ const app = {
     postUrl: null,
     mic: {
       use: false,
+      list: null,
+      curDeviceId: null,
       volume: {
         max: 1,
         min: 0,
@@ -278,6 +280,8 @@ function setUpControls(args) {
   if (args.deviceSettings.hasOwnProperty('mic') &&
       args.deviceSettings.mic.hasOwnProperty('use')) {
     setUpMic(args.deviceSettings.mic.use == 'true' ? true : false);
+  } else {
+    setUpMic(false);
   }
   setUpSteamingQuality();
   ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
@@ -538,8 +542,9 @@ function onMicCheckboxChanged() {
   console.info('change micCheckbox');
   if (app.dom.micCheckbox.checked) {
     console.info('mic on');
-    const volume = app.dom.micVolume.value;
-    cef.settingsMicOn.request(volume);
+    ncsoft.checkbox.disable(app.dom.micCheckbox);
+    app.streaming.mic.use = true;
+    cef.settingsMicSearch.request();
   } else {
     console.info('mic off');
     cef.settingsMicOff.request();
@@ -738,7 +743,6 @@ function setUpWebcam(webcamSettings) {
 
 function setUpMic(check) {
   const mic = app.streaming.mic;
-  setMicCheckBox(check);
   app.dom.micVolume.max = mic.volume.max;
   app.dom.micVolume.min = mic.volume.min;
   app.dom.micVolume.step = mic.volume.step;
@@ -746,6 +750,7 @@ function setUpMic(check) {
   if (check == true) {
     ncsoft.slider.adjustRange(app.dom.micVolume);
   }
+  setMicCheckBox(check);
 }
 
 
@@ -929,6 +934,16 @@ function checkSelectValueValidation() {
 }
 
 
+function checkCurrentMicExist() {
+  for (const mic of app.streaming.mic.list) {
+    if (app.streaming.mic.curDeviceId == mic.id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 function checkCurrentWebcamExist() {
   for (const webcam of app.streaming.webcam.list) {
     if (app.streaming.webcam.curDeviceId == webcam.id) {
@@ -1093,23 +1108,38 @@ cef.settingsVideoQualityUpdate.onResponse = function(error) {
 };
 
 
-cef.settingsMicSearch.onResponse = function(error, mic) {
+cef.settingsMicSearch.onResponse = function(error, micList) {
   if (error != '') {
     console.info(error);
+    ncsoft.checkbox.enable(app.dom.micCheckbox);
+    return;
+  }
+  if (micList == '') {
+    console.info('no devices');
+    if (app.streaming.mic.use) {
+      ncsoft.modal.show('#no-device-alert-modal');
+      app.streaming.mic.use = false;
+    }
+    app.dom.micCheckbox.checked = false;
+    ncsoft.checkbox.enable(app.dom.micCheckbox);
     return;
   }
 
-  setUpMic(mic == 'true' ? true : false);
+  app.streaming.mic.list = micList;
+  if (checkCurrentMicExist() == false) {
+    app.streaming.mic.curDeviceId = 'default';
+  }
+
+  const deviceId = app.streaming.mic.curDeviceId;
+  const volume = app.dom.micVolume.value;
+  cef.settingsMicOn.request(deviceId, volume);
 };
 
 
 cef.settingsMicOn.onResponse = function(error, volume) {
+  ncsoft.checkbox.enable(app.dom.micCheckbox);
   if (error != '') {
     console.info(error);
-    if (error == 'there is no audio device') {
-      ncsoft.modal.show('#no-device-alert-modal');
-      setMicCheckBox(false);
-    }
     return;
   }
   app.streaming.mic.use = true;

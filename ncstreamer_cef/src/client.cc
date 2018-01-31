@@ -530,16 +530,22 @@ void Client::OnCommandSettingsMicSearch(
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser) {
-  const bool ret = Obs::Get()->SearchMicDevices();
-  if (ret) {
-    JsExecutor::Execute(browser, "cef.onResponse", cmd,
-        JsExecutor::StringPairVector{{"error", ""},
-                                     {"mic", "true"}});
-  } else {
-    JsExecutor::Execute(browser, "cef.onResponse", cmd,
-        JsExecutor::StringPairVector{{"error", ""},
-                                     {"mic", "false"}});
+  std::unordered_map<std::string /*id*/, std::string /*name*/>
+      mic_devices = Obs::Get()->SearchMicDevices();
+
+  std::vector<boost::property_tree::ptree> tree_webcams;
+  for (const auto &mic : mic_devices) {
+    boost::property_tree::ptree tree;
+    tree.put("id", mic.first);
+    tree.put("name", mic.second);
+    tree_webcams.emplace_back(tree);
   }
+
+  boost::property_tree::ptree arg;
+  arg.add("error", "");
+  arg.add_child("micList", JsExecutor::ToPtree(tree_webcams));
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
 }
 
 
@@ -547,21 +553,15 @@ void Client::OnCommandSettingsMicOn(
     const std::string &cmd,
     const CommandArgumentMap &args,
     CefRefPtr<CefBrowser> browser) {
-  std::string error{};
-  bool result = Obs::Get()->TurnOnMic(&error);
-  if (!result) {
-    JsExecutor::Execute(browser, "cef.onResponse", cmd,
-        JsExecutor::StringPairVector{{"error", error},
-                                     {"volume", ""}});
-    return;
-  }
-
+  auto device_id_i = args.find("deviceId");
   auto volume_i = args.find("volume");
-  if (volume_i == args.end()) {
+  if (device_id_i == args.end() ||
+      volume_i == args.end()) {
     assert(false);
     return;
   }
 
+  const std::string &device_id = device_id_i->second;
   float volume{0.0};
   try {
     volume = std::stof(volume_i->second);
@@ -569,6 +569,19 @@ void Client::OnCommandSettingsMicOn(
     assert(false);
     return;
   }
+
+  std::string error{};
+  bool result = Obs::Get()->TurnOnMic(device_id, &error);
+  if (!result) {
+    if (error.empty()) {
+      error = "failed to turn mic on";
+    }
+    JsExecutor::Execute(browser, "cef.onResponse", cmd,
+        JsExecutor::StringPairVector{{"error", error},
+                                     {"volume", volume_i->second}});
+    return;
+  }
+
   result = Obs::Get()->UpdateMicVolume(volume);
   if (!result) {
     error = "update volume error";

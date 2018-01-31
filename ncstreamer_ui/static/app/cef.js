@@ -48,10 +48,10 @@ const cef = (function() {
     },
     'settings/mic/search': {
       request: [],
-      response: ['error', 'mic'],
+      response: ['error', 'micList'],
     },
     'settings/mic/on': {
-      request: ['volume'],
+      request: ['deviceId', 'volume'],
       response: ['error', 'volume'],
     },
     'settings/mic/off': {
@@ -305,10 +305,16 @@ const remote = {
   onSettingsChromaKeySimilarityRequest: function(args) {
     app.streaming.webcam.chromaKey.similarity = args.similarity;
   },
-  onSettingsMicOnRequest: function(requestKey) {
-    setMicCheckBox(true);
+  onSettingsMicOnRequest: function(args) {
+    app.streaming.mic.curDeviceId = args.deviceId;
+    app.dom.micCheckbox.checked = true;
+    ncsoft.slider.enable(app.dom.micVolume);
+    app.streaming.mic.volume.value = args.volume;
+    app.dom.micVolume.value = args.volume;
+    ncsoft.slider.adjustRange(app.dom.micVolume);
   },
   onSettingsMicOffRequest: function(requestKey) {
-    setMicCheckBox(false);
+    app.dom.micCheckbox.checked = false;
+    ncsoft.slider.disable(app.dom.micVolume);
   },
 };

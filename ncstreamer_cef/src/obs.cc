@@ -89,28 +89,38 @@ void Obs::StopStreaming(
 }
 
 
-bool Obs::SearchMicDevices() {
-  std::vector<DShow::AudioDevice> audio_devices;
-  DShow::Device::EnumAudioDevices(audio_devices);
-  if (audio_devices.size() == 0) {
-    return false;
+std::unordered_map<std::string, std::string> Obs::SearchMicDevices() {
+  obs_properties_t *input_props = obs_get_source_properties(
+      "wasapi_input_capture");
+  obs_property_t *prop = obs_properties_get(
+      input_props, "device_id");
+  size_t count = obs_property_list_item_count(prop);
+  std::unordered_map<std::string, std::string> mic_map;
+  for (size_t i = 0; i < count; i++) {
+    const char *val = obs_property_list_item_string(prop, i);
+    const char *name = obs_property_list_item_name(prop, i);
+    mic_map.emplace(val, name);
   }
-  return true;
+  obs_properties_destroy(input_props);
+  return mic_map;
 }
 
 
-bool Obs::TurnOnMic(std::string *error) {
-  if (SearchMicDevices() == false) {
-    *error = "there is no audio device";
-    return false;
-  }
+bool Obs::TurnOnMic(const std::string &device_id, std::string *const error) {
   obs_sceneitem_t *item = obs_scene_find_source(scene_, "Game Capture");
   if (item == nullptr) {
-    *error = "turn on after start streaming";
     return false;
   }
+
+  std::unordered_map<std::string, std::string> mic_devices = SearchMicDevices();
+  const auto &iterator = mic_devices.find(device_id);
+  if (iterator == mic_devices.end()) {
+    *error = "no device ID";
+    return false;
+  }
+
   obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "device_id", "default");
+  obs_data_set_string(settings, "device_id", device_id.c_str());
 
   obs_source_t *source = obs_source_create(
       "wasapi_input_capture", "Mic/Aux", settings, nullptr);
@@ -128,7 +138,7 @@ bool Obs::TurnOffMic() {
 }
 
 
-bool Obs::UpdateMicVolume(float volume) {
+bool Obs::UpdateMicVolume(const float &volume) {
   obs_source_t *source = obs_get_output_source(3);
   if (!source) {
     return false;
@@ -196,7 +206,7 @@ bool Obs::TurnOffWebcam() {
 }
 
 
-bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
+bool Obs::UpdateWebcamSize(const float &normal_x, const float &normal_y) {
   obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
   if (item == nullptr) {
     return false;
@@ -223,7 +233,7 @@ bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
 }
 
 
-bool Obs::UpdateWebcamPosition(const float normal_x, const float normal_y) {
+bool Obs::UpdateWebcamPosition(const float &normal_x, const float &normal_y) {
   obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
   if (item == nullptr) {
     return false;
@@ -235,7 +245,7 @@ bool Obs::UpdateWebcamPosition(const float normal_x, const float normal_y) {
 }
 
 
-bool Obs::TurnOnChromaKey(const uint32_t color, const int similarity) {
+bool Obs::TurnOnChromaKey(const uint32_t &color, const int &similarity) {
   obs_source_t *source = obs_get_source_by_name("Video Capture Device");
   if (source == nullptr) {
     return false;
@@ -276,7 +286,7 @@ bool Obs::TurnOffChromaKey() {
 }
 
 
-bool Obs::UpdateChromaKeyColor(const uint32_t color) {
+bool Obs::UpdateChromaKeyColor(const uint32_t &color) {
   obs_source_t *source = obs_get_source_by_name("Video Capture Device");
   if (source == nullptr) {
     return false;
@@ -297,7 +307,7 @@ bool Obs::UpdateChromaKeyColor(const uint32_t color) {
 }
 
 
-bool Obs::UpdateChromaKeySimilarity(const int similarity) {
+bool Obs::UpdateChromaKeySimilarity(const int &similarity) {
   obs_source_t *source = obs_get_source_by_name("Video Capture Device");
   if (source == nullptr) {
     return false;

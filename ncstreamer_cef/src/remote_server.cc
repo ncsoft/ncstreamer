@@ -395,6 +395,9 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kSettingsChromaKeySimilarityRequest,
        std::bind(&RemoteServer::OnSettingsChromaKeySimilarityRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kSettingsMicSearchRequest,
+       std::bind(&RemoteServer::OnSettingsMicSearchRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kSettingsMicOnRequest,
        std::bind(&RemoteServer::OnSettingsMicOnRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
@@ -831,20 +834,66 @@ void RemoteServer::OnSettingsChromaKeySimilarityRequest(
 }
 
 
+void RemoteServer::OnSettingsMicSearchRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree) {
+  int request_key = request_cache_.CheckIn(connection);
+
+  const std::unordered_map<std::string, std::string> &mic_devices{
+      Obs::Get()->SearchMicDevices()};
+  RespondSettingsMicSearch(request_key, "", mic_devices);
+}
+
+
 void RemoteServer::OnSettingsMicOnRequest(
     const websocketpp::connection_hdl &connection,
     const boost::property_tree::ptree &tree) {
-  int request_key = request_cache_.CheckIn(connection);
   std::string error{};
-  Obs::Get()->TurnOnMic(&error);
-
-  if (error == "there is no audio device") {
-    RespondSettingsMicOn(request_key, error);
+  std::string device_id{};
+  float volume{0.5};
+  try {
+    device_id = tree.get<std::string>("device_id");
+    volume = tree.get<float>("volume");
+  } catch (const std::exception &/*e*/) {
+    error = "mic on error";
   }
 
+  if (volume < 0.0 ||
+      volume > 1.0) {
+    error = "mic volume error";
+  }
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  if (error.empty() == false) {
+    RespondSettingsMicOn(request_key, error);
+    return;
+  }
+
+  bool ret = Obs::Get()->TurnOnMic(device_id, &error);
+  if (ret == false) {
+    if (error != "no device ID") {
+      boost::property_tree::ptree args;
+      args.add("deviceId", device_id);
+      args.add("volume", volume);
+      JsExecutor::Execute(
+          browser_app_->GetMainBrowser(),
+          "remote.onSettingsMicOnRequest",
+          args);
+    }
+    // pretend to success if error is empty.
+    RespondSettingsMicOn(request_key, error);
+    return;
+  }
+
+  Obs::Get()->UpdateMicVolume(volume);
+  boost::property_tree::ptree args;
+  args.add("deviceId", device_id);
+  args.add("volume", volume);
   JsExecutor::Execute(
       browser_app_->GetMainBrowser(),
-      "remote.onSettingsMicOnRequest");
+      "remote.onSettingsMicOnRequest",
+      args);
 
   RespondSettingsMicOn(request_key, "");
 }
@@ -1221,6 +1270,46 @@ bool RemoteServer::RespondSettingsChromaKeySimilarity(
     tree.put("type", static_cast<int>(
         RemoteMessage::MessageType::kSettingsChromaKeySimilarityResponse));
     tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondSettingsMicSearch(
+    int request_key,
+    const std::string &error,
+    const std::unordered_map<std::string, std::string> &mic_devices) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondSettingsMicSearch: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    std::vector<boost::property_tree::ptree> arr_mic;
+    for (const auto &mic : mic_devices) {
+      boost::property_tree::ptree tree_mic;
+      tree_mic.put("id", mic.first);
+      tree_mic.put("name", mic.second);
+      arr_mic.emplace_back(tree_mic);
+    }
+
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kSettingsMicSearchResponse));
+    tree.put("error", error);
+    tree.add_child("micList", JsExecutor::ToPtree(arr_mic));
 
     boost::property_tree::write_json(msg, tree, false);
   }
