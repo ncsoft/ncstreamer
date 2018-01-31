@@ -278,6 +278,8 @@ function setUpControls(args) {
   if (args.deviceSettings.hasOwnProperty('mic') &&
       args.deviceSettings.mic.hasOwnProperty('use')) {
     setUpMic(args.deviceSettings.mic.use == 'true' ? true : false);
+  } else {
+    setUpMic(false);
   }
   setUpSteamingQuality();
   ncsoft.select.setByValue(app.dom.qualitySelect, args.videoQuality);
@@ -738,7 +740,6 @@ function setUpWebcam(webcamSettings) {
 
 function setUpMic(check) {
   const mic = app.streaming.mic;
-  setMicCheckBox(check);
   app.dom.micVolume.max = mic.volume.max;
   app.dom.micVolume.min = mic.volume.min;
   app.dom.micVolume.step = mic.volume.step;
@@ -746,6 +747,7 @@ function setUpMic(check) {
   if (check == true) {
     ncsoft.slider.adjustRange(app.dom.micVolume);
   }
+  setMicCheckBox(check);
 }
 
 
