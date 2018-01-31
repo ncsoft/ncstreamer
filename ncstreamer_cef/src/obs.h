@@ -44,16 +44,16 @@ class Obs {
   bool SearchMicDevices();
   bool TurnOnMic(std::string *error);
   bool TurnOffMic();
-  bool UpdateMicVolume(float volume);
+  bool UpdateMicVolume(const float &volume);
   std::vector<Obs::WebcamDevice> SearchWebcamDevices();
   bool TurnOnWebcam(const std::string &device_id, std::string *const error);
   bool TurnOffWebcam();
-  bool UpdateWebcamSize(const float normal_x, const float normal_y);
-  bool UpdateWebcamPosition(const float normal_x, const float normal_y);
-  bool TurnOnChromaKey(const uint32_t color, const int similarity);
+  bool UpdateWebcamSize(const float &normal_x, const float &normal_y);
+  bool UpdateWebcamPosition(const float &normal_x, const float &normal_y);
+  bool TurnOnChromaKey(const uint32_t &color, const int &similarity);
   bool TurnOffChromaKey();
-  bool UpdateChromaKeyColor(const uint32_t color);
-  bool UpdateChromaKeySimilarity(const int similarity);
+  bool UpdateChromaKeyColor(const uint32_t &color);
+  bool UpdateChromaKeySimilarity(const int &similarity);
   void UpdateVideoQuality(
       const Dimension<uint32_t> &output_size,
       uint32_t fps,

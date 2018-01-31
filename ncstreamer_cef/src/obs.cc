@@ -128,7 +128,7 @@ bool Obs::TurnOffMic() {
 }
 
 
-bool Obs::UpdateMicVolume(float volume) {
+bool Obs::UpdateMicVolume(const float &volume) {
   obs_source_t *source = obs_get_output_source(3);
   if (!source) {
     return false;
@@ -196,7 +196,7 @@ bool Obs::TurnOffWebcam() {
 }
 
 
-bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
+bool Obs::UpdateWebcamSize(const float &normal_x, const float &normal_y) {
   obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
   if (item == nullptr) {
     return false;
@@ -223,7 +223,7 @@ bool Obs::UpdateWebcamSize(const float normal_x, const float normal_y) {
 }
 
 
-bool Obs::UpdateWebcamPosition(const float normal_x, const float normal_y) {
+bool Obs::UpdateWebcamPosition(const float &normal_x, const float &normal_y) {
   obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
   if (item == nullptr) {
     return false;
@@ -235,7 +235,7 @@ bool Obs::UpdateWebcamPosition(const float normal_x, const float normal_y) {
 }
 
 
-bool Obs::TurnOnChromaKey(const uint32_t color, const int similarity) {
+bool Obs::TurnOnChromaKey(const uint32_t &color, const int &similarity) {
   obs_source_t *source = obs_get_source_by_name("Video Capture Device");
   if (source == nullptr) {
     return false;
@@ -276,7 +276,7 @@ bool Obs::TurnOffChromaKey() {
 }
 
 
-bool Obs::UpdateChromaKeyColor(const uint32_t color) {
+bool Obs::UpdateChromaKeyColor(const uint32_t &color) {
   obs_source_t *source = obs_get_source_by_name("Video Capture Device");
   if (source == nullptr) {
     return false;
@@ -297,7 +297,7 @@ bool Obs::UpdateChromaKeyColor(const uint32_t color) {
 }
 
 
-bool Obs::UpdateChromaKeySimilarity(const int similarity) {
+bool Obs::UpdateChromaKeySimilarity(const int &similarity) {
   obs_source_t *source = obs_get_source_by_name("Video Capture Device");
   if (source == nullptr) {
     return false;
