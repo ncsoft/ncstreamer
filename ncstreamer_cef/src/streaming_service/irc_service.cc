@@ -83,13 +83,17 @@ void IrcService::Connect(
   SetReadyStatus(IrcService::ReadyStatus::kConnecting);
 
   boost::asio::ip::tcp::resolver resolver(io_service_);
-  auto endpoint_iterator = resolver.resolve({host.c_str(), port.c_str()});
-
-  boost::asio::async_connect(
-      stream_.lowest_layer(),
-      endpoint_iterator,
-      boost::bind(&IrcService::HandleConnect, this,
-          boost::asio::placeholders::error));
+  try {
+    auto endpoint_iterator = resolver.resolve({host.c_str(), port.c_str()});
+    boost::asio::async_connect(
+        stream_.lowest_layer(),
+        endpoint_iterator,
+        boost::bind(&IrcService::HandleConnect, this,
+            boost::asio::placeholders::error));
+  } catch (const std::exception &/*e*/) {
+    Close();
+    return;
+  }
 
   {
     std::lock_guard<std::mutex> lk(io_service_mutex_);
