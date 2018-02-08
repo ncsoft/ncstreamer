@@ -9,7 +9,7 @@
 const app = {
   dom: {},
   streaming: {
-    // ['standby', 'setup', 'starting', 'onAir', 'stopping']
+    // ['standby', 'setup', 'starting', 'onAir', 'stopping', 'closing']
     status: 'standby',
     startInfo: {},
     popupBrowserId: 0,
@@ -173,6 +173,10 @@ function updateStreamingStatus(status) {
     case 'stopping':
       ncsoft.klass.add(button, 'loading');
       button.textContent = '%END_BROADCASTING%';
+      disableAllControls();
+      button.disabled = true;
+      break;
+    case 'closing':
       disableAllControls();
       button.disabled = true;
       break;
@@ -674,7 +678,16 @@ function updateQualitySelect() {
 
 function onModalCloseClicked() {
   console.info('click modalClose');
-  cef.windowClose.request();
+  if (app.streaming.status == 'onAir') {
+    updateStreamingStatus('closing');
+    (function notifyRemote() {
+      const source = app.streaming.startInfo.source;
+      cef.remoteStop.request(remote.stopRequestKey, '', source);
+      remote.stopRequestKey = '';
+    })();
+  } else {
+    cef.windowClose.request();
+  }
 }
 
 
@@ -1271,5 +1284,16 @@ cef.settingsChromaKeySimilarityUpdate.onResponse = function(error) {
   if (error != '') {
     console.info(error);
     return;
+  }
+};
+
+
+cef.remoteStop.onResponse = function(error) {
+  if (error != '') {
+    console.info(error);
+    return;
+  }
+  if (app.streaming.status == 'closing') {
+    cef.windowClose.request();
   }
 };

@@ -123,7 +123,7 @@ const cef = (function() {
     },
     'remote/stop': {
       request: ['requestKey', 'error', 'source'],
-      response: [],
+      response: ['error'],
     },
     'remote/quality/update': {
       request: ['requestKey', 'error'],

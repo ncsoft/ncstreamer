@@ -314,8 +314,6 @@ void Client::OnCommandWindowClose(
     const std::string &/*cmd*/,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
-  ncstreamer::StreamingService::ShutDown();
-  ncstreamer::Obs::ShutDown();
   browser->GetHost()->CloseBrowser(true);
 }
 
@@ -1124,7 +1122,7 @@ void Client::OnCommandRemoteStart(
 void Client::OnCommandRemoteStop(
     const std::string &cmd,
     const CommandArgumentMap &args,
-    CefRefPtr<CefBrowser> /*browser*/) {
+    CefRefPtr<CefBrowser> browser) {
   auto request_key_i = args.find("requestKey");
   auto error_i = args.find("error");
   auto source_i = args.find("source");
@@ -1148,6 +1146,9 @@ void Client::OnCommandRemoteStop(
       request_key,
       error,
       source);
+
+  JsExecutor::Execute(browser, "cef.onResponse", cmd,
+      JsExecutor::StringPairVector{{"error", ""}});
 }
 
 
