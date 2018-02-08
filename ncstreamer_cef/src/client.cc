@@ -314,8 +314,6 @@ void Client::OnCommandWindowClose(
     const std::string &/*cmd*/,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
-  ncstreamer::StreamingService::ShutDown();
-  ncstreamer::Obs::ShutDown();
   browser->GetHost()->CloseBrowser(true);
 }
 
