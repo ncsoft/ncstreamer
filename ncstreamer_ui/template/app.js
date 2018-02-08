@@ -11,6 +11,7 @@ const app = {
   streaming: {
     // ['standby', 'setup', 'starting', 'onAir', 'stopping', 'closing']
     status: 'standby',
+    lastStatus: null,
     startInfo: {},
     popupBrowserId: 0,
     postUrl: null,
@@ -227,6 +228,7 @@ function setUpControls(args) {
     'quality-select',
     'chroma-key-checkbox',
     'modal-close-button',
+    'modal-cancel-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
@@ -271,6 +273,8 @@ function setUpControls(args) {
       'change', onchromaKeyCheckboxChanged);
   app.dom.modalCloseButton.addEventListener(
       'click', onModalCloseClicked);
+  app.dom.modalCancelButton.addEventListener(
+      'click', onModalCancelClicked);
 
   ncsoft.select.disable(app.dom.privacySelect);
   ncsoft.select.setText(app.dom.privacySelect, '%POST_PRIVACY_BOUND%');
@@ -436,7 +440,9 @@ function onMinimizeButtonClicked() {
 
 function onCloseButtonClicked() {
   console.info('click closeButton');
-  if (app.streaming.status == 'onAir') {
+  app.streaming.lastStatus = app.streaming.status;
+  updateStreamingStatus('closing');
+  if (app.streaming.lastStatus == 'onAir') {
     ncsoft.modal.show('#close-check-modal');
   } else {
     cef.windowClose.request();
@@ -678,16 +684,17 @@ function updateQualitySelect() {
 
 function onModalCloseClicked() {
   console.info('click modalClose');
-  if (app.streaming.status == 'onAir') {
-    updateStreamingStatus('closing');
-    (function notifyRemote() {
-      const source = app.streaming.startInfo.source;
-      cef.remoteStop.request(remote.stopRequestKey, '', source);
-      remote.stopRequestKey = '';
-    })();
-  } else {
-    cef.windowClose.request();
-  }
+  (function notifyRemote() {
+    const source = app.streaming.startInfo.source;
+    cef.remoteStop.request(remote.stopRequestKey, '', source);
+    remote.stopRequestKey = '';
+  })();
+}
+
+
+function onModalCancelClicked() {
+  console.info('click modalCancel');
+  updateStreamingStatus(app.streaming.lastStatus);
 }
 
 
