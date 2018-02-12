@@ -29,13 +29,17 @@ IrcService::IrcService()
 
   thread_ = std::thread([this]() {
     for (;;) {
-      std::unique_lock<std::mutex> lk(io_service_mutex_);
-      io_service_cv_.wait(lk);
+      IoServiceRequest req = IoServiceRequest::kNone;
+      {
+        std::unique_lock<std::mutex> lk(io_service_mutex_);
+        io_service_cv_.wait(lk);
+        req = io_service_request_;
+      }
 
-      if (io_service_request_ == IoServiceRequest::kRun) {
+      if (req == IoServiceRequest::kRun) {
         io_service_.reset();
         io_service_.run();
-      } else if (io_service_request_ == IoServiceRequest::kBreak) {
+      } else if (req == IoServiceRequest::kBreak) {
         break;
       }
     }
@@ -44,7 +48,8 @@ IrcService::IrcService()
 
 
 IrcService::~IrcService() {
-  Close();
+  io_service_.stop();
+  Sleep(100);   // for thread set wait status
 
   {
     std::lock_guard<std::mutex> lk(io_service_mutex_);
@@ -105,6 +110,8 @@ void IrcService::Connect(
 
 void IrcService::Close() {
   io_service_.stop();
+  Sleep(100);   // for thread set wait status
+
   SetReadyStatus(IrcService::ReadyStatus::kNone);
 }
 

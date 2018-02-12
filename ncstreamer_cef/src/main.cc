@@ -98,9 +98,9 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   ::CefRunMessageLoop();
 
+  ncstreamer::RemoteServer::ShutDown();
   ncstreamer::StreamingService::ShutDown();
   ncstreamer::Obs::ShutDown();
-  ncstreamer::RemoteServer::ShutDown();
   ncstreamer::WindowFrameRemover::ShutDown();
   ncstreamer::LocalStorage::ShutDown();
   ::CefShutdown();
