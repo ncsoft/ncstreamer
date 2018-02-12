@@ -95,6 +95,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
 });
 
 
+document.addEventListener('keydown', disableF4);
+
+
+function disableF4(event) {
+  const code = event.keyCode;
+  if (code != 115) {  // 115 == F4
+    return;
+  }
+  event.returnValue = false;
+}
+
+
 function toCamel(str) {
   return str.replace(/(\-[a-z])/g, function(match) {
     return match.toUpperCase().replace('-', '');
@@ -1060,6 +1072,7 @@ cef.streamingSetUp.onResponse = function(error) {
   for (const element of app.dom.ncStreamerContainer) {
     ncsoft.klass.remove(element, 'loading');
   }
+  document.removeEventListener('keydown', disableF4);
 };
 
 
