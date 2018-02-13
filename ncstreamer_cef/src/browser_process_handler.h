@@ -34,7 +34,8 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
       const Position<int> &default_position,
       const StreamingServiceTagMap &tag_ids,
       const std::wstring &designated_user,
-      const boost::property_tree::ptree &device_settings);
+      const boost::property_tree::ptree &device_settings,
+      const uint16_t &remote_port);
   virtual ~BrowserProcessHandler();
 
   // override CefBrowserProcessHandler
@@ -56,6 +57,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const StreamingServiceTagMap tag_ids_;
   const std::wstring designated_user_;
   const boost::property_tree::ptree device_settings_;
+  const uint16_t remote_port_;
 
   CefRefPtr<Client> client_;
 

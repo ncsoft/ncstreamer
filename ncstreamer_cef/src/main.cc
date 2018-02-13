@@ -16,7 +16,6 @@
 #include "ncstreamer_cef/src/local_storage.h"
 #include "ncstreamer_cef/src/manifest.h"
 #include "ncstreamer_cef/src/obs.h"
-#include "ncstreamer_cef/src/remote_server.h"
 #include "ncstreamer_cef/src/render_app.h"
 
 
@@ -71,13 +70,8 @@ int APIENTRY wWinMain(HINSTANCE instance,
       cmd_line.default_position(),
       cmd_line.streaming_service_tag_ids(),
       cmd_line.designated_user(),
-      cmd_line.device_settings()}};
-
-  ncstreamer::RemoteServer::SetUp(browser_app);
-  bool started = ncstreamer::RemoteServer::Get()->Start(cmd_line.remote_port());
-  if (started == false) {
-    return -1;
-  }
+      cmd_line.device_settings(),
+      cmd_line.remote_port()}};
 
   auto app_data_path = CreateUserLocalAppDirectory();
   boost::filesystem::path storage_path{};
@@ -98,9 +92,6 @@ int APIENTRY wWinMain(HINSTANCE instance,
 
   ::CefRunMessageLoop();
 
-  ncstreamer::RemoteServer::ShutDown();
-  ncstreamer::StreamingService::ShutDown();
-  ncstreamer::Obs::ShutDown();
   ncstreamer::WindowFrameRemover::ShutDown();
   ncstreamer::LocalStorage::ShutDown();
   ::CefShutdown();
