@@ -99,8 +99,7 @@ document.addEventListener('keydown', disableF4);
 
 
 function disableF4(event) {
-  const code = event.keyCode;
-  if (code != 115) {  // 115 == F4
+  if (event.keyCode != 115) {  // 115 == F4
     return;
   }
   event.returnValue = false;
