@@ -106,6 +106,15 @@ function disableF4(event) {
 }
 
 
+function catchAltF4(event) {
+  if (!event.altKey || event.keyCode != 115) {  // 115 == F4
+    return;
+  }
+  onCloseButtonClicked();
+  event.returnValue = false;
+}
+
+
 function toCamel(str) {
   return str.replace(/(\-[a-z])/g, function(match) {
     return match.toUpperCase().replace('-', '');
@@ -1072,6 +1081,7 @@ cef.streamingSetUp.onResponse = function(error) {
     ncsoft.klass.remove(element, 'loading');
   }
   document.removeEventListener('keydown', disableF4);
+  document.addEventListener('keydown', catchAltF4);
 };
 
 
