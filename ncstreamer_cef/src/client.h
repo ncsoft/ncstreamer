@@ -35,7 +35,8 @@ class Client : public CefClient {
       const std::wstring &locale,
       const StreamingServiceTagMap &tag_ids,
       const std::wstring &designated_user,
-      const boost::property_tree::ptree &device_settings);
+      const boost::property_tree::ptree &device_settings,
+      const uint16_t &remote_port);
 
   virtual ~Client();
 
@@ -59,9 +60,11 @@ class Client : public CefClient {
       CefRefPtr<CefBrowser> browser,
       CefRefPtr<CefProcessMessage> message);
 
-  using OnInitialized = std::function<void()>;
+  using OnInitialized = std::function<void(const bool &success)>;
 
   void InitializeService(const OnInitialized on_initialized);
+
+  void ShutdownService();
 
   using CommandArgumentMap = std::unordered_map<std::string, std::string>;
 
@@ -196,6 +199,7 @@ class Client : public CefClient {
   std::wstring locale_;
   const StreamingServiceTagMap tag_ids_;
   const std::wstring designated_user_;
+  const uint16_t remote_port_;
   CefRefPtr<ClientDisplayHandler> display_handler_;
   CefRefPtr<ClientLifeSpanHandler> life_span_handler_;
   CefRefPtr<ClientLoadHandler> load_handler_;

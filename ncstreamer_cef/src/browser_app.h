@@ -33,7 +33,8 @@ class BrowserApp : public CefApp {
       const Position<int> &default_position,
       const StreamingServiceTagMap &tag_ids,
       const std::wstring &designated_user,
-      const boost::property_tree::ptree &device_setting);
+      const boost::property_tree::ptree &device_setting,
+      const uint16_t &remote_port);
   virtual ~BrowserApp();
 
   CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override;

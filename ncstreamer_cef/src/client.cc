@@ -37,10 +37,12 @@ Client::Client(
     const std::wstring &locale,
     const StreamingServiceTagMap &tag_ids,
     const std::wstring &designated_user,
-    const boost::property_tree::ptree &device_settings)
+    const boost::property_tree::ptree &device_settings,
+    const uint16_t &remote_port)
     : locale_{locale},
       tag_ids_{tag_ids},
       designated_user_{designated_user},
+      remote_port_{remote_port},
       display_handler_{new ClientDisplayHandler{}},
       life_span_handler_{new ClientLifeSpanHandler{instance}},
       load_handler_{new ClientLoadHandler{life_span_handler_,
@@ -127,7 +129,16 @@ void Client::InitializeService(const OnInitialized on_initialized) {
   ncstreamer::Obs::SetUp();
   ncstreamer::StreamingService::SetUp(tag_ids_);
   ncstreamer::DesignatedUser::SetUp(designated_user_);
-  on_initialized();
+  ncstreamer::RemoteServer::SetUp(GetMainBrowser());
+  bool started = ncstreamer::RemoteServer::Get()->Start(remote_port_);
+  on_initialized(started);
+}
+
+
+void Client::ShutdownService() {
+  ncstreamer::RemoteServer::ShutDown();
+  ncstreamer::StreamingService::ShutDown();
+  ncstreamer::Obs::ShutDown();
 }
 
 
@@ -314,6 +325,7 @@ void Client::OnCommandWindowClose(
     const std::string &/*cmd*/,
     const CommandArgumentMap &/*args*/,
     CefRefPtr<CefBrowser> browser) {
+  ShutdownService();
   browser->GetHost()->CloseBrowser(true);
 }
 
@@ -429,7 +441,8 @@ void Client::OnCommandStreamingSetUp(
 
   ::CefPostTask(TID_FILE,
       base::Bind(&Client::InitializeService, base::Unretained(this),
-          [cmd, browser, this]() {
+          [cmd, browser, this](const bool &success) {
+    assert(success);
     load_handler_->UpdateSourcesPeriodically(1000);
 
     JsExecutor::Execute(browser, "cef.onResponse", cmd,

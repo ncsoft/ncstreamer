@@ -14,6 +14,7 @@
 
 #include "ncstreamer_cef/src/js_executor.h"
 #include "ncstreamer_cef/src/remote_message_types.h"
+#include "ncstreamer_cef/src/streaming_service.h"
 
 
 namespace {
@@ -23,7 +24,7 @@ namespace placeholders = websocketpp::lib::placeholders;
 
 namespace ncstreamer {
 void RemoteServer::SetUp(
-    const BrowserApp *browser_app) {
+    const CefRefPtr<CefBrowser> browser_app) {
   assert(!static_instance);
   static_instance = new RemoteServer{browser_app};
 }
@@ -240,8 +241,8 @@ websocketpp::connection_hdl RemoteServer::RequestCache::CheckOut(
 
 
 RemoteServer::RemoteServer(
-    const BrowserApp *browser_app)
-    : browser_app_{browser_app},
+    const CefRefPtr<CefBrowser> browser)
+    : browser_{browser},
       io_service_{},
       io_service_work_{io_service_},
       server_{},
@@ -425,7 +426,7 @@ void RemoteServer::OnStreamingStatusRequest(
   int request_key = request_cache_.CheckIn(connection);
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onStreamingStatusRequest",
       request_key);
 }
@@ -446,7 +447,7 @@ void RemoteServer::OnStreamingStartRequest(
   int request_key = request_cache_.CheckIn(connection);
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onStreamingStartRequest",
       request_key,
       args);
@@ -468,7 +469,7 @@ void RemoteServer::OnStreamingStopRequest(
   int request_key = request_cache_.CheckIn(connection);
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onStreamingStopRequest",
       request_key,
       args);
@@ -490,7 +491,7 @@ void RemoteServer::OnSettingsQualityUpdateRequest(
   int request_key = request_cache_.CheckIn(connection);
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsQualityUpdateRequest",
       request_key,
       args);
@@ -587,7 +588,7 @@ void RemoteServer::OnSettingsWebcamOnRequest(
       args.add("normalY", y);
 
       JsExecutor::Execute(
-          browser_app_->GetMainBrowser(),
+          browser_,
           "remote.onSettingsWebcamOnRequest",
           args);
     }
@@ -611,7 +612,7 @@ void RemoteServer::OnSettingsWebcamOnRequest(
   args.add("normalX", x);
   args.add("normalY", y);
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsWebcamOnRequest",
       args);
   RespondSettingsWebcamOn(request_key, error);
@@ -625,7 +626,7 @@ void RemoteServer::OnSettingsWebcamOffRequest(
 
   Obs::Get()->TurnOffWebcam();
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsWebcamOffRequest");
 
   RespondSettingsWebcamOff(request_key, "");
@@ -665,7 +666,7 @@ void RemoteServer::OnSettingsWebcamSizeRequest(
   args.add("normalHeight", height);
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsWebcamSizeRequest",
       args);
 
@@ -706,7 +707,7 @@ void RemoteServer::OnSettingsWebcamPositionRequest(
   args.add("normalY", y);
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsWebcamPositionRequest",
       args);
 
@@ -746,7 +747,7 @@ void RemoteServer::OnSettingsChromaKeyOnRequest(
   args.add("similarity", similarity);
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsChromaKeyOnRequest",
       args);
 
@@ -762,7 +763,7 @@ void RemoteServer::OnSettingsChromaKeyOffRequest(
   Obs::Get()->TurnOffChromaKey();
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsChromaKeyOffRequest");
   RespondSettingsChromaKeyOff(request_key, "");
 }
@@ -792,7 +793,7 @@ void RemoteServer::OnSettingsChromaKeyColorRequest(
   boost::property_tree::ptree args;
   args.add("color", color);
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsChromaKeyColorRequest",
       args);
   RespondSettingsChromaKeyColor(request_key, error);
@@ -827,7 +828,7 @@ void RemoteServer::OnSettingsChromaKeySimilarityRequest(
   boost::property_tree::ptree args;
   args.add("similarity", similarity);
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsChromaKeySimilarityRequest",
       args);
   RespondSettingsChromaKeySimilarity(request_key, error);
@@ -877,7 +878,7 @@ void RemoteServer::OnSettingsMicOnRequest(
       args.add("deviceId", device_id);
       args.add("volume", volume);
       JsExecutor::Execute(
-          browser_app_->GetMainBrowser(),
+          browser_,
           "remote.onSettingsMicOnRequest",
           args);
     }
@@ -891,7 +892,7 @@ void RemoteServer::OnSettingsMicOnRequest(
   args.add("deviceId", device_id);
   args.add("volume", volume);
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsMicOnRequest",
       args);
 
@@ -906,7 +907,7 @@ void RemoteServer::OnSettingsMicOffRequest(
   Obs::Get()->TurnOffMic();
 
   JsExecutor::Execute(
-      browser_app_->GetMainBrowser(),
+      browser_,
       "remote.onSettingsMicOffRequest");
 
   RespondSettingsMicOff(request_key, "");
@@ -916,7 +917,7 @@ void RemoteServer::OnSettingsMicOffRequest(
 void RemoteServer::OnNcStreamerExitRequest(
     const websocketpp::connection_hdl &/*connection*/,
     const boost::property_tree::ptree &/*tree*/) {
-  HWND wnd = browser_app_->GetMainBrowser()->GetHost()->GetWindowHandle();
+  HWND wnd = browser_->GetHost()->GetWindowHandle();
   ::PostMessage(wnd, WM_CLOSE, NULL, NULL);
 }
 

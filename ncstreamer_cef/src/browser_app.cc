@@ -18,7 +18,8 @@ BrowserApp::BrowserApp(
     const Position<int> &default_position,
     const StreamingServiceTagMap &tag_ids,
     const std::wstring &designated_user,
-    const boost::property_tree::ptree &device_setting)
+    const boost::property_tree::ptree &device_setting,
+    const uint16_t &remote_port)
     : browser_process_handler_{new BrowserProcessHandler{
           instance,
           hides_settings,
@@ -30,7 +31,8 @@ BrowserApp::BrowserApp(
           default_position,
           tag_ids,
           designated_user,
-          device_setting}} {
+          device_setting,
+          remote_port}} {
 }
 
 

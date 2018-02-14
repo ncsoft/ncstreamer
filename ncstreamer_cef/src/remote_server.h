@@ -17,10 +17,10 @@
 
 #include "boost/asio/io_service.hpp"
 #include "boost/property_tree/ptree.hpp"
+#include "include/cef_app.h"
 #include "websocketpp/config/asio_no_tls.hpp"
 #include "websocketpp/server.hpp"
 
-#include "ncstreamer_cef/src/browser_app.h"
 #include "ncstreamer_cef/src/obs.h"
 
 
@@ -28,7 +28,7 @@ namespace ncstreamer {
 class RemoteServer {
  public:
   static void SetUp(
-      const BrowserApp *browser_app);
+      const CefRefPtr<CefBrowser> browser_app);
 
   static void ShutDown();
   static RemoteServer *Get();
@@ -102,7 +102,7 @@ class RemoteServer {
   };
 
   RemoteServer(
-      const BrowserApp *browser_app);
+      const CefRefPtr<CefBrowser> browser_app);
 
   virtual ~RemoteServer();
 
@@ -272,7 +272,7 @@ class RemoteServer {
 
   static RemoteServer *static_instance;
 
-  const BrowserApp *const browser_app_;
+  const CefRefPtr<CefBrowser> browser_;
 
   boost::asio::io_service io_service_;
   boost::asio::io_service::work io_service_work_;

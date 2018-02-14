@@ -99,10 +99,18 @@ document.addEventListener('keydown', disableF4);
 
 
 function disableF4(event) {
-  const code = event.keyCode;
-  if (code != 115) {  // 115 == F4
+  if (event.keyCode != 115) {  // 115 == F4
     return;
   }
+  event.returnValue = false;
+}
+
+
+function catchAltF4(event) {
+  if (!event.altKey || event.keyCode != 115) {  // 115 == F4
+    return;
+  }
+  onCloseButtonClicked();
   event.returnValue = false;
 }
 
@@ -1073,6 +1081,7 @@ cef.streamingSetUp.onResponse = function(error) {
     ncsoft.klass.remove(element, 'loading');
   }
   document.removeEventListener('keydown', disableF4);
+  document.addEventListener('keydown', catchAltF4);
 };
 
 
