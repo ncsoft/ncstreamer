@@ -72,6 +72,11 @@ boost::optional<Position<int>> LocalStorage::GetWindowPosition() const {
 }
 
 
+std::string LocalStorage::GetYouTubePrivacy() const {
+  return storage_.get(kYouTubePrivacy, "");
+}
+
+
 void LocalStorage::SetUserPage(const std::string &user_page) {
   SetValue(kUserPage, user_page);
 }
@@ -107,6 +112,11 @@ void LocalStorage::SetWindowPosition(const Position<int> &window_position) {
   pos.put(kWindowPositionY, window_position.y());
 
   SetValue(kWindowPosition, pos);
+}
+
+
+void LocalStorage::SetYouTubePrivacy(const std::string &privacy) {
+  SetValue(kYouTubePrivacy, privacy);
 }
 
 
@@ -184,6 +194,7 @@ const char *LocalStorage::kWebcamUse{"webcamUse"};
 const char *LocalStorage::kWindowPosition{"windowPosition"};
 const char *LocalStorage::kWindowPositionX{"x"};
 const char *LocalStorage::kWindowPositionY{"y"};
+const char *LocalStorage::kYouTubePrivacy{"YouTubePrivacy"};
 
 
 LocalStorage *LocalStorage::static_instance{nullptr};
