@@ -74,6 +74,7 @@ const app = {
   service: {
     user: null,
     provider: null,
+    settingsPage: null,
   },
   options: {
     hidesSettings: false,
@@ -254,6 +255,7 @@ function setUpControls(args) {
     'chroma-key-checkbox',
     'modal-close-button',
     'modal-cancel-button',
+    'twitch-settings-popup',
     'youtube-link-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
@@ -305,6 +307,8 @@ function setUpControls(args) {
       'click', onModalCloseClicked);
   app.dom.modalCancelButton.addEventListener(
       'click', onModalCancelClicked);
+  app.dom.twitchSettingsPopup.addEventListener(
+      'click', onTwitchSettingsPopupClicked);
   app.dom.youtubeLinkButton.addEventListener(
       'click', onYoutubeLinkClicked);
 
@@ -338,6 +342,14 @@ function setProviderUserName(userName) {
 function getCurrentUserPage() {
   return (app.dom.mePageSelect.children[0].value == 2) ?
       app.dom.ownPageSelect.children[0].value : 'me';
+}
+
+
+function setUserSettingPage(userPages) {
+  if (userPages.length == 0) {
+    return;
+  }
+  app.service.settingsPage = userPages[0].link;
 }
 
 
@@ -749,6 +761,11 @@ function onModalCancelClicked() {
 }
 
 
+function onTwitchSettingsPopupClicked() {
+  console.info('click twitchSettingsPopup');
+  cef.externalBrowserPopUp.request(app.service.settingsPage);
+}
+
 function onYoutubeLinkClicked() {
   console.info('click youtubeLink');
   // outlink
@@ -887,6 +904,7 @@ function setUpProviderUI(
       ncsoft.klass.remove(connectInfo, 'fb');
       ncsoft.klass.add(connectInfo, 'twitch');
       setUpStreamServers(streamServers, streamServer);
+      setUserSettingPage(userPages);
       ncsoft.modal.show('#twitch-guide-modal');
       break;
     default:
