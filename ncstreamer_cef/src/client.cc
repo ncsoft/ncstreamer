@@ -290,6 +290,11 @@ void Client::OnCommand(const std::string &cmd,
            std::placeholders::_1,
            std::placeholders::_2,
            std::placeholders::_3)},
+      {"storage/youtubePrivacy/update",
+       std::bind(&This::OnCommandStorageYouTubePrivacyUpdate, this,
+           std::placeholders::_1,
+           std::placeholders::_2,
+           std::placeholders::_3)},
       {"remote/status",
        std::bind(&This::OnCommandRemoteStatus, this,
            std::placeholders::_1,
@@ -399,6 +404,7 @@ void Client::OnCommandServiceProviderLogIn(
     arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));
     arg.add("userPage", LocalStorage::Get()->GetUserPage());
     arg.add("privacy", LocalStorage::Get()->GetPrivacy());
+    arg.add("youtubePrivacy", "");
     arg.add("streamServer", LocalStorage::Get()->GetStreamServer());
     arg.add("description", LocalStorage::Get()->GetDescription());
 
@@ -1022,6 +1028,27 @@ void Client::OnCommandStorageStreamServerUpdate(
   }
 
   LocalStorage::Get()->SetStreamServer(stream_server);
+}
+
+
+void Client::OnCommandStorageYouTubePrivacyUpdate(
+    const std::string &cmd,
+    const CommandArgumentMap &args,
+    CefRefPtr<CefBrowser> /*browser*/) {
+  auto privacy_i = args.find("privacy");
+  if (privacy_i == args.end()) {
+    assert(false);
+    return;
+  }
+
+  const std::string &privacy = privacy_i->second;
+
+  if (privacy.empty() == true) {
+    assert(false);
+    return;
+  }
+
+  LocalStorage::Get()->SetYouTubePrivacy(privacy);
 }
 
 

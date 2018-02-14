@@ -839,6 +839,69 @@ body {
 }
 
 
+.nc-streamer-modal .modal-dialog-full {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    -webkit-transform: translate(0, 0) !important;
+    -ms-transform: translate(0, 0) !important;
+    transform: translate(0, 0) !important;
+    margin: 0;
+    padding: 0;
+}
+
+
+.nc-streamer-modal .modal-dialog-full .modal-content {
+    height: 100%;
+    padding: 0;
+    background-color: rgba(0,0,0,0.3);
+    color: #fff;
+}
+
+
+.nc-streamer-modal .modal-dialog-full .modal-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%) !important;
+    -ms-transform: translate(-50%, -50%) !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.nc-streamer-modal .modal-dialog-full .modal-footer-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+    background-color: #292e38;
+}
+
+
+.nc-streamer-modal .modal-dialog-full .modal-footer-bottom button {
+    width: 100%;
+    height: 50px;
+    color: #abacaf;
+}
+
+
+.nc-streamer-modal .modal-dialog-full .modal-footer-bottom button:before {
+    content: '';
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    vertical-align: middle;
+    background: url("../img/btn-close-twitchguide.png") no-repeat 0 0;
+    vertical-align: top;
+    margin: 3px 10px 0 0;
+}
+
+
 .nc-streamer-modal .modal-content {
     padding-bottom: 20px;
     color: #c0d4e6;
@@ -917,6 +980,19 @@ body {
 }
 
 
+.nc-streamer-modal .connect-info .name.youtube::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 14px;
+    vertical-align: middle;
+    background: url("../img/icon-youtube2.png") no-repeat 0 0;
+    margin-right: 9px;
+    margin-bottom: 3px;
+    vertical-align: bottom;
+}
+
+
 .nc-streamer-modal .connect-info .name.fb::before {
     content: '';
     display: inline-block;
@@ -966,6 +1042,23 @@ body {
 }
 
 
+.nc-streamer-modal .text-twitch {
+    font-style: normal;
+    color: #8c56f2;
+}
+
+
+.nc-streamer-modal .img-twitch-guide {
+    content: '';
+    display: block;
+    width: 287px;
+    height: 267px;
+    vertical-align: middle;
+    background: url("../img/twitch-guide.png") no-repeat 0 0;
+    margin: 26px auto 0;
+}
+
+
 .nc-streamer-modal .msg {
     padding-top: 10px;
     font-size: 12px;
@@ -1012,8 +1105,65 @@ body {
 }
 
 
+.nc-streamer-modal .btn-youtube {
+    width: 182px;
+    color: #ffffff;
+    border: 1px solid #292e38;
+    background-image: -webkit-linear-gradient(top, #b73a41 0, #a3252c 100%);
+    background-image: linear-gradient(to bottom, #b73a41 0, #a3252c 100%);
+}
+
+
+.nc-streamer-modal .btn-youtube:after {
+    content: '';
+    display: inline-block;
+    width: 11px;
+    height: 9px;
+    vertical-align: middle;
+    background: url("../img/icon-link.png") no-repeat 0 0;
+    vertical-align: top;
+    margin: 5px 0 0 5px;
+    opacity: 0.8;
+}
+
+
+.nc-streamer-modal .btn-youtube:hover,.nc-streamer-modal .btn-youtube:active {
+    background-image: -webkit-linear-gradient(top, #d0464e 0, #bc323a 100%);
+    background-image: linear-gradient(to bottom, #d0464e 0, #bc323a 100%);
+}
+
+
+.nc-streamer-modal .btn-twitch {
+    width: 227px;
+    margin-top: 20px;
+    color: #ffffff;
+    border: 1px solid #292e38;
+    background-image: -webkit-linear-gradient(top, #7253ab 0, #5d3e96 100%);
+    background-image: linear-gradient(to bottom, #7253ab 0, #5d3e96 100%);
+}
+
+
+.nc-streamer-modal .btn-twitch:after {
+    content: '';
+    display: inline-block;
+    width: 11px;
+    height: 9px;
+    vertical-align: middle;
+    background: url("../img/icon-link.png") no-repeat 0 0;
+    vertical-align: top;
+    margin: 5px 0 0 5px;
+    opacity: 0.8;
+}
+
+
+.nc-streamer-modal .btn-twitch:hover,.nc-streamer-modal .btn-twitch:active {
+    background-image: -webkit-linear-gradient(top, #7f5cbe 0, #6a47a8 100%);
+    background-image: linear-gradient(to bottom, #7f5cbe 0, #6a47a8 100%);
+}
+
+
 .connect-platform header h2 {
-    padding: 100px 0 40px 0;
+    padding: 100px 0 18px 0;
     color: #d8b17e;
     font-size: 18px;
     text-align: center
@@ -1040,12 +1190,12 @@ body {
 .connect-platform .message {
     position: absolute;
     width: calc(100% - 26px);
-    bottom: 125px
+    bottom: 0;
 }
 
 
 .connect-platform .message.notice {
-    padding: 20px 20px;
+    padding: 25px 20px;
     color: #42698b;
     text-align: center;
     border-top: 1px solid #333843
@@ -1060,50 +1210,72 @@ body {
 }
 
 
-.nc-streamer-footer .btn-connect-facebook {
-    font-size: 16px;
-    background-color: #3b5998
+.nc-streamer-connect {
+    margin-top: 32px;
+    text-align: center;
 }
 
 
-.nc-streamer-footer .btn-connect-facebook::before {
+.nc-streamer-connect button {
+    padding: 0 12px;
+    font-size: 13px;
+    color: #777;
+}
+
+
+.nc-streamer-connect button:hover {
+    color: #fff;
+}
+
+
+.nc-streamer-connect .btn-connect-youtube:before {
     content: '';
     display: block;
-    width: 9px;
-    height: 19px;
+    width: 54px;
+    height: 54px;
     vertical-align: middle;
-    background: url("../img/icon-fb.png") no-repeat 0 0;
-    display: inline-block;
-    margin-right: 9px
+    background: url("../img/icon-login-service.png") no-repeat 0 0;
+    margin-bottom: 9px;
+    background-position: 0 0;
 }
 
 
-.nc-streamer-footer .btn-connect-facebook:hover {
-    background-color: #4264ab
+.nc-streamer-connect .btn-connect-youtube:hover:before {
+    background-position: -55px 0;
 }
 
 
-.nc-streamer-footer .btn-connect-twitch {
-    font-size: 16px;
-    background-color: #6441a4
-}
-
-
-.nc-streamer-footer .btn-connect-twitch::before {
+.nc-streamer-connect .btn-connect-twitch:before {
     content: '';
     display: block;
-    width: 9px;
-    height: 19px;
+    width: 54px;
+    height: 54px;
     vertical-align: middle;
-    background: url("../img/icon-twitch.png") no-repeat 0 0;
-    width: 18px;
-    display: inline-block;
-    margin-right: 9px
+    background: url("../img/icon-login-service.png") no-repeat 0 0;
+    margin-bottom: 9px;
+    background-position: 0 -60px;
 }
 
 
-.nc-streamer-footer .btn-connect-twitch:hover {
-    background-color: #714cb6
+.nc-streamer-connect .btn-connect-twitch:hover:before {
+    background-position: -55px -60px;
+}
+
+
+.nc-streamer-connect .btn-connect-facebook:before {
+    content: '';
+    display: block;
+    width: 54px;
+    height: 54px;
+    vertical-align: middle;
+    background: url("../img/icon-login-service.png") no-repeat 0 0;
+    margin-bottom: 9px;
+    background-position: 0 -120px;
+}
+
+
+.nc-streamer-connect .btn-connect-facebook:hover:before {
+    background-position: -55px -120px;
 }
 
 
@@ -1150,6 +1322,19 @@ body {
     word-wrap: normal;
     color: #d8b17e;
     font-size: 15px
+}
+
+
+.nc-streamer-setting .profile .youtube::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 14px;
+    vertical-align: middle;
+    background: url("../img/icon-youtube2.png") no-repeat 0 0;
+    margin-right: 9px;
+    margin-bottom: 3px;
+    vertical-align: bottom;
 }
 
 

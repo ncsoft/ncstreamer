@@ -23,7 +23,7 @@ const cef = (function() {
     'service_provider/log_in': {
       request: ['serviceProvider'],
       response: ['error', 'userName', 'userPages', 'streamServers', 'userPage',
-                 'privacy', 'streamServer', 'description'],
+                 'privacy', 'youtubePrivacy', 'streamServer', 'description'],
     },
     'service_provider/log_out': {
       request: ['serviceProvider'],
@@ -109,6 +109,10 @@ const cef = (function() {
     },
     'storage/stream_server/update': {
       request: ['streamServer'],
+      response: [],
+    },
+    'storage/youtubePrivacy/update': {
+      request: ['privacy'],
       response: [],
     },
     'remote/status': {
