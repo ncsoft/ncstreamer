@@ -29,6 +29,7 @@ class LocalStorage {
   std::string GetDescription() const;
   bool GetWebcamUse() const;
   boost::optional<Position<int>> GetWindowPosition() const;
+  std::string GetYouTubePrivacy() const;
 
   void SetUserPage(const std::string &user_page);
   void SetPrivacy(const std::string &privacy);
@@ -37,6 +38,7 @@ class LocalStorage {
   void SetDescription(const std::string &description);
   void SetWebcamUse(const bool &use);
   void SetWindowPosition(const Position<int> &window_position);
+  void SetYouTubePrivacy(const std::string &privacy);
 
  private:
   explicit LocalStorage(const std::wstring &storage_path);
@@ -65,6 +67,7 @@ class LocalStorage {
   static const char *kWindowPosition;
   static const char *kWindowPositionX;
   static const char *kWindowPositionY;
+  static const char *kYouTubePrivacy;
 
   static LocalStorage *static_instance;
 

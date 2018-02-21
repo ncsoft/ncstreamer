@@ -4,6 +4,7 @@
 
 
 const ncsoft = {
+  storage: {},
   klass: {},
   select: {},
   textarea: {},
@@ -83,6 +84,18 @@ ncsoft.slider.adjustRange = function(element) {
             'color-stop(' + val + ', #22252f)' +
             ')'
   );
+};
+
+
+ncsoft.storage.add = function(name, exp /*day*/) {
+  const date = new Date();
+  date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+  window.localStorage.setItem(name, date.getTime());
+};
+
+
+ncsoft.storage.get = function(name) {
+  return window.localStorage.getItem(name);
 };
 
 

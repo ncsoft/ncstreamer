@@ -46,7 +46,9 @@
   <div class="nc-streamer-loader">
       <div class="icon-loader">loading</div>
   </div>
-  <div class="nc-streamer-footer nc-streamer-footer-app login-page-panel">
+  <div class="nc-streamer-connect login-page-panel">
+    <button id="login-button-youtube"
+            class="btn-connect-youtube">YouTube</button>
     <button id="login-button-facebook"
             class="btn-connect-facebook">facebook</button>
     <button id="login-button-twitch"
@@ -64,6 +66,27 @@
            href="#"
            class="btn-view-streaming">%WATCH_BROADCASTING%</a>
       </div>
+      <div id="youtube-division">
+        <h3 id="stream-server-head">공개 설정</h3>
+        <div id="youtube-privacy-select"
+             class="dropdown">
+          <button class="btn dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true"
+                  value="public">
+            공개
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li data-value="public"><a>공개</a></li>
+            <li data-value="unlisted"><a>미등록</a></li>
+            <li data-value="private"><a>비공개</a></li>
+          </ul>
+        </div>
+      </div>
+
       <div id="facebook-division">
         <div id="me-page-select"
              class="dropdown">
@@ -360,6 +383,74 @@
                   data-dismiss="modal">
             %CONFIRM%
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- twitch guide modal -->
+  <div id="twitch-guide-modal"
+       class="modal nc-streamer-modal"
+       tabindex="-1"
+       role="dialog"
+      aria-labelledby="twitchGuideModal">
+    <div class="modal-dialog modal-dialog-full" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="connect-info">
+            생방송을 마치고
+            <br>고객님의 멋진 플레이를 간직하려면
+            <br>
+            <em class="text-twitch">twitch</em>에서
+            <br>'이전 방송 저장' 옵션에 체크해 주세요.
+            <div class="img-twitch-guide"></div>
+          </div>
+          <a id="twitch-settings-popup"
+             class="btn btn-primary btn-twitch"
+             href="#" >twitch 설정 변경하러 가기</a>
+        </div>
+        <div class="modal-footer modal-footer-bottom">
+          <button type="button"
+                  id="popup-hide-button"
+                  data-dismiss="modal">한 달 동안 안 보기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- youtube streaming agreement modal -->
+  <div id="youtube-link-modal"
+       class="modal nc-streamer-modal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="youtubeTosModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">방송</h4>
+          <button type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="connect-info">
+            Youtube 서비스 약관에
+            <br>동의해 주세요.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a id="youtube-link-button"
+             class="btn btn-primary btn-youtube"
+             data-dismiss="modal"
+             href="#">YouTube 바로가기</a>
         </div>
       </div>
     </div>

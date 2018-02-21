@@ -74,14 +74,15 @@ const app = {
   service: {
     user: null,
     provider: null,
+    settingsPage: null,
+    authorizationUrlForYouTube: 'https://www.youtube.com/signin?' +
+        'next=/live_streaming_signup&app=desktop&' +
+        'action_prompt_identity=true',
   },
   options: {
     hidesSettings: false,
   },
   errorType: null,
-  authorizationUrlForYouTube: 'https://www.youtube.com/signin?' +
-      'next=/live_streaming_signup&app=desktop&' +
-      'action_prompt_identity=true',
 };
 
 
@@ -123,6 +124,7 @@ function toCamel(str) {
 
 
 function enableAllContorls() {
+  ncsoft.select.enable(app.dom.youtubePrivacySelect);
   ncsoft.select.enable(app.dom.mePageSelect);
   ncsoft.select.enable(app.dom.ownPageSelect);
   ncsoft.select.enable(app.dom.privacySelect);
@@ -138,6 +140,7 @@ function enableAllContorls() {
 
 
 function disableAllControls() {
+  ncsoft.select.disable(app.dom.youtubePrivacySelect);
   ncsoft.select.disable(app.dom.mePageSelect);
   ncsoft.select.disable(app.dom.ownPageSelect);
   ncsoft.select.disable(app.dom.privacySelect);
@@ -219,6 +222,7 @@ function setUpControls(args) {
     'setting-button',
     'minimize-button',
     'close-button',
+    'login-button-youtube',
     'login-button-facebook',
     'login-button-twitch',
     'provider-user-name',
@@ -227,6 +231,8 @@ function setUpControls(args) {
     'connect-info-msg',
     'connect-info-confirm-button',
     'provider-page-link',
+    'youtube-division',
+    'youtube-privacy-select',
     'facebook-division',
     'me-page-select',
     'own-page-select',
@@ -249,6 +255,9 @@ function setUpControls(args) {
     'chroma-key-checkbox',
     'modal-close-button',
     'modal-cancel-button',
+    'twitch-settings-popup',
+    'popup-hide-button',
+    'youtube-link-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
   });
@@ -261,6 +270,8 @@ function setUpControls(args) {
       'click', onMinimizeButtonClicked);
   app.dom.closeButton.addEventListener(
       'click', onCloseButtonClicked);
+  app.dom.loginButtonYoutube.addEventListener(
+      'click', onLoginButtonYoutubeClicked);
   app.dom.loginButtonFacebook.addEventListener(
       'click', onLoginButtonFacebookClicked);
   app.dom.loginButtonTwitch.addEventListener(
@@ -269,6 +280,8 @@ function setUpControls(args) {
       'click', onConnectInfoDisconnectButtonClicked);
   app.dom.providerPageLink.addEventListener(
       'click', onProviderPageLinkClicked);
+  app.dom.youtubePrivacySelect.addEventListener(
+      'ncsoftSelectChange', onYoutubePrivacySelectChanged);
   app.dom.mePageSelect.addEventListener(
       'ncsoftSelectChange', onMePageSelectChanged);
   app.dom.ownPageSelect.addEventListener(
@@ -295,6 +308,12 @@ function setUpControls(args) {
       'click', onModalCloseClicked);
   app.dom.modalCancelButton.addEventListener(
       'click', onModalCancelClicked);
+  app.dom.twitchSettingsPopup.addEventListener(
+      'click', onTwitchSettingsPopupClicked);
+  app.dom.popupHideButton.addEventListener(
+      'click', onPopupHideButtonClicked);
+  app.dom.youtubeLinkButton.addEventListener(
+      'click', onYoutubeLinkClicked);
 
   ncsoft.select.disable(app.dom.privacySelect);
   ncsoft.select.setText(app.dom.privacySelect, '%POST_PRIVACY_BOUND%');
@@ -326,6 +345,14 @@ function setProviderUserName(userName) {
 function getCurrentUserPage() {
   return (app.dom.mePageSelect.children[0].value == 2) ?
       app.dom.ownPageSelect.children[0].value : 'me';
+}
+
+
+function setUserSettingPage(userPages) {
+  if (userPages.length == 0) {
+    return;
+  }
+  app.service.settingsPage = userPages[0].link;
 }
 
 
@@ -470,6 +497,13 @@ function onCloseButtonClicked() {
 }
 
 
+function onLoginButtonYoutubeClicked() {
+  console.info('click loginButtonYoutube');
+  app.service.provider = 'YouTube';
+  cef.serviceProviderLogIn.request(app.service.provider);
+}
+
+
 function onLoginButtonFacebookClicked() {
   console.info('click loginButtonFacebook');
   app.service.provider = 'Facebook Live';
@@ -492,6 +526,13 @@ function onProviderPageLinkClicked() {
   }
 
   cef.externalBrowserPopUp.request(app.streaming.postUrl);
+}
+
+
+function onYoutubePrivacySelectChanged() {
+  console.info('change youtubePrivacySelect');
+  const privacy = app.dom.youtubePrivacySelect.children[0].value;
+  cef.storageYoutubePrivacyUpdate.request(privacy);
 }
 
 
@@ -626,9 +667,14 @@ function submitControl() {
       const source = app.dom.gameSelect.children[0].value;
       const userPage = getCurrentUserPage();
       const streamServer = app.dom.streamServerSelect.children[0].value;
-      const privacy = app.dom.mePageSelect.children[0].value == 2 ?
-          'SELF' : app.dom.privacySelect.children[0].value;
       const description = app.dom.feedDescription.value;
+      var privacy;
+      if (app.service.provider == 'YouTube') {
+        privacy = app.dom.youtubePrivacySelect.children[0].value;
+      } else {
+        privacy = app.dom.mePageSelect.children[0].value == 2 ?
+            'SELF' : app.dom.privacySelect.children[0].value;
+      }
 
       cef.streamingStart.request(source,
                                  streamServer,
@@ -715,6 +761,23 @@ function onModalCloseClicked() {
 function onModalCancelClicked() {
   console.info('click modalCancel');
   updateStreamingStatus(app.streaming.lastStatus);
+}
+
+
+function onPopupHideButtonClicked() {
+  console.info('click popupHideButton');
+  ncsoft.storage.add('twitchSettingHide', 7 /*day*/);
+}
+
+
+function onTwitchSettingsPopupClicked() {
+  console.info('click twitchSettingsPopup');
+  cef.externalBrowserPopUp.request(app.service.settingsPage);
+}
+
+function onYoutubeLinkClicked() {
+  console.info('click youtubeLink');
+  cef.externalBrowserPopUp.request(app.service.authorizationUrlForYouTube);
 }
 
 
@@ -805,32 +868,67 @@ function setMicCheckBox(check) {
 
 
 function setUpProviderUI(
-    userPages, streamServers, userPage, privacy, streamServer) {
+    userPages,
+    streamServers,
+    userPage,
+    privacy,
+    youtubePrivacy,
+    streamServer) {
   const userName = app.dom.providerUserName;
   const connectInfo = app.dom.connectInfoUserName;
   switch (app.service.provider) {
+    case 'YouTube':
+      app.dom.youtubeDivision.style.display = 'block';
+      app.dom.facebookDivision.style.display = 'none';
+      app.dom.twitchDivision.style.display = 'none';
+      ncsoft.klass.remove(userName, 'fb');
+      ncsoft.klass.remove(userName, 'twtich');
+      ncsoft.klass.add(userName, 'youtube');
+      ncsoft.klass.remove(connectInfo, 'fb');
+      ncsoft.klass.remove(connectInfo, 'twitch');
+      ncsoft.klass.add(connectInfo, 'youtube');
+      ncsoft.select.setByValue(app.dom.youtubePrivacySelect, youtubePrivacy);
+      break;
     case 'Facebook Live':
+      app.dom.youtubeDivision.style.display = 'none';
       app.dom.facebookDivision.style.display = 'block';
       app.dom.twitchDivision.style.display = 'none';
+      ncsoft.klass.remove(userName, 'youtube');
       ncsoft.klass.remove(userName, 'twitch');
       ncsoft.klass.add(userName, 'fb');
+      ncsoft.klass.remove(connectInfo, 'youtube');
       ncsoft.klass.remove(connectInfo, 'twitch');
       ncsoft.klass.add(connectInfo, 'fb');
       setUpUserPage(userPages, userPage);
       setUpPrivacy(privacy);
       break;
     case 'Twitch':
+      app.dom.youtubeDivision.style.display = 'none';
       app.dom.facebookDivision.style.display = 'none';
       app.dom.twitchDivision.style.display = 'block';
+      ncsoft.klass.remove(userName, 'youtube');
       ncsoft.klass.remove(userName, 'fb');
       ncsoft.klass.add(userName, 'twitch');
+      ncsoft.klass.remove(connectInfo, 'youtube');
       ncsoft.klass.remove(connectInfo, 'fb');
       ncsoft.klass.add(connectInfo, 'twitch');
       setUpStreamServers(streamServers, streamServer);
+      setUserSettingPage(userPages);
+      popupTwitchSettings();
       break;
     default:
       break;
   }
+}
+
+
+function popupTwitchSettings() {
+  const saveDate = ncsoft.storage.get('twitchSettingHide');
+  const curDate = new Date();
+  if (saveDate != null && curDate.getTime() < saveDate) {
+    return;
+  }
+  ncsoft.modal.show('#twitch-guide-modal');
 }
 
 
@@ -933,6 +1031,9 @@ function showErrorText() {
     case 'select down server':
       error.textContent = '%SELECT_DOWN_SERVER%';
       break;
+    case 'title empty':
+      error.textContent = '방송 제목을 입력해 주세요.';
+      break;
     case 'obs error':
       error.textContent = '%OBS_ERROR%';
       break;
@@ -950,6 +1051,10 @@ function checkSelectValueValidation() {
     const server = app.service.user.streamServer[serverUrl];
     if (server.availability == 0.0) {
       return 'select down server';
+    }
+  } else if (app.service.provider == 'YouTube') {
+    if (app.dom.feedDescription.value == '') {
+      return 'title empty';
     }
   } else {  // app.service.provider == facebook
     if (app.dom.mePageSelect.children[0].value == '') {
@@ -996,14 +1101,16 @@ function checkCurrentWebcamExist() {
 
 cef.serviceProviderLogIn.onResponse = function(
     error, userName, userPages, streamServers, userPage,
-    privacy, streamServer, description) {
+    privacy, youtubePrivacy, streamServer, description) {
   if (error != '') {
-    if (error.includes('no channel or streaming service')) {
-      // popup url: app.authorizationUrlForYouTube
-      console.info(error);
+    console.info(error);
+    if (!error.includes('no channel or streaming service')) {
+      return;
     }
+    ncsoft.modal.show('#youtube-link-modal');
     return;
   }
+
   app.service.user = {
     name: userName,
     pages: {},
@@ -1029,7 +1136,13 @@ cef.serviceProviderLogIn.onResponse = function(
   app.dom.connectInfoButton.style.display = 'inline';
 
   setProviderUserName(userName);
-  setUpProviderUI(userPages, streamServers, userPage, privacy, streamServer);
+  setUpProviderUI(
+      userPages,
+      streamServers,
+      userPage,
+      privacy,
+      youtubePrivacy,
+      streamServer);
 
   app.dom.errorText.style.display = 'none';
 };
@@ -1067,6 +1180,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
   setUpUserPage('me');
   setUpPrivacy('SELF');
+  ncsoft.select.setByValue(app.dom.youtubePrivacySelect, 'public');
 };
 
 
@@ -1091,6 +1205,8 @@ cef.streamingStart.onResponse =
   if (error != '') {
     if (error == 'obs internal') {
       setUpError('obs error');
+    } else if (error.includes('no channel or streaming service')) {
+      ncsoft.modal.show('#youtube-link-modal');
     } else {
       setUpError('fail streaming');
     }

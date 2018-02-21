@@ -179,6 +179,10 @@ class Client : public CefClient {
       const std::string &cmd,
       const CommandArgumentMap &args,
       CefRefPtr<CefBrowser> browser);
+  void OnCommandStorageYouTubePrivacyUpdate(
+      const std::string &cmd,
+      const CommandArgumentMap &args,
+      CefRefPtr<CefBrowser> browser);
   void OnCommandRemoteStatus(
       const std::string &cmd,
       const CommandArgumentMap &args,

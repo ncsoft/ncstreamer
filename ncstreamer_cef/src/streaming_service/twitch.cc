@@ -272,7 +272,11 @@ void Twitch::GetUser(
       on_failed(msg.str());
       return;
     }
-    on_user_gotten(nick_name);
+    const std::string &user_page{
+        "https://www.twitch.tv/" +
+        account_name +
+        "/dashboard/settings"};
+    on_user_gotten(nick_name, user_page);
   });
 }
 
@@ -403,10 +407,12 @@ void Twitch::OnLoginSuccess(
   SetAccessToken(access_token);
 
   GetUser(on_failed, [this, on_failed, on_logged_in](
-      const std::string &name) {
-    GetStreamServers(on_failed, [name, on_logged_in](
+      const std::string &name,
+      const std::string &user_page) {
+    GetStreamServers(on_failed, [name, user_page, on_logged_in](
         const std::vector<StreamServer> &stream_servers) {
-      on_logged_in(name, {}, stream_servers);
+      StreamingServiceProvider::UserPage page{"", "", user_page, ""};
+      on_logged_in(name, {page}, stream_servers);
     });
   });
 }
