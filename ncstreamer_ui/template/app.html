@@ -67,7 +67,7 @@
            class="btn-view-streaming">%WATCH_BROADCASTING%</a>
       </div>
       <div id="youtube-division">
-        <h3 id="stream-server-head">공개 설정</h3>
+        <h3 id="stream-server-head">%PRIVACY_SETTING%</h3>
         <div id="youtube-privacy-select"
              class="dropdown">
           <button class="btn dropdown-toggle"
@@ -76,13 +76,13 @@
                   aria-haspopup="true"
                   aria-expanded="true"
                   value="public">
-            공개
+            %PUBLIC%
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li data-value="public"><a>공개</a></li>
-            <li data-value="unlisted"><a>미등록</a></li>
-            <li data-value="private"><a>비공개</a></li>
+            <li data-value="public"><a>%PUBLIC%</a></li>
+            <li data-value="unlisted"><a>%UNLISTED%</a></li>
+            <li data-value="private"><a>%PRIVACY%</li>
           </ul>
         </div>
       </div>
@@ -403,21 +403,21 @@
         </div>
         <div class="modal-body">
           <div class="connect-info">
-            생방송을 마치고
-            <br>고객님의 멋진 플레이를 간직하려면
+            %TWITCH_SETTINGS_MESSAGE1%
+            <br>%TWITCH_SETTINGS_MESSAGE2%
             <br>
-            <em class="text-twitch">twitch</em>에서
-            <br>'이전 방송 저장' 옵션에 체크해 주세요.
+            <em class="text-twitch">twitch</em>%TWITCH_SETTINGS_MESSAGE3%
+            <br>%TWITCH_SETTINGS_MESSAGE4%
             <div class="img-twitch-guide"></div>
           </div>
           <a id="twitch-settings-popup"
              class="btn btn-primary btn-twitch"
-             href="#" >twitch 설정 변경하러 가기</a>
+             href="#">%TWITCH_SETTINGS_BROWSING%</a>
         </div>
         <div class="modal-footer modal-footer-bottom">
           <button type="button"
                   id="popup-hide-button"
-                  data-dismiss="modal">한 달 동안 안 보기</button>
+                  data-dismiss="modal">%NO_SHOW_ANYMORE%</button>
         </div>
       </div>
     </div>
@@ -432,7 +432,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">방송</h4>
+          <h4 class="modal-title">%BROADCASTING%</h4>
           <button type="button"
                   class="close"
                   data-dismiss="modal"
@@ -442,15 +442,15 @@
         </div>
         <div class="modal-body">
           <div class="connect-info">
-            Youtube 서비스 약관에
-            <br>동의해 주세요.
+            %YOUTUBE_AGREEMENT_MESSAGE1%
+            <br>%YOUTUBE_AGREEMENT_MESSAGE2%
           </div>
         </div>
         <div class="modal-footer">
           <a id="youtube-link-button"
              class="btn btn-primary btn-youtube"
              data-dismiss="modal"
-             href="#">YouTube 바로가기</a>
+             href="#">%YOUTUBE_AGREEMENT_BROWSING%</a>
         </div>
       </div>
     </div>
