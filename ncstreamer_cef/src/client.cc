@@ -404,7 +404,7 @@ void Client::OnCommandServiceProviderLogIn(
     arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));
     arg.add("userPage", LocalStorage::Get()->GetUserPage());
     arg.add("privacy", LocalStorage::Get()->GetPrivacy());
-    arg.add("youtubePrivacy", "");
+    arg.add("youtubePrivacy", LocalStorage::Get()->GetYouTubePrivacy());
     arg.add("streamServer", LocalStorage::Get()->GetStreamServer());
     arg.add("description", LocalStorage::Get()->GetDescription());
 
