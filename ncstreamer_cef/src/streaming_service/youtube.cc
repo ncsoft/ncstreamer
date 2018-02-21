@@ -518,11 +518,14 @@ void YouTube::OnLoginSuccess(
 
     GetChannel(on_failed, [this, on_failed, on_logged_in](
         const std::string &user_name) {
-      GetBroadcast(on_failed, [on_logged_in, user_name](
+      on_logged_in(user_name, {}, {});
+
+      // check user agreement
+      GetBroadcast(on_failed, [](
           const std::string &broadcast_id,
           const std::string &stream_id,
           const std::string &page_link) {
-        on_logged_in(user_name, {}, {});
+        // do nothing
       });
     });
   });

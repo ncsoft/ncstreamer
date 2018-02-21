@@ -75,14 +75,14 @@ const app = {
     user: null,
     provider: null,
     settingsPage: null,
+    authorizationUrlForYouTube: 'https://www.youtube.com/signin?' +
+        'next=/live_streaming_signup&app=desktop&' +
+        'action_prompt_identity=true',
   },
   options: {
     hidesSettings: false,
   },
   errorType: null,
-  authorizationUrlForYouTube: 'https://www.youtube.com/signin?' +
-      'next=/live_streaming_signup&app=desktop&' +
-      'action_prompt_identity=true',
 };
 
 
@@ -777,7 +777,7 @@ function onTwitchSettingsPopupClicked() {
 
 function onYoutubeLinkClicked() {
   console.info('click youtubeLink');
-  // outlink
+  cef.externalBrowserPopUp.request(app.service.authorizationUrlForYouTube);
 }
 
 
@@ -1108,6 +1108,7 @@ cef.serviceProviderLogIn.onResponse = function(
       return;
     }
     ncsoft.modal.show('#youtube-link-modal');
+    return;
   }
 
   app.service.user = {
@@ -1204,6 +1205,8 @@ cef.streamingStart.onResponse =
   if (error != '') {
     if (error == 'obs internal') {
       setUpError('obs error');
+    } else if (error.includes('no channel or streaming service')) {
+      ncsoft.modal.show('#youtube-link-modal');
     } else {
       setUpError('fail streaming');
     }
