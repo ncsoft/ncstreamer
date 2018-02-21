@@ -256,6 +256,7 @@ function setUpControls(args) {
     'modal-close-button',
     'modal-cancel-button',
     'twitch-settings-popup',
+    'popup-hide-button',
     'youtube-link-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
@@ -309,6 +310,8 @@ function setUpControls(args) {
       'click', onModalCancelClicked);
   app.dom.twitchSettingsPopup.addEventListener(
       'click', onTwitchSettingsPopupClicked);
+  app.dom.popupHideButton.addEventListener(
+      'click', onPopupHideButtonClicked);
   app.dom.youtubeLinkButton.addEventListener(
       'click', onYoutubeLinkClicked);
 
@@ -761,6 +764,12 @@ function onModalCancelClicked() {
 }
 
 
+function onPopupHideButtonClicked() {
+  console.info('click popupHideButton');
+  ncsoft.storage.add('twitchSettingHide', 7 /*day*/);
+}
+
+
 function onTwitchSettingsPopupClicked() {
   console.info('click twitchSettingsPopup');
   cef.externalBrowserPopUp.request(app.service.settingsPage);
@@ -905,11 +914,21 @@ function setUpProviderUI(
       ncsoft.klass.add(connectInfo, 'twitch');
       setUpStreamServers(streamServers, streamServer);
       setUserSettingPage(userPages);
-      ncsoft.modal.show('#twitch-guide-modal');
+      popupTwitchSettings();
       break;
     default:
       break;
   }
+}
+
+
+function popupTwitchSettings() {
+  const saveDate = ncsoft.storage.get('twitchSettingHide');
+  const curDate = new Date();
+  if (saveDate != null && curDate.getTime() < saveDate) {
+    return;
+  }
+  ncsoft.modal.show('#twitch-guide-modal');
 }
 
 
