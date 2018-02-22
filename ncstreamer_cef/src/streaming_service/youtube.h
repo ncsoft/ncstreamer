@@ -73,7 +73,7 @@ class YouTube : public StreamingServiceProvider {
 
   class LoginClient;
 
-  void GetRefreshToken();
+  void GetRefreshToken(const std::string &last_access_token);
 
   void GetChannel(
       const OnFailed &on_failed,
