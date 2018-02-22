@@ -119,6 +119,9 @@ void Twitch::LogOut(
 
     void OnComplete(int /*num_deleted*/) override {
       caller_->SetAccessToken("");
+      caller_->SetNickName("");
+      caller_->SetAccountName("");
+      caller_->SetChannelId("");
       on_logged_out_();
     }
 

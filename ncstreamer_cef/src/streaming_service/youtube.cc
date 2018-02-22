@@ -115,6 +115,8 @@ void YouTube::LogOut(
     void OnComplete(int /*num_deleted*/) override {
       caller_->SetAccessToken("");
       caller_->refresh_token_ = "";
+      caller_->SetVideoId("");
+      caller_->SetLiveChatId("");
       on_logged_out_();
     }
 
