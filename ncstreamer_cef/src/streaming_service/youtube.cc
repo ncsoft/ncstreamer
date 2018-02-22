@@ -92,6 +92,46 @@ void YouTube::LogIn(
 void YouTube::LogOut(
     const OnFailed &on_failed,
     const OnLoggedOut &on_logged_out) {
+  if (::CefCurrentlyOn(TID_IO) == false) {
+    ::CefPostTask(TID_IO,
+        base::Bind(&YouTube::LogOut, base::Unretained(this),
+            on_failed, on_logged_out));
+    return;
+  }
+
+  class LogoutCallback : public CefDeleteCookiesCallback {
+   public:
+    LogoutCallback(
+        YouTube *caller,
+        const OnFailed &on_failed,
+        const OnLoggedOut &on_logged_out)
+        : CefDeleteCookiesCallback{},
+          caller_{caller},
+          on_failed_{on_failed},
+          on_logged_out_{on_logged_out} {}
+
+    virtual ~LogoutCallback() {}
+
+    void OnComplete(int /*num_deleted*/) override {
+      caller_->SetAccessToken("");
+      caller_->refresh_token_ = "";
+      on_logged_out_();
+    }
+
+   private:
+    YouTube *caller_;
+    OnFailed on_failed_;
+    OnLoggedOut on_logged_out_;
+
+    IMPLEMENT_REFCOUNTING(LogoutCallback);
+  };
+
+  CefRefPtr<LogoutCallback> logout_callback{
+      new LogoutCallback{this, on_failed, on_logged_out}};
+  CefCookieManager::GetGlobalManager(NULL)->DeleteCookies(
+      L"",
+      L"",
+      logout_callback);
 }
 
 
@@ -241,7 +281,11 @@ void YouTube::StopLiveVideo() {
 }
 
 
-void YouTube::GetRefreshToken() {
+void YouTube::GetRefreshToken(const std::string &last_access_token) {
+  if (last_access_token != GetAccessToken()) {
+    return;
+  }
+
   Uri refresh_token_uri{
       YouTubeApi::Login::Oauth::RefreshToken::BuildUri()};
 
@@ -275,7 +319,8 @@ void YouTube::GetRefreshToken() {
     ::CefPostDelayedTask(
         TID_UI,
         base::Bind(&YouTube::GetRefreshToken,
-                   base::Unretained(this)),
+                   base::Unretained(this),
+                   GetAccessToken()),
         (expires_in - 10) * 1000);
   });
 }
@@ -513,7 +558,8 @@ void YouTube::OnLoginSuccess(
     ::CefPostDelayedTask(
         TID_UI,
         base::Bind(&YouTube::GetRefreshToken,
-                   base::Unretained(this)),
+                   base::Unretained(this),
+                   GetAccessToken()),
         (expires_in - 10) * 1000);
 
     GetChannel(on_failed, [this, on_failed, on_logged_in](
