@@ -766,7 +766,7 @@ function onModalCancelClicked() {
 
 function onPopupHideButtonClicked() {
   console.info('click popupHideButton');
-  ncsoft.storage.add('twitchSettingHide', 7 /*day*/);
+  ncsoft.storage.add('twitchSettingHide', 30 /*day*/);
 }
 
 
