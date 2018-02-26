@@ -25,13 +25,12 @@
 namespace ncstreamer {
 class Obs {
  public:
-  class WebcamDevice;
-
   static void SetUp();
   static void ShutDown();
   static Obs *Get();
 
   std::vector<std::string> FindAllWindowsOnDesktop();
+  std::vector<std::string> FindAllWebcamDevices();
 
   bool StartStreaming(
       const std::string &source_info,
@@ -46,7 +45,6 @@ class Obs {
   bool TurnOnMic(const std::string &device_id, std::string *const error);
   bool TurnOffMic();
   bool UpdateMicVolume(const float &volume);
-  std::vector<Obs::WebcamDevice> SearchWebcamDevices();
   bool TurnOnWebcam(const std::string &device_id, std::string *const error);
   bool TurnOffWebcam();
   bool UpdateWebcamSize(const float &normal_x, const float &normal_y);
@@ -86,7 +84,7 @@ class Obs {
       const std::string &stream_key);
   void ReleaseCurrentService();
   void UpdateBaseResolution(const std::string &source_info);
-  WebcamDevice *GetDevice(std::string device_id);
+  const bool CheckDeviceId(const std::string &device_id);
 
   static Obs *static_instance;
 
@@ -102,23 +100,6 @@ class Obs {
   Dimension<uint32_t> base_size_;
   Dimension<uint32_t> output_size_;
   uint32_t fps_;
-};
-
-
-class Obs::WebcamDevice {
- public:
-  WebcamDevice(const std::string &device_id,
-               const Dimension<uint32_t> &default_size);
-  virtual ~WebcamDevice();
-
-  const std::string &device_id() { return device_id_; }
-  const Dimension<uint32_t> default_size() { return default_size_; }
-
-  boost::property_tree::ptree ToTree() const;
-
- private:
-  std::string device_id_;
-  Dimension<uint32_t> default_size_;
 };
 }  // namespace ncstreamer
 
