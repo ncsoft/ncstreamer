@@ -16,7 +16,6 @@
 
 #include "boost/property_tree/ptree.hpp"
 #include "obs-studio/libobs/obs.h"
-#include "obs-studio/plugins/win-dshow/libdshowcapture/dshowcapture.hpp"
 
 #include "ncstreamer_cef/src/lib/dimension.h"
 #include "ncstreamer_cef/src/obs/obs_output.h"
