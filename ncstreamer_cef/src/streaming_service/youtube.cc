@@ -47,7 +47,7 @@ YouTube::~YouTube() {
 
 static const char *kNcStreamerAppId{[]() {
   static const char *kProduction{
-      "237911927015-d9or3i5c3mbc6f61oqe62mhgporb0r8a.apps.googleusercontent.com"};  // NOLINT
+      "246961642599-l3r9opb6tf057evvfp0dtn67vbv7q65o.apps.googleusercontent.com"};  // NOLINT
   return kProduction;
 }()};
 
