@@ -537,8 +537,8 @@ void RemoteServer::OnSettingsWebcamSearchRequest(
     const boost::property_tree::ptree &tree) {
   int request_key = request_cache_.CheckIn(connection);
 
-  const std::vector<Obs::WebcamDevice> &webcams{
-      Obs::Get()->SearchWebcamDevices()};
+  const std::vector<std::string> &webcams{
+      Obs::Get()->FindAllWebcamDevices()};
   RespondSettingsWebcamSearch(request_key, "", webcams);
 }
 
@@ -1012,7 +1012,7 @@ bool RemoteServer::RespondSettingsQualityUpdate(
 bool RemoteServer::RespondSettingsWebcamSearch(
     int request_key,
     const std::string &error,
-    const std::vector<Obs::WebcamDevice> &webcams) {
+    const std::vector<std::string> &webcams) {
   websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
   if (!connection.lock()) {
     LogWarning("RespondSettingsWebcamSearch: !connection.lock()");
@@ -1023,7 +1023,9 @@ bool RemoteServer::RespondSettingsWebcamSearch(
   {
     std::vector<boost::property_tree::ptree> tree_webcams;
     for (const auto &webcam : webcams) {
-      tree_webcams.emplace_back(webcam.ToTree());
+      boost::property_tree::ptree tree;
+      tree.put("id", webcam);
+      tree_webcams.emplace_back(tree);
     }
 
     boost::property_tree::ptree tree;

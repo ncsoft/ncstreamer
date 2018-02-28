@@ -655,11 +655,13 @@ void Client::OnCommandSettingsWebcamSearch(
   const std::string &cmd,
   const CommandArgumentMap &args,
   CefRefPtr<CefBrowser> browser) {
-  std::vector<Obs::WebcamDevice> webcams = Obs::Get()->SearchWebcamDevices();
+  std::vector<std::string> webcams = Obs::Get()->FindAllWebcamDevices();
 
   std::vector<boost::property_tree::ptree> tree_webcams;
   for (const auto &webcam : webcams) {
-    tree_webcams.emplace_back(webcam.ToTree());
+    boost::property_tree::ptree tree;
+    tree.put("id", webcam);
+    tree_webcams.emplace_back(tree);
   }
 
   boost::property_tree::ptree arg;

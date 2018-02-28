@@ -60,6 +60,28 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
 }
 
 
+std::vector<std::string> Obs::FindAllWebcamDevices() {
+  std::vector<std::string> titles;
+
+  obs_source_t *source = obs_source_create(
+      "dshow_input", "VideoCaptureDevice", nullptr, nullptr);
+  obs_properties_t *props = obs_source_properties(source);
+  obs_property_t *prop = obs_properties_get(props, "video_device_id");
+
+  int count = obs_property_list_item_count(prop);
+  for (int i = 0; i < count; i++) {
+    const char *val = obs_property_list_item_string(prop, i);
+    if (strlen(val) != 0) {
+      titles.emplace_back(val);
+    }
+  }
+
+  obs_properties_destroy(props);
+  obs_source_release(source);
+  return titles;
+}
+
+
 bool Obs::StartStreaming(
     const std::string &source_info,
     const std::string &service_provider,
@@ -149,44 +171,22 @@ bool Obs::UpdateMicVolume(const float &volume) {
 }
 
 
-std::vector<Obs::WebcamDevice> Obs::SearchWebcamDevices() {
-  std::vector<DShow::VideoDevice> video_devices;
-  DShow::Device::EnumVideoDevices(video_devices);
-  std::vector<Obs::WebcamDevice> webcams;
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
-  for (auto device : video_devices) {
-    std::wstring w_device_id{device.name + L":" + device.path};
-    std::string device_id = convert.to_bytes(w_device_id);
-    Dimension<uint32_t> default_size {
-        static_cast<uint32_t>(device.caps[0].minCX),
-        static_cast<uint32_t>(device.caps[0].minCY)};
-    webcams.emplace_back(device_id, default_size);
-  }
-  return webcams;
-}
-
-
 bool Obs::TurnOnWebcam(
     const std::string &device_id, std::string *const error) {
   obs_sceneitem_t *item = obs_scene_find_source(scene_, "Game Capture");
   if (item == nullptr) {
     return false;
   }
-  std::unique_ptr<WebcamDevice> device{GetDevice(device_id)};
-  if (device == nullptr) {
+
+  if (CheckDeviceId(device_id) == false) {
     *error = "no device ID";
     return false;
   }
 
-  const int &width = device->default_size().width();
-  const int &height = device->default_size().height();
-  const std::string &default_resolution =
-      std::to_string(width) + "x" + std::to_string(height);
-
   obs_data_t *settings = obs_data_create();
   obs_data_set_string(settings, "video_device_id", device_id.c_str());
-  obs_data_set_int(settings, "res_type", 1);  // Type: Preferred(0), Custom(1)
-  obs_data_set_string(settings, "resolution", default_resolution.c_str());
+  obs_data_set_int(settings, "res_type", 0);  // Type: Preferred(0), Custom(1)
+  // obs_data_set_string(settings, "resolution", default_resolution.c_str());
   obs_source_t *source = obs_source_create(
       "dshow_input", "Video Capture Device", settings, nullptr);
   obs_data_release(settings);
@@ -580,37 +580,16 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
 }
 
 
-Obs::WebcamDevice *Obs::GetDevice(std::string device_id) {
-  const std::vector<Obs::WebcamDevice> &webcams{SearchWebcamDevices()};
+const bool Obs::CheckDeviceId(const std::string &device_id) {
+  const std::vector<std::string> &webcams{FindAllWebcamDevices()};
   for (auto webcam : webcams) {
-    if (webcam.device_id() == device_id) {
-      return new Obs::WebcamDevice{webcam.device_id(), webcam.default_size()};
+    if (webcam == device_id) {
+      return true;
     }
   }
-  return nullptr;
+  return false;
 }
 
 
 Obs *Obs::static_instance{nullptr};
-
-
-Obs::WebcamDevice::WebcamDevice(const std::string &device_id,
-                                const Dimension<uint32_t> &default_size)
-    : device_id_{device_id},
-      default_size_{default_size} {
-}
-
-
-Obs::WebcamDevice::~WebcamDevice() {
-}
-
-
-boost::property_tree::ptree
-    Obs::WebcamDevice::ToTree() const {
-  boost::property_tree::ptree tree;
-  tree.put("id", device_id_);
-  tree.put("defaultWidth", default_size_.width());
-  tree.put("defaultHeight", default_size_.height());
-  return tree;
-}
 }  // namespace ncstreamer

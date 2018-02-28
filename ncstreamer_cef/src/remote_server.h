@@ -204,7 +204,7 @@ class RemoteServer {
   bool RespondSettingsWebcamSearch(
       int request_key,
       const std::string &error,
-      const std::vector<Obs::WebcamDevice> &webcams);
+      const std::vector<std::string> &webcams);
 
   bool RespondSettingsWebcamOn(
       int request_key,
