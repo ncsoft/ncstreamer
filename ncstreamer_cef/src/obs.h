@@ -75,7 +75,8 @@ class Obs {
   void ClearSceneItems();
   void ClearSceneData();
 
-  void UpdateCurrentSource(const std::string &source_info);
+  void UpdateVideoSource(const std::string &source_info);
+  void AddAudioSource();
 
   void UpdateCurrentService(
       const std::string &service_provider,

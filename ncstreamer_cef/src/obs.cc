@@ -90,10 +90,9 @@ bool Obs::StartStreaming(
     const std::string &stream_server,
     const std::string &stream_key,
     const ObsOutput::OnStarted &on_streaming_started) {
-  UpdateCurrentSource(source_info);
+  UpdateVideoSource(source_info);
   UpdateBaseResolution(source_info);
 
-  ResetAudio();
   ResetVideo();
   obs_encoder_set_audio(audio_encoder_, obs_get_audio());
   obs_encoder_set_video(video_encoder_, obs_get_video());
@@ -400,6 +399,7 @@ Obs::Obs()
 
   scene_ = obs_scene_create("Scene");
 
+  AddAudioSource();
   ResetAudio();
   ResetVideo();
 }
@@ -495,33 +495,37 @@ void Obs::ClearSceneData() {
 }
 
 
-void Obs::UpdateCurrentSource(const std::string &source_info) {
-  // video
-  {
-    obs_data_t *settings = obs_data_create();
-    obs_data_set_string(settings, "window", source_info.c_str());
-    obs_data_set_string(settings, "capture_mode", "window");
-    obs_source_t *source = obs_source_create(
-        "game_capture", "Game Capture", settings, nullptr);
-    obs_data_release(settings);
-    obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
-    obs_source_release(source);
 
-    obs_set_output_source(0, obs_get_source_by_name("Scene"));
+void Obs::UpdateVideoSource(const std::string &source_info) {
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "window", source_info.c_str());
+  obs_data_set_string(settings, "capture_mode", "window");
+  obs_source_t *source = obs_source_create(
+      "game_capture", "Game Capture", settings, nullptr);
+  obs_data_release(settings);
+  obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
+  obs_source_release(source);
+
+  obs_set_output_source(0, obs_get_source_by_name("Scene"));
+}
+
+
+void Obs::AddAudioSource() {
+  obs_source_t *source = obs_get_output_source(1);
+  if (source != nullptr) {
+    obs_source_release(source);
+    return;
   }
 
-  // audio
-  {
-    obs_data_t *settings = obs_data_create();
-    obs_data_set_string(settings, "device_id", "default");
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "device_id", "default");
 
-    obs_source_t *source = obs_source_create(
-        "wasapi_output_capture", "Desktop Audio", settings, nullptr);
-    obs_data_release(settings);
+  source = obs_source_create(
+      "wasapi_output_capture", "Desktop Audio", settings, nullptr);
+  obs_data_release(settings);
 
-    obs_set_output_source(1, source);
-    obs_source_release(source);
-  }
+  obs_set_output_source(1, source);
+  obs_source_release(source);
 }
 
 
