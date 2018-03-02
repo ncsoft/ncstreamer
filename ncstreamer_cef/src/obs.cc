@@ -50,7 +50,8 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
   for (int i = 0; i < count; i++) {
     const char *val = obs_property_list_item_string(prop, i);
     if (strlen(val) != 0) {
-      titles.emplace_back(val);
+      const std::string &decoded = DecodeObsString(val);
+      titles.emplace_back(decoded);
     }
   }
 
@@ -72,7 +73,8 @@ std::vector<std::string> Obs::FindAllWebcamDevices() {
   for (int i = 0; i < count; i++) {
     const char *val = obs_property_list_item_string(prop, i);
     if (strlen(val) != 0) {
-      titles.emplace_back(val);
+      const std::string &decoded = DecodeObsString(val);
+      titles.emplace_back(decoded);
     }
   }
 
@@ -588,6 +590,27 @@ const bool Obs::CheckDeviceId(const std::string &device_id) {
     }
   }
   return false;
+}
+
+
+const std::string Obs::DecodeObsString(
+    const std::string &encoded_string) {
+  std::string decoded{encoded_string};
+  ReplaceString(&decoded, "#3A", ":");
+  ReplaceString(&decoded, "#22", "#");
+  return decoded;
+}
+
+
+void Obs::ReplaceString(
+      std::string *subject,
+      const std::string &search,
+      const std::string &replace) {
+  size_t pos{0};
+  while ((pos = subject->find(search, pos)) != std::string::npos) {
+    subject->replace(pos, search.length(), replace);
+    pos += replace.length();
+  }
 }
 
 
