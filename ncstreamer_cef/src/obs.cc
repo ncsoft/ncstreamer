@@ -142,14 +142,20 @@ bool Obs::TurnOnMic(const std::string &device_id, std::string *const error) {
     return false;
   }
 
-  obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "device_id", device_id.c_str());
-
-  obs_source_t *source = obs_source_create(
-      "wasapi_input_capture", "Mic/Aux", settings, nullptr);
-  obs_data_release(settings);
-
-  obs_set_output_source(3, source);
+  obs_source_t *source = obs_get_output_source(3);
+  if (source == nullptr) {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "device_id", device_id.c_str());
+    source = obs_source_create(
+        "wasapi_input_capture", "Mic/Aux", settings, nullptr);
+    obs_data_release(settings);
+    obs_set_output_source(3, source);
+  } else {
+    obs_data_t *settings = obs_source_get_settings(source);
+    obs_data_set_string(settings, "device_id", device_id.c_str());
+    obs_source_update(source, settings);
+    obs_data_release(settings);
+  }
   obs_source_release(source);
   return true;
 }
@@ -174,8 +180,8 @@ bool Obs::UpdateMicVolume(const float &volume) {
 
 bool Obs::TurnOnWebcam(
     const std::string &device_id, std::string *const error) {
-  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Game Capture");
-  if (item == nullptr) {
+  obs_sceneitem_t *game_item = obs_scene_find_source(scene_, "Game Capture");
+  if (game_item == nullptr) {
     return false;
   }
 
@@ -184,15 +190,25 @@ bool Obs::TurnOnWebcam(
     return false;
   }
 
-  obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "video_device_id", device_id.c_str());
-  obs_data_set_int(settings, "res_type", 0);  // Type: Preferred(0), Custom(1)
-  // obs_data_set_string(settings, "resolution", default_resolution.c_str());
-  obs_source_t *source = obs_source_create(
-      "dshow_input", "Video Capture Device", settings, nullptr);
-  obs_data_release(settings);
-  obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
-  obs_source_release(source);
+  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
+  if (item == nullptr) {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "video_device_id", device_id.c_str());
+    obs_data_set_int(settings, "res_type", 0);  // Type: Preferred(0), Custom(1)
+    obs_source_t *source = obs_source_create(
+        "dshow_input", "Video Capture Device", settings, nullptr);
+    obs_data_release(settings);
+    obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
+    obs_source_release(source);
+  } else {
+    obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+    obs_data_t *settings = obs_source_get_settings(source);
+    obs_data_set_string(settings, "video_device_id", device_id.c_str());
+    obs_source_update(source, settings);
+    obs_data_release(settings);
+    obs_source_release(source);
+  }
+
   return true;
 }
 
@@ -251,20 +267,32 @@ bool Obs::TurnOnChromaKey(const uint32_t &color, const int &similarity) {
   if (source == nullptr) {
     return false;
   }
-  obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "key_color_type", "custom");
-  obs_data_set_int(settings, "key_color", color);
-  obs_data_set_int(settings, "similarity", similarity);
-  obs_data_set_int(settings, "smoothness", 80);
-  obs_data_set_int(settings, "spill", 100);
-  obs_data_set_int(settings, "opacity", 100);
-  obs_data_set_double(settings, "contrast", 0.0);
-  obs_data_set_double(settings, "brightness", 0.0);
-  obs_data_set_double(settings, "gamma", 0.0);
 
-  obs_source_t *filter = obs_source_create(
-      "chroma_key_filter", "ChromaKeyFileter", settings, nullptr);
-  obs_source_filter_add(source, filter);
+  obs_source_t *filter =
+      obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+  if (filter == nullptr) {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "key_color_type", "custom");
+    obs_data_set_int(settings, "key_color", color);
+    obs_data_set_int(settings, "similarity", similarity);
+    obs_data_set_int(settings, "smoothness", 80);
+    obs_data_set_int(settings, "spill", 100);
+    obs_data_set_int(settings, "opacity", 100);
+    obs_data_set_double(settings, "contrast", 0.0);
+    obs_data_set_double(settings, "brightness", 0.0);
+    obs_data_set_double(settings, "gamma", 0.0);
+
+    filter = obs_source_create(
+        "chroma_key_filter", "ChromaKeyFileter", settings, nullptr);
+    obs_source_filter_add(source, filter);
+  } else {
+    obs_data_t *settings = obs_source_get_settings(filter);
+    obs_data_set_int(settings, "key_color", color);
+    obs_data_set_int(settings, "similarity", similarity);
+    obs_source_update(filter, settings);
+    obs_data_release(settings);
+    obs_source_release(filter);
+  }
   obs_source_release(filter);
   obs_source_release(source);
   return true;
