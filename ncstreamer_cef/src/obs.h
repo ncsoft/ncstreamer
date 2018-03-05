@@ -75,7 +75,8 @@ class Obs {
   void ClearSceneItems();
   void ClearSceneData();
 
-  void UpdateCurrentSource(const std::string &source_info);
+  void UpdateVideoSource(const std::string &source_info);
+  void AddAudioSource();
 
   void UpdateCurrentService(
       const std::string &service_provider,
@@ -84,6 +85,12 @@ class Obs {
   void ReleaseCurrentService();
   void UpdateBaseResolution(const std::string &source_info);
   const bool CheckDeviceId(const std::string &device_id);
+  const std::string DecodeObsString(
+      const std::string &encoded_string);
+  void ReplaceString(
+      std::string *subject,
+      const std::string &search,
+      const std::string &replace);
 
   static Obs *static_instance;
 

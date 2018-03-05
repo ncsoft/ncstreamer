@@ -50,7 +50,8 @@ std::vector<std::string> Obs::FindAllWindowsOnDesktop() {
   for (int i = 0; i < count; i++) {
     const char *val = obs_property_list_item_string(prop, i);
     if (strlen(val) != 0) {
-      titles.emplace_back(val);
+      const std::string &decoded = DecodeObsString(val);
+      titles.emplace_back(decoded);
     }
   }
 
@@ -72,7 +73,8 @@ std::vector<std::string> Obs::FindAllWebcamDevices() {
   for (int i = 0; i < count; i++) {
     const char *val = obs_property_list_item_string(prop, i);
     if (strlen(val) != 0) {
-      titles.emplace_back(val);
+      const std::string &decoded = DecodeObsString(val);
+      titles.emplace_back(decoded);
     }
   }
 
@@ -88,10 +90,9 @@ bool Obs::StartStreaming(
     const std::string &stream_server,
     const std::string &stream_key,
     const ObsOutput::OnStarted &on_streaming_started) {
-  UpdateCurrentSource(source_info);
+  UpdateVideoSource(source_info);
   UpdateBaseResolution(source_info);
 
-  ResetAudio();
   ResetVideo();
   obs_encoder_set_audio(audio_encoder_, obs_get_audio());
   obs_encoder_set_video(video_encoder_, obs_get_video());
@@ -141,14 +142,20 @@ bool Obs::TurnOnMic(const std::string &device_id, std::string *const error) {
     return false;
   }
 
-  obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "device_id", device_id.c_str());
-
-  obs_source_t *source = obs_source_create(
-      "wasapi_input_capture", "Mic/Aux", settings, nullptr);
-  obs_data_release(settings);
-
-  obs_set_output_source(3, source);
+  obs_source_t *source = obs_get_output_source(3);
+  if (source == nullptr) {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "device_id", device_id.c_str());
+    source = obs_source_create(
+        "wasapi_input_capture", "Mic/Aux", settings, nullptr);
+    obs_data_release(settings);
+    obs_set_output_source(3, source);
+  } else {
+    obs_data_t *settings = obs_source_get_settings(source);
+    obs_data_set_string(settings, "device_id", device_id.c_str());
+    obs_source_update(source, settings);
+    obs_data_release(settings);
+  }
   obs_source_release(source);
   return true;
 }
@@ -173,8 +180,8 @@ bool Obs::UpdateMicVolume(const float &volume) {
 
 bool Obs::TurnOnWebcam(
     const std::string &device_id, std::string *const error) {
-  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Game Capture");
-  if (item == nullptr) {
+  obs_sceneitem_t *game_item = obs_scene_find_source(scene_, "Game Capture");
+  if (game_item == nullptr) {
     return false;
   }
 
@@ -183,15 +190,25 @@ bool Obs::TurnOnWebcam(
     return false;
   }
 
-  obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "video_device_id", device_id.c_str());
-  obs_data_set_int(settings, "res_type", 0);  // Type: Preferred(0), Custom(1)
-  // obs_data_set_string(settings, "resolution", default_resolution.c_str());
-  obs_source_t *source = obs_source_create(
-      "dshow_input", "Video Capture Device", settings, nullptr);
-  obs_data_release(settings);
-  obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
-  obs_source_release(source);
+  obs_sceneitem_t *item = obs_scene_find_source(scene_, "Video Capture Device");
+  if (item == nullptr) {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "video_device_id", device_id.c_str());
+    obs_data_set_int(settings, "res_type", 0);  // Type: Preferred(0), Custom(1)
+    obs_source_t *source = obs_source_create(
+        "dshow_input", "Video Capture Device", settings, nullptr);
+    obs_data_release(settings);
+    obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
+    obs_source_release(source);
+  } else {
+    obs_source_t *source = obs_get_source_by_name("Video Capture Device");
+    obs_data_t *settings = obs_source_get_settings(source);
+    obs_data_set_string(settings, "video_device_id", device_id.c_str());
+    obs_source_update(source, settings);
+    obs_data_release(settings);
+    obs_source_release(source);
+  }
+
   return true;
 }
 
@@ -250,20 +267,32 @@ bool Obs::TurnOnChromaKey(const uint32_t &color, const int &similarity) {
   if (source == nullptr) {
     return false;
   }
-  obs_data_t *settings = obs_data_create();
-  obs_data_set_string(settings, "key_color_type", "custom");
-  obs_data_set_int(settings, "key_color", color);
-  obs_data_set_int(settings, "similarity", similarity);
-  obs_data_set_int(settings, "smoothness", 80);
-  obs_data_set_int(settings, "spill", 100);
-  obs_data_set_int(settings, "opacity", 100);
-  obs_data_set_double(settings, "contrast", 0.0);
-  obs_data_set_double(settings, "brightness", 0.0);
-  obs_data_set_double(settings, "gamma", 0.0);
 
-  obs_source_t *filter = obs_source_create(
-      "chroma_key_filter", "ChromaKeyFileter", settings, nullptr);
-  obs_source_filter_add(source, filter);
+  obs_source_t *filter =
+      obs_source_get_filter_by_name(source, "ChromaKeyFileter");
+  if (filter == nullptr) {
+    obs_data_t *settings = obs_data_create();
+    obs_data_set_string(settings, "key_color_type", "custom");
+    obs_data_set_int(settings, "key_color", color);
+    obs_data_set_int(settings, "similarity", similarity);
+    obs_data_set_int(settings, "smoothness", 80);
+    obs_data_set_int(settings, "spill", 100);
+    obs_data_set_int(settings, "opacity", 100);
+    obs_data_set_double(settings, "contrast", 0.0);
+    obs_data_set_double(settings, "brightness", 0.0);
+    obs_data_set_double(settings, "gamma", 0.0);
+
+    filter = obs_source_create(
+        "chroma_key_filter", "ChromaKeyFileter", settings, nullptr);
+    obs_source_filter_add(source, filter);
+  } else {
+    obs_data_t *settings = obs_source_get_settings(filter);
+    obs_data_set_int(settings, "key_color", color);
+    obs_data_set_int(settings, "similarity", similarity);
+    obs_source_update(filter, settings);
+    obs_data_release(settings);
+    obs_source_release(filter);
+  }
   obs_source_release(filter);
   obs_source_release(source);
   return true;
@@ -398,6 +427,7 @@ Obs::Obs()
 
   scene_ = obs_scene_create("Scene");
 
+  AddAudioSource();
   ResetAudio();
   ResetVideo();
 }
@@ -493,33 +523,37 @@ void Obs::ClearSceneData() {
 }
 
 
-void Obs::UpdateCurrentSource(const std::string &source_info) {
-  // video
-  {
-    obs_data_t *settings = obs_data_create();
-    obs_data_set_string(settings, "window", source_info.c_str());
-    obs_data_set_string(settings, "capture_mode", "window");
-    obs_source_t *source = obs_source_create(
-        "game_capture", "Game Capture", settings, nullptr);
-    obs_data_release(settings);
-    obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
-    obs_source_release(source);
 
-    obs_set_output_source(0, obs_get_source_by_name("Scene"));
+void Obs::UpdateVideoSource(const std::string &source_info) {
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "window", source_info.c_str());
+  obs_data_set_string(settings, "capture_mode", "window");
+  obs_source_t *source = obs_source_create(
+      "game_capture", "Game Capture", settings, nullptr);
+  obs_data_release(settings);
+  obs_scene_atomic_update(scene_, Obs::AddSourceToScene, source);
+  obs_source_release(source);
+
+  obs_set_output_source(0, obs_get_source_by_name("Scene"));
+}
+
+
+void Obs::AddAudioSource() {
+  obs_source_t *source = obs_get_output_source(1);
+  if (source != nullptr) {
+    obs_source_release(source);
+    return;
   }
 
-  // audio
-  {
-    obs_data_t *settings = obs_data_create();
-    obs_data_set_string(settings, "device_id", "default");
+  obs_data_t *settings = obs_data_create();
+  obs_data_set_string(settings, "device_id", "default");
 
-    obs_source_t *source = obs_source_create(
-        "wasapi_output_capture", "Desktop Audio", settings, nullptr);
-    obs_data_release(settings);
+  source = obs_source_create(
+      "wasapi_output_capture", "Desktop Audio", settings, nullptr);
+  obs_data_release(settings);
 
-    obs_set_output_source(1, source);
-    obs_source_release(source);
-  }
+  obs_set_output_source(1, source);
+  obs_source_release(source);
 }
 
 
@@ -588,6 +622,27 @@ const bool Obs::CheckDeviceId(const std::string &device_id) {
     }
   }
   return false;
+}
+
+
+const std::string Obs::DecodeObsString(
+    const std::string &encoded_string) {
+  std::string decoded{encoded_string};
+  ReplaceString(&decoded, "#3A", ":");
+  ReplaceString(&decoded, "#22", "#");
+  return decoded;
+}
+
+
+void Obs::ReplaceString(
+      std::string *subject,
+      const std::string &search,
+      const std::string &replace) {
+  size_t pos{0};
+  while ((pos = subject->find(search, pos)) != std::string::npos) {
+    subject->replace(pos, search.length(), replace);
+    pos += replace.length();
+  }
 }
 
 
