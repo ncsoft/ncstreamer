@@ -387,8 +387,7 @@ void YouTube::GetBroadcast(
   }, [this, on_failed, on_braodcast_gotten](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
-    using Broadcast = std::tuple<std::string, std::string, std::string,
-        std::string>;
+    using Broadcast = std::tuple<std::string, std::string, std::string>;
     std::vector<Broadcast> broadcasts;
     try {
       boost::property_tree::read_json(ss, tree);
@@ -403,15 +402,11 @@ void YouTube::GetBroadcast(
         const std::string &stream_id =
             broadcast.second.get<std::string>(
                 "contentDetails.boundStreamId");
-        const std::string &embed_html =
-            broadcast.second.get<std::string>(
-                "contentDetails.monitorStream.embedHtml");
-        const std::string link = ExtractLinkFromHtml(embed_html);
         const std::string &live_chat_id =
             broadcast.second.get<std::string>("snippet.liveChatId");
 
         broadcasts.emplace_back(
-            std::make_tuple(broadcast_id, stream_id, link, live_chat_id));
+            std::make_tuple(broadcast_id, stream_id, live_chat_id));
       }
     } catch (const std::exception &/*e*/) {
       broadcasts.clear();
@@ -426,12 +421,13 @@ void YouTube::GetBroadcast(
 
     const std::string &broadcast_id = std::get<0>(broadcasts[0]);
     const std::string &stream_id = std::get<1>(broadcasts[0]);
-    const std::string &page_link = std::get<2>(broadcasts[0]);
-    const std::string &live_chat_id = std::get<3>(broadcasts[0]);
+    const std::string &live_chat_id = std::get<2>(broadcasts[0]);
 
     SetLiveChatId(live_chat_id);
     SetVideoId(broadcast_id);
 
+    const std::string &page_link{
+        "https://www.youtube.com/watch?v=" + broadcast_id};
     on_braodcast_gotten(broadcast_id, stream_id, page_link);
   });
 }
@@ -636,17 +632,6 @@ boost::posix_time::ptime YouTube::RefineISOTimeString(
   boost::erase_all(refined, ":");
 
   return boost::posix_time::from_iso_string(refined);
-}
-
-
-const std::string YouTube::ExtractLinkFromHtml(const std::string &html) {
-  static const std::string kEmptyString;
-  static const std::regex kUriPattern{R"(src=(\")(.*?)(\"))"};
-
-  std::smatch matches;
-  const bool &found = std::regex_search(html, matches, kUriPattern);
-
-  return found == true ? matches[2] : kEmptyString;
 }
 
 

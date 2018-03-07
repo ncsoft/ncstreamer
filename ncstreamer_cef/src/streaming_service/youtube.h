@@ -111,8 +111,6 @@ class YouTube : public StreamingServiceProvider {
 
   boost::posix_time::ptime RefineISOTimeString(const std::string &time) const;
 
-  const std::string ExtractLinkFromHtml(const std::string &html);
-
   CefRefPtr<LoginClient> login_client_;
   HttpRequestService http_request_service_;
 
