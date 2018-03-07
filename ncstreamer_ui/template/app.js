@@ -1010,6 +1010,8 @@ function showErrorText() {
     case 'fail streaming':
       if (app.service.provider == 'Twitch') {
         error.textContent = '%TWITCH_ERROR%';
+      } else if (app.service.provider == 'YouTube') {
+        error.textContent = '%YOUTUBE_ERROR%';
       } else {
         error.textContent = '%FACEBOOK_ERROR%';
       }
