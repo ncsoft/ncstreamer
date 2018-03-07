@@ -777,8 +777,7 @@ function onTwitchSettingsPopupClicked() {
 
 function onYoutubeLinkClicked() {
   console.info('click youtubeLink');
-  window.open(app.service.authorizationUrlForYouTube);
-  // cef.externalBrowserPopUp.request(app.service.authorizationUrlForYouTube);
+  cef.externalBrowserPopUp.request(app.service.authorizationUrlForYouTube);
 }
 
 
