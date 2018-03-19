@@ -42,7 +42,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       cef_cmd_line->GetSwitchValue(L"video-quality");
   video_quality_ = video_quality.empty() ? L"medium" : video_quality;
 
-  shows_sources_all_ = ReadBool(cef_cmd_line, L"shows-sources-all", true);
+  shows_sources_all_ = ReadBool(cef_cmd_line, L"shows-sources-all", false);
 
   const std::wstring &sources_arg =
       cef_cmd_line->GetSwitchValue(L"sources");
