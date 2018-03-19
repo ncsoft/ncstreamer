@@ -67,7 +67,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
   try {
     remote_port_ = static_cast<uint16_t>(std::stoi(remote_port));
   } catch (...) {
-    remote_port_ = 9003;
+    remote_port_ = 9002;
   }
 
   in_memory_local_storage_ =
