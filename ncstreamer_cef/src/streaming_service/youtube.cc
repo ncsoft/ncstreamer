@@ -415,7 +415,7 @@ void YouTube::GetBroadcast(
     if (broadcasts.empty() == true) {
       std::stringstream msg;
       msg << "could not broadcast list from: " << str;
-      on_failed(msg.str());
+      on_failed("no channel or streaming service");
       return;
     }
 
