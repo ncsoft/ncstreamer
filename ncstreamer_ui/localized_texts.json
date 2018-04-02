@@ -70,7 +70,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -143,7 +144,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -216,7 +218,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -289,7 +292,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -362,7 +366,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -435,7 +440,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -508,7 +514,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -581,7 +588,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -654,7 +662,8 @@
     "NO_SHOW_ANYMORE": "한 달 동안 안 보기",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",
@@ -727,7 +736,8 @@
     "NO_SHOW_ANYMORE": "一個月內不再顯示",
     "YOUTUBE_AGREEMENT_MESSAGE1": "請同意YouTube服務條款。",
     "YOUTUBE_AGREEMENT_MESSAGE2": "",
-    "YOUTUBE_AGREEMENT_BROWSING": "馬上到YouTube"
+    "YOUTUBE_AGREEMENT_BROWSING": "馬上到YouTube",
+    "EMPTY_TITLE": "請輸入播放標題"
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -800,6 +810,7 @@
     "NO_SHOW_ANYMORE": "この通知を非表示にする(1ヶ月)",
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTubeの利用規約に",
     "YOUTUBE_AGREEMENT_MESSAGE2": "同意してください",
-    "YOUTUBE_AGREEMENT_BROWSING": "YouTubeサイトへ"
+    "YOUTUBE_AGREEMENT_BROWSING": "YouTubeサイトへ",
+    "EMPTY_TITLE": "配信のタイトルを入力してください"
   }
 }
