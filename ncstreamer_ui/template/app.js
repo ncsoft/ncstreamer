@@ -1034,7 +1034,7 @@ function showErrorText() {
       error.textContent = '%SELECT_DOWN_SERVER%';
       break;
     case 'title empty':
-      error.textContent = '방송 제목을 입력해 주세요.';
+      error.textContent = '%EMPTY_TITLE%';
       break;
     case 'obs error':
       error.textContent = '%OBS_ERROR%';
