@@ -116,6 +116,15 @@ function catchAltF4(event) {
 }
 
 
+function catchEsc(event) {
+  if (event.keyCode != 27) {  // 27 == Esc
+    return;
+  }
+  onCloseButtonClicked();
+  event.returnValue = false;
+}
+
+
 function toCamel(str) {
   return str.replace(/(\-[a-z])/g, function(match) {
     return match.toUpperCase().replace('-', '');
@@ -1199,6 +1208,7 @@ cef.streamingSetUp.onResponse = function(error) {
   }
   document.removeEventListener('keydown', disableF4);
   document.addEventListener('keydown', catchAltF4);
+  document.addEventListener('keydown', catchEsc);
 };
 
 
