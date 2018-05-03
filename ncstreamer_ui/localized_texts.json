@@ -71,7 +71,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -145,7 +151,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -219,7 +231,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -293,7 +311,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -367,7 +391,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -441,7 +471,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -515,7 +551,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -589,7 +631,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -663,7 +711,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTube 서비스 약관에",
     "YOUTUBE_AGREEMENT_MESSAGE2": "동의해 주세요.",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTube 바로가기",
-    "EMPTY_TITLE": "방송 제목을 입력해 주세요."
+    "EMPTY_TITLE": "방송 제목을 입력해 주세요.",
+    "YOUTUBE_TERMS_TITLE1": "YouTube 실시간 스트리밍을",
+    "YOUTUBE_TERMS_TITLE2": "처음 이용하시나요?",
+    "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
+    "YOUTUBE_TERMS_DESC2": "최대 24시간",
+    "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",
@@ -737,7 +791,13 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "請同意YouTube服務條款。",
     "YOUTUBE_AGREEMENT_MESSAGE2": "",
     "YOUTUBE_AGREEMENT_BROWSING": "馬上到YouTube",
-    "EMPTY_TITLE": "請輸入播放標題"
+    "EMPTY_TITLE": "請輸入播放標題",
+    "YOUTUBE_TERMS_TITLE1": "您初次使用 YouTube 直播視訊?",
+    "YOUTUBE_TERMS_TITLE2": "",
+    "YOUTUBE_TERMS_DESC1": "根據YouTube政策，初次建立頻道時，",
+    "YOUTUBE_TERMS_DESC2": "最晚24小時",
+    "YOUTUBE_TERMS_DESC3": "後即可開始使用串流服務",
+    "YOUTUBE_SUPPORT_PAGE": "立即前往YouTube說明中心"
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -811,6 +871,12 @@
     "YOUTUBE_AGREEMENT_MESSAGE1": "YouTubeの利用規約に",
     "YOUTUBE_AGREEMENT_MESSAGE2": "同意してください",
     "YOUTUBE_AGREEMENT_BROWSING": "YouTubeサイトへ",
-    "EMPTY_TITLE": "配信のタイトルを入力してください"
+    "EMPTY_TITLE": "配信のタイトルを入力してください",
+    "YOUTUBE_TERMS_TITLE1": "YouTubeライブ配信を",
+    "YOUTUBE_TERMS_TITLE2": "初めて使用しますか？",
+    "YOUTUBE_TERMS_DESC1": "YouTubeの利用規約により、チャンネル作成してから",
+    "YOUTUBE_TERMS_DESC2": "最大24時間",
+    "YOUTUBE_TERMS_DESC3": "経過後にライブ配信が可能です",
+    "YOUTUBE_SUPPORT_PAGE": "YouTube ヘルプ リンク"
   }
 }
