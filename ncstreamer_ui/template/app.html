@@ -205,16 +205,20 @@
     <section class="nc-streamer-setting">
       <h3>%EASY_SETTING%</h3>
       <div class="form-checkbox">
-        <input type="checkbox"
-               id="webcam-checkbox">
-        <label class="on"
-               for="webcam-checkbox">%USE_WEBCAM%</label>
+        <span class="focusbox">
+          <input type="checkbox"
+                 id="webcam-checkbox">
+          <label class="on"
+                 for="webcam-checkbox">%USE_WEBCAM%</label>
+        </span>
       </div>
       <div class="form-checkbox mic">
-        <input type="checkbox"
-               id="mic-checkbox">
-        <label class="on"
-               for="mic-checkbox">%USE_MIC%</label>
+        <span class="focusbox">
+          <input type="checkbox"
+                 id="mic-checkbox">
+          <label class="on"
+                 for="mic-checkbox">%USE_MIC%</label>
+        </span>
         <div class="range-slider">
           <input class="range-slider-range"
                  type="range"
@@ -441,14 +445,28 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="connect-info">
+          <div class="terms-title">
             %YOUTUBE_AGREEMENT_MESSAGE1%
             <br>%YOUTUBE_AGREEMENT_MESSAGE2%
+          </div>
+          <div class="terms-desc">
+            <p class="text-ty1">
+              %YOUTUBE_TERMS_TITLE1%<br>%YOUTUBE_TERMS_TITLE2%
+            </p>
+            <p class="text-ty2">
+              %YOUTUBE_TERMS_DESC1%<br>
+              <strong>%YOUTUBE_TERMS_DESC2%</strong>%YOUTUBE_TERMS_DESC3%
+            </p>
+            <a id="youtube-support-link-button"
+               class="link-youtube"
+               href="#" >
+               %YOUTUBE_SUPPORT_PAGE%
+            </a>
           </div>
         </div>
         <div class="modal-footer">
           <a id="youtube-link-button"
-             class="btn btn-primary btn-youtube"
+             class="btn btn-primary btn-youtube btn-youtube-large"
              data-dismiss="modal"
              href="#">%YOUTUBE_AGREEMENT_BROWSING%</a>
         </div>

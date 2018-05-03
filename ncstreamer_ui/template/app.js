@@ -78,6 +78,7 @@ const app = {
     authorizationUrlForYouTube: 'https://www.youtube.com/signin?' +
         'next=/live_streaming_signup&app=desktop&' +
         'action_prompt_identity=true',
+    youtubeSupportUrl: 'https://support.google.com/youtube/answer/2474026',
   },
   options: {
     hidesSettings: false,
@@ -109,6 +110,15 @@ function disableF4(event) {
 
 function catchAltF4(event) {
   if (!event.altKey || event.keyCode != 115) {  // 115 == F4
+    return;
+  }
+  onCloseButtonClicked();
+  event.returnValue = false;
+}
+
+
+function catchEsc(event) {
+  if (event.keyCode != 27) {  // 27 == Esc
     return;
   }
   onCloseButtonClicked();
@@ -257,6 +267,7 @@ function setUpControls(args) {
     'modal-cancel-button',
     'twitch-settings-popup',
     'popup-hide-button',
+    'youtube-support-link-button',
     'youtube-link-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
@@ -312,6 +323,8 @@ function setUpControls(args) {
       'click', onTwitchSettingsPopupClicked);
   app.dom.popupHideButton.addEventListener(
       'click', onPopupHideButtonClicked);
+  app.dom.youtubeSupportLinkButton.addEventListener(
+      'click', onYoutubeSupportLinkButtonClicked);
   app.dom.youtubeLinkButton.addEventListener(
       'click', onYoutubeLinkClicked);
 
@@ -775,6 +788,13 @@ function onTwitchSettingsPopupClicked() {
   cef.externalBrowserPopUp.request(app.service.settingsPage);
 }
 
+
+function onYoutubeSupportLinkButtonClicked() {
+  console.info('click youtubeSupportLink');
+  cef.externalBrowserPopUp.request(app.service.youtubeSupportUrl);
+}
+
+
 function onYoutubeLinkClicked() {
   console.info('click youtubeLink');
   cef.externalBrowserPopUp.request(app.service.authorizationUrlForYouTube);
@@ -1198,6 +1218,7 @@ cef.streamingSetUp.onResponse = function(error) {
   }
   document.removeEventListener('keydown', disableF4);
   document.addEventListener('keydown', catchAltF4);
+  document.addEventListener('keydown', catchEsc);
 };
 
 
