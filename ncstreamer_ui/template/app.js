@@ -78,6 +78,7 @@ const app = {
     authorizationUrlForYouTube: 'https://www.youtube.com/signin?' +
         'next=/live_streaming_signup&app=desktop&' +
         'action_prompt_identity=true',
+    youtubeSupportUrl: 'https://support.google.com/youtube/answer/2474026',
   },
   options: {
     hidesSettings: false,
@@ -266,6 +267,7 @@ function setUpControls(args) {
     'modal-cancel-button',
     'twitch-settings-popup',
     'popup-hide-button',
+    'youtube-support-link-button',
     'youtube-link-button',
   ].forEach(function(domId) {
     app.dom[toCamel(domId)] = document.getElementById(domId);
@@ -321,6 +323,8 @@ function setUpControls(args) {
       'click', onTwitchSettingsPopupClicked);
   app.dom.popupHideButton.addEventListener(
       'click', onPopupHideButtonClicked);
+  app.dom.youtubeSupportLinkButton.addEventListener(
+      'click', onYoutubeSupportLinkButtonClicked);
   app.dom.youtubeLinkButton.addEventListener(
       'click', onYoutubeLinkClicked);
 
@@ -782,6 +786,12 @@ function onPopupHideButtonClicked() {
 function onTwitchSettingsPopupClicked() {
   console.info('click twitchSettingsPopup');
   cef.externalBrowserPopUp.request(app.service.settingsPage);
+}
+
+
+function onYoutubeSupportLinkButtonClicked() {
+  console.info('click youtubeSupportLink');
+  cef.externalBrowserPopUp.request(app.service.youtubeSupportUrl);
 }
 
 
