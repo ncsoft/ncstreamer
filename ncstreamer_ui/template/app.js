@@ -385,6 +385,7 @@ function setUpUserPage(userPages, userPage) {
     for (const ownPage of userPages) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
+      aTag.setAttribute('href', '#');
       aTag.textContent = ownPage.name;
       li.setAttribute('data-value', ownPage.id);
       li.appendChild(aTag);
@@ -449,6 +450,7 @@ function updateStreamingSources(obj) {
       const li = document.createElement('li');
       const aTag = document.createElement('a');
       aTag.textContent = getTitleFromSource(source);
+      aTag.setAttribute('href', '#');
       li.setAttribute('data-value', source);
       li.appendChild(aTag);
       contents.appendChild(li);
@@ -821,6 +823,7 @@ function setUpSteamingQuality() {
       'fps: ' + quality.fps,
       'bitrate: ' + quality.bitrate,
     ].join(', ');
+    aTag.setAttribute('href', '#');
     li.setAttribute('data-value', level);
     li.appendChild(aTag);
     contents.appendChild(li);
@@ -991,6 +994,7 @@ function setUpStreamServers(streamServers, streamServer) {
     } else {
       const aTag = document.createElement('a');
       aTag.innerHTML = server.name;
+      aTag.setAttribute('href', '#');
       li.appendChild(aTag);
     }
     contents.appendChild(li);
