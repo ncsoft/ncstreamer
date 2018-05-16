@@ -88,11 +88,11 @@ BEGIN
         BLOCK "041204b0"
         BEGIN
             VALUE "CompanyName", "NCSOFT"
-            VALUE "FileDescription", "live-streaming one of other Windows applications running on the same Windows"
+            VALUE "FileDescription", "live-streaming Windows applications"
             VALUE "FileVersion", "1.4.0.0"
-            VALUE "InternalName", "ncstreamer.rc"
-            VALUE "LegalCopyright", "Copyright (C) 2018"
-            VALUE "OriginalFilename", "ncstreamer.rc"
+            VALUE "InternalName", "ncstreamer.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2018 NCSOFT"
+            VALUE "OriginalFilename", "ncstreamer.exe"
             VALUE "ProductName", "NC Streamer"
             VALUE "ProductVersion", "1.4.0.0"
         END
