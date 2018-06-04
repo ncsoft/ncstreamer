@@ -165,6 +165,9 @@
     <ClCompile Include="..\ncstreamer_cef\src\streaming_service\youtube.cc">
       <Filter>src\streaming_service</Filter>
     </ClCompile>
+    <ClCompile Include="..\ncstreamer_cef\src\lib\named_mutex.cc">
+      <Filter>src\lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ncstreamer_cef\src\browser_process_handler.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="..\ncstreamer_cef\src\streaming_service\youtube_app_secret.h">
       <Filter>src\streaming_service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ncstreamer_cef\src\lib\named_mutex.h">
+      <Filter>src\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

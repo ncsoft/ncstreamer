@@ -112,6 +112,7 @@
     <ClCompile Include="..\ncstreamer_cef\src\command_line.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\dimension.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\display.cc" />
+    <ClCompile Include="..\ncstreamer_cef\src\lib\named_mutex.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\position.cc" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\monitor_info.cpp" />
     <ClCompile Include="..\ncstreamer_cef\src\lib\window_frame_remover.cc" />
@@ -159,6 +160,7 @@
     <ClInclude Include="..\ncstreamer_cef\src\command_line.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\dimension.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\display.h" />
+    <ClInclude Include="..\ncstreamer_cef\src\lib\named_mutex.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\position.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\monitor_info.h" />
     <ClInclude Include="..\ncstreamer_cef\src\lib\window_frame_remover.h" />
