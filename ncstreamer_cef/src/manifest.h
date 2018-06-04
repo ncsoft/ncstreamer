@@ -15,6 +15,7 @@
 
 namespace ncstreamer {
 static const wchar_t *kAppName{L"NCStreaming"};
+static const wchar_t *kMutexName{L"NCStreaming_Client"};
 
 static const Dimension<int> kWindowMinimumSize{348 + 16, 603 - 11};
 static const RECT kWindowTitlebarDragRect{5, 5, 252, 48};

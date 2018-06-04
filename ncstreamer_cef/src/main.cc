@@ -11,6 +11,7 @@
 
 #include "ncstreamer_cef/src/browser_app.h"
 #include "ncstreamer_cef/src/command_line.h"
+#include "ncstreamer_cef/src/lib/named_mutex.h"
 #include "ncstreamer_cef/src/lib/window_frame_remover.h"
 #include "ncstreamer_cef/src/lib/windows_types.h"
 #include "ncstreamer_cef/src/local_storage.h"
@@ -52,10 +53,17 @@ int APIENTRY wWinMain(HINSTANCE instance,
     return ExecuteRenderProcess(instance);
   }
 
-  HWND prev_instance = ::FindWindow(NULL, ncstreamer::kAppName);
-  if (prev_instance != NULL) {
-    ::ShowWindow(prev_instance, SW_RESTORE);
-    ::SetForegroundWindow(prev_instance);
+  ncstreamer::NamedMutex named_mutex{ncstreamer::kMutexName};
+  if (true == named_mutex.IsMutexRegistered()) {
+    HWND prev_instance = ::FindWindow(NULL, ncstreamer::kAppName);
+    if (prev_instance != NULL) {
+      ::ShowWindow(prev_instance, SW_RESTORE);
+      ::SetForegroundWindow(prev_instance);
+    }
+    return -1;
+  }
+
+  if (false == named_mutex.RegisterMutex()) {
     return -1;
   }
 
