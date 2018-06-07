@@ -1,5 +1,5 @@
 /*
-  css Update : 2018-4-24 14:41:9
+  css Update : 2018-6-7 8:36:46
 */
 
 
@@ -480,7 +480,8 @@ textarea::-webkit-scrollbar-thumb {
 
 .dropdown .btn:focus,
 textarea:focus,
-.focusbox:focus-within {
+.focusbox:focus-within,
+.nc-streamer-connect button:focus {
     border-radius: 3px !important;
     box-shadow: 0 0 0 2px #61a3d9
 }
