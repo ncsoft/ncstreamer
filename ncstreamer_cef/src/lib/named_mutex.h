@@ -16,7 +16,7 @@ class NamedMutex {
   explicit NamedMutex(const wchar_t *name_);
   ~NamedMutex();
 
-  bool IsMutexRegistered();
+  bool IsMutexRegistered() const;
   bool RegisterMutex();
 
  private:

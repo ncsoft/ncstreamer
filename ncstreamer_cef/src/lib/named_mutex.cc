@@ -18,7 +18,7 @@ NamedMutex::~NamedMutex() {
 }
 
 
-bool NamedMutex::IsMutexRegistered() {
+bool NamedMutex::IsMutexRegistered() const {
   bool result = false;
   try {
     HANDLE mtx = ::CreateMutex(nullptr, false, name_);
