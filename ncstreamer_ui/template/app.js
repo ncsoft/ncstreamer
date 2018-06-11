@@ -223,6 +223,7 @@ function setUpControls(args) {
     'nc-streamer-container',
     'login-page-panel',
     'main-page-panel',
+    'nc-streamer-modal',
   ].forEach(function(domCls) {
     app.dom[toCamel(domCls)] = document.getElementsByClassName(domCls);
   });
@@ -1220,9 +1221,19 @@ cef.streamingSetUp.onResponse = function(error) {
   for (const element of app.dom.ncStreamerContainer) {
     ncsoft.klass.remove(element, 'loading');
   }
+
   document.removeEventListener('keydown', disableF4);
   document.addEventListener('keydown', catchAltF4);
   document.addEventListener('keydown', catchEsc);
+  for (const item of app.dom.ncStreamerModal) {
+    item.addEventListener('keydown', function(event) {
+      if (event.keyCode != 27) {  // 27 == Esc
+        return;
+      }
+      console.info('close modal');
+      event.stopPropagation();
+    });
+  }
 };
 
 
