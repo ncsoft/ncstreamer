@@ -43,9 +43,7 @@ bool NamedMutex::IsMutexRegistered() const {
 bool NamedMutex::RegisterMutex() {
   bool result = false;
   try {
-    if (mutex_handle_ != nullptr) {
-      UnregisterMutex();
-    }
+    UnregisterMutex();
     mutex_handle_ = ::CreateMutex(nullptr, false, name_);
     if (mutex_handle_ == nullptr) {
       result = false;
