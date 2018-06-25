@@ -91,9 +91,7 @@ bool Obs::StartStreaming(
     const std::string &stream_key,
     const ObsOutput::OnStarted &on_streaming_started) {
   UpdateVideoSource(source_info);
-  if (UpdateBaseResolution(source_info) == false) {
-    return false;
-  }
+  UpdateBaseResolution(source_info);
 
   ResetVideo();
   obs_encoder_set_audio(audio_encoder_, obs_get_audio());
@@ -586,7 +584,7 @@ void Obs::ReleaseCurrentService() {
 }
 
 
-bool Obs::UpdateBaseResolution(const std::string &source_info) {
+void Obs::UpdateBaseResolution(const std::string &source_info) {
   ObsSourceInfo source{source_info};
   const std::string &clazz = source.clazz();
   const std::string &title = source.title();
@@ -600,7 +598,7 @@ bool Obs::UpdateBaseResolution(const std::string &source_info) {
   DWORD process_id;
   GetWindowThreadProcessId(handle, &process_id);
   std::wstring map_name = L"CaptureHook_HookInfo" + std::to_wstring(process_id);
-  for (int i = 0; i < 100; ++i) {
+  for (int i = 0; i < 50; ++i) {
     HANDLE hook_info_map = OpenFileMapping(
         FILE_MAP_READ, false, map_name.c_str());
     if (hook_info_map) {
@@ -608,12 +606,11 @@ bool Obs::UpdateBaseResolution(const std::string &source_info) {
           MapViewOfFile(hook_info_map, FILE_MAP_READ, 0, 0, sizeof(info)));
       if (info && info->cx != 0 && info->cy != 0) {
         base_size_ = {info->cx, info->cy};
-        return true;
+        break;
       }
     }
     Sleep(100);
   }
-  return false;
 }
 
 
