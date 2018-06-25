@@ -83,7 +83,7 @@ class Obs {
       const std::string &stream_server,
       const std::string &stream_key);
   void ReleaseCurrentService();
-  bool UpdateBaseResolution(const std::string &source_info);
+  void UpdateBaseResolution(const std::string &source_info);
   const bool CheckDeviceId(const std::string &device_id);
   const std::string DecodeObsString(
       const std::string &encoded_string);
