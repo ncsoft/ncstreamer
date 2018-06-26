@@ -23,7 +23,8 @@ const cef = (function() {
     'service_provider/log_in': {
       request: ['serviceProvider'],
       response: ['error', 'userName', 'userPages', 'streamServers', 'userPage',
-                 'privacy', 'youtubePrivacy', 'streamServer', 'description'],
+                 'privacy', 'youtubePrivacy', 'streamServer', 'description',
+                 'location'],
     },
     'service_provider/log_out': {
       request: ['serviceProvider'],
