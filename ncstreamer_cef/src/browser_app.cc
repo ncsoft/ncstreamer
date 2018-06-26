@@ -9,30 +9,10 @@
 namespace ncstreamer {
 BrowserApp::BrowserApp(
     HINSTANCE instance,
-    bool hides_settings,
-    const std::wstring &video_quality,
-    bool shows_sources_all,
-    const std::vector<std::string> &sources,
-    const std::wstring &locale,
-    const std::wstring &ui_uri,
-    const Position<int> &default_position,
-    const StreamingServiceTagMap &tag_ids,
-    const std::wstring &designated_user,
-    const boost::property_tree::ptree &device_setting,
-    const uint16_t &remote_port)
+    const CommandLine &cmd_line)
     : browser_process_handler_{new BrowserProcessHandler{
           instance,
-          hides_settings,
-          video_quality,
-          shows_sources_all,
-          sources,
-          locale,
-          ui_uri,
-          default_position,
-          tag_ids,
-          designated_user,
-          device_setting,
-          remote_port}} {
+          cmd_line}} {
 }
 
 

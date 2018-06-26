@@ -38,11 +38,13 @@ Client::Client(
     const StreamingServiceTagMap &tag_ids,
     const std::wstring &designated_user,
     const boost::property_tree::ptree &device_settings,
-    const uint16_t &remote_port)
+    const uint16_t &remote_port,
+    const std::wstring &location)
     : locale_{locale},
       tag_ids_{tag_ids},
       designated_user_{designated_user},
       remote_port_{remote_port},
+      location_{location},
       display_handler_{new ClientDisplayHandler{}},
       life_span_handler_{new ClientLifeSpanHandler{instance}},
       load_handler_{new ClientLoadHandler{life_span_handler_,
@@ -374,6 +376,8 @@ void Client::OnCommandServiceProviderLogIn(
   }
 
   const std::string &service_provider = provider_i->second;
+  static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  const auto &location = converter.to_bytes(location_);
 
   StreamingService::Get()->LogIn(
       service_provider,
@@ -382,7 +386,7 @@ void Client::OnCommandServiceProviderLogIn(
       [browser, cmd](const std::string &error) {
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});
-  }, [browser, cmd](
+  }, [browser, cmd, location](
       const std::string &user_name,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages,
       const std::vector<
@@ -407,6 +411,7 @@ void Client::OnCommandServiceProviderLogIn(
     arg.add("youtubePrivacy", LocalStorage::Get()->GetYouTubePrivacy());
     arg.add("streamServer", LocalStorage::Get()->GetStreamServer());
     arg.add("description", LocalStorage::Get()->GetDescription());
+    arg.add("location", location);
 
     JsExecutor::Execute(browser, "cef.onResponse", cmd, arg);
   });

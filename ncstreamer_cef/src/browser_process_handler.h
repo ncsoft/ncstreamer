@@ -15,6 +15,7 @@
 #include "windows.h"  // NOLINT
 
 #include "ncstreamer_cef/src/client.h"
+#include "ncstreamer_cef/src/command_line.h"
 #include "ncstreamer_cef/src/lib/position.h"
 #include "ncstreamer_cef/src/lib/rectangle.h"
 #include "ncstreamer_cef/src/streaming_service/streaming_service_types.h"
@@ -25,17 +26,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
  public:
   BrowserProcessHandler(
       HINSTANCE instance,
-      bool hides_settings,
-      const std::wstring &video_quality,
-      bool shows_sources_all,
-      const std::vector<std::string> &sources,
-      const std::wstring &locale,
-      const std::wstring &ui_uri,
-      const Position<int> &default_position,
-      const StreamingServiceTagMap &tag_ids,
-      const std::wstring &designated_user,
-      const boost::property_tree::ptree &device_settings,
-      const uint16_t &remote_port);
+      const CommandLine &cmd_line);
   virtual ~BrowserProcessHandler();
 
   // override CefBrowserProcessHandler
@@ -58,6 +49,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const std::wstring designated_user_;
   const boost::property_tree::ptree device_settings_;
   const uint16_t remote_port_;
+  const std::wstring location_;
 
   CefRefPtr<Client> client_;
 
