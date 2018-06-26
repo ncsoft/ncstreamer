@@ -21,30 +21,21 @@
 namespace ncstreamer {
 BrowserProcessHandler::BrowserProcessHandler(
     HINSTANCE instance,
-    bool hides_settings,
-    const std::wstring &video_quality,
-    bool shows_sources_all,
-    const std::vector<std::string> &sources,
-    const std::wstring &locale,
-    const std::wstring &ui_uri,
-    const Position<int> &default_position,
-    const StreamingServiceTagMap &tag_ids,
-    const std::wstring &designated_user,
-    const boost::property_tree::ptree &device_settings,
-    const uint16_t &remote_port)
+    const CommandLine &cmd_line)
     : instance_{instance},
-      hides_settings_{hides_settings},
-      video_quality_{video_quality},
-      shows_sources_all_{shows_sources_all},
-      sources_{sources},
-      locale_{locale},
-      ui_uri_{ui_uri},
-      defalut_position_{default_position},
-      tag_ids_{tag_ids},
-      designated_user_{designated_user},
-      client_{},
-      device_settings_{device_settings},
-      remote_port_{remote_port} {
+      hides_settings_{cmd_line.hides_settings()},
+      video_quality_{cmd_line.video_quality()},
+      shows_sources_all_{cmd_line.shows_sources_all()},
+      sources_{cmd_line.sources()},
+      locale_{cmd_line.locale()},
+      ui_uri_{cmd_line.ui_uri()},
+      defalut_position_{cmd_line.default_position()},
+      tag_ids_{cmd_line.streaming_service_tag_ids()},
+      designated_user_{cmd_line.designated_user()},
+      device_settings_{cmd_line.device_settings()},
+      remote_port_{cmd_line.remote_port()},
+      location_{cmd_line.location()},
+      client_{} {
 }
 
 
@@ -74,7 +65,8 @@ void BrowserProcessHandler::OnContextInitialized() {
       tag_ids_,
       designated_user_,
       device_settings_,
-      remote_port_};
+      remote_port_,
+      location_};
 
   std::wstring uri{ui_uri_};
   if (uri.empty() == true) {

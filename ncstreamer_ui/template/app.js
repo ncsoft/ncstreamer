@@ -84,6 +84,12 @@ const app = {
     hidesSettings: false,
   },
   errorType: null,
+  CountryCode: {
+    KR: 'Korea',
+    US: 'US',
+    TW: 'Taiwan',
+    JP: 'Japan',
+  },
 };
 
 
@@ -897,7 +903,8 @@ function setUpProviderUI(
     userPage,
     privacy,
     youtubePrivacy,
-    streamServer) {
+    streamServer,
+    location) {
   const userName = app.dom.providerUserName;
   const connectInfo = app.dom.connectInfoUserName;
   switch (app.service.provider) {
@@ -936,7 +943,7 @@ function setUpProviderUI(
       ncsoft.klass.remove(connectInfo, 'youtube');
       ncsoft.klass.remove(connectInfo, 'fb');
       ncsoft.klass.add(connectInfo, 'twitch');
-      setUpStreamServers(streamServers, streamServer);
+      setUpStreamServers(streamServers, streamServer, location);
       setUserSettingPage(userPages);
       popupTwitchSettings();
       break;
@@ -956,7 +963,7 @@ function popupTwitchSettings() {
 }
 
 
-function setUpStreamServers(streamServers, streamServer) {
+function setUpStreamServers(streamServers, streamServer, location) {
   const serverSelect = app.dom.streamServerSelect;
   const display = serverSelect.children[0];
   const contents = serverSelect.children[1];
@@ -1003,8 +1010,9 @@ function setUpStreamServers(streamServers, streamServer) {
 
   const defaultServer = (function() {
     var content = app.dom.streamServerSelect.children[1].firstChild;
+    const curLocation = location == '' ? 'KR' : location;
     while (content) {
-      if (content.innerHTML.indexOf('Seoul') != -1) {
+      if (content.innerHTML.indexOf(app.CountryCode[curLocation]) != -1) {
         return content;
       }
       content = content.nextSibling;
@@ -1128,7 +1136,7 @@ function checkCurrentWebcamExist() {
 
 cef.serviceProviderLogIn.onResponse = function(
     error, userName, userPages, streamServers, userPage,
-    privacy, youtubePrivacy, streamServer, description) {
+    privacy, youtubePrivacy, streamServer, description, location) {
   if (error != '') {
     console.info(error);
     if (!error.includes('no channel or streaming service')) {
@@ -1169,7 +1177,8 @@ cef.serviceProviderLogIn.onResponse = function(
       userPage,
       privacy,
       youtubePrivacy,
-      streamServer);
+      streamServer,
+      location);
 
   app.dom.errorText.style.display = 'none';
 };

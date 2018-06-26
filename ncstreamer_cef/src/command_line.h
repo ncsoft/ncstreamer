@@ -44,6 +44,9 @@ class CommandLine {
   const boost::property_tree::ptree &device_settings() const {
       return device_settings_;
   }
+  const std::wstring &location() const {
+      return location_;
+  }
 
  private:
   static bool ReadBool(
@@ -72,6 +75,7 @@ class CommandLine {
   std::wstring designated_user_;
   Position<int> default_position_;
   boost::property_tree::ptree device_settings_;
+  std::wstring location_;
 };
 }  // namespace ncstreamer
 
