@@ -36,7 +36,8 @@ class Client : public CefClient {
       const StreamingServiceTagMap &tag_ids,
       const std::wstring &designated_user,
       const boost::property_tree::ptree &device_settings,
-      const uint16_t &remote_port);
+      const uint16_t &remote_port,
+      const std::wstring &location);
 
   virtual ~Client();
 
@@ -204,6 +205,7 @@ class Client : public CefClient {
   const StreamingServiceTagMap tag_ids_;
   const std::wstring designated_user_;
   const uint16_t remote_port_;
+  const std::wstring location_;
   CefRefPtr<ClientDisplayHandler> display_handler_;
   CefRefPtr<ClientLifeSpanHandler> life_span_handler_;
   CefRefPtr<ClientLoadHandler> load_handler_;
