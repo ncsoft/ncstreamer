@@ -9,6 +9,8 @@
 #include <locale>
 #include <memory>
 
+#include "boost/filesystem/operations.hpp"
+#include "boost/filesystem/path.hpp"
 #include "boost/property_tree/json_parser.hpp"
 #include "windows.h"  // NOLINT
 
@@ -59,7 +61,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
 
   const std::wstring &locale =
       cef_cmd_line->GetSwitchValue(L"locale");
-  locale_ = locale.empty() ? L"ko-KR" : locale;
+  locale_ = FindLocaleFolder(locale) ? locale : L"ko-KR";
 
   ui_uri_ = cef_cmd_line->GetSwitchValue(L"ui-uri");
 
@@ -194,5 +196,18 @@ Position<int> CommandLine::ParseDefaultPosition(const std::wstring &arg) {
     y = CW_USEDEFAULT;
   }
   return {x, y};
+}
+
+
+bool CommandLine::FindLocaleFolder(const std::wstring &locale) {
+  if (locale.empty()) {
+    return false;
+  }
+
+  boost::filesystem::path locale_folder{L"ui/" + locale};
+  if (!boost::filesystem::is_directory(locale_folder)) {
+    return false;
+  }
+  return true;
 }
 }  // namespace ncstreamer

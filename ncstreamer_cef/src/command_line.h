@@ -62,6 +62,8 @@ class CommandLine {
 
   static Position<int> ParseDefaultPosition(const std::wstring &arg);
 
+  bool FindLocaleFolder(const std::wstring &locale);
+
   bool is_renderer_;
   bool hides_settings_;
   std::wstring video_quality_;
