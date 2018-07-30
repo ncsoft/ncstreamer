@@ -1416,6 +1416,11 @@ body {
 }
 
 
+.nc-streamer-setting h3 .st {
+    color: rgba(202, 208, 223, 0.4)
+}
+
+
 .nc-streamer-setting .profile {
     position: relative;
     padding-bottom: 15px
