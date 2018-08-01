@@ -807,7 +807,7 @@
     "YOUTUBE_TERMS_DESC2": "最晚24小時",
     "YOUTUBE_TERMS_DESC3": "後即可開始使用串流服務",
     "YOUTUBE_SUPPORT_PAGE": "立即前往YouTube說明中心",
-    "NO_LINEAGE": "리니지 이용 불가"
+    "NO_LINEAGE": "天堂無法使用該服務"
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -888,6 +888,6 @@
     "YOUTUBE_TERMS_DESC2": "最大24時間",
     "YOUTUBE_TERMS_DESC3": "経過後にライブ配信が可能です",
     "YOUTUBE_SUPPORT_PAGE": "YouTube ヘルプ リンク",
-    "NO_LINEAGE": "리니지 이용 불가"
+    "NO_LINEAGE": "リネージュ利用不可"
   }
 }
