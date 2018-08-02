@@ -77,7 +77,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -157,7 +158,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -237,7 +239,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -317,7 +320,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -397,7 +401,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -477,7 +482,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -557,7 +563,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -637,7 +644,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -717,7 +725,8 @@
     "YOUTUBE_TERMS_DESC1": "YouTube 정책으로 최초로 채널을 생성한 경우",
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
+    "NO_LINEAGE": "리니지 이용 불가"
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",
@@ -797,7 +806,8 @@
     "YOUTUBE_TERMS_DESC1": "根據YouTube政策，初次建立頻道時，",
     "YOUTUBE_TERMS_DESC2": "最晚24小時",
     "YOUTUBE_TERMS_DESC3": "後即可開始使用串流服務",
-    "YOUTUBE_SUPPORT_PAGE": "立即前往YouTube說明中心"
+    "YOUTUBE_SUPPORT_PAGE": "立即前往YouTube說明中心",
+    "NO_LINEAGE": "天堂無法使用該服務"
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -877,6 +887,7 @@
     "YOUTUBE_TERMS_DESC1": "YouTubeの利用規約により、チャンネル作成してから",
     "YOUTUBE_TERMS_DESC2": "最大24時間",
     "YOUTUBE_TERMS_DESC3": "経過後にライブ配信が可能です",
-    "YOUTUBE_SUPPORT_PAGE": "YouTube ヘルプ リンク"
+    "YOUTUBE_SUPPORT_PAGE": "YouTube ヘルプ リンク",
+    "NO_LINEAGE": "リネージュ利用不可"
   }
 }
