@@ -62,7 +62,7 @@ void Facebook::LogIn(
       "token",
       "popup",
       {"pages_show_list",
-       "publish_actions",
+       "publish_video",
        "publish_pages",
        "manage_pages"})};
 
