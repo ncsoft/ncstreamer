@@ -25,7 +25,8 @@ class ClientLoadHandler : public CefLoadHandler {
       const std::wstring &video_quality,
       bool shows_sources_all,
       const std::vector<std::string> &sources,
-      const boost::property_tree::ptree &device_setting);
+      const boost::property_tree::ptree &device_setting,
+      const std::wstring &uid_hash);
 
   virtual ~ClientLoadHandler();
 
@@ -63,7 +64,7 @@ class ClientLoadHandler : public CefLoadHandler {
   const bool hides_settings_;
   const std::wstring video_quality_;
   const bool shows_sources_all_;
-  const std::vector<std::string> white_sources_;
+  std::vector<std::string> white_sources_;
   const boost::property_tree::ptree device_settings_;
   std::vector<std::string> prev_sources_;
 

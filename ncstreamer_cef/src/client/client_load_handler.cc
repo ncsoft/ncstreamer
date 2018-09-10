@@ -8,6 +8,7 @@
 #include <cassert>
 #include <codecvt>
 #include <locale>
+#include <regex>  // NOLINT
 #include <sstream>
 #include <unordered_map>
 
@@ -27,16 +28,23 @@ ClientLoadHandler::ClientLoadHandler(
     const std::wstring &video_quality,
     bool shows_sources_all,
     const std::vector<std::string> &sources,
-    const boost::property_tree::ptree &device_setting)
+    const boost::property_tree::ptree &device_setting,
+    const std::wstring &uid_hash)
     : life_span_handler_{life_span_handler},
       hides_settings_{hides_settings},
       video_quality_{video_quality},
       shows_sources_all_{shows_sources_all},
-      white_sources_{sources},
+      white_sources_{},
       device_settings_{device_setting},
       prev_sources_{},
       main_page_loaded_{false} {
   assert(life_span_handler);
+  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  std::string hash = converter.to_bytes(uid_hash);
+  for (const auto &source : sources) {
+    const std::string pattern{"((" + source + ").*(\\(" + hash + "\\)).*)"};
+    white_sources_.emplace_back(pattern);
+  }
 }
 
 
@@ -93,32 +101,18 @@ void ClientLoadHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 std::vector<std::string> ClientLoadHandler::FilterSources(
     const std::vector<std::string> &all,
     const std::vector<std::string> &filter) {
-  std::unordered_map<std::string /*title*/,
-                     std::vector<std::string /*source*/>> workspace;
-  for (const auto &title : filter) {
-    static const std::vector<std::string> kEmptySources{};
-    workspace.emplace(title, kEmptySources);
-  }
-
+  std::vector<std::string> filtered_sources;
   for (const auto &source : all) {
     ObsSourceInfo source_info{source};
     const auto &title = source_info.title();
-
-    auto i = workspace.find(title);
-    if (i == workspace.end()) {
-      continue;
-    }
-    auto *sources = &(i->second);
-    sources->emplace_back(source);
-  }
-
-  std::vector<std::string> filtered_sources;
-  for (const auto &title : filter) {
-    auto i = workspace.find(title);
-    assert(i != workspace.end());
-    const auto &sources = i->second;
-    for (const auto &source : sources) {
-      filtered_sources.emplace_back(source);
+    for (const auto &i : filter) {
+      const std::regex pattern{i};
+      std::smatch matches;
+      const bool &found = std::regex_search(title, matches, pattern);
+      if (found) {
+        filtered_sources.emplace_back(matches[0]);
+        break;
+      }
     }
   }
   return filtered_sources;

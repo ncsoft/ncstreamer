@@ -37,7 +37,8 @@ class Client : public CefClient {
       const std::wstring &designated_user,
       const boost::property_tree::ptree &device_settings,
       const uint16_t &remote_port,
-      const std::wstring &location);
+      const std::wstring &location,
+      const std::wstring &uid_hash);
 
   virtual ~Client();
 
