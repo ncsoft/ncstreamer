@@ -341,6 +341,7 @@ void YouTube::GetChannel(
   }, [on_failed, on_channel_gotten](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
+    std::vector<std::string> ids;
     std::vector<std::string> channels;
     try {
       boost::property_tree::read_json(ss, tree);
@@ -350,6 +351,8 @@ void YouTube::GetChannel(
         return;
       }
       for (const auto &channel : items) {
+        const std::string &id{channel.second.get<std::string>("id")};
+        ids.emplace_back(id);
         const std::string &title{
             channel.second.get<std::string>("snippet.title")};
         channels.emplace_back(title);
@@ -364,7 +367,7 @@ void YouTube::GetChannel(
       on_failed(msg.str());
       return;
     }
-    on_channel_gotten(channels[0]);
+    on_channel_gotten(ids[0], channels[0]);
   });
 }
 
@@ -561,8 +564,9 @@ void YouTube::OnLoginSuccess(
         (expires_in - 10) * 1000);
 
     GetChannel(on_failed, [this, on_failed, on_logged_in](
+        const std::string &id,
         const std::string &user_name) {
-      on_logged_in(user_name, {}, {});
+      on_logged_in(id, user_name, {}, {});
 
       // check user agreement
       GetBroadcast(on_failed, [](

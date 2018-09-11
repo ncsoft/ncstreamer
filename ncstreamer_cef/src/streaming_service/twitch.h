@@ -60,6 +60,7 @@ class Twitch : public StreamingServiceProvider {
 
  private:
   using OnUserGotten = std::function<void(
+      const std::string &id,
       const std::string &name,
       const std::string &user_page)>;
 
