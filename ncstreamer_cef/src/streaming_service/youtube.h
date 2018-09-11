@@ -56,6 +56,7 @@ class YouTube : public StreamingServiceProvider {
 
  private:
   using OnChannelGotten = std::function<void(
+      const std::string &id,
       const std::string &user_name)>;
 
   using OnBroadcastGotten = std::function<void(

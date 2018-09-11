@@ -256,10 +256,12 @@ void Twitch::GetUser(
   }, [this, on_failed, on_user_gotten](const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
-    std::string nick_name{};
-    std::string account_name{};
+    std::string id;
+    std::string nick_name;
+    std::string account_name;
     try {
       boost::property_tree::read_json(ss, tree);
+      id = tree.get<std::string>("_id");
       nick_name = tree.get<std::string>("display_name");
       account_name = tree.get<std::string>("name");
     } catch (const std::exception &/*e*/) {
@@ -279,7 +281,7 @@ void Twitch::GetUser(
         "https://www.twitch.tv/" +
         account_name +
         "/dashboard/settings"};
-    on_user_gotten(nick_name, user_page);
+    on_user_gotten(id, nick_name, user_page);
   });
 }
 
@@ -410,12 +412,13 @@ void Twitch::OnLoginSuccess(
   SetAccessToken(access_token);
 
   GetUser(on_failed, [this, on_failed, on_logged_in](
+      const std::string &id,
       const std::string &name,
       const std::string &user_page) {
-    GetStreamServers(on_failed, [name, user_page, on_logged_in](
+    GetStreamServers(on_failed, [id, name, user_page, on_logged_in](
         const std::vector<StreamServer> &stream_servers) {
       StreamingServiceProvider::UserPage page{"", "", user_page, ""};
-      on_logged_in(name, {page}, stream_servers);
+      on_logged_in(id, name, {page}, stream_servers);
     });
   });
 }

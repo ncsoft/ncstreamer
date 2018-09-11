@@ -1135,7 +1135,7 @@ function checkCurrentWebcamExist() {
 
 
 cef.serviceProviderLogIn.onResponse = function(
-    error, userName, userPages, streamServers, userPage,
+    error, _id, userName, userPages, streamServers, userPage,
     privacy, youtubePrivacy, streamServer, description, location) {
   if (error != '') {
     console.info(error);
@@ -1147,6 +1147,7 @@ cef.serviceProviderLogIn.onResponse = function(
   }
 
   app.service.user = {
+    id: _id,
     name: userName,
     pages: {},
     streamServer: {},
@@ -1192,6 +1193,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
   }
 
   app.service.user = {
+    id: '',
     name: '',
     pages: {},
     streamServer: {},
@@ -1286,7 +1288,8 @@ cef.streamingStart.onResponse =
         app.dom.micCheckbox.checked,
         serviceProvider,
         streamUrl,
-        postUrl);
+        postUrl,
+        app.service.user.id);
 
     remote.startRequestKey = '';
   })();
