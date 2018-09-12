@@ -28,6 +28,7 @@ class StreamingService {
       std::function<void(const std::string &service_provider,
                          const std::string &stream_server,
                          const std::string &stream_key,
+                         const std::string &video_id,
                          const std::string &post_url)>;
   using OnCommentsGot =
       std::function<void(const std::string &comments)>;
