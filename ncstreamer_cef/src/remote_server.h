@@ -62,7 +62,11 @@ class RemoteServer {
       const std::string &mic,
       const std::string &service_provider,
       const std::string &stream_url,
-      const std::string &post_url);
+      const std::string &post_url,
+      const std::string &id,
+      const std::string &video_id,
+      const std::string &access_token,
+      const std::string &page_id);
 
   void NotifyStreamingStop(
       int request_key,
@@ -259,7 +263,11 @@ class RemoteServer {
       const std::string &mic,
       const std::string &service_provider,
       const std::string &stream_url,
-      const std::string &post_url);
+      const std::string &post_url,
+      const std::string &id,
+      const std::string &video_id,
+      const std::string &access_token,
+      const std::string &page_id);
 
   void BroadcastStreamingStop(
       const std::string &source);
