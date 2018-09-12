@@ -1135,7 +1135,7 @@ function checkCurrentWebcamExist() {
 
 
 cef.serviceProviderLogIn.onResponse = function(
-    error, _id, userName, userPages, streamServers, userPage,
+    error, _id, accessToken, userName, userPages, streamServers, userPage,
     privacy, youtubePrivacy, streamServer, description, location) {
   if (error != '') {
     console.info(error);
@@ -1148,6 +1148,7 @@ cef.serviceProviderLogIn.onResponse = function(
 
   app.service.user = {
     id: _id,
+    token: accessToken,
     name: userName,
     pages: {},
     streamServer: {},
@@ -1194,6 +1195,7 @@ cef.serviceProviderLogOut.onResponse = function(error) {
 
   app.service.user = {
     id: '',
+    token: '',
     name: '',
     pages: {},
     streamServer: {},
@@ -1290,7 +1292,8 @@ cef.streamingStart.onResponse =
         streamUrl,
         postUrl,
         app.service.user.id,
-        videoId);
+        videoId,
+        app.service.user.token);
 
     remote.startRequestKey = '';
   })();

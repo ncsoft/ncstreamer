@@ -388,6 +388,7 @@ void Client::OnCommandServiceProviderLogIn(
         JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd, location](
       const std::string &id,
+      const std::string &access_token,
       const std::string &user_name,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages,
       const std::vector<
@@ -405,6 +406,7 @@ void Client::OnCommandServiceProviderLogIn(
     boost::property_tree::ptree arg;
     arg.add("error", "");
     arg.add("_id", id);
+    arg.add("accessToken", access_token);
     arg.add("userName", user_name);
     arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
     arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));

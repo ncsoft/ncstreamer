@@ -411,14 +411,15 @@ void Twitch::OnLoginSuccess(
     const OnLoggedIn &on_logged_in) {
   SetAccessToken(access_token);
 
-  GetUser(on_failed, [this, on_failed, on_logged_in](
+  GetUser(on_failed, [this, access_token, on_failed, on_logged_in](
       const std::string &id,
       const std::string &name,
       const std::string &user_page) {
-    GetStreamServers(on_failed, [id, name, user_page, on_logged_in](
+    GetStreamServers(on_failed,
+                     [id, access_token, name, user_page, on_logged_in](
         const std::vector<StreamServer> &stream_servers) {
       StreamingServiceProvider::UserPage page{"", "", user_page, ""};
-      on_logged_in(id, name, {page}, stream_servers);
+      on_logged_in(id, access_token, name, {page}, stream_servers);
     });
   });
 }
