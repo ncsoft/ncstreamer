@@ -1132,6 +1132,10 @@ void Client::OnCommandRemoteStart(
   auto service_provider_i = args.find("serviceProvider");
   auto stream_url_i = args.find("streamUrl");
   auto post_url_i = args.find("postUrl");
+  auto id_i = args.find("id");
+  auto video_id_i = args.find("videoId");
+  auto access_token_i = args.find("token");
+  auto page_id_i = args.find("pageId");
   if (request_key_i == args.end() ||
       error_i == args.end() ||
       source_i == args.end() ||
@@ -1141,7 +1145,11 @@ void Client::OnCommandRemoteStart(
       mic_i == args.end() ||
       service_provider_i == args.end() ||
       stream_url_i == args.end() ||
-      post_url_i == args.end()) {
+      post_url_i == args.end() ||
+      id_i == args.end() ||
+      video_id_i == args.end() ||
+      access_token_i == args.end() ||
+      page_id_i == args.end()) {
     assert(false);
     return;
   }
@@ -1161,6 +1169,10 @@ void Client::OnCommandRemoteStart(
   const std::string &service_provider = service_provider_i->second;
   const std::string &stream_url = stream_url_i->second;
   const std::string &post_url = post_url_i->second;
+  const std::string &id = id_i->second;
+  const std::string &video_id = video_id_i->second;
+  const std::string &access_token = access_token_i->second;
+  const std::string &page_id = page_id_i->second;
 
   RemoteServer::Get()->NotifyStreamingStart(
       request_key,
@@ -1172,7 +1184,11 @@ void Client::OnCommandRemoteStart(
       mic,
       service_provider,
       stream_url,
-      post_url);
+      post_url,
+      id,
+      video_id,
+      access_token,
+      page_id);
 }
 
 
