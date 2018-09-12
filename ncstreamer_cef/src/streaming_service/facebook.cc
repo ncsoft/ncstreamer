@@ -376,7 +376,7 @@ void Facebook::OnLoginSuccess(
     const OnLoggedIn &on_logged_in) {
   SetAccessToken(access_token);
 
-  GetMe(on_failed, [this, on_logged_in](
+  GetMe(on_failed, [this, access_token, on_logged_in](
       const std::string &me_id,
       const std::string &me_name,
       const std::vector<UserPage> &me_accounts) {
@@ -393,7 +393,7 @@ void Facebook::OnLoginSuccess(
     OutputDebugStringA(
         (std::to_string(me_accounts.size()) + "/accounts\r\n").c_str());
 
-    on_logged_in(me_id, me_name, me_accounts, {});
+    on_logged_in(me_id, access_token, me_name, me_accounts, {});
   });
 }
 

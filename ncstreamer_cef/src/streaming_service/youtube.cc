@@ -568,10 +568,10 @@ void YouTube::OnLoginSuccess(
                    GetAccessToken()),
         (expires_in - 10) * 1000);
 
-    GetChannel(on_failed, [this, on_failed, on_logged_in](
+    GetChannel(on_failed, [this, access_token, on_failed, on_logged_in](
         const std::string &id,
         const std::string &user_name) {
-      on_logged_in(id, user_name, {}, {});
+      on_logged_in(id, access_token, user_name, {}, {});
 
       // check user agreement
       GetBroadcast(on_failed, [](

@@ -26,6 +26,7 @@ class StreamingServiceProvider {
       std::function<void(const std::string &fail)>;
   using OnLoggedIn =
       std::function<void(const std::string &id,
+                         const std::string &access_token,
                          const std::string &user_name,
                          const std::vector<UserPage> &user_pages,
                          const std::vector<StreamServer> &stream_servers)>;
