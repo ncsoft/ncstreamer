@@ -330,7 +330,8 @@ void Facebook::GetPostUrl(
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
     on_failed(msg);
-  }, [stream_url, on_failed, on_live_video_posted](const std::string &str) {
+  }, [stream_id, stream_url, on_failed, on_live_video_posted](
+      const std::string &str) {
     boost::property_tree::ptree stream;
     std::stringstream stream_ss{str};
     std::string post_url{};
@@ -364,7 +365,7 @@ void Facebook::GetPostUrl(
       return std::make_tuple(stream_url.substr(0, key_index),
           stream_url.substr(key_index));
     }();
-    on_live_video_posted(stream_server, stream_key, post_url);
+    on_live_video_posted(stream_server, stream_key, stream_id, post_url);
   });
 }
 

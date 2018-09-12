@@ -160,16 +160,21 @@ void YouTube::PostLiveVideo(
         privacy,
         on_failed, [this,
                     on_failed,
+                    broadcast_id,
                     stream_id,
                     page_link,
                     on_live_video_posted]() {
       GetStream(
           stream_id,
           on_failed,
-          [page_link,
+          [broadcast_id,
+           page_link,
            on_live_video_posted](const std::string &stream_server,
                                  const std::string &stream_key) {
-        on_live_video_posted(stream_server, stream_key, page_link);
+        on_live_video_posted(stream_server,
+                             stream_key,
+                             broadcast_id,
+                             page_link);
       });
     });
   });

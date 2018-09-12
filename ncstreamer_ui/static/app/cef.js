@@ -37,7 +37,8 @@ const cef = (function() {
     'streaming/start': {
       request: ['source', 'streamServer', 'userPage', 'privacy', 'title',
                 'description'],
-      response: ['error', 'serviceProvider', 'streamUrl', 'postUrl'],
+      response: ['error', 'serviceProvider', 'streamUrl', 'videoId',
+                 'postUrl'],
     },
     'streaming/stop': {
       request: [],
@@ -123,7 +124,7 @@ const cef = (function() {
     'remote/start': {
       request: ['requestKey', 'error', 'source', 'userPage', 'privacy',
                 'description', 'mic', 'serviceProvider', 'streamUrl',
-                'postUrl', 'id'],
+                'postUrl', 'id', 'videoId'],
       response: [],
     },
     'remote/stop': {

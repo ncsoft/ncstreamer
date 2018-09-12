@@ -1249,7 +1249,7 @@ cef.streamingSetUp.onResponse = function(error) {
 
 
 cef.streamingStart.onResponse =
-    function(error, serviceProvider, streamUrl, postUrl) {
+    function(error, serviceProvider, streamUrl, videoId, postUrl) {
   console.info(error);
   if (error != '') {
     if (error == 'obs internal') {
@@ -1289,7 +1289,8 @@ cef.streamingStart.onResponse =
         serviceProvider,
         streamUrl,
         postUrl,
-        app.service.user.id);
+        app.service.user.id,
+        videoId);
 
     remote.startRequestKey = '';
   })();
