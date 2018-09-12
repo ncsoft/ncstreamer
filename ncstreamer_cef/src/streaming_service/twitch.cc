@@ -357,7 +357,7 @@ void Twitch::UpdateChannel(
       stream_key,
       post_url,
       on_live_video_posted](const std::string &str) {
-    on_live_video_posted(stream_server, stream_key, "0", post_url, "");
+    on_live_video_posted(stream_server, stream_key, "0", post_url);
   });
 }
 

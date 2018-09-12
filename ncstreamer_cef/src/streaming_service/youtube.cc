@@ -174,8 +174,7 @@ void YouTube::PostLiveVideo(
         on_live_video_posted(stream_server,
                              stream_key,
                              broadcast_id,
-                             page_link,
-                             "");
+                             page_link);
       });
     });
   });

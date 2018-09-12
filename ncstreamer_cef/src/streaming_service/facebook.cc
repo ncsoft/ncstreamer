@@ -179,7 +179,7 @@ void Facebook::PostLiveVideo(
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
     on_failed(msg);
-  }, [this, user_page_id, on_failed, on_live_video_posted](
+  }, [this, on_failed, on_live_video_posted](
       const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
@@ -204,7 +204,7 @@ void Facebook::PostLiveVideo(
     OutputDebugStringA((stream_url + "/stream_url\r\n").c_str());
 
     GetPostUrl(
-        stream_id, stream_url, user_page_id, on_failed, on_live_video_posted);
+        stream_id, stream_url, on_failed, on_live_video_posted);
   });
 }
 
@@ -322,7 +322,6 @@ void Facebook::GetMe(
 void Facebook::GetPostUrl(
     const std::string &stream_id,
     const std::string &stream_url,
-    const std::string &page_id,
     const OnFailed &on_failed,
     const OnLiveVideoPosted &on_live_video_posted) {
   Uri post_id_uri{FacebookApi::Graph::PostId::BuildUri(
@@ -333,7 +332,7 @@ void Facebook::GetPostUrl(
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
     on_failed(msg);
-  }, [stream_id, stream_url, page_id, on_failed, on_live_video_posted](
+  }, [stream_id, stream_url, on_failed, on_live_video_posted](
       const std::string &str) {
     boost::property_tree::ptree stream;
     std::stringstream stream_ss{str};
@@ -369,7 +368,7 @@ void Facebook::GetPostUrl(
           stream_url.substr(key_index));
     }();
     on_live_video_posted(
-        stream_server, stream_key, stream_id, post_url, page_id);
+        stream_server, stream_key, stream_id, post_url);
   });
 }
 
