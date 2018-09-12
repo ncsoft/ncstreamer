@@ -86,6 +86,7 @@ class Facebook : public StreamingServiceProvider {
   void GetPostUrl(
       const std::string &stream_id,
       const std::string &stream_url,
+      const std::string &page_id,
       const OnFailed &on_failed,
       const OnLiveVideoPosted &on_live_video_posted);
 
