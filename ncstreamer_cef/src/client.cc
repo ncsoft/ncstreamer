@@ -513,8 +513,7 @@ void Client::OnCommandStreamingStart(
                             const std::string &stream_server,
                             const std::string &stream_key,
                             const std::string &video_id,
-                            const std::string &post_url,
-                            const std::string &page_id) {
+                            const std::string &post_url) {
     bool result = Obs::Get()->StartStreaming(
         source,
         service_provider,
@@ -526,16 +525,14 @@ void Client::OnCommandStreamingStart(
          stream_server,
          stream_key,
          video_id,
-         post_url,
-         page_id]() {
+         post_url]() {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
           JsExecutor::StringPairVector{
               {"error", ""},
               {"serviceProvider", service_provider},
               {"streamUrl", stream_server + stream_key},
               {"videoId", video_id},
-              {"postUrl", post_url},
-              {"pageId", page_id}});
+              {"postUrl", post_url}});
     });
     if (result == false) {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
@@ -1135,7 +1132,6 @@ void Client::OnCommandRemoteStart(
   auto id_i = args.find("id");
   auto video_id_i = args.find("videoId");
   auto access_token_i = args.find("token");
-  auto page_id_i = args.find("pageId");
   if (request_key_i == args.end() ||
       error_i == args.end() ||
       source_i == args.end() ||
@@ -1148,8 +1144,7 @@ void Client::OnCommandRemoteStart(
       post_url_i == args.end() ||
       id_i == args.end() ||
       video_id_i == args.end() ||
-      access_token_i == args.end() ||
-      page_id_i == args.end()) {
+      access_token_i == args.end()) {
     assert(false);
     return;
   }
@@ -1172,7 +1167,6 @@ void Client::OnCommandRemoteStart(
   const std::string &id = id_i->second;
   const std::string &video_id = video_id_i->second;
   const std::string &access_token = access_token_i->second;
-  const std::string &page_id = page_id_i->second;
 
   RemoteServer::Get()->NotifyStreamingStart(
       request_key,
@@ -1187,8 +1181,7 @@ void Client::OnCommandRemoteStart(
       post_url,
       id,
       video_id,
-      access_token,
-      page_id);
+      access_token);
 }
 
 

@@ -147,8 +147,7 @@ void RemoteServer::NotifyStreamingStart(
     const std::string &post_url,
     const std::string &id,
     const std::string &video_id,
-    const std::string &access_token,
-    const std::string &page_id) {
+    const std::string &access_token) {
   if (request_key != 0) {
     RespondStreamingStart(request_key, error);
   }
@@ -165,8 +164,7 @@ void RemoteServer::NotifyStreamingStart(
         post_url,
         id,
         video_id,
-        access_token,
-        page_id);
+        access_token);
   }
 }
 
@@ -1407,8 +1405,7 @@ void RemoteServer::BroadcastStreamingStart(
     const std::string &post_url,
     const std::string &id,
     const std::string &video_id,
-    const std::string &access_token,
-    const std::string &page_id) {
+    const std::string &access_token) {
   std::stringstream msg;
   {
     boost::property_tree::ptree tree;
@@ -1425,7 +1422,6 @@ void RemoteServer::BroadcastStreamingStart(
     tree.put("id", id);
     tree.put("videoId", video_id);
     tree.put("accessToken", access_token);
-    tree.put("pageId", page_id);
     boost::property_tree::write_json(msg, tree, false);
   }
   Broadcast(msg.str());
