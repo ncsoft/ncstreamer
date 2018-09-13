@@ -179,7 +179,8 @@ void Facebook::PostLiveVideo(
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
     on_failed(msg);
-  }, [this, on_failed, on_live_video_posted](const std::string &str) {
+  }, [this, on_failed, on_live_video_posted](
+      const std::string &str) {
     boost::property_tree::ptree tree;
     std::stringstream ss{str};
     std::string stream_id{};
@@ -202,7 +203,8 @@ void Facebook::PostLiveVideo(
 
     OutputDebugStringA((stream_url + "/stream_url\r\n").c_str());
 
-    GetPostUrl(stream_id, stream_url, on_failed, on_live_video_posted);
+    GetPostUrl(
+        stream_id, stream_url, on_failed, on_live_video_posted);
   });
 }
 
@@ -330,7 +332,8 @@ void Facebook::GetPostUrl(
       [on_failed](const boost::system::error_code &ec) {
     std::string msg{ec.message()};
     on_failed(msg);
-  }, [stream_url, on_failed, on_live_video_posted](const std::string &str) {
+  }, [stream_id, stream_url, on_failed, on_live_video_posted](
+      const std::string &str) {
     boost::property_tree::ptree stream;
     std::stringstream stream_ss{str};
     std::string post_url{};
@@ -364,7 +367,8 @@ void Facebook::GetPostUrl(
       return std::make_tuple(stream_url.substr(0, key_index),
           stream_url.substr(key_index));
     }();
-    on_live_video_posted(stream_server, stream_key, post_url);
+    on_live_video_posted(
+        stream_server, stream_key, stream_id, post_url);
   });
 }
 
@@ -375,7 +379,7 @@ void Facebook::OnLoginSuccess(
     const OnLoggedIn &on_logged_in) {
   SetAccessToken(access_token);
 
-  GetMe(on_failed, [this, on_logged_in](
+  GetMe(on_failed, [this, access_token, on_logged_in](
       const std::string &me_id,
       const std::string &me_name,
       const std::vector<UserPage> &me_accounts) {
@@ -392,7 +396,7 @@ void Facebook::OnLoginSuccess(
     OutputDebugStringA(
         (std::to_string(me_accounts.size()) + "/accounts\r\n").c_str());
 
-    on_logged_in(me_name, me_accounts, {});
+    on_logged_in(me_id, access_token, me_name, me_accounts, {});
   });
 }
 

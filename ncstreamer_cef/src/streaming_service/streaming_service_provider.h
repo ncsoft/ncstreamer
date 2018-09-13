@@ -25,7 +25,9 @@ class StreamingServiceProvider {
   using OnFailed =
       std::function<void(const std::string &fail)>;
   using OnLoggedIn =
-      std::function<void(const std::string &user_name,
+      std::function<void(const std::string &id,
+                         const std::string &access_token,
+                         const std::string &user_name,
                          const std::vector<UserPage> &user_pages,
                          const std::vector<StreamServer> &stream_servers)>;
   using OnLoggedOut =
@@ -33,6 +35,7 @@ class StreamingServiceProvider {
   using OnLiveVideoPosted =
       std::function<void(const std::string &stream_server,
                          const std::string &stream_key,
+                         const std::string &video_id,
                          const std::string &post_url)>;
 
   using OnCommentsGot =

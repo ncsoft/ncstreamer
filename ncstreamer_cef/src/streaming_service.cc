@@ -132,9 +132,13 @@ void StreamingService::PostLiveVideo(
       [on_live_video_posted, service_provider_id](
           const std::string &stream_server,
           const std::string &stream_key,
+          const std::string &video_id,
           const std::string &post_url) {
-        on_live_video_posted(
-            service_provider_id, stream_server, stream_key, post_url);
+        on_live_video_posted(service_provider_id,
+                             stream_server,
+                             stream_key,
+                             video_id,
+                             post_url);
       });
 }
 

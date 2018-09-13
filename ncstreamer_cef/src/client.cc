@@ -387,6 +387,8 @@ void Client::OnCommandServiceProviderLogIn(
     JsExecutor::Execute(browser, "cef.onResponse", cmd,
         JsExecutor::StringPairVector{{"error", error}});
   }, [browser, cmd, location](
+      const std::string &id,
+      const std::string &access_token,
       const std::string &user_name,
       const std::vector<StreamingServiceProvider::UserPage> &user_pages,
       const std::vector<
@@ -403,6 +405,8 @@ void Client::OnCommandServiceProviderLogIn(
 
     boost::property_tree::ptree arg;
     arg.add("error", "");
+    arg.add("_id", id);
+    arg.add("accessToken", access_token);
     arg.add("userName", user_name);
     arg.add_child("userPages", JsExecutor::ToPtree(tree_pages));
     arg.add_child("streamServers", JsExecutor::ToPtree(tree_servers));
@@ -508,6 +512,7 @@ void Client::OnCommandStreamingStart(
   }, [browser, cmd, source](const std::string &service_provider,
                             const std::string &stream_server,
                             const std::string &stream_key,
+                            const std::string &video_id,
                             const std::string &post_url) {
     bool result = Obs::Get()->StartStreaming(
         source,
@@ -519,12 +524,14 @@ void Client::OnCommandStreamingStart(
          service_provider,
          stream_server,
          stream_key,
+         video_id,
          post_url]() {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,
           JsExecutor::StringPairVector{
               {"error", ""},
               {"serviceProvider", service_provider},
               {"streamUrl", stream_server + stream_key},
+              {"videoId", video_id},
               {"postUrl", post_url}});
     });
     if (result == false) {
@@ -1122,6 +1129,9 @@ void Client::OnCommandRemoteStart(
   auto service_provider_i = args.find("serviceProvider");
   auto stream_url_i = args.find("streamUrl");
   auto post_url_i = args.find("postUrl");
+  auto id_i = args.find("id");
+  auto video_id_i = args.find("videoId");
+  auto access_token_i = args.find("token");
   if (request_key_i == args.end() ||
       error_i == args.end() ||
       source_i == args.end() ||
@@ -1131,7 +1141,10 @@ void Client::OnCommandRemoteStart(
       mic_i == args.end() ||
       service_provider_i == args.end() ||
       stream_url_i == args.end() ||
-      post_url_i == args.end()) {
+      post_url_i == args.end() ||
+      id_i == args.end() ||
+      video_id_i == args.end() ||
+      access_token_i == args.end()) {
     assert(false);
     return;
   }
@@ -1151,6 +1164,9 @@ void Client::OnCommandRemoteStart(
   const std::string &service_provider = service_provider_i->second;
   const std::string &stream_url = stream_url_i->second;
   const std::string &post_url = post_url_i->second;
+  const std::string &id = id_i->second;
+  const std::string &video_id = video_id_i->second;
+  const std::string &access_token = access_token_i->second;
 
   RemoteServer::Get()->NotifyStreamingStart(
       request_key,
@@ -1162,7 +1178,10 @@ void Client::OnCommandRemoteStart(
       mic,
       service_provider,
       stream_url,
-      post_url);
+      post_url,
+      id,
+      video_id,
+      access_token);
 }
 
 

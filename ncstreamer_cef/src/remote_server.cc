@@ -144,7 +144,10 @@ void RemoteServer::NotifyStreamingStart(
     const std::string &mic,
     const std::string &service_provider,
     const std::string &stream_url,
-    const std::string &post_url) {
+    const std::string &post_url,
+    const std::string &id,
+    const std::string &video_id,
+    const std::string &access_token) {
   if (request_key != 0) {
     RespondStreamingStart(request_key, error);
   }
@@ -158,7 +161,10 @@ void RemoteServer::NotifyStreamingStart(
         mic,
         service_provider,
         stream_url,
-        post_url);
+        post_url,
+        id,
+        video_id,
+        access_token);
   }
 }
 
@@ -1396,7 +1402,10 @@ void RemoteServer::BroadcastStreamingStart(
     const std::string &mic,
     const std::string &service_provider,
     const std::string &stream_url,
-    const std::string &post_url) {
+    const std::string &post_url,
+    const std::string &id,
+    const std::string &video_id,
+    const std::string &access_token) {
   std::stringstream msg;
   {
     boost::property_tree::ptree tree;
@@ -1410,6 +1419,9 @@ void RemoteServer::BroadcastStreamingStart(
     tree.put("serviceProvider", service_provider);
     tree.put("streamUrl", stream_url);
     tree.put("postUrl", post_url);
+    tree.put("id", id);
+    tree.put("videoId", video_id);
+    tree.put("accessToken", access_token);
     boost::property_tree::write_json(msg, tree, false);
   }
   Broadcast(msg.str());
