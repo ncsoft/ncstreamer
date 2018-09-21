@@ -30,7 +30,8 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
       designated_user_{},
       default_position_{CW_USEDEFAULT, CW_USEDEFAULT},
       device_settings_{},
-      location_{} {
+      location_{},
+      uid_hash_{} {
   CefRefPtr<CefCommandLine> cef_cmd_line =
       CefCommandLine::CreateCommandLine();
   cef_cmd_line->InitFromString(cmd_line);
@@ -99,6 +100,7 @@ CommandLine::CommandLine(const std::wstring &cmd_line)
   }
 
   location_ = cef_cmd_line->GetSwitchValue(L"location");
+  uid_hash_ = cef_cmd_line->GetSwitchValue(L"uid-hash");
 }
 
 
