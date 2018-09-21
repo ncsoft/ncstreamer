@@ -35,6 +35,7 @@ BrowserProcessHandler::BrowserProcessHandler(
       device_settings_{cmd_line.device_settings()},
       remote_port_{cmd_line.remote_port()},
       location_{cmd_line.location()},
+      uid_hash_{cmd_line.uid_hash()},
       client_{} {
 }
 
@@ -66,7 +67,8 @@ void BrowserProcessHandler::OnContextInitialized() {
       designated_user_,
       device_settings_,
       remote_port_,
-      location_};
+      location_,
+      uid_hash_};
 
   std::wstring uri{ui_uri_};
   if (uri.empty() == true) {

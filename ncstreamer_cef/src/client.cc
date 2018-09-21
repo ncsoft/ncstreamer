@@ -39,7 +39,8 @@ Client::Client(
     const std::wstring &designated_user,
     const boost::property_tree::ptree &device_settings,
     const uint16_t &remote_port,
-    const std::wstring &location)
+    const std::wstring &location,
+    const std::wstring &uid_hash)
     : locale_{locale},
       tag_ids_{tag_ids},
       designated_user_{designated_user},
@@ -52,7 +53,8 @@ Client::Client(
                                           video_quality,
                                           shows_sources_all,
                                           sources,
-                                          device_settings}} {
+                                          device_settings,
+                                          uid_hash}} {
 }
 
 

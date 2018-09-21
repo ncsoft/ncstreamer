@@ -50,6 +50,7 @@ class BrowserProcessHandler : public CefBrowserProcessHandler {
   const boost::property_tree::ptree device_settings_;
   const uint16_t remote_port_;
   const std::wstring location_;
+  const std::wstring uid_hash_;
 
   CefRefPtr<Client> client_;
 
