@@ -54,6 +54,7 @@ class ClientLoadHandler : public CefLoadHandler {
 
  private:
   static std::vector<std::string> FilterSources(
+      const std::wstring &uid_hash,
       const std::vector<std::string> &all,
       const std::vector<std::string> &filter);
 
@@ -66,6 +67,7 @@ class ClientLoadHandler : public CefLoadHandler {
   const bool shows_sources_all_;
   std::vector<std::string> white_sources_;
   const boost::property_tree::ptree device_settings_;
+  const std::wstring uid_hash_;
   std::vector<std::string> prev_sources_;
 
   bool main_page_loaded_;

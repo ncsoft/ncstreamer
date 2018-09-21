@@ -37,13 +37,18 @@ ClientLoadHandler::ClientLoadHandler(
       white_sources_{},
       device_settings_{device_setting},
       prev_sources_{},
+      uid_hash_{uid_hash},
       main_page_loaded_{false} {
   assert(life_span_handler);
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  std::string hash = converter.to_bytes(uid_hash);
-  for (const auto &source : sources) {
-    const std::string pattern{"((" + source + ").*(\\(" + hash + "\\)).*)"};
-    white_sources_.emplace_back(pattern);
+  if (uid_hash_.empty()) {
+    white_sources_ = sources;
+  } else {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::string hash = converter.to_bytes(uid_hash);
+    for (const auto &source : sources) {
+      const std::string pattern{"((" + source + ").*(\\(" + hash + "\\)).*)"};
+      white_sources_.emplace_back(pattern);
+    }
   }
 }
 
@@ -99,19 +104,50 @@ void ClientLoadHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 
 
 std::vector<std::string> ClientLoadHandler::FilterSources(
+    const std::wstring &uid_hash,
     const std::vector<std::string> &all,
     const std::vector<std::string> &filter) {
   std::vector<std::string> filtered_sources;
-  for (const auto &source : all) {
-    ObsSourceInfo source_info{source};
-    const auto &title = source_info.title();
-    for (const auto &i : filter) {
-      const std::regex pattern{i};
-      std::smatch matches;
-      const bool &found = std::regex_search(title, matches, pattern);
-      if (found) {
-        filtered_sources.emplace_back(matches[0]);
-        break;
+  if (uid_hash.empty()) {
+    std::unordered_map<std::string /*title*/,
+        std::vector<std::string /*source*/>> workspace;
+    for (const auto &title : filter) {
+      static const std::vector<std::string> kEmptySources{};
+      workspace.emplace(title, kEmptySources);
+    }
+
+    for (const auto &source : all) {
+      ObsSourceInfo source_info{source};
+      const auto &title = source_info.title();
+
+      auto i = workspace.find(title);
+      if (i == workspace.end()) {
+        continue;
+      }
+      auto *sources = &(i->second);
+      sources->emplace_back(source);
+    }
+
+    for (const auto &title : filter) {
+      auto i = workspace.find(title);
+      assert(i != workspace.end());
+      const auto &sources = i->second;
+      for (const auto &source : sources) {
+        filtered_sources.emplace_back(source);
+      }
+    }
+  } else {
+    for (const auto &source : all) {
+      ObsSourceInfo source_info{source};
+      const auto &title = source_info.title();
+      for (const auto &i : filter) {
+        const std::regex pattern{i};
+        std::smatch matches;
+        const bool &found = std::regex_search(title, matches, pattern);
+        if (found) {
+          filtered_sources.emplace_back(matches[0]);
+          break;
+        }
       }
     }
   }
@@ -141,7 +177,7 @@ void ClientLoadHandler::UpdateSourcesPeriodically(
 
   const auto &all = Obs::Get()->FindAllWindowsOnDesktop();
   const auto &sources = (shows_sources_all_ == true) ?
-      all : FilterSources(all, white_sources_);
+      all : FilterSources(uid_hash_, all, white_sources_);
 
   if (sources != prev_sources_) {
     JsExecutor::Execute(browser, "updateStreamingSources", "sources", sources);
