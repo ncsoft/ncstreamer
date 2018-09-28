@@ -1072,6 +1072,9 @@ function showErrorText() {
     case 'obs error':
       error.textContent = '%OBS_ERROR%';
       break;
+    case 'obs timeout':
+      error.textContent = '%OBS_TIMEOUT%';
+      break;
     default:
       error.TextContent = '%OBS_ERROR%';
       break;
@@ -1258,6 +1261,8 @@ cef.streamingStart.onResponse =
       setUpError('obs error');
     } else if (error.includes('no channel or streaming service')) {
       ncsoft.modal.show('#youtube-link-modal');
+    } else if (error == 'obs timeout') {
+      setUpError('obs timeout');
     } else {
       setUpError('fail streaming');
     }

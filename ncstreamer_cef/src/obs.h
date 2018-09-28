@@ -36,7 +36,8 @@ class Obs {
       const std::string &service_provider,
       const std::string &stream_server,
       const std::string &stream_key,
-      const ObsOutput::OnStarted &on_streaming_started);
+      const ObsOutput::OnStarted &on_streaming_started,
+      const ObsOutput::OnStopped &on_streaming_timeout);
   void StopStreaming(
       const ObsOutput::OnStopped &on_streaming_stopped);
 
