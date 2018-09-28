@@ -78,7 +78,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "ko-KR": {
@@ -160,7 +160,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "de-DE": {
@@ -242,7 +242,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "fr-FR": {
@@ -324,7 +324,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "es-XL": {
@@ -406,7 +406,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "it-IT": {
@@ -488,7 +488,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "pl-PL": {
@@ -570,7 +570,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "pt-BR": {
@@ -652,7 +652,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "tr-TR": {
@@ -734,7 +734,7 @@
     "YOUTUBE_TERMS_DESC2": "최대 24시간",
     "YOUTUBE_TERMS_DESC3": " 후 스트리밍을 시작할 수 있습니다.",
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
-    "NO_LINEAGE": "리니지 이용 불가",
+    "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요."
   },
   "zh-TW": {
