@@ -48,6 +48,8 @@ class RemoteMessage {
     kSettingsMicOffResponse,
     kSettingsMicSearchRequest = 721,
     kSettingsMicSearchResponse,
+    kNcStreamerUrlUpdateRequest = 731,
+    kNcStreamerUrlUpdateResponse,
     kStreamingViewersRequest = 801,
     kStreamingViewersResponse,
     kNcStreamerExitRequest = 901,

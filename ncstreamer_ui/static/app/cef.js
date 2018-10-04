@@ -323,4 +323,15 @@ const remote = {
     app.dom.micCheckbox.checked = false;
     ncsoft.slider.disable(app.dom.micVolume);
   },
+  onStreamingUrlUpdateRequest: function(requestKey, args) {
+    if (app.streaming.status != 'onAir') {
+      return;
+    }
+
+    const url = args.url;
+    console.info(url);
+    app.streaming.nctvUrl = url;
+    app.dom.liveImage.style.display = 'none';
+    app.dom.nctvText.style.display = 'block';
+  },
 };
