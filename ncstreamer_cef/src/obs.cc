@@ -89,7 +89,8 @@ bool Obs::StartStreaming(
     const std::string &service_provider,
     const std::string &stream_server,
     const std::string &stream_key,
-    const ObsOutput::OnStarted &on_streaming_started) {
+    const ObsOutput::OnStarted &on_streaming_started,
+    const ObsOutput::OnStopped &on_streaming_timeout) {
   UpdateVideoSource(source_info);
   UpdateBaseResolution(source_info);
 
@@ -101,7 +102,11 @@ bool Obs::StartStreaming(
   UpdateCurrentServiceEncoders(audio_bitrate_, video_bitrate_);
 
   return stream_output_->Start(
-      audio_encoder_, video_encoder_, current_service_, on_streaming_started);
+      audio_encoder_,
+      video_encoder_,
+      current_service_,
+      on_streaming_started,
+      on_streaming_timeout);
 }
 
 
