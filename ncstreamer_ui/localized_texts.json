@@ -80,7 +80,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -163,7 +165,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -246,7 +250,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -329,7 +335,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -412,7 +420,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -495,7 +505,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -578,7 +590,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -661,7 +675,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -744,7 +760,9 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube 고객센터 바로가기",
     "NO_LINEAGE": "리니지 방송 불가",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",
@@ -827,7 +845,9 @@
     "YOUTUBE_SUPPORT_PAGE": "立即前往YouTube說明中心",
     "NO_LINEAGE": "天堂無法使用該服務",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -910,6 +930,8 @@
     "YOUTUBE_SUPPORT_PAGE": "YouTube ヘルプ リンク",
     "NO_LINEAGE": "リネージュ利用不可",
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다."
+    "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
+    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
+    "NCTV_LINK": "NCTV 보기"
   }
 }

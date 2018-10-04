@@ -411,6 +411,9 @@ void RemoteServer::OnMessage(
       {RemoteMessage::MessageType::kSettingsMicOffRequest,
        std::bind(&RemoteServer::OnSettingsMicOffRequest,
            this, std::placeholders::_1, std::placeholders::_2)},
+      {RemoteMessage::MessageType::kNcStreamerUrlUpdateRequest,
+       std::bind(&RemoteServer::OnNcStreamerUrlUpdateRequest,
+           this, std::placeholders::_1, std::placeholders::_2)},
       {RemoteMessage::MessageType::kNcStreamerExitRequest,
        std::bind(&RemoteServer::OnNcStreamerExitRequest,
            this, std::placeholders::_1, std::placeholders::_2)}};
@@ -928,6 +931,30 @@ void RemoteServer::OnNcStreamerExitRequest(
 }
 
 
+void RemoteServer::OnNcStreamerUrlUpdateRequest(
+    const websocketpp::connection_hdl &connection,
+    const boost::property_tree::ptree &tree) {
+  const std::string &url = tree.get("streaming_url", "");
+  if (url.empty()) {
+    LogError("OnNcStreamerUrlUpdateRequest: url empty.");
+    return;
+  }
+
+  boost::property_tree::ptree args;
+  args.add("url", url);
+
+  int request_key = request_cache_.CheckIn(connection);
+
+  JsExecutor::Execute(
+      browser_,
+      "remote.onStreamingUrlUpdateRequest",
+      request_key,
+      args);
+
+  RespondStreamingUrlUpdate(request_key, "");
+}
+
+
 bool RemoteServer::RespondStreamingStart(
     int request_key,
     const std::string &error) {
@@ -1378,6 +1405,36 @@ bool RemoteServer::RespondSettingsMicOff(
     boost::property_tree::ptree tree;
     tree.put("type", static_cast<int>(
         RemoteMessage::MessageType::kSettingsMicOffResponse));
+    tree.put("error", error);
+
+    boost::property_tree::write_json(msg, tree, false);
+  }
+
+  websocketpp::lib::error_code ec;
+  server_.send(connection, msg.str(), websocketpp::frame::opcode::text, ec);
+  if (ec) {
+    LogError(ec.message());
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RemoteServer::RespondStreamingUrlUpdate(
+    int request_key,
+    const std::string &error) {
+  websocketpp::connection_hdl connection = request_cache_.CheckOut(request_key);
+  if (!connection.lock()) {
+    LogWarning("RespondStreamingUrlUpdate: !connection.lock()");
+    return false;
+  }
+
+  std::stringstream msg;
+  {
+    boost::property_tree::ptree tree;
+    tree.put("type", static_cast<int>(
+        RemoteMessage::MessageType::kNcStreamerUrlUpdateResponse));
     tree.put("error", error);
 
     boost::property_tree::write_json(msg, tree, false);

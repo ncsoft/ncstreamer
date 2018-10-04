@@ -97,6 +97,10 @@ div {
 }
 
 
+#nctv-text {
+  display: none;
+}
+
 #live-image {
   display: none;
 }
