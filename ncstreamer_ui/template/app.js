@@ -15,6 +15,7 @@ const app = {
     startInfo: {},
     popupBrowserId: 0,
     postUrl: null,
+    nctvUrl: null,
     mic: {
       use: false,
       list: null,
@@ -177,6 +178,7 @@ function updateStreamingStatus(status) {
   app.streaming.status = status;
   app.dom.cautionText.style.display = 'none';
   app.dom.liveImage.style.display = 'none';
+  app.dom.nctvText.style.display = 'none';
   const button = app.dom.controlButton;
   switch (status) {
     case 'standby':
@@ -266,6 +268,9 @@ function setUpControls(args) {
     'webcam-checkbox',
     'error-text',
     'caution-text',
+    'live-streaming-img',
+    'nctv-text',
+    'nctv-link',
     'live-image',
     'control-button',
     'quality-select',
@@ -334,6 +339,8 @@ function setUpControls(args) {
       'click', onYoutubeSupportLinkButtonClicked);
   app.dom.youtubeLinkButton.addEventListener(
       'click', onYoutubeLinkClicked);
+  app.dom.nctvLink.addEventListener(
+      'click', onNctvLinkClicked);
 
   ncsoft.select.disable(app.dom.privacySelect);
   ncsoft.select.setText(app.dom.privacySelect, '%POST_PRIVACY_BOUND%');
@@ -810,6 +817,17 @@ function onYoutubeLinkClicked() {
 }
 
 
+function onNctvLinkClicked() {
+  console.info('click nctvLink');
+
+  if (app.streaming.status != 'onAir') {
+    return;
+  }
+
+  cef.externalBrowserPopUp.request(app.streaming.nctvUrl);
+}
+
+
 function setUpSteamingQuality() {
   const display = app.dom.qualitySelect.children[0];
   const contents = app.dom.qualitySelect.children[1];
@@ -1072,6 +1090,9 @@ function showErrorText() {
     case 'obs error':
       error.textContent = '%OBS_ERROR%';
       break;
+    case 'obs timeout':
+      error.textContent = '%OBS_TIMEOUT%';
+      break;
     default:
       error.TextContent = '%OBS_ERROR%';
       break;
@@ -1258,6 +1279,8 @@ cef.streamingStart.onResponse =
       setUpError('obs error');
     } else if (error.includes('no channel or streaming service')) {
       ncsoft.modal.show('#youtube-link-modal');
+    } else if (error == 'obs timeout') {
+      setUpError('obs timeout');
     } else {
       setUpError('fail streaming');
     }

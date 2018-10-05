@@ -25,7 +25,8 @@ class ObsOutput {
   bool Start(obs_encoder_t *audio_encoder,
              obs_encoder_t *video_encoder,
              obs_service_t *service,
-             const OnStarted &on_started);
+             const OnStarted &on_started,
+             const OnStopped &on_timeout);
   void Stop(const OnStopped &on_stopped);
 
  private:

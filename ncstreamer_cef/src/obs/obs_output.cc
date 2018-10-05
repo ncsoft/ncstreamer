@@ -36,7 +36,8 @@ ObsOutput::~ObsOutput() {
 bool ObsOutput::Start(obs_encoder_t *audio_encoder,
                       obs_encoder_t *video_encoder,
                       obs_service_t *service,
-                      const OnStarted &on_started) {
+                      const OnStarted &on_started,
+                      const OnStopped &on_timeout) {
   obs_output_set_audio_encoder(output_, audio_encoder, 0);
   obs_output_set_video_encoder(output_, video_encoder);
   obs_output_set_service(output_, service);
@@ -46,6 +47,12 @@ bool ObsOutput::Start(obs_encoder_t *audio_encoder,
   on_started_.reset(new OnStarted{on_started});
   signal_handler_connect(
       signal_handler_, "start", OnStartSignal, on_started_.get());
+
+  signal_handler_disconnect(
+      signal_handler_, "stop", OnStopSignal, on_stopped_.get());
+  on_stopped_.reset(new OnStopped{on_timeout});
+  signal_handler_connect(
+      signal_handler_, "stop", OnStopSignal, on_stopped_.get());
 
   return obs_output_start(output_);
 }
@@ -69,7 +76,7 @@ void ObsOutput::OnStartSignal(void *data, calldata_t * /*params*/) {
 
 
 void ObsOutput::OnStopSignal(void *data, calldata_t * /*params*/) {
-  auto on_stopped = reinterpret_cast<OnStarted *>(data);
+  auto on_stopped = reinterpret_cast<OnStopped *>(data);
   (*on_stopped)();
 }
 }  // namespace ncstreamer

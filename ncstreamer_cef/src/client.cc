@@ -535,6 +535,9 @@ void Client::OnCommandStreamingStart(
               {"streamUrl", stream_server + stream_key},
               {"videoId", video_id},
               {"postUrl", post_url}});
+    }, [browser, cmd]() {
+      JsExecutor::Execute(browser, "cef.onResponse", cmd,
+          JsExecutor::StringPairVector{{"error", "obs timeout"}});
     });
     if (result == false) {
       JsExecutor::Execute(browser, "cef.onResponse", cmd,

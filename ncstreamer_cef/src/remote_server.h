@@ -192,6 +192,10 @@ class RemoteServer {
       const websocketpp::connection_hdl &connection,
       const boost::property_tree::ptree &tree);
 
+  void OnNcStreamerUrlUpdateRequest(
+      const websocketpp::connection_hdl &connection,
+      const boost::property_tree::ptree &tree);
+
   bool RespondStreamingStart(
       int request_key,
       const std::string &error);
@@ -251,6 +255,10 @@ class RemoteServer {
       const std::string &error);
 
   bool RespondSettingsMicOff(
+      int request_key,
+      const std::string &error);
+
+  bool RespondStreamingUrlUpdate(
       int request_key,
       const std::string &error);
 
