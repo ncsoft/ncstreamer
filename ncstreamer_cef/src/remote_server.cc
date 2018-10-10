@@ -935,11 +935,6 @@ void RemoteServer::OnNcStreamerUrlUpdateRequest(
     const websocketpp::connection_hdl &connection,
     const boost::property_tree::ptree &tree) {
   const std::string &url = tree.get("streaming_url", "");
-  if (url.empty()) {
-    LogError("OnNcStreamerUrlUpdateRequest: url empty.");
-    return;
-  }
-
   boost::property_tree::ptree args;
   args.add("url", url);
 
