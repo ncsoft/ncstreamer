@@ -324,14 +324,18 @@ const remote = {
     ncsoft.slider.disable(app.dom.micVolume);
   },
   onStreamingUrlUpdateRequest: function(requestKey, args) {
+    const url = args.url;
+    console.info(url);
     if (app.streaming.status != 'onAir') {
       return;
     }
-
-    const url = args.url;
-    console.info(url);
-    app.streaming.nctvUrl = url;
     app.dom.liveImage.style.display = 'none';
     app.dom.nctvText.style.display = 'block';
+    app.dom.nctvLink.style.display = 'inline';
+
+    app.streaming.nctvUrl = url;
+    if (url == '') {
+      app.dom.nctvLink.style.display = 'none';
+    }
   },
 };
