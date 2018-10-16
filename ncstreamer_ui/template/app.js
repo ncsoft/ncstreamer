@@ -80,6 +80,8 @@ const app = {
         'next=/live_streaming_signup&app=desktop&' +
         'action_prompt_identity=true',
     youtubeSupportUrl: 'https://support.google.com/youtube/answer/2474026',
+    youtubeSettingsUrl: 'https://www.youtube.com/my_live_events?' +
+        'editor_tab=advanced&action_edit_live_event=1&event_id=',
   },
   options: {
     hidesSettings: false,
@@ -211,6 +213,9 @@ function updateStreamingStatus(status) {
       disableAllControls();
       ncsoft.checkbox.enable(app.dom.webcamCheckbox);
       ncsoft.checkbox.enable(app.dom.micCheckbox);
+      if (app.service.provider == 'YouTube') {
+        popupYouTubeSettings();
+      }
       break;
     case 'stopping':
       ncsoft.klass.add(button, 'loading');
@@ -278,7 +283,9 @@ function setUpControls(args) {
     'modal-close-button',
     'modal-cancel-button',
     'twitch-settings-popup',
+    'youtube-settings-popup',
     'popup-hide-button',
+    'youtube-hide-button',
     'youtube-support-link-button',
     'youtube-link-button',
   ].forEach(function(domId) {
@@ -333,8 +340,12 @@ function setUpControls(args) {
       'click', onModalCancelClicked);
   app.dom.twitchSettingsPopup.addEventListener(
       'click', onTwitchSettingsPopupClicked);
+  app.dom.youtubeSettingsPopup.addEventListener(
+      'click', onYoutubeSettingsPopupClicked);
   app.dom.popupHideButton.addEventListener(
       'click', onPopupHideButtonClicked);
+  app.dom.youtubeHideButton.addEventListener(
+      'click', onYoutubeHideButtonClicked);
   app.dom.youtubeSupportLinkButton.addEventListener(
       'click', onYoutubeSupportLinkButtonClicked);
   app.dom.youtubeLinkButton.addEventListener(
@@ -799,9 +810,20 @@ function onPopupHideButtonClicked() {
 }
 
 
+function onYoutubeHideButtonClicked() {
+  console.info('click youtubeHideButton');
+  ncsoft.storage.add('youtubeSettingHide', 30 /*day*/);
+}
+
+
 function onTwitchSettingsPopupClicked() {
   console.info('click twitchSettingsPopup');
   cef.externalBrowserPopUp.request(app.service.settingsPage);
+}
+
+function onYoutubeSettingsPopupClicked() {
+  console.info('click youtubeSettingsPopup');
+  cef.externalBrowserPopUp.request(app.service.youtubeSettingsUrl);
 }
 
 
@@ -931,7 +953,7 @@ function setUpProviderUI(
       app.dom.facebookDivision.style.display = 'none';
       app.dom.twitchDivision.style.display = 'none';
       ncsoft.klass.remove(userName, 'fb');
-      ncsoft.klass.remove(userName, 'twtich');
+      ncsoft.klass.remove(userName, 'twitch');
       ncsoft.klass.add(userName, 'youtube');
       ncsoft.klass.remove(connectInfo, 'fb');
       ncsoft.klass.remove(connectInfo, 'twitch');
@@ -968,6 +990,16 @@ function setUpProviderUI(
     default:
       break;
   }
+}
+
+
+function popupYouTubeSettings() {
+  const saveDate = ncsoft.storage.get('youtubeSettingHide');
+  const curDate = new Date();
+  if (saveDate != null && curDate.getTime() < saveDate) {
+    return;
+  }
+  ncsoft.modal.show('#youtube-guide-modal');
 }
 
 
@@ -1297,6 +1329,7 @@ cef.streamingStart.onResponse =
       cef.settingsWebcamOn.request(deviceId, width, height, x, y);
     }
     app.streaming.postUrl = postUrl;
+    app.service.youtubeSettingsUrl += videoId;
     updateStreamingStatus('onAir');
   }
 
