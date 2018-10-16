@@ -82,7 +82,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -167,7 +172,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -252,7 +262,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -337,7 +352,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -422,7 +442,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -507,7 +532,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -592,7 +622,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -677,7 +712,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -762,7 +802,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",
@@ -847,7 +892,12 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -932,6 +982,11 @@
     "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
     "NCTV_NOTICE": "전체 공개로 방송을 하면 'NCTV'에도 동시에 공개됩니다.",
     "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기"
+    "NCTV_LINK": "NCTV 보기",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
+    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
+    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
   }
 }

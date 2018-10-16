@@ -233,7 +233,7 @@ button {
 }
 
 body {
-	font-family: -apple-system, BlinkMacSystemFont, Roboto, "留묒� 怨좊뵓", "Malgun Gothic", "Microsoft JhengHei", "meiryo", "MS PGothic", "�뗭�", Dotum, sans-serif
+	font-family: -apple-system, BlinkMacSystemFont, Roboto, "맑은 고딕", "Malgun Gothic", "Microsoft JhengHei", "meiryo", "MS PGothic", "돋움", Dotum, sans-serif
 }
 
 h1,
@@ -1180,7 +1180,7 @@ body {
 }
 
 .connect-platform .message.notice ul li:before {
-	content: '��';
+	content: 'ㆍ';
 	position: absolute;
 	top: -1px;
 	left: -14px
