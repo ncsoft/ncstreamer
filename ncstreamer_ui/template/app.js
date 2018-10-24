@@ -80,8 +80,9 @@ const app = {
         'next=/live_streaming_signup&app=desktop&' +
         'action_prompt_identity=true',
     youtubeSupportUrl: 'https://support.google.com/youtube/answer/2474026',
-    youtubeSettingsUrl: 'https://www.youtube.com/my_live_events?' +
+    youtubeSettingsUrlTemplate: 'https://www.youtube.com/my_live_events?' +
         'editor_tab=advanced&action_edit_live_event=1&event_id=',
+    videoId: null,
   },
   options: {
     hidesSettings: false,
@@ -823,7 +824,8 @@ function onTwitchSettingsPopupClicked() {
 
 function onYoutubeSettingsPopupClicked() {
   console.info('click youtubeSettingsPopup');
-  cef.externalBrowserPopUp.request(app.service.youtubeSettingsUrl);
+  cef.externalBrowserPopUp.request(
+      app.service.youtubeSettingsUrlTemplate + app.service.videoId);
 }
 
 
@@ -1329,7 +1331,7 @@ cef.streamingStart.onResponse =
       cef.settingsWebcamOn.request(deviceId, width, height, x, y);
     }
     app.streaming.postUrl = postUrl;
-    app.service.youtubeSettingsUrl += videoId;
+    app.service.videoId = videoId;
     updateStreamingStatus('onAir');
   }
 
