@@ -603,7 +603,7 @@ void Obs::UpdateBaseResolution(const std::string &source_info) {
   DWORD process_id;
   GetWindowThreadProcessId(handle, &process_id);
   std::wstring map_name = L"CaptureHook_HookInfo" + std::to_wstring(process_id);
-  for (int i = 0; i < 50; ++i) {
+  for (int i = 0; i < 200; ++i) {
     HANDLE hook_info_map = OpenFileMapping(
         FILE_MAP_READ, false, map_name.c_str());
     if (hook_info_map) {
