@@ -145,7 +145,7 @@ std::vector<std::string> ClientLoadHandler::FilterSources(
         std::smatch matches;
         const bool &found = std::regex_search(title, matches, pattern);
         if (found) {
-          filtered_sources.emplace_back(matches[0]);
+          filtered_sources.emplace_back(source);
           break;
         }
       }
