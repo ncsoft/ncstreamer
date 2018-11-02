@@ -714,7 +714,7 @@ function submitControl() {
         privacy = app.dom.youtubePrivacySelect.children[0].value;
       } else {
         privacy = app.dom.mePageSelect.children[0].value == 2 ?
-            'SELF' : app.dom.privacySelect.children[0].value;
+            'EVERYONE' : app.dom.privacySelect.children[0].value;
       }
 
       cef.streamingStart.request(source,
