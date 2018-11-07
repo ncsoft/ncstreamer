@@ -889,15 +889,15 @@
     "YOUTUBE_TERMS_DESC3": "後即可開始使用串流服務",
     "YOUTUBE_SUPPORT_PAGE": "立即前往YouTube說明中心",
     "NO_LINEAGE": "天堂無法使用該服務",
-    "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송 하면 'NCTV'에도 동시에 공개됩니다.",
-    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기",
-    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
-    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "OBS_TIMEOUT": "正在使用其他服務進行直播，\r\n或是臨時產生錯誤而無法進行直播。\r\n請在確認後，重新再試一次。",
+    "NCTV_NOTICE": "使用全體公開直播的話，也會同時在「NCTV」公開直播。",
+    "NCTV_STREAMING": "目前也在NCTV同步直播中。",
+    "NCTV_LINK": "瀏覽NCTV",
+    "YOUTUBE_SETTINGS_BROWSING": "前往變更 YouTube設定",
+    "YOUTUBE_SETTINGS_MESSAGE1": "若想要同時在「NCTV」公開直播的話 ，請勾選",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
-    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE3": "的",
+    "YOUTUBE_SETTINGS_MESSAGE4": "「允許分享」選項。"
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -979,14 +979,14 @@
     "YOUTUBE_TERMS_DESC3": "経過後にライブ配信が可能です",
     "YOUTUBE_SUPPORT_PAGE": "YouTube ヘルプ リンク",
     "NO_LINEAGE": "リネージュ利用不可",
-    "OBS_TIMEOUT": "이미 타 서비스를 이용해 방송 중이거나,\r\n일시적인 오류로 방송을 할수 없습니다.\r\n확인 후 다시 시도해 주세요.",
-    "NCTV_NOTICE": "전체 공개로 방송 하면 'NCTV'에도 동시에 공개됩니다.",
-    "NCTV_STREAMING": "'NCTV'에도 생방송되고 있습니다.",
-    "NCTV_LINK": "NCTV 보기",
-    "YOUTUBE_SETTINGS_BROWSING": "YouTube 설정 변경하러 가기",
-    "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
+    "OBS_TIMEOUT": "すでに他のサービスを利用して放送中か、\r\n一時的なエラーで放送ができません。\r\nご確認後に再度お試しください。",
+    "NCTV_NOTICE": "全体公開で放送すると'NCTV'にも同時に公開されます。",
+    "NCTV_STREAMING": "「NCTV」でも生放送されています。",
+    "NCTV_LINK": "NCTV表示",
+    "YOUTUBE_SETTINGS_BROWSING": "YouTubeの設定を変更する",
+    "YOUTUBE_SETTINGS_MESSAGE1": "「NCTV」でも同時公開する場合は",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
-    "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE3": "で",
+    "YOUTUBE_SETTINGS_MESSAGE4": "「埋め込みを許可する」オプションにチェックをしてく"
   }
 }
