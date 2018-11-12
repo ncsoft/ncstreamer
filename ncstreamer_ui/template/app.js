@@ -12,6 +12,7 @@ const app = {
     // ['standby', 'setup', 'starting', 'onAir', 'stopping', 'closing']
     status: 'standby',
     lastStatus: null,
+    shutdown: false,
     startInfo: {},
     popupBrowserId: 0,
     postUrl: null,
@@ -282,7 +283,6 @@ function setUpControls(args) {
     'quality-select',
     'chroma-key-checkbox',
     'modal-close-button',
-    'modal-cancel-button',
     'twitch-settings-popup',
     'youtube-settings-popup',
     'popup-hide-button',
@@ -337,8 +337,6 @@ function setUpControls(args) {
       'change', onchromaKeyCheckboxChanged);
   app.dom.modalCloseButton.addEventListener(
       'click', onModalCloseClicked);
-  app.dom.modalCancelButton.addEventListener(
-      'click', onModalCancelClicked);
   app.dom.twitchSettingsPopup.addEventListener(
       'click', onTwitchSettingsPopupClicked);
   app.dom.youtubeSettingsPopup.addEventListener(
@@ -528,9 +526,7 @@ function onMinimizeButtonClicked() {
 
 function onCloseButtonClicked() {
   console.info('click closeButton');
-  app.streaming.lastStatus = app.streaming.status;
-  updateStreamingStatus('closing');
-  if (app.streaming.lastStatus == 'onAir') {
+  if (app.streaming.status == 'onAir') {
     ncsoft.modal.show('#close-check-modal');
   } else {
     cef.windowClose.request();
@@ -791,17 +787,8 @@ function updateQualitySelect() {
 
 function onModalCloseClicked() {
   console.info('click modalClose');
-  (function notifyRemote() {
-    const source = app.streaming.startInfo.source;
-    cef.remoteStop.request(remote.stopRequestKey, '', source);
-    remote.stopRequestKey = '';
-  })();
-}
-
-
-function onModalCancelClicked() {
-  console.info('click modalCancel');
-  updateStreamingStatus(app.streaming.lastStatus);
+  app.streaming.shutdown = true;
+  onControlButtonClicked();
 }
 
 
@@ -1367,6 +1354,10 @@ cef.streamingStop.onResponse = function(error) {
     cef.remoteStop.request(remote.stopRequestKey, error, source);
     remote.stopRequestKey = '';
   })();
+
+  if (app.streaming.shutdown == true) {
+    cef.windowClose.request();
+  }
 };
 
 
