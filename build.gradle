@@ -1,0 +1,177 @@
+// artifactory에 올라가는 기준 path
+// 각 조직 구성에 맞는 위치를 확인하시고 지정하시기 바랍니다.
+// 예) com.ncsoft.platform.ncplatform
+group = "com.ncsoft.platform.nclauncher"
+version = System.getenv("BUILD_NUMBER")
+
+/**
+ * 빌드스크립트에서 사용할 플러그인 속성을 지정합니다.
+ */
+buildscript {
+    repositories {
+        maven { url "http://repo.ncsoft.net/artifactory/plugins-release" }
+        maven { url "http://repo.ncsoft.net/artifactory/plugins-snapshot" }
+    }
+
+    dependencies {
+		classpath "com.netflix.nebula:gradle-ospackage-plugin:3.6.1"
+    }
+}
+
+apply plugin: "nebula.ospackage"
+apply plugin: 'maven-publish'
+
+/*
+ *  Artifact 생성을 위한 빌드 Task
+ *  MSBuild 및 argument를 지정하여 빌드를 실행 합니다. 
+    commandLine "./.nuget/nuget.exe" restore "./NCLauncherW.sln"
+ */ 
+def newVersion
+task setVersion{
+	copy {
+		from 'ncstreamer_cef/src/ncstreamer.rc'
+		into "ncstreamer_cef/src/temp"
+		filter { line -> 
+			if(line.contains("FILEVERSION") == true || line.contains("PRODUCTVERSION") == true){
+				newVersion = line.substring(0, line.lastIndexOf(",")+1) + version
+			}
+			else if(line.contains("FileVersion") == true || line.contains("ProductVersion") == true){
+				newVersion = line.substring(0, line.lastIndexOf(".")+1) + version + "\""
+			}
+			else{
+				line
+			}
+		}
+	}
+	delete {
+		delete 'ncstreamer_cef/src/ncstreamer.rc'
+	}
+	ant.move file: "${projectDir}/ncstreamer_cef/src/temp/ncstreamer.rc",
+			todir: "${projectDir}/ncstreamer_cef/src"
+	delete {
+		delete 'ncstreamer_cef/src/temp'
+	}
+	version = newVersion.split("\"")[3] + '-SNAPSHOT'
+	println "Build Version : " + version
+}
+
+task execBatchFileToInsertYoutubeSecret(type: Exec) {
+    commandLine "D:/youtube_app_secret/insert_youtube_app_secret.bat", "%WORKSPACE%"
+}
+
+task binaryBuild(type: Exec) {
+    commandLine "C:/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe", "vs14.0/ncstreamer.sln", "/p:Configuration=Release;Platform=x86"
+}
+
+task execCodeSigning(type: Exec){
+    commandLine "D:/code_signing/jenkins_projects/code_signing__ncstreamer.bat", "%WORKSPACE%"
+}
+
+/*
+ * Artifactory에 업로드 하기 위한 Artifact 압축
+ * from ("압축대상이 모이는 디렉토리명")
+ */
+
+task distZip(type: Zip) {
+	from ("vs14.0/build/ncstreamer_cef/Release/bin/32bit/") 
+}
+
+/**
+ * 메이븐의 글로벌 정의에서 server속성을 이용할 수 있도록 정의 합니다.
+ */
+def getMavenSettingsCredentials = {
+    String userHome = System.getProperty( "user.home" )
+    File mavenSettings = new File(userHome, ".m2/settings.xml")
+    if (!mavenSettings.exists()) {
+        return []
+    }
+    def xmlSlurper = new XmlSlurper()
+    def output = xmlSlurper.parse(mavenSettings)
+    return output."servers"."server"
+}
+
+def getCredentials = {
+    def entries = getMavenSettingsCredentials()
+    for (entry in entries) {
+        if (project.version.endsWith("-SNAPSHOT") && entry."id".text() == "snapshots") {
+            return [username: entry.username.text(), password: entry.password.text()]
+        } else if (entry."id".text() == "releases") {
+            return [username: entry.username.text(), password: entry.password.text()]
+        }
+    }
+    return [username: "", password: ""]
+}
+
+/**
+ *  Build jenkins의 빌드 넘버와 Artifactory의 Version 정보를 매핑하기 위한 파일 생성
+ *  주 사용처는 Spinnaker
+ **/
+task generatePublishInfo << {
+    def targetFile = new File("${buildDir}/publications/publish/publish.properties")
+    // Create directory structure of the target file before writing the file
+    targetFile.parentFile.mkdirs()
+
+    // Create target file using writer
+    targetFile.withWriter('UTF-8') { w ->
+        w.writeLine 'groupId=' + project.group
+        w.writeLine 'artifactId=' + project.name
+        w.writeLine 'version=' + project.version
+    }
+}
+
+/*
+ * Artifactory에 업로드 Task
+ */
+publishing {
+    def creds = getCredentials()
+    repositories {
+        maven {
+            credentials {
+                username creds["username"]
+                password creds["password"]
+            }
+
+            if (project.version.endsWith("-SNAPSHOT")) {
+                url "http://repo.ncsoft.net/artifactory/platform-snapshot-local"
+            } else {
+                url "http://repo.ncsoft.net/artifactory/platform-release-local"
+            }
+        }
+    }
+
+    publications {
+        create('distribution', MavenPublication) {
+            artifact distZip
+            groupId project.group
+            artifactId rootProject.name 
+            version project.version
+        }
+    }
+}
+
+publish {
+    dependsOn distZip
+    dependsOn generatePublishInfo
+}
+
+build {
+	dependsOn execCodeSigning
+}
+
+execCodeSigning {
+    dependsOn binaryBuild
+}
+
+binaryBuild {
+    dependsOn execBatchFileToInsertYoutubeSecret
+}
+
+execBatchFileToInsertYoutubeSecret {
+    dependsOn setVersion
+}
+
+
+
+
+task wrapper(type: Wrapper) { gradleVersion = '2.9' }
+
