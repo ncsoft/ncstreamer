@@ -111,12 +111,30 @@ task generatePublishInfo << {
     // Create directory structure of the target file before writing the file
     targetFile.parentFile.mkdirs()
 
+	new ByteArrayOutputStream().withStream { output ->
+        exec {
+            commandLine "git", "log", "--format=%H=%ae=%B", "-n", "1"
+            standardOutput = output
+        }
+		
+		ext.commitId = output.toString().split("=")[0]
+		ext.author = output.toString().split("=")[1] - "@ncsoft.com"
+		ext.commitLog = output.toString().split("=")[2]
+	}
+	
+	commitLog = "Id: $commitId\nMessage: $commitLog\n"
+	commitLog = commitLog.replaceAll("\n","`r`n\\\\\n")
+	
     // Create target file using writer
     targetFile.withWriter('UTF-8') { w ->
         w.writeLine 'groupId=' + project.group
         w.writeLine 'artifactId=' + project.name
         w.writeLine 'version=' + project.version
+		w.writeLine 'author=' + ext.author
+		w.writeLine 'commitLog= \\' + ext.commitLog
     }
+	
+	println "\npublish.properties:\n" + targetFile.text
 }
 
 /*
