@@ -106,3 +106,10 @@ div {
 #login-guide-notice._1 {
   display: block;
 }
+
+
+#provider-user-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 150px;
+}
