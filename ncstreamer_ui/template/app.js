@@ -215,7 +215,8 @@ function updateStreamingStatus(status) {
       disableAllControls();
       ncsoft.checkbox.enable(app.dom.webcamCheckbox);
       ncsoft.checkbox.enable(app.dom.micCheckbox);
-      if (app.service.provider == 'YouTube') {
+      if (app.service.provider == 'YouTube' &&
+          '%YOUTUBE_GUIDE_MODAL_VISIBILITY%' == '_1') {
         popupYouTubeSettings();
       }
       break;
