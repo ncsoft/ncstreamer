@@ -1,5 +1,5 @@
 /*
-  css Update : 2018-10-16 11:58:7
+  css Update : 2019-2-18 19:20:41
 */
 
 
@@ -1004,8 +1004,8 @@ body {
 .nc-streamer-modal .img-twitch-guide {
 	content: '';
 	display: block;
-	width: 287px;
-	height: 267px;
+	width: 300px;
+	height: 194px;
 	vertical-align: middle;
 	background: url("../img/twitch-guide.png") no-repeat 0 0;
 	margin: 26px auto 0
@@ -1018,6 +1018,26 @@ body {
 	height: 267px;
 	vertical-align: middle;
 	background: url("../img/youtube-guide.png") no-repeat 0 0;
+	margin: 26px auto 0
+}
+
+.nc-streamer-modal .img-twitch-guide-ncw {
+	content: '';
+	display: block;
+	width: 299px;
+	height: 194px;
+	vertical-align: middle;
+	background: url("../img/twitch-guide-ncw.png") no-repeat 0 0;
+	margin: 26px auto 0
+}
+
+.nc-streamer-modal .img-youtube-guide-ncw {
+	content: '';
+	display: block;
+	width: 306px;
+	height: 200px;
+	vertical-align: middle;
+	background: url("../img/youtube-guide-ncw.png") no-repeat 0 0;
 	margin: 26px auto 0
 }
 

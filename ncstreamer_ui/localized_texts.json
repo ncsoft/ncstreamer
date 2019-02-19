@@ -87,7 +87,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "To simultaneously broadcast your stream on NCTV,",
     "YOUTUBE_SETTINGS_MESSAGE2": "check the 'Allow Sharing' option",
     "YOUTUBE_SETTINGS_MESSAGE3": "from",
-    "YOUTUBE_SETTINGS_MESSAGE4": "YouTube's settings."
+    "YOUTUBE_SETTINGS_MESSAGE4": "YouTube's settings.",
+    "YOUTUBE_IMG": "img-youtube-guide-ncw",
+    "TWITCH_IMG": "img-twitch-guide-ncw",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_0"
   },
   "ko-KR": {
     "NCSTREAMING": "NC 스트리밍",
@@ -177,7 +180,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요.",
+    "YOUTUBE_IMG": "img-youtube-guide",
+    "TWITCH_IMG": "img-twitch-guide",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_1"
   },
   "de-DE": {
     "NCSTREAMING": "NC Streaming",
@@ -267,7 +273,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요.",
+    "YOUTUBE_IMG": "img-youtube-guide-ncw",
+    "TWITCH_IMG": "img-twitch-guide-ncw",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_0"
   },
   "fr-FR": {
     "NCSTREAMING": "NC Streaming",
@@ -357,7 +366,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요.",
+    "YOUTUBE_IMG": "img-youtube-guide-ncw",
+    "TWITCH_IMG": "img-twitch-guide-ncw",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_0"
   },
   "es-XL": {
     "NCSTREAMING": "NC Streaming",
@@ -447,7 +459,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요.",
+    "YOUTUBE_IMG": "img-youtube-guide-ncw",
+    "TWITCH_IMG": "img-twitch-guide-ncw",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_0"
   },
   "it-IT": {
     "NCSTREAMING": "NC Streaming",
@@ -537,7 +552,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요.",
+    "YOUTUBE_IMG": "img-youtube-guide-ncw",
+    "TWITCH_IMG": "img-twitch-guide-ncw",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_0"
   },
   "pl-PL": {
     "NCSTREAMING": "NC Streaming",
@@ -627,7 +645,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요.",
+    "YOUTUBE_IMG": "img-youtube-guide-ncw",
+    "TWITCH_IMG": "img-twitch-guide-ncw",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_0"
   },
   "pt-BR": {
     "NCSTREAMING": "NC Streaming",
@@ -717,7 +738,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요.",
+    "YOUTUBE_IMG": "img-youtube-guide-ncw",
+    "TWITCH_IMG": "img-twitch-guide-ncw",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_0"
   },
   "tr-TR": {
     "NCSTREAMING": "NC Streaming",
@@ -807,7 +831,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "‘NCTV’에도 동시에 공개하려면",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "에서",
-    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요."
+    "YOUTUBE_SETTINGS_MESSAGE4": "‘퍼가기 허용’ 옵션에 체크해 주세요.",
+    "YOUTUBE_IMG": "img-youtube-guide-ncw",
+    "TWITCH_IMG": "img-twitch-guide-ncw",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_0"
   },
   "zh-TW": {
     "NCSTREAMING": "NC Streaming",
@@ -897,7 +924,10 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "若想要同時在「NCTV」公開直播的話 ，請勾選",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "的",
-    "YOUTUBE_SETTINGS_MESSAGE4": "「允許分享」選項。"
+    "YOUTUBE_SETTINGS_MESSAGE4": "「允許分享」選項。",
+    "YOUTUBE_IMG": "img-youtube-guide",
+    "TWITCH_IMG": "img-twitch-guide",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_1"
   },
   "ja-JP": {
     "NCSTREAMING": "NC Streaming",
@@ -987,6 +1017,9 @@
     "YOUTUBE_SETTINGS_MESSAGE1": "「NCTV」でも同時公開する場合は",
     "YOUTUBE_SETTINGS_MESSAGE2": "YouTube",
     "YOUTUBE_SETTINGS_MESSAGE3": "で",
-    "YOUTUBE_SETTINGS_MESSAGE4": "「埋め込みを許可する」オプションにチェックをしてく"
+    "YOUTUBE_SETTINGS_MESSAGE4": "「埋め込みを許可する」オプションにチェックをしてく",
+    "YOUTUBE_IMG": "img-youtube-guide",
+    "TWITCH_IMG": "img-twitch-guide",
+    "YOUTUBE_GUIDE_MODAL_VISIBILITY": "_1"
   }
 }
