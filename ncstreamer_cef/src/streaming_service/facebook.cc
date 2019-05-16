@@ -188,7 +188,7 @@ void Facebook::PostLiveVideo(
     try {
       boost::property_tree::read_json(ss, tree);
       stream_id = tree.get<std::string>("id");
-      stream_url = tree.get<std::string>("stream_url");
+      stream_url = tree.get<std::string>("secure_stream_url");
     } catch (const std::exception &/*e*/) {
       stream_url = "";
     }
