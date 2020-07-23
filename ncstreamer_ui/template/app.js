@@ -1182,7 +1182,8 @@ cef.serviceProviderLogIn.onResponse = function(
     privacy, youtubePrivacy, streamServer, description, location) {
   if (error != '') {
     console.info(error);
-    if (!error.includes('no channel or streaming service')) {
+    if (!error.includes('no channel or streaming service') &&
+        !error.includes('could not get channel from')) {
       return;
     }
     ncsoft.modal.show('#youtube-link-modal');
