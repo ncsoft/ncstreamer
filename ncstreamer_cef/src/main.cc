@@ -3,7 +3,6 @@
  */
 
 
-#include <cassert>
 #include <memory>
 
 #include "boost/filesystem.hpp"
@@ -21,12 +20,10 @@
 
 
 namespace {
-int ExecuteRenderProcess(HINSTANCE instance) {
+int ExecuteProcess(HINSTANCE instance) {
   CefRefPtr<ncstreamer::RenderApp> render_app{new ncstreamer::RenderApp{}};
-  int exit_code = ::CefExecuteProcess(
+  return ::CefExecuteProcess(
       CefMainArgs{instance}, render_app, nullptr);
-  assert(exit_code >= 0);
-  return exit_code;
 }
 
 
@@ -48,9 +45,9 @@ int APIENTRY wWinMain(HINSTANCE instance,
                       int /*cmd_show*/) {
   ::CefEnableHighDPISupport();
   ncstreamer::CommandLine cmd_line{::GetCommandLine()};
-
-  if (cmd_line.is_renderer()) {
-    return ExecuteRenderProcess(instance);
+  const int &exit_code = ExecuteProcess(instance);
+  if (exit_code >= 0) {
+    return -1;
   }
 
   ncstreamer::NamedMutex named_mutex{ncstreamer::kMutexName};
