@@ -72,6 +72,9 @@
       <AdditionalLibraryDirectories>$(BOOST_PATH)lib32-msvc-14.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y $(ProjectDir)..\LICENSE.txt $(OutputPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -97,6 +100,9 @@
     <PreBuildEvent>
       <Command>build_tools/cpplint/cpplint_directory.bat "$(GOOGLE_STYLEGUIDE_PATH)/cpplint" ../ncstreamer_cef/src</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /Y $(ProjectDir)..\LICENSE.txt $(OutputPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\ncstreamer_cef\src\browser_app.cc" />
